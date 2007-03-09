@@ -1,0 +1,48 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+use Text::CSV_XS;
+use Data::Dumper;
+
+my $csv = Text::CSV_XS->new();
+
+my %exch_ranges = ();
+while(<STDIN>) {
+    $csv->parse($_) || die("Bad data $_\n");
+    my @fields = $csv->fields();
+    $fields[1] =~ s/^0//;
+    $fields[2] =~ s/^0//;
+    my ($exchg, $min, $max) = @fields[0..2];
+    print STDERR "$exchg: $min, $max\n";
+    
+    my @minprefixes = map { substr($min, 0, $_) } reverse 1..length($min);
+    my @maxprefixes = map { substr($max, 0, $_) } reverse 1..length($max);
+    my $longest_prefix;
+    foreach(0 .. length($max) - 1) {
+        if($minprefixes[$_] == $maxprefixes[$_]) {
+            $longest_prefix = $minprefixes[$_];
+            last;
+        }
+    }
+    my @prefixes = break_prefix($longest_prefix, $min, $max);
+    $exch_ranges{$_} = $exchg foreach(@prefixes);
+    print STDERR "  [".join(', ', @prefixes)."]\n";
+}
+print Dumper(\%exch_ranges);
+
+sub break_prefix {
+    my($prefix, $min, $max) = @_;
+    
+    my $extradigits = length($min) - length($prefix);
+    return () unless($extradigits);
+    
+    if(
+        $prefix.('0' x $extradigits) >= $min &&
+        $prefix.('9' x $extradigits) <= $max
+    ) {
+        return $prefix;
+    } else {
+        return map { break_prefix($prefix.$_, $min, $max) } (0 .. 9);
+    }
+}

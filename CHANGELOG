@@ -1,0 +1,82 @@
+2007-02-24	1.57	New UK allocations
+2006-12-08	1.56	New UK allocations; 
+                        Updated OFCOM parser;
+                        Loads of Number::Phone::Country updates -
+                          +1: NANP overlays: 226, 438, 762, 769, 829;
+                          +269: Split Mayotte/Comores;
+                          +381/2: Yugoslavia's *still* breaking up! (RS and ME);
+                          +61 89162/4: Cocos and Christmas islands
+                          +672 3: Norfolk Island
+                          +672 1 0/1/2/3: Australian Antarctic bases
+                          +681: Wallace and Futuna (corrected CCTLD)
+                          +881 0: ICO Global
+                          +881 3: Ellipso
+                          +881 6: Iridium
+                          +881 7: Iridium
+                          +881 8: Globalstar
+2006-08-25      1.55    Damnit, 1.54's ...UK->location() was wrong
+2006-08-24	1.54	And again!
+2006-08-23      1.53    Doh!  How we loaded location data was buggy
+2006-08-23      1.52    Documentation patches;
+                        Corrected CHANGELOG entry for v1.51;
+                        Added location data for the UK
+2006-08-22      1.51    Updated UK data to access DATA filehandle directly,
+                          which depends on DBM::Deep 0.97 and above.  This
+                          saves even more memory and makes the module load
+                          a lot faster;
+                        New UK allocations;
+                        Some improvements and fixes in OFCOM data parser;
+                        Bug fixes :-( for UK numbers with a significant F digit
+2005-10-16      1.5     UK data moved into an embedded DBM::Deep structure
+                          to save memory (NB: this adds dependencies)
+                        Added location() method
+2005-10-11      1.4004  New UK allocations
+                        Removed 'use warnings' and 'use diagnostics' because
+                          they pointlessly require a later version of perl;
+                        re the above, tests now all use -w instead
+2005-08-23      1.4003  Updated N::P::Country to use CS instead of YU for
+                          Yugoslavia (ISO 3166 has been updated)
+                        Fixed non-US and non-CA countries in N::P::Country's
+                          phone2country_and_idd function (BUGFIX)
+                        New UK allocations
+2005-08-02      1.4002  New UK allocations
+2005-06-27      1.4001  Added phone2country_and_idd to N::P::Country
+                        new UK allocations etc
+2005-05-18      1.4     updated Number::Phone::Country to remove American
+                          Samoa's +684 code, it has migrated to +1 684 in
+                          the NANP
+                        N::P::C now correctly identifies US numbers
+                          doesn't just assume a NANP number is US if it's
+                          not assigned to another country
+                        N::P::C no longer uses <DATA>
+                        N::P::C added missing countries
+                        some tidying in N::P::C's tests
+                        N::P->country now defaults to returning current country
+                        some tidying in N::P base class
+                        new UK number allocations
+                        UK data file now has version number (autogen from date)
+                        UK data fixed for numbers "Allocated for Migration only"
+                        Added NANP class and NANP::XX subclasses
+2005-04-12      1.3004  new UK number allocations
+                        removed 'use diagnostics'
+2004-12-05      1.3003  new UK number allocations
+2004-11-26      1.3002  OFCOM's UK data had some spurious spaces in numeric
+                          fields, which broke some 070 numbers, these are now
+                          filtered out
+2004-11-10      1.3001  new UK number allocations
+2004-10-20      1.3     Added note about number portability in UK module.
+                        Added areaname() method to interface definition
+                          and an implementation in the UK module.
+                        Defined translates_to() method in superclass.
+                        Added Number::Phone::Country to distribution.  This
+                          was previously maintained by T.J.Mather.
+2004-10-13      1.2001  No code changes, just new UK number allocations
+2004-09-22      1.2     Oops, forgot to add is_ipphone to docs for N::P::UK
+                          last time.
+                        Updated N::P::UK::Data with some new number ranges.
+2004-09-15      1.1     Number::Phone::UK now implements is_ipphone, and
+                          N::P::UK::Data has appropriate data in it, as
+                          OFCOM have this week publishedthe allocations they
+                          made a few weeks ago.
+                        Removed is_voip() alias, it didn't work properly
+                          under all the possible ways of invoking it.
