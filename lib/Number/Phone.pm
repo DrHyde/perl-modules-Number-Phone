@@ -95,6 +95,13 @@ and to magically use the right subclass ...
         send_rude_SMS();
     }
 
+=head1 IMPORTANT NOTE WHAT YOU SHOULD READ
+
+All previous versions had a dependency on the excellent DBM::Deep module.
+Unfortunately its file format changed when it hit version 1.0.  Therefore
+this release has an old version of DBM::Deep bundled with it, which you
+may use in parallel with the new version.
+
 =cut
 
 sub new {
