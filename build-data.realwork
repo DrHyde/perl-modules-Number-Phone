@@ -32,12 +32,14 @@
 use strict;
 use warnings;
 
+use lib 'lib';
+
 use Text::CSV_XS;
 use Digest::MD5 'md5_base64';
 use Data::Dumper;
-use DBM::Deep;
+use Number::Phone::UK::DBM::Deep;
 
-my $dbm = DBM::Deep->new('temp.db');
+my $dbm = Number::Phone::UK::DBM::Deep->new('temp.db');
 
 my $csv = Text::CSV_XS->new({
     binary => 1
@@ -49,9 +51,9 @@ print MODULE "package Number::Phone::UK::Data;\n\n";
 print MODULE "# automatically generated file, don't edit\n\n";
 print MODULE "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n";
 print MODULE q{
-    use DBM::Deep;
+    use Number::Phone::UK::DBM::Deep;
 
-    our $db = DBM::Deep->new(fh => *DATA);
+    our $db = Number::Phone::UK::DBM::Deep->new(fh => *DATA);
     if ($db->error()) {
         die "DBM::Deep error: " . $db->error();
     }

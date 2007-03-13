@@ -45,3 +45,6 @@ t/52_number-phone-country-uk.t
 t/53_number-phone-country-idd.t
 META.yml                                 Module meta-data (added by MakeMaker)
 lib/Number/Phone/UK/Exchanges.pm
+lib/Number/Phone/UK/DBM/Deep/Array.pm
+lib/Number/Phone/UK/DBM/Deep/Hash.pm
+lib/Number/Phone/UK/DBM/Deep.pm

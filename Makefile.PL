@@ -4,6 +4,7 @@ WriteMakefile(
 		VERSION      => 1.5601,
 		PREREQ_PM    => {
 			'Scalar::Util'	=> 0,
-                        'DBM::Deep'	=> 0.97, # need to pass DATA filehandle
+			# commented out cos 1.0 is incompatible
+                        # 'DBM::Deep'	=> 0.97, # need to pass DATA filehandle
 		}
 	     );
