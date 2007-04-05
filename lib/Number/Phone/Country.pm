@@ -360,11 +360,9 @@ So that's about once a month then.  I'll do my best to keep it up to date.
 
 =head1 WARNING
 
-Be aware that the ISO 3166 country code for Yugoslavia has changed.  It
-used to be YU, and is now CS.
-
-The pesky Yugoslavs keep changing their minds.  They've changed again to
-RS and ME, with exciting new IDD code changes to go with it.  Yay.
+The Yugoslavs keep changing their minds about what country they want to be
+and what their ISO 3166 code and IDD prefix should be.  YU? CS? RS? ME?
+God knows.
 
 =head1 AUTHOR
 
@@ -378,7 +376,7 @@ Thanks to Shraga Bor-Sood for the updates in version 1.4.
 
 Copyright 2003 by MaxMind LLC
 
-Copyright 2004, 2005, 2006 David Cantrell
+Copyright 2004 - 2007 David Cantrell
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
