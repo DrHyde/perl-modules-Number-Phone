@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..50\n"; }
+BEGIN { $| = 1; print "1..53\n"; }
 
 my $test = 0;
 
@@ -131,3 +131,11 @@ print 'ok '.(++$test)." geo numbers have correct location\n";
 $number = Number::Phone->new('+447979866975');
 print 'not ' if(defined($number->location()));
 print 'ok '.(++$test)." non-geo numbers have no location\n";
+
+$number = Number::Phone->new('+443031231234');
+print 'not ' unless($number->operator() eq 'BT');
+print 'ok '.(++$test)." 03 numbers have right operator\n";
+print 'not ' unless(join(',', sort { $a cmp $b } $number->type()) eq 'is_allocated,is_valid');
+print 'ok '.(++$test)." 03 numbers have right type\n";
+print 'not ' unless($number->format() eq '+44 3031231234');
+print 'ok '.(++$test)." 03 numbers are formatted right\n";

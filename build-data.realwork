@@ -8,6 +8,7 @@
 #
 # 1: geographic
 # 2: geographic
+# 3: non-geographic
 # 500: free (grandfathered)
 # 55: corporate
 # 56: location-independent electronic comms (voip)
@@ -72,7 +73,7 @@ while(my $line = <SABC>) {
     my @fields = $csv->fields();
     next if($fields[3] =~ /(unassigned|not to be used|expansion$)/i || $fields[2] eq 'Not Designated');
 
-    push @geo_prefices, $fields[0] if($fields[0] =~ /^[1234]/);
+    push @geo_prefices, $fields[0] if($fields[0] =~ /^[12]/);
 
     # if($fields[3] =~ /(Emergency Services|Internet for Schools|Internet Services|(Internal|Inbound) Routing|Broadband Services)/i) {
     #     push @network_svc_prefices, $fields[0]
@@ -100,6 +101,21 @@ while(my $line = <S1>) {
     push @telco_length_data, [$retard, $telco, $format];
 }
 close(S1);
+open(S3, 's3_code.txt') || die("Can't open s3_code.txt\n");
+while(my $line = <S3>) {
+    $line =~ s/£/UKP/g;
+    $csv->parse($line) || die("Bad CSV line in s3_code.txt\n\n$line\n\n");
+    my @fields = $csv->fields();
+    next if($fields[2] ne 'Allocated');
+    
+    my $retard = join('',@fields[0,1]);
+    my $telco = $fields[4];
+    my $format = '10 digit numbers';
+
+    push @telco_length_data, [$retard, $telco, $format];
+
+}
+close(S3);
 open(S8, 's8_code.txt') || die("Can't open s8_code.txt\n");
 while(my $line = <S8>) {
     $line =~ s/£/UKP/g;
@@ -126,41 +142,6 @@ while(my $line = <S8>) {
     push @telco_length_data, [$retard, $telco, $format];
 }
 close(S8);
-# open(S1F, 's1f_code.txt') || die("Can't open s1f_code.txt\n");
-# while(my $line = <S1F>) {
-#     $line =~ s/£/UKP/g;
-#     $csv->parse($line) || die("Bad CSV line in s1f_code.txt\n\n$line\n\n");
-#     my @fields = $csv->fields();
-#     next if($fields[3] ne 'Allocated');
-#     
-#     my $retard = join('',@fields[0..2]);
-#     my $telco = $fields[5];
-#     my $format = $fields[6];
-# 
-#     push @telco_length_data, [$retard, $telco, $format];
-# }
-# close(S1F);
-# open(S8F, 's8f_code.txt') || die("Can't open s8f_code.txt\n");
-# while(my $line = <S8F>) {
-#     $line =~ s/£/UKP/g;
-#     $csv->parse($line) || die("Bad CSV line in s8f_code.txt\n\n$line\n\n");
-#     my @fields = $csv->fields();
-#     next if($fields[3] !~ /^Allocated( for Migration only)?$/);
-#     
-#     my $retard = join('',@fields[0..2]);
-#     my $telco = $fields[5];
-#     my $format = $fields[6];
-#     my $service = $fields[7];
-# 
-#     if($retard =~ /^80/) { push @free_prefices, $retard }
-#      elsif($retard eq '500') { push @free_prefices, $retard }
-#      elsif($service  =~ /^(PRS|Special Services)/i) {
-#         push @special_prefices, $fields[0];
-#     }
-# 
-#     push @telco_length_data, [$retard, $telco, $format];
-# }
-# close(S8F);
 open(S5, 's5_code.txt') || die("Can't open s5_code.txt\n");
 while(my $line = <S5>) {
     $line =~ s/£/UKP/g;

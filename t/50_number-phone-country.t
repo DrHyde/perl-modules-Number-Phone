@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 48;
+use Test::More tests => 47;
 
 use Number::Phone::Country;
 
@@ -36,10 +36,9 @@ ok(phone2country('+6841234567') ne 'AS', "+684 *not* identified as AS");
 }
 
 # FIXME - test all countries, in ASCIIbetical IDD/area order
-ok(phone2country("+269 20 8827") eq "YT",      "+269 20   Mayotte (mobile)");
-ok(phone2country("+269 60 8827") eq "YT",      "+269 60   Mayotte (land)");
-ok(phone2country("+269 331 079") eq "KM",      "+269 331  Comores (mobile)");
-ok(phone2country("+269 731 079") eq "KM",      "+269 731  Comores (land)");
+ok(phone2country("+262 269112345") eq "YT",      "Mayotte");
+ok(phone2country("+262 312345678")     eq "RE",      "Reunion");
+ok(phone2country("+269 331 079") eq "KM",      "Comores");
 ok(phone2country('+34123412345') eq 'ES',      "+34       Spain");
 ok(phone2country('+35012345') eq 'GI',         "+350      Gibraltar");
 ok(phone2country("+351-21-8463452") eq "PT",   "+351      Portugal");

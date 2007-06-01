@@ -1,6 +1,7 @@
-2007-XX-XX      XXXX    Number::Phone::Country updated to reflect KM/YT split
+2007-06-01      1.58    Number::Phone::Country updated to reflect KM/YT split
                           Mayotte moved into parts of +262, so now shares with
-			  Reunion instead of Comoros
+                          Reunion instead of Comoros
+                        New UK allocations (in particular 03 range)
 2007-03-13      1.57    New UK allocations;
                         Bundle DBM::Deep cos old version is incompatible
 2007-02-24	1.5601	New UK allocations
