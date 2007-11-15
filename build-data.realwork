@@ -26,6 +26,7 @@
 # 820: internet for schools
 # 84: special
 # 87: special
+# 90: special
 # 91: special
 # 92: special
 # 98: special
@@ -220,15 +221,22 @@ my %telco_format_cache = ();
 my %telco_and_length = ();
 foreach my $datum (@telco_length_data) {
     my($retard, $telco, $format) = @{$datum};
-    $format = '0+10' if($format eq '(0)+10' || $format =~ /^10 digit number/i);
-    $format = '0+7' if($format =~ /^7 digit number/i);
-    $format = '0+9' if($format =~ /^9 digit number/i);
-    $format = '?' if($format eq 'RTO');
+    if($format eq '(0)+10' || $format =~ /^10 digit number/i) {
+        $format = '0+10';
+    } elsif($format =~ /^7 digit number/i) {
+        $format = '0+7';
+    } elsif($format =~ /^9 digit number/i) {
+        $format = '0+9';
+    } elsif($format eq 'RTO') {
+        $format = '?';
+    } else {
+        warn "Unknown format: $format\n";
+    }
 
     my $cache_key = md5_base64($telco.'_'.$format);
     $telco_format_cache{$cache_key} = {
         telco => $telco,
-	format => $format
+        format => $format
     };
 
     $telco_and_length{$retard} = $cache_key;
