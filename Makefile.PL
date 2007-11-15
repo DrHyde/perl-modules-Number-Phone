@@ -1,7 +1,7 @@
 use ExtUtils::MakeMaker;
 WriteMakefile(
                 NAME         => 'Number::Phone',
-                VERSION      => 1.58,
+                VERSION      => 1.581,
                 PREREQ_PM    => {
                         'Scalar::Util'  => 0,
                         # commented out cos 1.0 is incompatible

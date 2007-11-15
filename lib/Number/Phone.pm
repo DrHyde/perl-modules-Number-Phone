@@ -6,7 +6,7 @@ use Scalar::Util 'blessed';
 
 use Number::Phone::Country qw(noexport uk);
 
-our $VERSION = 1.58;
+our $VERSION = 1.581;
 our %subclasses = ();
 
 my @is_methods = qw(
@@ -385,6 +385,6 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2004
+Copyright 2004 - 2007
 
 =cut

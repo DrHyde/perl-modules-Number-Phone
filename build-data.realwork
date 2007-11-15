@@ -221,7 +221,7 @@ my %telco_format_cache = ();
 my %telco_and_length = ();
 foreach my $datum (@telco_length_data) {
     my($retard, $telco, $format) = @{$datum};
-    if($format eq '(0)+10' || $format =~ /^10 digit number/i) {
+    if($format eq 'N/A' || $format eq '(0)+10' || $format =~ /^10 digit number/i) {
         $format = '0+10';
     } elsif($format =~ /^7 digit number/i) {
         $format = '0+7';
@@ -229,8 +229,19 @@ foreach my $datum (@telco_length_data) {
         $format = '0+9';
     } elsif($format eq 'RTO') {
         $format = '?';
-    } else {
-        warn "Unknown format: $format\n";
+    } elsif($format eq '') {
+        warn "Empty format: $format (r: $retard; t: $telco)\n"
+            if($retard !~ /^[789]/);
+    } elsif(
+        $format ne '3+7' &&
+        $format ne '4+6' &&
+        $format ne '4+5' &&
+        $format ne '5+5' &&
+        $format ne '2+8' &&
+        $format ne '2+8' &&
+        1 == 1
+    ) {
+        warn "Unknown format: $format (r: $retard; t: $telco)\n";
     }
 
     my $cache_key = md5_base64($telco.'_'.$format);

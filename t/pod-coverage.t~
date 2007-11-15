@@ -1,4 +1,4 @@
-# $Id: pod-coverage.t,v 1.1 2007/07/30 12:49:38 drhyde Exp $
+# $Id: pod-coverage.t~,v 1.1 2007/11/15 18:16:27 drhyde Exp $
 use strict;
 
 $^W=1;

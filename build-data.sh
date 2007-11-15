@@ -9,5 +9,5 @@ unzip codelist.zip
 perl build-data.realwork
 cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm
 
-rm codelist.zip s[0123456789]*.txt sabc.txt readme.txt Data.pm temp.db
+rm codelist.zip s[0123456789]*.txt sabc.txt Data.pm temp.db
 

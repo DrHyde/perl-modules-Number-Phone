@@ -318,10 +318,8 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2004 - 2006
+Copyright 2004 - 2007
 
 =cut
 
 1;
-
-__DATA__
