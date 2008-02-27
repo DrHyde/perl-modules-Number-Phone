@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..53\n"; }
+BEGIN { $| = 1; print "1..56\n"; }
 
 my $test = 0;
 
@@ -139,3 +139,17 @@ print 'not ' unless(join(',', sort { $a cmp $b } $number->type()) eq 'is_allocat
 print 'ok '.(++$test)." 03 numbers have right type\n";
 print 'not ' unless($number->format() eq '+44 3031231234');
 print 'ok '.(++$test)." 03 numbers are formatted right\n";
+
+# Unknown format: 4+4 (r: 169772; t: BT)
+# Unknown format: 4+4 (r: 169773; t: BT)
+# Unknown format: Mixed 4+5 & 4+6 (r: 176888; t: BT)
+
+print 'not ' unless(Number::Phone->new('+4416977200')->format() eq
+    '+44 1697 7200');
+print 'ok '.(++$test)." 4+4 format works\n";
+print 'not ' unless(Number::Phone->new('+44176888000')->format() eq
+    '+44 1768 88000');
+print 'ok '.(++$test)." 4+5 (mixed) format works\n";
+print 'not ' unless(Number::Phone->new('+441768881000')->format() eq
+    '+44 1768 881000');
+print 'ok '.(++$test)." 4+6 (mixed) format works\n";

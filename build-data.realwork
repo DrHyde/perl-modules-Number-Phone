@@ -107,10 +107,10 @@ while(my $line = <S3>) {
     $line =~ s/£/UKP/g;
     $csv->parse($line) || die("Bad CSV line in s3_code.txt\n\n$line\n\n");
     my @fields = $csv->fields();
-    next if($fields[2] ne 'Allocated');
+    next if($fields[3] ne 'Allocated');
     
-    my $retard = join('',@fields[0,1]);
-    my $telco = $fields[4];
+    my $retard = join('',@fields[0 .. 2]);
+    my $telco = $fields[5];
     my $format = '10 digit numbers';
 
     push @telco_length_data, [$retard, $telco, $format];
@@ -232,14 +232,17 @@ foreach my $datum (@telco_length_data) {
     } elsif($format eq '') {
         warn "Empty format: $format (r: $retard; t: $telco)\n"
             if($retard !~ /^[789]/);
+    } elsif($format eq 'Mixed 4+5 & 4+6') {
+        $format = '4+5 mixed';
     } elsif(
         $format ne '3+7' &&
+        $format ne '4+4' &&
         $format ne '4+6' &&
         $format ne '4+5' &&
         $format ne '5+5' &&
         $format ne '2+8' &&
         $format ne '2+8' &&
-        1 == 1
+        $format ne 'Mixed 4+5 & 4+6'
     ) {
         warn "Unknown format: $format (r: $retard; t: $telco)\n";
     }

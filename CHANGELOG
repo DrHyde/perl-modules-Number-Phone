@@ -1,4 +1,4 @@
-XXXX-XX-XX      1.581   Added dependency on perl 5.006 (DBM::Deep uses 'our');
+2008-02-27      1.581   Added dependency on perl 5.006 (DBM::Deep uses 'our');
                         Removed docs from N::P::UK::DBM::Deep and
                           replaced with note about its status;
                         New UK allocations;
