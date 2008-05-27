@@ -124,7 +124,7 @@ while(my $line = <S8>) {
     $line =~ s/,$/,""/;
     $csv->parse($line) || die("Bad CSV line in s8_code.txt\n\n$line\n\n");
     my @fields = $csv->fields();
-    next if($fields[3] !~ /^Allocated( for Migration only)?$/); #  || $fields[5] eq 'mixed operators');
+    next if($fields[3] !~ /^Allocated( \(Closed Range\)| for Migration only)?$/); #  || $fields[5] eq 'mixed operators');
     
     my $retard = join('',@fields[0,1,2]);
     my $telco = $fields[6];
@@ -169,7 +169,7 @@ while(my $line = <S7>) {
     
     (my $retard = join('',@fields[0, 1])) =~ s/\D//g; # there's spaces in OFCOM's data!
     my $telco = $fields[4];
-    my $format = $fields[6];
+    my $format = $fields[6] || '10 digit numbers';
 
     push @telco_length_data, [$retard, $telco, $format];
     if($fields[5] eq 'Mobile services') {

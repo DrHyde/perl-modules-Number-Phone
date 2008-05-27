@@ -10,8 +10,6 @@ use Number::Phone::Country qw(noexport);
 
 our $VERSION = 1.1;
 
-$Number::Phone::subclasses{country_code()} = __PACKAGE__;
-
 my $cache = {};
 
 =head1 NAME

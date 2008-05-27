@@ -47,3 +47,4 @@ lib/Number/Phone/UK/Exchanges.pm
 lib/Number/Phone/UK/DBM/Deep/Array.pm
 lib/Number/Phone/UK/DBM/Deep/Hash.pm
 lib/Number/Phone/UK/DBM/Deep.pm
+t/30_find-right-subclass.t

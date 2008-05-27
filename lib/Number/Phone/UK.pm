@@ -9,8 +9,6 @@ use base 'Number::Phone';
 
 our $VERSION = 1.551;
 
-$Number::Phone::subclasses{country_code()} = __PACKAGE__;
-
 my $cache = {};
 
 =head1 NAME

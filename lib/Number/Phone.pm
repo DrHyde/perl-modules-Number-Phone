@@ -6,8 +6,7 @@ use Scalar::Util 'blessed';
 
 use Number::Phone::Country qw(noexport uk);
 
-our $VERSION = 1.581;
-our %subclasses = ();
+our $VERSION = 1.6;
 
 my @is_methods = qw(
     is_valid is_allocated is_in_use
@@ -21,13 +20,13 @@ foreach my $method (
     @is_methods, qw(
         country_code regulator areacode areaname
         subscriber operator translates_to
-	format location
+        format location
     )
 ) {
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
-	return undef if(blessed($self) && $self->isa(__PACKAGE__));
+        return undef if(blessed($self) && $self->isa(__PACKAGE__));
         my $pkg = __PACKAGE__;
         $self = shift if(
             $self eq __PACKAGE__ ||
@@ -35,8 +34,8 @@ foreach my $method (
         );
         $self = __PACKAGE__->new($self)
             unless(blessed($self) && $self->isa(__PACKAGE__));
-	return $self->$method() if($self);
-	undef;
+        return $self->$method() if($self);
+        undef;
     }
 }
 
@@ -47,19 +46,19 @@ sub type {
     no strict 'refs';
 
     unless(blessed($parm) && $parm->isa(__PACKAGE__)) {
-	if(
+        if(
             $parm eq __PACKAGE__ ||
-	    substr($parm, 0, 2 + length(__PACKAGE__)) eq __PACKAGE__.'::'
-	) {
+            substr($parm, 0, 2 + length(__PACKAGE__)) eq __PACKAGE__.'::'
+        ) {
             $class = $parm;
-	    $parm = shift;
-	}
+            $parm = shift;
+        }
         $parm = $class->new($parm);
     }
 
     my $rval = $parm ?
         [grep { $parm->$_() } @is_methods] :
-	undef;
+        undef;
     wantarray() ? @{$rval} : $rval;
 }
 
@@ -84,9 +83,9 @@ In a sub-class ...
     package Number::Phone::UK;
     use base 'Number::Phone';
 
-    $Number::Phone::subclasses{country_code()} = __PACKAGE__;
-
 and to magically use the right subclass ...
+
+    use Number::Phone;
 
     $daves_phone = Number::Phone->new('+442087712924');
     $daves_other_phone = Number::Phone->new('+44 7979 866 975');
@@ -94,6 +93,11 @@ and to magically use the right subclass ...
     if($daves_phone->is_mobile()) {
         send_rude_SMS();
     }
+
+in the example, the +44 is recognised as the country code for the UK,
+so the appropriate country-specific module is loaded if available.
+If you pass in a bogus country code or one for a country for which
+no supporting module is available, the constructor will return undef.
 
 =head1 IMPORTANT NOTE WHAT YOU SHOULD READ
 
@@ -110,18 +114,20 @@ sub new {
         unless($number);
     $number =~ s/\D//g;
 
-    foreach my $retard (
-        map { substr($number, 0, $_) }
-	reverse 1 .. length($number)
-    ) {
-        return $subclasses{$retard}->new("+$number") if($subclasses{$retard});
-    }
-    # $number = '+'.$number;
-    # my $country = Number::Phone::Country::phone2country($number);
-    # return undef unless($country);
-    # eval "use Number::Phone::$country";
-    # return undef if($@);
-    # return "Number::Phone::$country"->new($number);
+    # foreach my $retard (
+    #     map { substr($number, 0, $_) }
+    #     reverse 1 .. length($number)
+    # ) {
+    #     return $subclasses{$retard}->new("+$number") if($subclasses{$retard});
+   #  }
+
+    $number = "+$number" unless($number =~ /^\+/);
+    my $country = Number::Phone::Country::phone2country($number);
+    return undef unless($country);
+    $country = "NANP" if($number =~ /^\+1/);
+    eval "use Number::Phone::$country";
+    return undef if($@);
+    return "Number::Phone::$country"->new($number);
 }
 
 =head1 METHODS
@@ -330,19 +336,10 @@ If a country code is specified, and a subclass for that country is available,
 the phone number is passed to its constructor unchanged.
 
 If only one parameter is passed, then we try to figure out which is the right
-country subclass to use thus:
-
-=over 4
-
-If the phone number begins with a + sign we take the following few digits
-as a country code, look up the country that code is assigned to, and if
-the module exists, call its constructor with the supplied phone number.
-
-Otherwise, we try the constructors for all registered subclasses.  If one
-of them returns an object, we return that.  However, if none of them succeed,
-or if 2 or more succeed, this is a failure.
-
-=back
+country subclass to use by pre-pending a + sign to the number if
+there isn't one, and looking the country up using
+Number::Phone::Country.  That gives us a two letter country code that
+is used to try to load the right module.
 
 The constructor returns undef if it can not figure out which subclass to
 use.
@@ -356,18 +353,22 @@ The constructor should take a single parameter, a phone number, and should
 validate that.  If the number is valid (use your C<is_valid()> method!) then
 you can return a blessed object.  Otherwise you should return undef.
 
-To register your subclass so that Number::Phone can automagically use it when
-appropriate, do thus:
-
-    $Number::Phone::subclasses{country_code()} = __PACKAGE__;
-
-as in the SYNOPSIS above.
+The constructor *must* be capable of accepting a number with the
++ sign and the country's numeric code attached, but should also accept
+numbers in the preferred local format (eg 01234 567890 in the UK, which
+is the same number as +44 1234 567890) so that users can go straight
+to your class without going through Number::Phone's magic country
+detector.
 
 Subclasses' names should be Number::Phone::XX, where XX is the two letter
 ISO code for the country, in upper case.  So, for example, France would be
 FR and Ireland would be IE.  As usual, the UK is an exception, using UK
 instead of the ISO-mandated GB.  NANP countries are also an exception,
 going like Number::Phone::NANP::XX.
+
+Note that subclasses no longer need to register themselves with
+Number::Phone.  In fact, registration is now *ignored* as the magic
+country detector now works properly.
 
 =head1 BUGS/FEEDBACK
 
@@ -385,6 +386,6 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2004 - 2007
+Copyright 2004 - 2008
 
 =cut

@@ -141,8 +141,11 @@ my %idd_codes = (
     8818    => 'Globalstar', # |
     8819    => 'Globalstar', # /
     882     => 'InternationalNetworks',
+    # 979 is used for testing when we fail to load a module when we
+    # know what "country" it is
     979     => 'InternationalPremiumRate',
     991     => 'ITPCS',
+    # 999 deliberately NYI for testing
 );
 
 sub phone2country {
