@@ -1,3 +1,9 @@
+$ perl -Ilib -MData::Dumper -MNumber::Phone::UK -e 'print Dumper(Number::Phone->new("+441234567890"))'
+$VAR1 = bless( do{\(my $o = '+441234567890')}, 'Number::Phone::UK' );
+
+$ perl -Ilib -MData::Dumper -MNumber::Phone -e 'print Dumper(Number::Phone->new("+441234567890"))'
+$VAR1 = '';
+
 better OFCOM parser
 more systematic UK tests
 details for NANP-ish countries
