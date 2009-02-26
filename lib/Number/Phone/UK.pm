@@ -7,7 +7,7 @@ use Number::Phone::UK::Data;
 
 use base 'Number::Phone';
 
-our $VERSION = 1.551;
+our $VERSION = 1.552;
 
 my $cache = {};
 
@@ -70,7 +70,6 @@ sub is_valid {
     $cache->{$number}->{is_valid} = (length($parsed_number) > 6 && length($parsed_number) < 11) ? 1 : 0;
     return 0 unless($cache->{$number}->{is_valid});
 
-    # die(Dumper($Number::Phone::UK::Data::db->{geo_prefices}));
     $cache->{$number}->{is_fixed_line} =
         $cache->{$number}->{is_geographic} =
 	grep { $Number::Phone::UK::Data::db->{geo_prefices}->{$_} } @retards;
@@ -115,8 +114,6 @@ sub is_valid {
 	    }
 	}
     }
-    # use Data::Dumper;
-    # print Dumper($Number::Phone::UK::Data::db);
     return $cache->{$number}->{is_valid};
 }
 
@@ -284,9 +281,11 @@ sub format {
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :
         __PACKAGE__->new($self);
-    return '+'.country_code().' '.
-        ($self->areacode() ? $self->areacode().' ' : '').
-	$self->subscriber();
+    return '+'.country_code().' '.(
+	$self->areacode()      ? $self->areacode().' '.$self->subscriber() :
+	!$self->is_allocated() ? substr(${$self}, 1 + length(country_code()))
+	                       : $self->subscriber()
+    );
 }
 
 =item country

@@ -225,7 +225,7 @@ foreach my $datum (@telco_length_data) {
         $format = '0+10';
     } elsif($format =~ /^7 digit number/i) {
         $format = '0+7';
-    } elsif($format =~ /^9 digit number/i) {
+    } elsif($format =~ /^9 +digit number/i) {
         $format = '0+9';
     } elsif($format eq 'RTO') {
         $format = '?';

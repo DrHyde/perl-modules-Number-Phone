@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..59\n"; }
+BEGIN { $| = 1; print "1..61\n"; }
 
 my $test = 0;
 
@@ -98,8 +98,9 @@ print 'not ' unless($number->is_network_service());
 print 'ok '.(++$test)." network service numbers correctly identified\n";
 
 $number = Number::Phone->new('+448450033845');
-print 'not ' unless($number->operator() eq 'Interweb Design Ltd');
+print 'not ' unless($number->operator() eq 'Edge Telecom Ltd');
 print 'ok '.(++$test)." operators correctly identified\n";
+print '# '.$number->operator()."\n";
 
 print 'not ' if(defined($number->areaname()));
 print 'ok '.(++$test)." good, no area name for non-geographic numbers\n";
@@ -161,3 +162,13 @@ print 'not ' unless($number->operator() eq 'Vodafone Ltd');
 print 'ok '.(++$test)." 075 mobiles have right operator\n";
 print 'not ' unless($number->format() eq '+44 7500000000');
 print 'ok '.(++$test)." 075 mobiles have right operator\n";
+
+print "# bugfixes\n";
+
+$number = Number::Phone->new('+441954123456');
+print 'not ' unless($number->format() eq '+44 1954123456');
+print 'ok '.(++$test)." unallocated numbers format OK\n";
+
+$number = Number::Phone->new('+441954202020');
+print 'not ' unless($number->format() eq '+44 1954 202020');
+print 'ok '.(++$test)." allocated numbers format OK\n";
