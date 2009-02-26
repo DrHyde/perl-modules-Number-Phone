@@ -2,5 +2,4 @@ better OFCOM parser
 more systematic UK tests
 details for NANP-ish countries
 details for non-geo NANP numbers
-more tests for N::C
 support phone extensions - eg +44 1234 567890 ext 37

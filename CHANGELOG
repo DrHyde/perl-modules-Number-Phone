@@ -1,7 +1,9 @@
-XXXX-XX-XX      1.7     Fix formatting for valid but unallocated UK numbers;
+2009-02-26      1.7     Fix formatting for valid but unallocated UK numbers;
 			One of the UK telcos whose name we check for in
 			  tests renamed itself;
                         New UK allocations;
+			Added country-to-code and national/international
+			  prefix data to N::P::C, thanks to Michael Schout
 
 2008-05-27      1.6     Magic country detection now works (thanks to
                           Jos Boumans for reporting the bug);
