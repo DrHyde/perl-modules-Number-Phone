@@ -1,3 +1,6 @@
+2009-03-04      1.7001  Kill warnings about GE being deprecated;
+                        Add missing dep on Digest::MD5
+
 2009-02-26      1.7     Fix formatting for valid but unallocated UK numbers;
 			One of the UK telcos whose name we check for in
 			  tests renamed itself;
