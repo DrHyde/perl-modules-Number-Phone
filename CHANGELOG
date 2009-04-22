@@ -1,3 +1,8 @@
+2009-04-22      1.7002  Fix minor bug (...::UK constructor returning 0
+                          instead of undef for (some?) invalid numbers,
+			  reported by Tomasz Chomiuk;
+			New UK allocations
+
 2009-03-04      1.7001  Kill warnings about GE being deprecated;
                         Add missing dep on Digest::MD5
 

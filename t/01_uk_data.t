@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..61\n"; }
+BEGIN { $| = 1; print "1..63\n"; }
 
 my $test = 0;
 
@@ -172,3 +172,11 @@ print 'ok '.(++$test)." unallocated numbers format OK\n";
 $number = Number::Phone->new('+441954202020');
 print 'not ' unless($number->format() eq '+44 1954 202020');
 print 'ok '.(++$test)." allocated numbers format OK\n";
+
+$number = Number::Phone::UK->new('0844000000');
+print 'not ' if(defined($number));
+print 'ok '.(++$test)." 0844 000 000 is invalid (too short)\n";
+
+$number = Number::Phone->new('+44844000000');
+print 'not ' if(defined($number));
+print 'ok '.(++$test)." +44 844 000 000 is invalid (too short)\n";

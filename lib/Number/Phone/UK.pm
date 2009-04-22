@@ -7,7 +7,7 @@ use Number::Phone::UK::Data;
 
 use base 'Number::Phone';
 
-our $VERSION = 1.552;
+our $VERSION = 1.553;
 
 my $cache = {};
 
@@ -28,7 +28,9 @@ sub new {
     my $number = shift;
     die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
-    return bless(\$number, $class) if(is_valid($number));
+    if(is_valid($number)) {
+        return bless(\$number, $class);
+    } else { return undef; }
 }
 
 =head1 METHODS
