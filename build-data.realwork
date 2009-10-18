@@ -76,14 +76,9 @@ while(my $line = <SABC>) {
 
     push @geo_prefices, $fields[0] if($fields[0] =~ /^[12]/);
 
-    # if($fields[3] =~ /(Emergency Services|Internet for Schools|Internet Services|(Internal|Inbound) Routing|Broadband Services)/i) {
-    #     push @network_svc_prefices, $fields[0]
-    # }
     if($fields[2] eq 'Designated' && $fields[3] !~ /^Geographic - unassigned/) {
         $areanames{$fields[0]} = $fields[3];
     }
-
-    # FIXME - need to deal with 81NN onwards
 }
 close(SABC);
 
@@ -98,6 +93,12 @@ while(my $line = <S1>) {
     my $retard = join('',@fields[0,1,2]);
     my $telco = $fields[5];
     my $format = $fields[6];
+
+    # ick, temporary fix for OFCOM brokenness
+    if($format eq "F-Digit '6'") {
+        $format = '4+6';
+        warn("Using temporary fix for OFCOM brokenness re F-digit\n");
+    }
 
     push @telco_length_data, [$retard, $telco, $format];
 }
@@ -124,7 +125,7 @@ while(my $line = <S8>) {
     $line =~ s/,$/,""/;
     $csv->parse($line) || die("Bad CSV line in s8_code.txt\n\n$line\n\n");
     my @fields = $csv->fields();
-    next if($fields[3] !~ /^Allocated( \(Closed Range\)| for Migration only)?$/); #  || $fields[5] eq 'mixed operators');
+    next if($fields[3] !~ /^Allocated( \(Closed Range\)| for Migration only)?$/);
     
     my $retard = join('',@fields[0,1,2]);
     my $telco = $fields[6];

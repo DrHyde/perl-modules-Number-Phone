@@ -49,3 +49,4 @@ lib/Number/Phone/UK/DBM/Deep/Hash.pm
 lib/Number/Phone/UK/DBM/Deep.pm
 t/30_find-right-subclass.t
 t/54_number-phone-country-prefix.t
+t/900_bugfix-rt48581.t

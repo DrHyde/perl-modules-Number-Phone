@@ -1,17 +1,20 @@
+2009-10-18      1.7003  Minor bugfix, see https://rt.cpan.org/ ticket 48581;
+                        New UK allocations
+
 2009-04-22      1.7002  Fix minor bug (...::UK constructor returning 0
                           instead of undef for (some?) invalid numbers,
-			  reported by Tomasz Chomiuk;
-			New UK allocations
+                          reported by Tomasz Chomiuk;
+                        New UK allocations
 
 2009-03-04      1.7001  Kill warnings about GE being deprecated;
                         Add missing dep on Digest::MD5
 
 2009-02-26      1.7     Fix formatting for valid but unallocated UK numbers;
-			One of the UK telcos whose name we check for in
-			  tests renamed itself;
+                        One of the UK telcos whose name we check for in
+                          tests renamed itself;
                         New UK allocations;
-			Added country-to-code and national/international
-			  prefix data to N::P::C, thanks to Michael Schout
+                        Added country-to-code and national/international
+                          prefix data to N::P::C, thanks to Michael Schout
 
 2008-05-27      1.6     Magic country detection now works (thanks to
                           Jos Boumans for reporting the bug);
@@ -28,8 +31,8 @@
                         New UK allocations (in particular 03 range)
 2007-03-13      1.57    New UK allocations;
                         Bundle DBM::Deep cos old version is incompatible
-2007-02-24	1.5601	New UK allocations
-2006-12-08	1.56	New UK allocations; 
+2007-02-24      1.5601  New UK allocations
+2006-12-08      1.56    New UK allocations; 
                         Updated OFCOM parser;
                         Loads of Number::Phone::Country updates -
                           +1: NANP overlays: 226, 438, 762, 769, 829;
@@ -45,7 +48,7 @@
                           +881 7: Iridium
                           +881 8: Globalstar
 2006-08-25      1.55    Damnit, 1.54's ...UK->location() was wrong
-2006-08-24	1.54	And again!
+2006-08-24      1.54    And again!
 2006-08-23      1.53    Doh!  How we loaded location data was buggy
 2006-08-23      1.52    Documentation patches;
                         Corrected CHANGELOG entry for v1.51;
