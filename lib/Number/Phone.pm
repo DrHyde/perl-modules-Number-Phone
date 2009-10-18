@@ -99,27 +99,16 @@ so the appropriate country-specific module is loaded if available.
 If you pass in a bogus country code or one for a country for which
 no supporting module is available, the constructor will return undef.
 
-=head1 IMPORTANT NOTE WHAT YOU SHOULD READ
-
-All previous versions had a dependency on the excellent DBM::Deep module.
-Unfortunately its file format changed when it hit version 1.0.  Therefore
-this release has an old version of DBM::Deep bundled with it, which you
-may use in parallel with the new version.
-
 =cut
 
 sub new {
-    my($class, $number) = @_;
+    my $class = shift;
+    my $number = join('', grep { defined } @_[0, 1]);
     die("Need to specify a number for ".__PACKAGE__."->new()\n")
         unless($number);
+    die("Number::Phone->new(): too many params\n")
+        if(exists($_[2]));
     $number =~ s/\D//g;
-
-    # foreach my $retard (
-    #     map { substr($number, 0, $_) }
-    #     reverse 1 .. length($number)
-    # ) {
-    #     return $subclasses{$retard}->new("+$number") if($subclasses{$retard});
-   #  }
 
     $number = "+$number" unless($number =~ /^\+/);
     my $country = Number::Phone::Country::phone2country($number);
