@@ -1,3 +1,7 @@
+2010-02-17      1.7004  New UK allocations;
+                        UK geographic numbers are no longer assumed to
+                          be fixed lines - damn those VoIP providers!
+
 2009-10-18      1.7003  Minor bugfix, see https://rt.cpan.org/ ticket 48581;
                         New UK allocations
 

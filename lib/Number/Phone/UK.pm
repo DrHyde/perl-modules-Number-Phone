@@ -7,7 +7,7 @@ use Number::Phone::UK::Data;
 
 use base 'Number::Phone';
 
-our $VERSION = 1.553;
+our $VERSION = 1.554;
 
 my $cache = {};
 
@@ -72,8 +72,7 @@ sub is_valid {
     $cache->{$number}->{is_valid} = (length($parsed_number) > 6 && length($parsed_number) < 11) ? 1 : 0;
     return 0 unless($cache->{$number}->{is_valid});
 
-    $cache->{$number}->{is_fixed_line} =
-        $cache->{$number}->{is_geographic} =
+    $cache->{$number}->{is_geographic} =
 	grep { $Number::Phone::UK::Data::db->{geo_prefices}->{$_} } @retards;
     $cache->{$number}->{is_network_service} =
 	grep { $Number::Phone::UK::Data::db->{network_svc_prefices}->{$_} } @retards;
@@ -85,8 +84,11 @@ sub is_valid {
 	grep { $Number::Phone::UK::Data::db->{personal_prefices}->{$_} } @retards;
     $cache->{$number}->{is_pager} =
 	grep { $Number::Phone::UK::Data::db->{pager_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_mobile} =
-	grep { $Number::Phone::UK::Data::db->{mobile_prefices}->{$_} } @retards;
+    $cache->{$number}->{is_fixed_line} = 0 if(
+      $cache->{$number}->{is_mobile} =
+	grep { $Number::Phone::UK::Data::db->{mobile_prefices}->{$_} } @retards
+    );
+
     $cache->{$number}->{is_specialrate} =
 	grep { $Number::Phone::UK::Data::db->{special_prefices}->{$_} } @retards;
     $cache->{$number}->{is_adult} =
@@ -160,6 +162,9 @@ The number refers to a geographic area.
 =item is_fixed_line
 
 The number, when in use, can only refer to a fixed line.
+
+(we can't tell whether a number is a fixed line, but we can tell that
+some are *not*).
 
 =item is_mobile
 

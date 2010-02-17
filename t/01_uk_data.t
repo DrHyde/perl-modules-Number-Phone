@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..63\n"; }
+BEGIN { $| = 1; print "1..65\n"; }
 
 my $test = 0;
 
@@ -27,15 +27,17 @@ print 'not ' unless($number->areacode() eq '20');
 print 'ok '.(++$test)." 2+8 number has correct area code\n";
 print 'not ' unless($number->subscriber() eq '87712924');
 print 'ok '.(++$test)." 2+8 number has correct subscriber number\n";
-foreach my $method (qw(is_allocated is_fixed_line is_geographic is_valid)) {
+foreach my $method (qw(is_allocated is_geographic is_valid)) {
     print 'not ' unless($number->$method());
     print 'ok '.(++$test)." $method works for a London number\n";
 }
-foreach my $method (qw(is_in_use is_mobile is_pager is_ipphone is_isdn is_tollfree is_specialrate is_adult is_personal is_corporate is_government is_international is_network_service is_ipphone)) {
+foreach my $method (qw(is_in_use is_fixed_line is_mobile is_pager is_ipphone is_isdn is_tollfree is_specialrate is_adult is_personal is_corporate is_government is_international is_network_service is_ipphone)) {
     print 'not ' if($number->$method());
     print 'ok '.(++$test)." $method works for a London number\n";
 }
-print 'not ' unless(join(', ', sort $number->type()) eq 'is_allocated, is_fixed_line, is_geographic, is_valid');
+print 'not ' if(defined($number->is_fixed_line()));
+print 'ok '.(++$test)." geographic numbers return undef for is_fixed_line\n";
+print 'not ' unless(join(', ', sort $number->type()) eq 'is_allocated, is_geographic, is_valid');
 print 'ok '.(++$test)." type() works\n";
 
 $number = Number::Phone->new('+448450033845');
@@ -49,6 +51,8 @@ print 'ok '.(++$test)." 0+10 number has correct subscriber number\n";
 $number = Number::Phone->new('+447979866975');
 print 'not ' unless($number->is_mobile());
 print 'ok '.(++$test)." mobiles correctly identified\n";
+print 'not ' unless(defined($number->is_fixed_line()) && !$number->is_fixed_line());
+print 'ok '.(++$test)." mobiles are identified as not fixed lines\n";
 
 $number = Number::Phone->new('+445600123456');
 print 'not ' unless($number->is_ipphone());
@@ -123,7 +127,7 @@ print 'ok '.(++$test)." bad 070 data fixed\n";
 $number = Number::Phone->new('+442030791234'); # new London 020 3 numbers
 print 'not ' unless($number);
 print 'ok '.(++$test)." 0203 numbers are recognised\n";
-print 'not ' unless($number->is_allocated() && $number->is_geographic() && $number->is_fixed_line());
+print 'not ' unless($number->is_allocated() && $number->is_geographic());
 print 'ok '.(++$test)." ... and their type looks OK\n";
 
 $number = Number::Phone->new('+442087712924');
