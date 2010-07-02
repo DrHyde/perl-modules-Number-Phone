@@ -6,7 +6,7 @@ use Scalar::Util 'blessed';
 
 use Number::Phone::Country qw(noexport uk);
 
-our $VERSION = 1.7004;
+our $VERSION = 1.7100;
 
 my @is_methods = qw(
     is_valid is_allocated is_in_use
@@ -89,6 +89,8 @@ and to magically use the right subclass ...
 
     $daves_phone = Number::Phone->new('+442087712924');
     $daves_other_phone = Number::Phone->new('+44 7979 866 975');
+    # alternatively      Number::Phone->new('+44', '7979 866 975');
+    # or                 Number::Phone->new('UK', '07979 866 975');
 
     if($daves_phone->is_mobile()) {
         send_rude_SMS();
@@ -103,7 +105,18 @@ no supporting module is available, the constructor will return undef.
 
 sub new {
     my $class = shift;
-    my $number = join('', grep { defined } @_[0, 1]);
+    my($country, $number) = @_;
+
+    if(!defined($number)) {
+      $number = $country;
+    } elsif($country =~ /[a-z]/i) { # eg 'UK', '12345'
+      $number = '+'.
+                Number::Phone::Country::country_code($country).
+		$number;
+    } else {
+      $number = join('', grep { defined } ($country, $number));
+    }
+
     die("Need to specify a number for ".__PACKAGE__."->new()\n")
         unless($number);
     die("Number::Phone->new(): too many params\n")
@@ -111,7 +124,7 @@ sub new {
     $number =~ s/\D//g;
 
     $number = "+$number" unless($number =~ /^\+/);
-    my $country = Number::Phone::Country::phone2country($number);
+    $country = Number::Phone::Country::phone2country($number);
     return undef unless($country);
     $country = "NANP" if($number =~ /^\+1/);
     eval "use Number::Phone::$country";
@@ -375,6 +388,6 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2004 - 2009
+Copyright 2004 - 2010
 
 =cut

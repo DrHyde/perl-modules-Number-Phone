@@ -1,3 +1,6 @@
+2010-07-02      1.7100  Bugfix for N::P->new('CC', '12345');
+                        New UK allocations
+
 2010-02-17      1.7004  New UK allocations;
                         UK geographic numbers are no longer assumed to
                           be fixed lines - damn those VoIP providers!

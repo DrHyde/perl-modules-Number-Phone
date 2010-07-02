@@ -50,3 +50,4 @@ lib/Number/Phone/UK/DBM/Deep.pm
 t/30_find-right-subclass.t
 t/54_number-phone-country-prefix.t
 t/900_bugfix-rt48581.t
+t/901_bugfix_N-P-New-CC-number.t
