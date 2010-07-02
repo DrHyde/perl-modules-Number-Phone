@@ -239,7 +239,7 @@ foreach my $datum (@telco_length_data) {
         $format ne '2+8' &&
         $format ne '2+8' &&
         $format ne '3+7' &&
-        $format ne '4+4' &&
+        # $format ne '4+4' &&
         $format ne '4+6' &&
         $format ne '4+5' &&
         $format ne '5+4' &&
