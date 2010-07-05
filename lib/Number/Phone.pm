@@ -6,7 +6,7 @@ use Scalar::Util 'blessed';
 
 use Number::Phone::Country qw(noexport uk);
 
-our $VERSION = 1.7100;
+our $VERSION = 1.7101;
 
 my @is_methods = qw(
     is_valid is_allocated is_in_use
@@ -112,7 +112,8 @@ sub new {
     } elsif($country =~ /[a-z]/i) { # eg 'UK', '12345'
       $number = '+'.
                 Number::Phone::Country::country_code($country).
-		$number;
+		$number
+        unless(index($number, '+'.Number::Phone::Country::country_code($country)) == 0);
     } else {
       $number = join('', grep { defined } ($country, $number));
     }
@@ -121,7 +122,7 @@ sub new {
         unless($number);
     die("Number::Phone->new(): too many params\n")
         if(exists($_[2]));
-    $number =~ s/\D//g;
+    $number =~ s/[^+0-9]//g;
 
     $number = "+$number" unless($number =~ /^\+/);
     $country = Number::Phone::Country::phone2country($number);

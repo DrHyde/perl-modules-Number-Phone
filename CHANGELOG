@@ -1,3 +1,5 @@
+2010-07-05      1.7101  Bugfix for N::P->new('CC', '+NN12345');
+
 2010-07-02      1.7100  Bugfix for N::P->new('CC', '12345');
                         New UK allocations
 
