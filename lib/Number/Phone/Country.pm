@@ -2,7 +2,8 @@ package Number::Phone::Country;
 
 use strict;
 
-use vars qw($VERSION);
+# *_codes are global so we can mock in some tests
+use vars qw($VERSION %idd_codes %prefix_codes);
 $VERSION = 1.6001;
 my $use_uk = 0;
 
@@ -20,7 +21,7 @@ sub import {
     }
 }
 
-my %idd_codes = (
+%idd_codes = (
     # 1     => 'NANP',
 
     20      => 'EG', 212     => 'MA', 213     => 'DZ', 216     => 'TN',
@@ -154,7 +155,7 @@ my %idd_codes = (
 # - Country prefix
 # - IDD prefix (for dialling from this country prefix to another)
 # - NDD prefix (for dialling from one area of this country to another)
-my %prefix_codes = (
+%prefix_codes = (
     'AD' => ['376',   '00',  undef], # Andorra
     'AE' => ['971',   '00',    '0'], # United Arab Emirates
     'AF' => [ '93',   '00',    '0'], # Afghanistan
@@ -404,7 +405,7 @@ sub phone2country {
 
 sub phone2country_and_idd {
     my ($phone) = @_;
-    $phone =~ s/[^\d+]//g;
+    $phone =~ s/[^\+?\d+]//g;
     $phone = '+1'.$phone unless(substr($phone, 0, 1) =~ /[1+]/);
     $phone =~ s/\D//g;
 

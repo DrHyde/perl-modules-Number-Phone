@@ -5,6 +5,7 @@ use strict;
 use Scalar::Util 'blessed';
 
 use Number::Phone::Country qw(noexport uk);
+use Number::Phone::StubCountry;
 
 our $VERSION = 1.7101;
 
@@ -129,8 +130,22 @@ sub new {
     return undef unless($country);
     $country = "NANP" if($number =~ /^\+1/);
     eval "use Number::Phone::$country";
-    return undef if($@);
+    return $class->_make_stub_object($number) if($@);
     return "Number::Phone::$country"->new($number);
+}
+
+sub _make_stub_object {
+  my $class = shift;
+  my $number = shift;
+  my $self = {
+    country => 'STUBFORCOUNTRYWITHNOMODULE',
+    country_idd_code => ''.Number::Phone::Country::country_code(Number::Phone::Country::phone2country($number)),
+    country_code => ''.Number::Phone::Country::phone2country($number),
+    number => $number
+  };
+  # use Data::Dumper; local $Data::Dumper::Indent = 1;
+  # print Dumper($self);
+  bless($self, 'Number::Phone::StubCountry');
 }
 
 =head1 METHODS

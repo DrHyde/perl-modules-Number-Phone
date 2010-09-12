@@ -4,18 +4,22 @@ use strict;
 
 use Number::Phone;
 
-use Test::More tests => 6;
+use Test::More tests => 9;
+
+use Number::Phone::Country;
 
 ok(Number::Phone->new("442087712924")->country_code() == 44, "known countries return objects");
 ok(Number::Phone->new("+442087712924")->country_code() == 44, "known countries with a + return objects");
+ok(Number::Phone->new("+442087712924")->format() eq '+44 20 87712924' , "known countries with a + return objects");
+
+# let's break the UK
+$Number::Phone::Country::idd_codes{'44'} = 'MOCK';
+$Number::Phone::Country::prefix_codes{'MOCK'} = ['44',   '00',  undef];
 
 foreach my $prefix ('', '+') {
-  # can't really use a German number here, in case Number::Phone::DE
-  # exists and is installed. Need a mocked country
-  # FIXME
-  my $object = Number::Phone->new($prefix."491774497319");
-  isa_ok($object, 'Number::Phone', "unknown countries return minimal objects".($prefix? " with a +" : ""));
-  ok($object->country_code() == 49, "->country_code works");
+  my $object = Number::Phone->new($prefix."442087712924");
+  isa_ok($object, 'Number::Phone::StubCountry', "unknown countries return minimal objects".($prefix? " with a +" : ""));
+  is($object->country_code(), '44', "->country_code works");
+  is($object->format(), '+44 2087712924', "->format works");
 
-  # FIXME test other stuff like format(). what else?
 }
