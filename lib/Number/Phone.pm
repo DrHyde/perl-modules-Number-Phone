@@ -7,7 +7,7 @@ use Scalar::Util 'blessed';
 use Number::Phone::Country qw(noexport uk);
 use Number::Phone::StubCountry;
 
-our $VERSION = 1.7101;
+our $VERSION = 1.8;
 
 my @is_methods = qw(
     is_valid is_allocated is_in_use
@@ -366,8 +366,11 @@ there isn't one, and looking the country up using
 Number::Phone::Country.  That gives us a two letter country code that
 is used to try to load the right module.
 
-The constructor returns undef if it can not figure out which subclass to
-use.
+The constructor returns undef if it can not figure out what country
+you're talking about, or a minimal object if there's no country-specific
+module available.  Note that in the case of there being no country-specific
+module available this is an incompatible change: previously it would
+return undef.
 
 =back
 
@@ -394,6 +397,11 @@ going like Number::Phone::NANP::XX.
 Note that subclasses no longer need to register themselves with
 Number::Phone.  In fact, registration is now *ignored* as the magic
 country detector now works properly.
+
+=head1 WARNING
+
+There is an incompatible change in version 1.8.  See the SYNOPSIS and
+the documentation for the C<new> method above.
 
 =head1 BUGS/FEEDBACK
 
