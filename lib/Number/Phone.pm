@@ -99,8 +99,15 @@ and to magically use the right subclass ...
 
 in the example, the +44 is recognised as the country code for the UK,
 so the appropriate country-specific module is loaded if available.
-If you pass in a bogus country code or one for a country for which
-no supporting module is available, the constructor will return undef.
+
+If you pass in a bogus country code not recognised by
+Number::Phone::Country, the constructor will return undef.
+
+If you pass in a country code for which
+no supporting module is available, the constructor will return a
+minimal object that knows its country code and how to format a phone
+number, but nothing else.  Note that this is an incompatible change:
+previously it would return undef.
 
 =cut
 

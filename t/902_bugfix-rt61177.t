@@ -21,5 +21,4 @@ foreach my $prefix ('', '+') {
   isa_ok($object, 'Number::Phone::StubCountry', "unknown countries return minimal objects".($prefix? " with a +" : ""));
   is($object->country_code(), '44', "->country_code works");
   is($object->format(), '+44 2087712924', "->format works");
-
 }

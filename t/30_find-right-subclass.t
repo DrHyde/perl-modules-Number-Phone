@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 5;
+use Test::More tests => 4;
 use Scalar::Util qw(blessed);
 
 use Number::Phone;
@@ -22,12 +22,6 @@ ok(
     !blessed(Number::Phone->new("+999123")) &&
     !defined(Number::Phone->new("+999123")),
     "A country code not recognised by N::P::Country returns false"
-);
-# +979 is International Premium Rate Service
-ok(
-    !blessed(Number::Phone->new("+979123")) &&
-    !defined(Number::Phone->new("+979123")),
-    "A country code whose module we can't find returns false"
 );
 
 # FIXME - Kazakhstan/Russia weirdness
