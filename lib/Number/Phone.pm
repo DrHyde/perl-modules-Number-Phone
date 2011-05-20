@@ -7,7 +7,7 @@ use Scalar::Util 'blessed';
 use Number::Phone::Country qw(noexport uk);
 use Number::Phone::StubCountry;
 
-our $VERSION = 1.8;
+our $VERSION = 1.8001;
 
 my @is_methods = qw(
     is_valid is_allocated is_in_use
@@ -419,6 +419,6 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2004 - 2010
+Copyright 2004 - 2011
 
 =cut

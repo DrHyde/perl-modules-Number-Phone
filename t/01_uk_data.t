@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..65\n"; }
+BEGIN { $| = 1; print "1..68\n"; }
 
 my $test = 0;
 

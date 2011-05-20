@@ -1,3 +1,5 @@
+2011-05-20      1.8001  New UK allocations
+
 2010-09-12      1.8     INCOMPATIBLE CHANGE: constructor will now return
                           a minimal object instead of undef if there's no
                           country-specific module available
