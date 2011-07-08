@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 284;
+use Test::More tests => 297;
 
 use Number::Phone::Country;
 
@@ -65,6 +65,8 @@ ok(phone2country('+4-4 845 00 DEVIL') eq 'GB',  '+4-4 845 00 DEVIL is GB');
 print "# regression tests for all other country codes start here\n";
 ok(phone2country('+20123')  eq 'EG', '+20 is EG');
 ok(phone2country('+212123') eq 'MA', '+212 is MA');
+ok(phone2country('+2125288123') eq 'EH', '+212 5288 is EH');
+ok(phone2country('+2125289123') eq 'EH', '+212 5289 is EH');
 ok(phone2country('+213123') eq 'DZ', '+213 is DZ');
 ok(phone2country('+216123') eq 'TN', '+216 is TN');
 ok(phone2country('+218123') eq 'LY', '+218 is LY');
@@ -164,13 +166,21 @@ ok(phone2country('+374123') eq 'AM', '+374 is AM');
 ok(phone2country('+375123') eq 'BY', '+375 is BY');
 ok(phone2country('+376123') eq 'AD', '+376 is AD');
 ok(phone2country('+377123') eq 'MC', '+377 is MC');
+ok(phone2country('+37744123') eq 'KOS', '+377 44 is KOS');
+ok(phone2country('+37745123') eq 'KOS', '+377 45 is KOS');
 ok(phone2country('+378123') eq 'SM', '+378 is SM');
 ok(phone2country('+379123') eq 'VA', '+379 is VA');
 ok(phone2country('+380123') eq 'UA', '+380 is UA');
 ok(phone2country('+381123') eq 'RS', '+381 is RS');
+ok(phone2country('+38128123') eq 'KOS', '+381 28 is KOS');
+ok(phone2country('+38129123') eq 'KOS', '+381 29 is KOS');
+ok(phone2country('+38138123') eq 'KOS', '+381 38 is KOS');
+ok(phone2country('+38139123') eq 'KOS', '+381 39 is KOS');
 ok(phone2country('+382123') eq 'ME', '+382 is ME');
 ok(phone2country('+385123') eq 'HR', '+385 is HR');
 ok(phone2country('+386123') eq 'SI', '+386 is SI');
+ok(phone2country('+38643123') eq 'KOS', '+386 43 is KOS');
+ok(phone2country('+38649123') eq 'KOS', '+386 44 is KOS');
 ok(phone2country('+387123') eq 'BA', '+387 is BA');
 ok(phone2country('+389123') eq 'MK', '+389 is MK');
 ok(phone2country('+39123')  eq 'IT', '+39 is IT');
@@ -249,6 +259,9 @@ ok(phone2country('+689123') eq 'PF', '+689 is PF');
 ok(phone2country('+690123') eq 'TK', '+690 is TK');
 ok(phone2country('+691123') eq 'FM', '+691 is FM');
 ok(phone2country('+692123') eq 'MH', '+692 is MH');
+ok(phone2country('+7123') eq 'RU', '+7 is RU');
+ok(phone2country('+76123') eq 'KZ', '+76 is KZ');
+ok(phone2country('+77123') eq 'KZ', '+77 is KZ');
 ok(phone2country('+800123') eq 'InternationalFreephone', '+800 is InternationalFreephone');
 ok(phone2country('+808123') eq 'SharedCostServices', '+808 is SharedCostServices');
 ok(phone2country('+81123')  eq 'JP', '+81 is JP');

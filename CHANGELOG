@@ -1,3 +1,19 @@
+2011-XX-XX      1.8XXX  Numerous small changes in Number::Phone::Country
+                          Tidying number ranges in Mayotte;
+                          Minor bugfix for Mayotte;
+                          Gibraltar can't be called in the Spanish
+                            numbering scheme any more;
+                          Ellipsos satcomms have gone away;
+                          Kazakhstan has +76 and +77 instead of random
+                            bits all over +7;
+                          Dominican Republic now has +1 849;
+                          Western Sahara number ranges identified;
+                          Kosovo (no ISO3166 country code yet, so I'm
+                            temporarily using KOS, as used by the UN
+                            Development Programme, see
+                            wikipedia://List_of_UNDP_country_codes);
+                          Canada and the US have some new codes
+
 2011-05-20      1.8001  New UK allocations
 
 2010-09-12      1.8     INCOMPATIBLE CHANGE: constructor will now return
