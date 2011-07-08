@@ -410,16 +410,42 @@ sub phone2country_and_idd {
 
     if($phone =~ m!^1(\d{3})\d{7}$!) {
 
-        # see http://www.cnac.ca/mapcodes.htm
+        # see http://www.cnac.ca/co_codes/co_code_status_map.htm
+	# checked 2011-07-08
         if($1 =~ m!^(
-            204|226|250|289|
-            306|
-            403|416|418|438|450|
-            506|514|519|            # add 587 from Jun 2008
-            604|613|647|
-            705|709|778|780|
-            807|819|867|
-            902|905
+	    204|
+	    226|
+	    249|
+	    250|
+	    289|
+	    306|
+	    343|
+	    365|
+	    403|
+	    416|
+	    418|
+	    431|
+	    438|
+	    450|
+	    506|
+	    514|
+	    519|
+	    579|
+	    581|
+	    587|
+	    604|
+	    613|
+	    647|
+	    705|
+	    709|
+	    778|
+	    780|
+	    807|
+	    819|
+	    867|
+	    873|
+	    902|
+	    905
         )$!x) {
             return ('CA', 1);
         }
@@ -496,6 +522,7 @@ sub phone2country_and_idd {
         }
 
         # see http://wtng.info/wtng-cod.html#WZ1
+	# checked 2011-07-08
         elsif($1 eq '242') { return ('BS', 1); }
         elsif($1 eq '246') { return ('BB', 1); }
         elsif($1 eq '264') { return ('AI', 1); }
