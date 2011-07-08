@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 283;
+use Test::More tests => 284;
 
 use Number::Phone::Country;
 
@@ -42,6 +42,7 @@ ok(phone2country('1 784 555 0199') eq 'VC', 'NANP: VC: 784');
 ok(phone2country('1 787 555 0199') eq 'PR', 'NANP: PR: 787');
 ok(phone2country('1 809 555 0199') eq 'DO', 'NANP: DO: 809');
 ok(phone2country('1 829 555 0199') eq 'DO', 'NANP: DO: 829');
+ok(phone2country('1 849 555 0199') eq 'DO', 'NANP: DO: 849');
 ok(phone2country('1 868 555 0199') eq 'TT', 'NANP: TT: 868');
 ok(phone2country('1 869 555 0199') eq 'KN', 'NANP: KN: 869');
 ok(phone2country('1 876 555 0199') eq 'JM', 'NANP: JM: 876');

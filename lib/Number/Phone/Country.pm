@@ -516,6 +516,7 @@ sub phone2country_and_idd {
         elsif($1 eq '787') { return ('PR', 1); }
         elsif($1 eq '809') { return ('DO', 1); }
         elsif($1 eq '829') { return ('DO', 1); } # overlay
+        elsif($1 eq '849') { return ('DO', 1); } # overlay
         elsif($1 eq '868') { return ('TT', 1); }
         elsif($1 eq '869') { return ('KN', 1); }
         elsif($1 eq '876') { return ('JM', 1); }
