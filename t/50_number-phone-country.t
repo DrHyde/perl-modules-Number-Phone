@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 286;
+use Test::More tests => 283;
 
 use Number::Phone::Country;
 
@@ -143,7 +143,6 @@ ok(phone2country('+31123')  eq 'NL', '+31 is NL');
 ok(phone2country('+32123')  eq 'BE', '+32 is BE');
 ok(phone2country('+33123')  eq 'FR', '+33 is FR');
 ok(phone2country('+34123')  eq 'ES', '+34 is ES');
-ok(phone2country('+349567123') eq 'GI', '+349567 is GI'); # Gib, as part of Spain
 ok(phone2country('+350123') eq 'GI', '+350 is GI');
 ok(phone2country('+351123') eq 'PT', '+351 is PT');
 ok(phone2country('+352123') eq 'LU', '+352 is LU');
