@@ -384,7 +384,7 @@ sub import {
     'WF' => ['681',   '19',  undef], # Wallis and Futuna Islands
     'WS' => ['685',    '0',    '0'], # Samoa (Western)
     'YE' => ['967',   '00',    '0'], # Yemen
-    'YT' => ['269',   '00',  undef], # Mayotte
+    'YT' => ['262',   '00',  undef], # Mayotte
     'ZA' => [ '27',   '09',    '0'], # South Africa
     'ZM' => ['260',   '00',    '0'], # Zambia
     'ZW' => ['263',  '110',    '0'], # Zimbabwe
