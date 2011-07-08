@@ -24,6 +24,7 @@ sub import {
 %idd_codes = (
     # 1     => 'NANP',
 
+    # 2* checked against wtng.info 2011-07-08
     20      => 'EG', 212     => 'MA', 213     => 'DZ', 216     => 'TN',
     218     => 'LY', 220     => 'GM', 221     => 'SN', 222     => 'MR',
     223     => 'ML',
@@ -38,23 +39,9 @@ sub import {
     250     => 'RW', 251     => 'ET', 252     => 'SO', 253     => 'DJ',
     254     => 'KE', 255     => 'TZ', 256     => 'UG', 257     => 'BI',
     258     => 'MZ', 260     => 'ZM', 261     => 'MG',
-    2622691 => 'YT',  # \
-    26226960 => 'YT', # |
-    26226961 => 'YT', # | Mayotte fixed lines
-    26226962 => 'YT', # |
-    26226963 => 'YT', # |
-    26226964 => 'YT', # /
-    26263920 => 'YT', # \
-    26263921 => 'YT', # |
-    26263922 => 'YT', # |
-    26263923 => 'YT', # |
-    26263924 => 'YT', # | Mayotte GSM
-    26263965 => 'YT', # |
-    26263966 => 'YT', # |
-    26263967 => 'YT', # |
-    26263968 => 'YT', # |
-    26263969 => 'YT', # /
-    262     => 'RE',  # Assume that Reunion is everything else in +262
+    262269  => 'YT', # Mayotte fixed lines
+    262639  => 'YT', # Mayotte GSM
+    262     => 'RE', # Assume that Reunion is everything else in +262
     263     => 'ZW',
     264     => 'NA', 265     => 'MW', 266     => 'LS', 267     => 'BW',
     268     => 'SZ',
@@ -63,8 +50,9 @@ sub import {
     291     => 'ER',
     297     => 'AW', 298     => 'FO', 299     => 'GL',
     
+    # 3* checked against wtng.info 2011-07-08
     30      => 'GR', 31      => 'NL', 32      => 'BE', 33      => 'FR',
-    34      => 'ES', 349567  => 'GI', 350     => 'GI', 351     => 'PT',
+    34      => 'ES', 350     => 'GI', 351     => 'PT',
     352     => 'LU', 353     => 'IE', 35348   => 'GB', 354     => 'IS',
     355     => 'AL', 356     => 'MT', 357     => 'CY', 358     => 'FI',
     359     => 'BG', 36      => 'HU', 370     => 'LT', 371     => 'LV',
@@ -74,11 +62,14 @@ sub import {
     386     => 'SI',
     387     => 'BA',
     389     => 'MK', 39      => 'IT', 3966982 => 'VA',
+
+    # 4* checked against wtng.info 2011-07-08
     40      => 'RO', 41      => 'CH', 420     => 'CZ', 421     => 'SK',
     423     => 'LI',
     43      => 'AT', 44      => 'GB', 45      => 'DK', 46      => 'SE',
     47      => 'NO', 48      => 'PL', 49      => 'DE',
     
+    # 5* checked against wtng.info 2011-07-08
     500     => 'FK',
     501     => 'BZ', 502     => 'GT', 503     => 'SV', 504     => 'HN',
     505     => 'NI', 506     => 'CR', 507     => 'PA',
@@ -89,6 +80,7 @@ sub import {
     594     => 'GF', 595     => 'PY', 596     => 'MQ', 597     => 'SR',
     598     => 'UY', 599     => 'AN',
     
+    # 6* checked against wtng.info 2011-07-08
     60      => 'MY',
     61      => 'AU',
     6189162 => 'CC', # Cocos (Keeling) Islands
@@ -109,12 +101,14 @@ sub import {
     
     # 7     => 'RU & KZ',
     
+    # 8* checked against wtng.info 2011-07-08
     81      => 'JP', 82      => 'KR', 84      => 'VN', 850     => 'KP',
     852     => 'HK', 853     => 'MO', 855     => 'KH', 856     => 'LA',
     86      => 'CN',
     880     => 'BD',
     886     => 'TW',
     
+    # 9* checked against wtng.info 2011-07-08
     90      => 'TR', 91      => 'IN', 92      => 'PK', 93      => 'AF',
     94      => 'LK', 95      => 'MM', 960     => 'MV', 961     => 'LB',
     962     => 'JO', 963     => 'SY', 964     => 'IQ', 965     => 'KW',
@@ -127,7 +121,7 @@ sub import {
     993     => 'TM', 994     => 'AZ', 995     => 'GE',
     996     => 'KG', 998     => 'UZ',
 
-    3883    => 'ETNS', # http://wtng.info/wtng-reg.html#Europewide
+    # these checked against wtng.info 2011-07-08
     800     => 'InternationalFreephone',
     808     => 'SharedCostServices',
     870     => 'Inmarsat',
@@ -136,18 +130,17 @@ sub import {
     873     => 'Inmarsat',
     874     => 'Inmarsat',
     878     => 'UniversalPersonalTelecoms',
-    8812    => 'Ellipso',    # \
-    8813    => 'Ellipso',    # |
-    8816    => 'Iridium',    # | Sat-phones
+    8816    => 'Iridium',    # \ Sat-phones
     8817    => 'Iridium',    # |
     8818    => 'Globalstar', # |
     8819    => 'Globalstar', # /
     882     => 'InternationalNetworks',
+    888     => 'TelecomsForDisasterRelief',
     # 979 is used for testing when we fail to load a module when we
     # know what "country" it is
     979     => 'InternationalPremiumRate',
     991     => 'ITPCS',
-    # 999 deliberately NYI for testing
+    # 999 deliberately NYI for testing; proposed to be like 888.
 );
 
 # Prefix Codes hash

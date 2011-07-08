@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 287;
+use Test::More tests => 286;
 
 use Number::Phone::Country;
 
@@ -172,7 +172,6 @@ ok(phone2country('+382123') eq 'ME', '+382 is ME');
 ok(phone2country('+385123') eq 'HR', '+385 is HR');
 ok(phone2country('+386123') eq 'SI', '+386 is SI');
 ok(phone2country('+387123') eq 'BA', '+387 is BA');
-ok(phone2country('+3883123') eq 'ETNS', '+3883 is ETNS');
 ok(phone2country('+389123') eq 'MK', '+389 is MK');
 ok(phone2country('+39123')  eq 'IT', '+39 is IT');
 ok(phone2country('+3966982123') eq 'VA', '+3966982 is VA'); # Vatican, as part of Rome
