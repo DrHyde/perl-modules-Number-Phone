@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 297;
+use Test::More tests => 299;
 
 use Number::Phone::Country;
 
@@ -224,7 +224,9 @@ ok(phone2country('+595123') eq 'PY', '+595 is PY');
 ok(phone2country('+596123') eq 'MQ', '+596 is MQ');
 ok(phone2country('+597123') eq 'SR', '+597 is SR');
 ok(phone2country('+598123') eq 'UY', '+598 is UY');
-ok(phone2country('+599123') eq 'AN', '+599 is AN');
+ok(phone2country('+599123') eq 'BQ', '+599 is BQ');
+ok(phone2country('+5995123') eq 'SX', '+5995 is SX');
+ok(phone2country('+5999123') eq 'CW', '+5990 is CW');
 ok(phone2country('+60123')  eq 'MY', '+60 is MY');
 ok(phone2country('+61123')  eq 'AU', '+61 is AU');
 ok(phone2country('+6189162123') eq 'CC', '+6189162 is CC');

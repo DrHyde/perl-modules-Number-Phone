@@ -102,7 +102,7 @@ print 'not ' unless($number->is_network_service());
 print 'ok '.(++$test)." network service numbers correctly identified\n";
 
 $number = Number::Phone->new('+448450033845');
-print 'not ' unless($number->operator() eq 'Edge Telecom Ltd');
+print 'not ' unless($number->operator() eq 'Edge Telecom Limited');
 print 'ok '.(++$test)." operators correctly identified\n";
 print '# '.$number->operator()."\n";
 

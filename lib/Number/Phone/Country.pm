@@ -92,7 +92,10 @@ sub import {
     55      => 'BR', 56      => 'CL', 57      => 'CO', 58      => 'VE',
     590     => 'GP', 591     => 'BO', 592     => 'GY', 593     => 'EC',
     594     => 'GF', 595     => 'PY', 596     => 'MQ', 597     => 'SR',
-    598     => 'UY', 599     => 'AN',
+    598     => 'UY',
+    599     => 'BQ',
+    5995    => 'SX', # will move to +1 721 in Sep 2011
+    5999    => 'CW',
     
     # 6* checked against wtng.info 2011-07-08
     60      => 'MY',
@@ -174,7 +177,7 @@ sub import {
     'AI' => [  '1',  '011',    '1'], # Anguilla
     'AL' => ['355',   '00',    '0'], # Albania
     'AM' => ['374',   '00',    '8'], # Armenia
-    'AN' => ['599',   '00',    '0'], # Netherlands Antilles
+    'BQ' => ['599',   '00',    '0'], # Bonaire, Saint Eustatius and Saba (ex-Netherland Antilles)
     'AO' => ['244',   '00',    '0'], # Angola
     'AQ' => ['672',  undef,  undef], # Antarctica
     'AR' => [ '54',   '00',    '0'], # Argentina
