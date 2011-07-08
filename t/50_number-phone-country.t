@@ -267,8 +267,6 @@ ok(phone2country('+873123') eq 'Inmarsat', '+873 is Inmarsat');
 ok(phone2country('+874123') eq 'Inmarsat', '+874 is Inmarsat');
 ok(phone2country('+878123') eq 'UniversalPersonalTelecoms', '+878 is UniversalPersonalTelecoms');
 ok(phone2country('+880123') eq 'BD', '+880 is BD');
-ok(phone2country('+8812123') eq 'Ellipso', '+8812 is Ellipso');
-ok(phone2country('+8813123') eq 'Ellipso', '+8813 is Ellipso');
 ok(phone2country('+8816123') eq 'Iridium', '+8816 is Iridium');
 ok(phone2country('+8817123') eq 'Iridium', '+8817 is Iridium');
 ok(phone2country('+8818123') eq 'Globalstar', '+8818 is Globalstar');
