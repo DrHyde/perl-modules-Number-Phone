@@ -99,7 +99,11 @@ sub import {
     688     => 'TV',
     689     => 'PF', 690     => 'TK', 691     => 'FM', 692     => 'MH',
     
-    # 7     => 'RU & KZ',
+    # 7* from http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
+    # checked 2011-07-08
+    76      => 'KZ',
+    77      => 'KZ',
+    7       => 'RU',
     
     # 8* checked against wtng.info 2011-07-08
     81      => 'JP', 82      => 'KR', 84      => 'VN', 850     => 'KP',
@@ -267,7 +271,7 @@ sub import {
     'KR' => [ '82',  '001',    '0'], # Korea (South)
     'KW' => ['965',   '00',    '0'], # Kuwait
     'KY' => [  '1',  '011',    '1'], # Cayman Islands
-    'KZ' => [  '7',  '810',    '8'], # Kazakhstan (IDD really 8**10)
+    'KZ' => [  '7',  '810',    '8'], # Kazakhstan (IDD really 8[pause]10)
     'LA' => ['856',   '00',    '0'], # Laos
     'LB' => ['961',   '00',    '0'], # Lebanon
     'LC' => [  '1',  '011',    '1'], # Saint Lucia
@@ -518,21 +522,6 @@ sub phone2country_and_idd {
         elsif($1 eq '939') { return ('PR', 1); } # overlay
 
         else { return ('NANP', 1); }
-    }
-
-    # following are from http://www.itu.int/itudoc/itu-t/number/k/kaz/75917.html
-    # and http://wtng.info/ccod-7.html
-    # see also http://wtng.info/wtng-kk.html#Kazakstan
-    elsif($phone =~ /^7/) {
-        return ('KZ', 7) if($phone =~ /^7(
-            300|
-            310|311|312|313|314|315|316|317|318|
-            320|321|322|323|324|325|326|327|328|329|
-            333|336|
-            570|571|573|574|
-            700
-        )/x);
-        return ('RU', 7);
     }
 
     else {
