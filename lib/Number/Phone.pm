@@ -115,14 +115,14 @@ sub new {
     my $class = shift;
     my($country, $number) = @_;
 
-    if(!defined($number)) {
+    if(!defined($number)) { # one arg
       $number = $country;
     } elsif($country =~ /[a-z]/i) { # eg 'UK', '12345'
       $number = '+'.
                 Number::Phone::Country::country_code($country).
 		$number
         unless(index($number, '+'.Number::Phone::Country::country_code($country)) == 0);
-    } else {
+    } else { # (+)NNN
       $number = join('', grep { defined } ($country, $number));
     }
 
