@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..68\n"; }
+BEGIN { $| = 1; print "1..73\n"; }
 
 my $test = 0;
 
@@ -151,12 +151,24 @@ print 'ok '.(++$test)." 03 numbers are formatted right\n";
 print 'not ' unless(Number::Phone->new('+44169772200')->format() eq
     '+44 16977 2200');
 print 'ok '.(++$test)." 5+4 format works\n";
-print 'not ' unless(Number::Phone->new('+44176888000')->format() eq
-    '+44 1768 88000');
+
+# 01768 88 is "Mixed 4+5 & 4+6".  I wish someone would just set the village on fire.
+print 'not ' unless(Number::Phone->new('+44 1768 88 000')->format() eq '+44 1768 88000'); # 4+5
 print 'ok '.(++$test)." 4+5 (mixed) format works\n";
-print 'not ' unless(Number::Phone->new('+441768881000')->format() eq
-    '+44 1768 881000');
+print 'not ' unless(Number::Phone->new('+44 1768 88 100')->format() eq '+44 1768 88100');
+print 'ok '.(++$test)." 4+5 (mixed) format works\n";
+
+print 'not ' unless(Number::Phone->new('+44 1768 88 0000')->format() eq '+44 1768 880000'); # 4+6
 print 'ok '.(++$test)." 4+6 (mixed) format works\n";
+print 'not ' unless(Number::Phone->new('+44 1768 88 1000')->format() eq '+44 1768 881000');
+print 'ok '.(++$test)." 4+6 (mixed) format works\n";
+
+print 'not ' if(Number::Phone->new('+44 1768 88 0')); # 4+3
+print 'ok '.(++$test)." 4+3 in that range correctly fails\n";
+print 'not ' if(Number::Phone->new('+44 1768 88 00')); # 4+4
+print 'ok '.(++$test)." 4+4 in that range correctly fails\n";
+print 'not ' if(Number::Phone->new('+44 1768 88 00000')); # 4+7
+print 'ok '.(++$test)." 4+7 in that range correctly fails\n";
 
 $number = Number::Phone->new('+447400000000');
 print 'not ' unless($number->is_mobile());

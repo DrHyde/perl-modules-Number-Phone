@@ -1,4 +1,6 @@
-XXXX-XX-XX      1.8003  UK parser made a teensy bit more robust;
+2011-07-19      1.8003  UK parser made a teensy bit more robust;
+                        UK parser bugfixed for 01768 88 mixed length stupidity
+                        New UK allocations
 
 2011-07-08      1.8002  New UK allocations;
                         Numerous small changes in Number::Phone::Country

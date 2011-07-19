@@ -234,7 +234,7 @@ foreach my $datum (@telco_length_data) {
         warn "Empty format: $format (r: $retard; t: $telco)\n"
             if($retard !~ /^[789]/);
     } elsif($format eq 'Mixed 4+5 & 4+6') {
-        $format = '4+5 mixed';
+        $format = '4+5/6';
     } elsif(
         $format ne '2+8' &&
         $format ne '2+8' &&

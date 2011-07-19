@@ -103,6 +103,8 @@ sub is_valid {
 	$cache->{$number}->{format} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{format};
 	if(defined($cache->{$number}->{format}) && $cache->{$number}->{format} =~ /\+/) {
 	    my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
+            # for hateful mixed thing
+            my @subscriberlengths = ($subscriberlength =~ m{/}) ? split(/\//, $subscriberlength) : ($subscriberlength);
             $subscriberlength =~ s/^(\d+).*/$1/; # for hateful mixed thing
 	    $cache->{$number}->{areacode} = substr($parsed_number, 0, $arealength);
 	    $cache->{$number}->{subscriber} = substr($parsed_number, $arealength);
@@ -111,7 +113,7 @@ sub is_valid {
                     $Number::Phone::UK::Data::db->{areanames}->{$_}
                 } grep { $Number::Phone::UK::Data::db->{areanames}->{$_} } @retards
             )[0];
-	    if(length($cache->{$number}->{subscriber}) != $subscriberlength && $cache->{$number}->{format} !~ /mixed/i) {
+	    if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
 	        # number wrong length!
                 $cache->{$number} = undef;
 		return 0;
