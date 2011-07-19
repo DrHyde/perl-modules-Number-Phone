@@ -7,7 +7,7 @@ use Number::Phone::UK::Data;
 
 use base 'Number::Phone';
 
-our $VERSION = 1.554;
+our $VERSION = 1.556;
 
 my $cache = {};
 
@@ -101,7 +101,7 @@ sub is_valid {
         my($telco_and_length) = map { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
 	$cache->{$number}->{operator} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{telco};
 	$cache->{$number}->{format} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{format};
-	if($cache->{$number}->{format} ne '?') {
+	if(defined($cache->{$number}->{format}) && $cache->{$number}->{format} =~ /\+/) {
 	    my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
             $subscriberlength =~ s/^(\d+).*/$1/; # for hateful mixed thing
 	    $cache->{$number}->{areacode} = substr($parsed_number, 0, $arealength);
