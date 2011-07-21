@@ -3,7 +3,6 @@
 use strict;
 
 use Test::More tests => 126;
-use UNIVERSAL qw(isa);
 use Scalar::Util qw(blessed);
 
 BEGIN { use_ok('Number::Phone::NANP'); }
