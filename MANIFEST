@@ -53,3 +53,4 @@ t/900_bugfix-rt48581.t
 t/901_bugfix_N-P-New-CC-number.t
 lib/Number/Phone/StubCountry.pm
 t/902_bugfix-rt61177.t
+t/31_country-for-subclass.t

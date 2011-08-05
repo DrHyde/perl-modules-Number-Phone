@@ -1,3 +1,5 @@
+2011-08-05      1.8005  Include tests for bugfix in distro
+
 2011-08-05      1.8004  Bugfix for divining country code from subclasses;
                         New UK allocations
 
