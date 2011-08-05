@@ -145,7 +145,7 @@ sub country_code { 1; }
 
 =item country
 
-Returns the NANP area code.
+Returns the two-letter ISO country code for this number.
 
 =cut
 
