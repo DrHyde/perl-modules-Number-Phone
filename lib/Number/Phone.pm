@@ -64,11 +64,10 @@ sub type {
 }
 
 sub country {
-    my $self = shift;
-    return undef if(!blessed($self));
-    (my $country = blessed($self)) =~ s/.*:://;
-    return undef unless(length($country) == 2);
-    return $country;
+    my $class = blessed(shift);
+    return unless $class;
+    my ($country) = $class =~ m/^Number::Phone::([A-Z]{2})(?:::|$)/;
+    $country
 }
 
 1;

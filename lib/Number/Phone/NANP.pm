@@ -143,6 +143,19 @@ Returns 1.
 
 sub country_code { 1; }
 
+=item country
+
+Returns the NANP area code.
+
+=cut
+
+sub country {
+    my $class = ref shift;
+    return if !$class || $class eq __PACKAGE__;
+    my ($country) = $class =~ m/Number::Phone::NANP::([A-Z]{2})(?:::|$)/;
+    $country
+}
+
 =item regulator
 
 Returns informational text relevant to the whole NANP.  Note that when
