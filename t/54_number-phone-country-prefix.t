@@ -4,7 +4,7 @@
 #
 
 use strict;
-use Test::More tests => 721;
+use Test::More tests => 724;
 
 use_ok('Number::Phone::Country') or exit 1;
 
@@ -233,6 +233,7 @@ SM:378:00:0
 SN:221:00:0
 SO:252:00:
 SR:597:00:
+SS:211:00:0
 ST:239:00:0
 SV:503:00:
 SY:963:00:0

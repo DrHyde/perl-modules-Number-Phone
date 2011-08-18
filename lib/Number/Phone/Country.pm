@@ -4,7 +4,7 @@ use strict;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
-$VERSION = 1.6002;
+$VERSION = 1.6003;
 my $use_uk = 0;
 
 sub import {
@@ -25,7 +25,9 @@ sub import {
     # 1     => 'NANP',
 
     # 2* checked against wtng.info 2011-07-08
-    20      => 'EG', 212     => 'MA',
+    20      => 'EG',
+    211     => 'SS',
+    212     => 'MA',
     2125288 => 'EH', # \ from http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
     2125289 => 'EH', # /
     213     => 'DZ', 216     => 'TN',
@@ -370,6 +372,7 @@ sub import {
     'SN' => ['221',   '00',    '0'], # Senegal
     'SO' => ['252',   '00',  undef], # Somalia
     'SR' => ['597',   '00',  undef], # Suriname
+    'SS' => ['211',   '00',    '0'], # South Sudan NOTE: 00 and 0 are a guess
     'ST' => ['239',   '00',    '0'], # Sao Tome and Principe
     'SV' => ['503',   '00',  undef], # El Salvador
     'SY' => ['963',   '00',    '0'], # Syria
@@ -715,7 +718,7 @@ Thanks to Shraga Bor-Sood for the updates in version 1.4.
 
 Copyright 2003 by MaxMind LLC
 
-Copyright 2004 - 2007 David Cantrell
+Copyright 2004 - 2011 David Cantrell
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 299;
+use Test::More tests => 300;
 
 use Number::Phone::Country;
 
@@ -64,6 +64,7 @@ ok(phone2country('+4-4 845 00 DEVIL') eq 'GB',  '+4-4 845 00 DEVIL is GB');
 
 print "# regression tests for all other country codes start here\n";
 ok(phone2country('+20123')  eq 'EG', '+20 is EG');
+ok(phone2country('+211123') eq 'SS', '+211 is SS');
 ok(phone2country('+212123') eq 'MA', '+212 is MA');
 ok(phone2country('+2125288123') eq 'EH', '+212 5288 is EH');
 ok(phone2country('+2125289123') eq 'EH', '+212 5289 is EH');

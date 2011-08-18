@@ -1,3 +1,5 @@
+2011-XX-XX      1.8006  Add South Sudan (SS, +211) to N::P::Country
+
 2011-08-05      1.8005  Include tests for bugfix in distro
 
 2011-08-05      1.8004  Bugfix for divining country code from subclasses;
