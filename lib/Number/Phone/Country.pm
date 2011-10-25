@@ -683,9 +683,6 @@ phone number.  eg for +441234567890 it returns ('GB', 44).
 
 L<Parse::PhoneNumber>
 
-L<http://code.google.com/p/libphonenumber/>, a similar project for Java,
-C++ and Javascript
-
 =head1 BUGS
 
 It has not been possible to maintain complete backwards compatibility with

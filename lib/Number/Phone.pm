@@ -409,6 +409,11 @@ if possible, a test case.
 
 I welcome feedback from users.
 
+=head1 SEE ALSO
+
+L<http://code.google.com/p/libphonenumber/>, a similar project for Java,
+C++ and Javascript
+
 =head1 LICENCE
 
 You may use, modify and distribute this software under the same terms as
