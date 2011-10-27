@@ -47,6 +47,19 @@ true for any of the following methods will also be valid.
 
 =cut
 
+sub _clean_number {
+    my $clean = shift;
+    $clean =~ s/[^0-9+]//g;               # strip non-digits/plusses
+    $clean =~ s/^\+44//;                  # remove leading +44
+    $clean =~ s/^0//;                     # kill leading zero
+    return $clean;
+}
+
+sub _retards {
+    my $number = shift;
+    map { substr($number, 0, $_) } reverse(1..length($number));
+}
+
 sub is_valid {
     my $number = shift;
 
@@ -59,66 +72,61 @@ sub is_valid {
     # if we've seen this number before, use cached result
     return 1 if($cache->{$number}->{is_valid});
 
-    my $parsed_number = $number;
-    $parsed_number =~ s/[^0-9+]//g;               # strip non-digits/plusses
-    $parsed_number =~ s/^\+44//;                  # remove leading +44
-    $parsed_number =~ s/^0//;                     # kill leading zero
+    my $cleaned_number = _clean_number($number);
 
-    # @digits{qw(A B C D E F)} = split(//, $parsed_number, 7);
-
-    my @retards = map { substr($parsed_number, 0, $_) } reverse 1..7;
+    my @retards = _retards($cleaned_number);
 
     # and quickly check length
-    $cache->{$number}->{is_valid} = (length($parsed_number) > 6 && length($parsed_number) < 11) ? 1 : 0;
+    $cache->{$number}->{is_valid} = (length($cleaned_number) > 6 && length($cleaned_number) < 11) ? 1 : 0;
     return 0 unless($cache->{$number}->{is_valid});
 
     $cache->{$number}->{is_geographic} =
-	grep { $Number::Phone::UK::Data::db->{geo_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{geo_prefices}->{$_} } @retards;
     $cache->{$number}->{is_network_service} =
-	grep { $Number::Phone::UK::Data::db->{network_svc_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{network_svc_prefices}->{$_} } @retards;
     $cache->{$number}->{is_tollfree} =
-	grep { $Number::Phone::UK::Data::db->{free_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{free_prefices}->{$_} } @retards;
     $cache->{$number}->{is_corporate} =
-	grep { $Number::Phone::UK::Data::db->{corporate_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{corporate_prefices}->{$_} } @retards;
     $cache->{$number}->{is_personal} =
-	grep { $Number::Phone::UK::Data::db->{personal_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{personal_prefices}->{$_} } @retards;
     $cache->{$number}->{is_pager} =
-	grep { $Number::Phone::UK::Data::db->{pager_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{pager_prefices}->{$_} } @retards;
     $cache->{$number}->{is_fixed_line} = 0 if(
       $cache->{$number}->{is_mobile} =
-	grep { $Number::Phone::UK::Data::db->{mobile_prefices}->{$_} } @retards
+        grep { $Number::Phone::UK::Data::db->{mobile_prefices}->{$_} } @retards
     );
 
     $cache->{$number}->{is_specialrate} =
-	grep { $Number::Phone::UK::Data::db->{special_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{special_prefices}->{$_} } @retards;
     $cache->{$number}->{is_adult} =
-	grep { $Number::Phone::UK::Data::db->{adult_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{adult_prefices}->{$_} } @retards;
     $cache->{$number}->{is_ipphone} =
-	grep { $Number::Phone::UK::Data::db->{ip_prefices}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{ip_prefices}->{$_} } @retards;
     $cache->{$number}->{is_allocated} = 
-	grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
     if($cache->{$number}->{is_allocated}) {
         my($telco_and_length) = map { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
-	$cache->{$number}->{operator} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{telco};
-	$cache->{$number}->{format} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{format};
-	if(defined($cache->{$number}->{format}) && $cache->{$number}->{format} =~ /\+/) {
-	    my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
+        $cache->{$number}->{operator} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{telco};
+        $cache->{$number}->{format} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{format};
+        if(defined($cache->{$number}->{format}) && $cache->{$number}->{format} =~ /\+/) {
+            my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
             # for hateful mixed thing
             my @subscriberlengths = ($subscriberlength =~ m{/}) ? split(/\//, $subscriberlength) : ($subscriberlength);
             $subscriberlength =~ s/^(\d+).*/$1/; # for hateful mixed thing
-	    $cache->{$number}->{areacode} = substr($parsed_number, 0, $arealength);
-	    $cache->{$number}->{subscriber} = substr($parsed_number, $arealength);
+            $cache->{$number}->{areacode} = substr($cleaned_number, 0, $arealength);
+            $cache->{$number}->{subscriber} = substr($cleaned_number, $arealength);
             $cache->{$number}->{areaname} = (
                 map {
                     $Number::Phone::UK::Data::db->{areanames}->{$_}
                 } grep { $Number::Phone::UK::Data::db->{areanames}->{$_} } @retards
             )[0];
-	    if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
-	        # number wrong length!
+            if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
+                # number wrong length!
                 $cache->{$number} = undef;
-		return 0;
-	    }
-	}
+                return 0;
+            }
+        }
     }
     return $cache->{$number}->{is_valid};
 }
@@ -132,10 +140,10 @@ foreach my $is (qw(
     no strict 'refs';
     *{__PACKAGE__."::is_$is"} = sub {
         my $self = shift;
-	$self = shift if($self eq __PACKAGE__);
-	$self = __PACKAGE__->new($self)
-	    unless(blessed($self) && $self->isa(__PACKAGE__));
-	$cache->{${$self}}->{"is_$is"};
+        $self = shift if($self eq __PACKAGE__);
+        $self = __PACKAGE__->new($self)
+            unless(blessed($self) && $self->isa(__PACKAGE__));
+        $cache->{${$self}}->{"is_$is"};
     }
 }
 
@@ -246,12 +254,9 @@ sub location {
 
     return undef unless($self->is_geographic());
 
-    my $parsed_number = ${$self};
-    $parsed_number =~ s/[^0-9+]//g;               # strip non-digits/plusses
-    $parsed_number =~ s/^\+44//;                  # remove leading +44
-    $parsed_number =~ s/^0//;                     # kill leading zero
+    my $cleaned_number = _clean_number(${$self});
 
-    my @retards = map { substr($parsed_number, 0, $_) } reverse(1..length($parsed_number));
+    my @retards = _retards($cleaned_number);
 
     eval "require Number::Phone::UK::DetailedLocations" unless($ENV{TESTINGKILLTHEWABBIT});
     require Number::Phone::UK::Exchanges if(!$Number::Phone::UK::Exchanges::db);
@@ -291,9 +296,9 @@ sub format {
         $self :
         __PACKAGE__->new($self);
     return '+'.country_code().' '.(
-	$self->areacode()      ? $self->areacode().' '.$self->subscriber() :
-	!$self->is_allocated() ? substr(${$self}, 1 + length(country_code()))
-	                       : $self->subscriber()
+        $self->areacode()      ? $self->areacode().' '.$self->subscriber() :
+        !$self->is_allocated() ? substr(${$self}, 1 + length(country_code()))
+                               : $self->subscriber()
     );
 }
 
