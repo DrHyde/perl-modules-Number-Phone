@@ -80,29 +80,6 @@ sub is_valid {
     $cache->{$number}->{is_valid} = (length($cleaned_number) > 6 && length($cleaned_number) < 11) ? 1 : 0;
     return 0 unless($cache->{$number}->{is_valid});
 
-    $cache->{$number}->{is_geographic} =
-        grep { $Number::Phone::UK::Data::db->{geo_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_network_service} =
-        grep { $Number::Phone::UK::Data::db->{network_svc_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_tollfree} =
-        grep { $Number::Phone::UK::Data::db->{free_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_corporate} =
-        grep { $Number::Phone::UK::Data::db->{corporate_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_personal} =
-        grep { $Number::Phone::UK::Data::db->{personal_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_pager} =
-        grep { $Number::Phone::UK::Data::db->{pager_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_fixed_line} = 0 if(
-      $cache->{$number}->{is_mobile} =
-        grep { $Number::Phone::UK::Data::db->{mobile_prefices}->{$_} } @retards
-    );
-
-    $cache->{$number}->{is_specialrate} =
-        grep { $Number::Phone::UK::Data::db->{special_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_adult} =
-        grep { $Number::Phone::UK::Data::db->{adult_prefices}->{$_} } @retards;
-    $cache->{$number}->{is_ipphone} =
-        grep { $Number::Phone::UK::Data::db->{ip_prefices}->{$_} } @retards;
     $cache->{$number}->{is_allocated} = 
         grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
     if($cache->{$number}->{is_allocated}) {
@@ -132,9 +109,13 @@ sub is_valid {
 }
 
 # now define the is_* methods that we over-ride
+sub is_fixed_line {
+  return 0 if(is_mobile(@_));
+  return undef;
+}
 
 foreach my $is (qw(
-    fixed_line geographic network_service tollfree corporate
+    geographic network_service tollfree corporate
     personal pager mobile specialrate adult allocated ipphone
 )) {
     no strict 'refs';
@@ -143,6 +124,24 @@ foreach my $is (qw(
         $self = shift if($self eq __PACKAGE__);
         $self = __PACKAGE__->new($self)
             unless(blessed($self) && $self->isa(__PACKAGE__));
+        if(!exists($cache->{${$self}}->{"is_$is"})) {
+          $cache->{${$self}}->{"is_$is"} = 
+            grep {
+              $Number::Phone::UK::Data::db->{
+                { geographic      => 'geo_prefices',
+                  network_service => 'network_svc_prefices',
+                  tollfree        => 'free_prefices',
+                  corporate       => 'corporate_prefices',
+                  personal        => 'personal_prefices',
+                  pager           => 'pager_prefices',
+                  mobile          => 'mobile_prefices',
+                  specialrate     => 'special_prefices',
+                  adult           => 'adult_prefices',
+                  ipphone         => 'ip_prefices'
+                }->{$is}
+              }->{$_}
+            } _retards(_clean_number(${$self}));
+        }
         $cache->{${$self}}->{"is_$is"};
     }
 }
