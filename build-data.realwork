@@ -98,6 +98,9 @@ while(my $line = <S1>) {
     if($format eq "F-Digit '6'") {
         $format = '4+6';
         warn("Using temporary fix for OFCOM brokenness re F-digit\n");
+    } elsif($format =~ /^(6\+4)?$/ && $retard =~ /^130262[23459]/) {
+      warn("Fixing broken format '$format' for 1302 62 [23459] in OFCOM's data\n");
+      $format = '4+6';
     }
 
     push @telco_length_data, [$retard, $telco, $format];

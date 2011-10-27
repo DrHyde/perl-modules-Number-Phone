@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..73\n"; }
+BEGIN { $| = 1; print "1..75\n"; }
 
 my $test = 0;
 
@@ -203,3 +203,11 @@ print 'ok '.(++$test)." 0844 000 000 is invalid (too short)\n";
 $number = Number::Phone->new('+44844000000');
 print 'not ' if(defined($number));
 print 'ok '.(++$test)." +44 844 000 000 is invalid (too short)\n";
+
+$number = Number::Phone->new('+441302622123');
+print 'not ' unless($number->format() eq '+44 1302 622123');
+print 'ok '.(++$test)." OFCOM's stupid 6+4 format for 1302 62[2459] is corrected\n";
+
+$number = Number::Phone->new('+441302623123');
+print 'not ' unless($number->format() eq '+44 1302 623123');
+print 'ok '.(++$test)." OFCOM's missing format for 1302 623 is corrected\n";
