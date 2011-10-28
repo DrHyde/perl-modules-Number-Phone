@@ -414,15 +414,25 @@ I welcome feedback from users.
 L<http://code.google.com/p/libphonenumber/>, a similar project for Java,
 C++ and Javascript
 
-=head1 LICENCE
+=head1 SOURCE CODE REPOSITORY
 
-You may use, modify and distribute this software under the same terms as
-perl itself.
+L<git://github.com/DrHyde/perl-modules-Number-Phone.git>
 
-=head1 AUTHOR
+=head1 AUTHOR, COPYRIGHT and LICENCE
 
-David Cantrell E<lt>david@cantrell.org.ukE<gt>
+Copyright 2004 - 2011 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
-Copyright 2004 - 2011
+This software is free-as-in-speech software, and may be used,
+distributed, and modified under the terms of either the GNU
+General Public Licence version 2 or the Artistic Licence.  It's
+up to you which one you use.  The full text of the licences can
+be found in the files GPL2.txt and ARTISTIC.txt, respectively.
+
+Some files are under the Apache licence, a copy of which can be found in
+the file Apache-2.0.txt.
+
+=head1 CONSPIRACY
+
+This module is also free-as-in-mason software.
 
 =cut
