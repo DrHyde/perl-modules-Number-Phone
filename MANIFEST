@@ -1,6 +1,3 @@
-build-data.sh
-build-data.realwork
-build-data.exchanges
 README
 MANIFEST
 Makefile.PL
