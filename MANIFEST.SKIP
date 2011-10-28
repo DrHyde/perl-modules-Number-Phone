@@ -1,0 +1,4 @@
+^libphonenumber
+^\.git
+^build-data\.
+t/pod.*~
