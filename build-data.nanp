@@ -1,0 +1,65 @@
+#!/usr/local/bin/perl
+
+# THIS SCRIPT IS NOT INTENDED FOR END USERS OR FOR PEOPLE INSTALLING
+# THE MODULES, BUT FOR THE AUTHOR'S USE WHEN UPDATING THE DATA FROM OFCOM'S
+# PUBLISHED DATA.
+
+use strict;
+use warnings;
+
+use lib 'lib';
+
+open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Phone/NANP/Data.pm\n");
+
+print MODULE "# automatically generated file, don't edit\n\n";
+print MODULE q{
+
+  # Copyright 2011 David Cantrell, derived from data from libphonenumber
+  # http://code.google.com/p/libphonenumber/
+  #
+  # Licensed under the Apache License, Version 2.0 (the "License");
+  # you may not use this file except in compliance with the License.
+  # You may obtain a copy of the License at
+  # 
+  #     http://www.apache.org/licenses/LICENSE-2.0
+  # 
+  # Unless required by applicable law or agreed to in writing, software
+  # distributed under the License is distributed on an "AS IS" BASIS,
+  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  # See the License for the specific language governing permissions and
+  # limitations under the License.
+  package Number::Phone::NANP::Data;
+
+  use strict;
+  use warnings;
+  use vars qw(%areanames);
+}.
+"our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n".q{
+
+  sub _prefixes {
+      my $number = shift;
+      map { substr($number, 0, $_) } reverse(1..length($number));
+  }
+
+  sub areaname {
+    my $number = shift;
+    foreach my $prefix (_prefixes($number)) {
+      if(exists($areanames{$prefix})) { return $areanames{$prefix} };
+    }
+    return undef;
+  }
+
+  %areanames = (
+};
+open(LIBPHONENUMBERDATA, 'libphonenumber/resources/geocoding/en/1.txt') || die("Can't read libphonenumber/resources/geocoding/en/1.txt\n");
+my @lines = <LIBPHONENUMBERDATA>;
+close(LIBPHONENUMBERDATA);
+foreach my $line (@lines) {
+  chomp($line);
+  next if($line =~ /^(#.*|\s+)?$/);
+  my($prefix, $area) = split(/\|/, $line);
+  $area = quotemeta($area);
+  print MODULE "    '$prefix' => \"$area\",\n";
+}
+print MODULE "  );";
+close(MODULE);

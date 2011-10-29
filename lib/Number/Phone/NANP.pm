@@ -5,10 +5,11 @@ use strict;
 use Scalar::Util 'blessed';
 
 use base 'Number::Phone';
+use Number::Phone::NANP::Data;
 
 use Number::Phone::Country qw(noexport);
 
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
 my $cache = {};
 
@@ -135,6 +136,14 @@ foreach my $method (qw(areacode subscriber)) {
     }
 }
 
+sub areaname {
+  my $self = shift;
+  $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
+    $self :
+    __PACKAGE__->new($self);
+  return Number::Phone::NANP::Data::areaname('1'.$self->areacode().$self->subscriber());
+}
+
 =item country_code
 
 Returns 1.
@@ -177,6 +186,11 @@ sub regulator {
 =item areacode
 
 Return the area code for the number.
+
+=item areaname
+
+Return the name for the area code, if applicable, otherwise returns undef.
+For instance, for a number beginning with +1 201 200 it would return "Jersey City, NJ".
 
 =item subscriber
 

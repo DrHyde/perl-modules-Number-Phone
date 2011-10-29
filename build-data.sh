@@ -13,3 +13,11 @@ rm codelist.zip s[0123456789]*.txt sabc.txt Data.pm temp.db
 
 # now get an up-to-date libphonenumber
 (cd libphonenumber && svn up) || svn co http://libphonenumber.googlecode.com/svn/trunk libphonenumber
+
+# lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt is newer ...
+if test ! -e lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm; then
+  echo rebuilding lib/Number/Phone/NANP/Data.pm
+  perl build-data.nanp
+else
+  echo lib/Number/Phone/NANP/Data.pm is up-to-date
+fi

@@ -1,5 +1,6 @@
 package Number::Phone::Country::Data;
 
+$VERSION = '1.0';
 %Number::Phone::Country::idd_codes = (
     # 1     => 'NANP',
 

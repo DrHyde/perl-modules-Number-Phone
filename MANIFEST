@@ -56,3 +56,4 @@ ARTISTIC.txt
 Apache-2.0.txt
 GPL2.txt
 lib/Number/Phone/Country/Data.pm
+lib/Number/Phone/NANP/Data.pm

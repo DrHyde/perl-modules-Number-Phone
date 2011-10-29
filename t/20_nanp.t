@@ -2,7 +2,7 @@
 
 use strict;
 
-use Test::More tests => 126;
+use Test::More tests => 127;
 use Scalar::Util qw(blessed);
 
 BEGIN { use_ok('Number::Phone::NANP'); }
@@ -81,3 +81,5 @@ foreach my $country (sort keys %test_numbers) {
     ok($number->country_code() == 1, "$country has country code 1");
     ok($number->format() =~ /\+1 \d{3} \d{3} \d{4}$/, "$country can format numbers");
 }
+
+is(Number::Phone->new('+1 201 200 1234')->areaname(), 'Jersey City, NJ', 'areaname works');
