@@ -33,8 +33,8 @@ choose to use them, on your own head be it!
 
 The data used in these modules have come from all sorts of places.  Most
 of them disclaim any responsibility for errors in the data.  I disclaim
-all responsibility for errors too, even if my code rapes your daughter,
-or makes your PBX turn purple.
+all responsibility for errors too, even if my code makes your PBX turn
+purple.
 
 Data sources used include:
   http://wtng.info
@@ -43,7 +43,7 @@ Data sources used include:
   http://www.ofcom.org.uk/ - for UK data
   http://www.areacode-info.com/ - for US data
   http://www.cnac.ca/ - for Canadian data
-  google - trying to find valid phone numbers in some countries, for testing
+  Google's libphonenumber <http://code.google.com/p/libphonenumber/>
 
 I have tried to make sure that as far as possible all phone numbers used
 in example code and in tests belong either to bodies involved in telecoms
