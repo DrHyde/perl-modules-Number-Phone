@@ -1,11 +1,3 @@
-*************************************************************************
-* I don't want to maintain the NANP modules myself, so can some NANPish *
-* person please contact me to arrange to take them over yourself.  You  *
-* will need to have an interest in telecoms and I would prefer someone  *
-* who is on the telnum-l mailing list or something similar so that you  *
-* will be kept up to date with changes.                                 *
-*************************************************************************
-
 This distribution contains several modules.
 
 To install them modules, do the usual dance:
@@ -43,7 +35,8 @@ Data sources used include:
   http://www.ofcom.org.uk/ - for UK data
   http://www.areacode-info.com/ - for US data
   http://www.cnac.ca/ - for Canadian data
-  Google's libphonenumber <http://code.google.com/p/libphonenumber/>
+  Google's libphonenumber <http://code.google.com/p/libphonenumber/>,
+    whose data are used for NANP area code names
 
 I have tried to make sure that as far as possible all phone numbers used
 in example code and in tests belong either to bodies involved in telecoms
