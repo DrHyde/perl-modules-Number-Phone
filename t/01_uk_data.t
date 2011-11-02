@@ -145,9 +145,6 @@ print 'ok '.(++$test)." 03 numbers have right type\n";
 print 'not ' unless($number->format() eq '+44 3031231234');
 print 'ok '.(++$test)." 03 numbers are formatted right\n";
 
-# Unknown format: 5+4 (r: 169772; t: BT)
-# Unknown format: Mixed 4+5 & 4+6 (r: 176888; t: BT)
-
 print 'not ' unless(Number::Phone->new('+44169772200')->format() eq
     '+44 16977 2200');
 print 'ok '.(++$test)." 5+4 format works\n";
