@@ -38,6 +38,22 @@ Data sources used include:
   Google's libphonenumber <http://code.google.com/p/libphonenumber/>,
     whose data are used for NANP area code names
 
+You can find the most recent version of the source code on Github at:
+  https://github.com/DrHyde/perl-modules-Number-Phone
+
+There is an online demo of some of its functionality here: 
+  http://www.cantrell.org.uk/david/phoneinfo/
+
+And you can browse the online documentation here:
+  http://search.cpan.org/~dcantrell/Number-Phone/
+
+The most important bits of doco to read are Number::Phone,
+Number::Phone::Country, Number::Phone::UK, and
+Number::Phone::NANP.  Most other stuff is either a subclass of one
+of those that provides country-specific data, or is a "helper"
+module that supplies data in a non-user-oriented formati, intended
+only for internal use.
+
 I have tried to make sure that as far as possible all phone numbers used
 in example code and in tests belong either to bodies involved in telecoms
 (regulators, telcos etc) or to governments or to myself.  This has not
