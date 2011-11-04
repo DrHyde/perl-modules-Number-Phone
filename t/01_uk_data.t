@@ -1,16 +1,11 @@
 #!/usr/bin/perl -w
 
-my $loaded;
-
 use strict;
 
 use Number::Phone::UK;
 use Test::More;
 
 END { done_testing(); }
-# BEGIN { $| = 1; print "1..79\n"; }
-
-my $test = 0;
 
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
