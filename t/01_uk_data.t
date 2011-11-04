@@ -6,7 +6,7 @@ use strict;
 
 use Number::Phone::UK;
 
-BEGIN { $| = 1; print "1..75\n"; }
+BEGIN { $| = 1; print "1..79\n"; }
 
 my $test = 0;
 
@@ -208,3 +208,14 @@ print 'ok '.(++$test)." OFCOM's stupid 6+4 format for 1302 62[2459] is corrected
 $number = Number::Phone->new('+441302623123');
 print 'not ' unless($number->format() eq '+44 1302 623123');
 print 'ok '.(++$test)." OFCOM's missing format for 1302 623 is corrected\n";
+
+foreach my $tuple (
+  [ 'Number::Phone'     => '+441954202020', '+44 1954 202020' ],
+  [ 'Number::Phone::UK' => '01954202020',   '+44 1954 202020' ],
+  [ 'Number::Phone'     => '+441697384444', '+44 1697384444' ],
+  [ 'Number::Phone::UK' => '01697384444',   '+44 1697384444' ],
+) {
+  $number = $tuple->[0]->new($tuple->[1]);
+  print 'not ' unless($number->format() eq $tuple->[2]);
+  print 'ok '.(++$test).' '.$tuple->[0].'->new('.$tuple->[1].')->format() works ('.$tuple->[2].")\n";
+}

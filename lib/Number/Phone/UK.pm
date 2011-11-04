@@ -296,7 +296,7 @@ sub format {
         __PACKAGE__->new($self);
     return '+'.country_code().' '.(
         $self->areacode()      ? $self->areacode().' '.$self->subscriber() :
-        !$self->is_allocated() ? substr(${$self}, 1 + length(country_code()))
+        !$self->is_allocated() ? ( ${$self} =~ /^\+44/ ? substr(${$self}, 3) : substr(${$self}, 1))
                                : $self->subscriber()
     );
 }
