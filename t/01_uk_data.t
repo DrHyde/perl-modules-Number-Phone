@@ -5,209 +5,144 @@ my $loaded;
 use strict;
 
 use Number::Phone::UK;
+use Test::More;
 
-BEGIN { $| = 1; print "1..79\n"; }
+END { done_testing(); }
+# BEGIN { $| = 1; print "1..79\n"; }
 
 my $test = 0;
 
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
 my $number = Number::Phone->new('+44 142422 0000');
-print 'not ' unless($number->country() eq 'UK');
-print 'ok '.(++$test)." inherited country() method works\n";
-print 'not ' unless($number->format() eq '+44 1424 220000');
-print 'ok '.(++$test)." 4+6 number formatted OK\n";
+ok($number->country() eq 'UK', "inherited country() method works");
+ok($number->format() eq '+44 1424 220000', "4+6 number formatted OK");
 $number = Number::Phone->new('+44 115822 0000');
-print 'not ' unless($number->format() eq '+44 115 8220000');
-print 'ok '.(++$test)." 3+7 number formatted OK\n";
+ok($number->format() eq '+44 115 8220000', "3+7 number formatted OK");
 $number = Number::Phone->new('+442 0 8771 2924');
-print 'not ' unless($number->format() eq '+44 20 87712924');
-print 'ok '.(++$test)." 2+8 number formatted OK\n";
-print 'not ' unless($number->areacode() eq '20');
-print 'ok '.(++$test)." 2+8 number has correct area code\n";
-print 'not ' unless($number->subscriber() eq '87712924');
-print 'ok '.(++$test)." 2+8 number has correct subscriber number\n";
+ok($number->format() eq '+44 20 87712924', "2+8 number formatted OK");
+ok($number->areacode() eq '20', "2+8 number has correct area code");
+ok($number->subscriber() eq '87712924', "2+8 number has correct subscriber number");
 foreach my $method (qw(is_allocated is_geographic is_valid)) {
-    print 'not ' unless($number->$method());
-    print 'ok '.(++$test)." $method works for a London number\n";
+    ok($number->$method(), "$method works for a London number");
 }
 foreach my $method (qw(is_in_use is_fixed_line is_mobile is_pager is_ipphone is_isdn is_tollfree is_specialrate is_adult is_personal is_corporate is_government is_international is_network_service is_ipphone)) {
-    print 'not ' if($number->$method());
-    print 'ok '.(++$test)." $method works for a London number\n";
+    ok(!$number->$method(), "$method works for a London number");
 }
-print 'not ' if(defined($number->is_fixed_line()));
-print 'ok '.(++$test)." geographic numbers return undef for is_fixed_line\n";
-print 'not ' unless(join(', ', sort $number->type()) eq 'is_allocated, is_geographic, is_valid');
-print 'ok '.(++$test)." type() works\n";
+ok(!defined($number->is_fixed_line()), "geographic numbers return undef for is_fixed_line");
+ok(join(', ', sort $number->type()) eq 'is_allocated, is_geographic, is_valid', "type() works");
 
 $number = Number::Phone->new('+448450033845');
-print 'not ' unless($number->format() eq '+44 8450033845');
-print 'ok '.(++$test)." 0+10 number formatted OK\n";
-print 'not ' unless($number->areacode() eq '');
-print 'ok '.(++$test)." 0+10 number has no area code\n";
-print 'not ' unless($number->subscriber() eq '8450033845');
-print 'ok '.(++$test)." 0+10 number has correct subscriber number\n";
+ok($number->format() eq '+44 8450033845', "0+10 number formatted OK");
+ok($number->areacode() eq '', "0+10 number has no area code");
+ok($number->subscriber() eq '8450033845', "0+10 number has correct subscriber number");
 
 $number = Number::Phone->new('+447979866975');
-print 'not ' unless($number->is_mobile());
-print 'ok '.(++$test)." mobiles correctly identified\n";
-print 'not ' unless(defined($number->is_fixed_line()) && !$number->is_fixed_line());
-print 'ok '.(++$test)." mobiles are identified as not fixed lines\n";
+ok($number->is_mobile(), "mobiles correctly identified");
+ok(defined($number->is_fixed_line()) && !$number->is_fixed_line(), "mobiles are identified as not fixed lines");
 
 $number = Number::Phone->new('+445600123456');
-print 'not ' unless($number->is_ipphone());
-print 'ok '.(++$test)." VoIP correctly identified\n";
+ok($number->is_ipphone(), "VoIP correctly identified");
 
-# toll-free pagers no longer exist
-# # $number = Number::Phone->new('+447600212345');
-# # print 'not ' unless($number->is_pager());
-# # print 'ok '.(++$test)." pagers correctly identified\n";
-# # print 'not ' unless($number->is_tollfree());
-# # print 'ok '.(++$test)." toll-free pagers correctly identified\n";
 $number = Number::Phone->new('+447693912345');
-print 'not ' unless($number->is_pager());
-print 'ok '.(++$test)." pagers correctly identified\n";
+ok($number->is_pager(), "pagers correctly identified");
 
 $number = Number::Phone->new('+44800001012');
-print 'not ' unless($number->is_tollfree());
-print 'ok '.(++$test)." toll-free numbers with significant F digit correctly identified\n";
+ok($number->is_tollfree(), "toll-free numbers with significant F digit correctly identified");
 $number = Number::Phone->new('+44500123456');
-print 'not ' unless($number->is_tollfree());
-print 'ok '.(++$test)." C&W 0500 numbers correctly identified as toll-free\n";
+ok($number->is_tollfree(), "C&W 0500 numbers correctly identified as toll-free");
 $number = Number::Phone->new('+448000341234');
-print 'not ' unless($number->is_tollfree());
-print 'ok '.(++$test)." generic toll-free numbers correctly identified\n";
+ok($number->is_tollfree(), "generic toll-free numbers correctly identified");
 
 $number = Number::Phone->new('+448450033845');
-print 'not ' unless($number->is_specialrate());
-print 'ok '.(++$test)." special-rate numbers correctly identified\n";
+ok($number->is_specialrate(), "special-rate numbers correctly identified");
 
 $number = Number::Phone->new('+449088791234');
-print 'not ' unless($number->is_adult() && $number->is_specialrate());
-print 'ok '.(++$test)." 0908 'adult' numbers correctly identified\n";
+ok($number->is_adult() && $number->is_specialrate(), "0908 'adult' numbers correctly identified");
 $number = Number::Phone->new('+449090901234');
-print 'not ' unless($number->is_adult() && $number->is_specialrate());
-print 'ok '.(++$test)." 0909 'adult' numbers correctly identified\n";
+ok($number->is_adult() && $number->is_specialrate(), "0909 'adult' numbers correctly identified");
 
 $number = Number::Phone->new('+447000012345');
-print 'not ' unless($number->is_personal());
-print 'ok '.(++$test)." personal numbers correctly identified\n";
+ok($number->is_personal(), "personal numbers correctly identified");
 
 $number = Number::Phone->new('+445588301234');
-print 'not ' unless($number->is_corporate());
-print 'ok '.(++$test)." corporate numbers correctly identified\n";
+ok($number->is_corporate(), "corporate numbers correctly identified");
 
 $number = Number::Phone->new('+448200123456');
-print 'not ' unless($number->is_network_service());
-print 'ok '.(++$test)." network service numbers correctly identified\n";
+ok($number->is_network_service(), "network service numbers correctly identified");
 
 $number = Number::Phone->new('+448450033845');
-print 'not ' unless($number->operator() eq 'Edge Telecom Limited');
-print 'ok '.(++$test)." operators correctly identified\n";
-print '# '.$number->operator()."\n";
+ok($number->operator() eq 'Edge Telecom Limited', "operators correctly identified");
 
-print 'not ' if(defined($number->areaname()));
-print 'ok '.(++$test)." good, no area name for non-geographic numbers\n";
+ok(!defined($number->areaname()), "good, no area name for non-geographic numbers");
 $number = Number::Phone->new('+442087712924');
-print 'not ' unless($number->areaname() eq 'London');
-print 'ok '.(++$test)." London numbers return correct area name\n";
+ok($number->areaname() eq 'London', "London numbers return correct area name");
 
 $number = Number::Phone->new('+448457283848'); # "Allocated for Migration only"
-print 'not ' unless($number);
-print 'ok '.(++$test)." 0845 'Allocated for Migration only' fixed\n";
+ok($number, "0845 'Allocated for Migration only' fixed");
 
 $number = Number::Phone->new('+448701540154'); # "Allocated for Migration only"
-print 'not ' unless($number);
-print 'ok '.(++$test)." 0870 'Allocated for Migration only' fixed\n";
+ok($number, "0870 'Allocated for Migration only' fixed");
 
 $number = Number::Phone->new('+447092306588'); # dodgy spaces were appearing in data
-print 'not ' unless($number);
-print 'ok '.(++$test)." bad 070 data fixed\n";
+ok($number, "bad 070 data fixed");
 
 $number = Number::Phone->new('+442030791234'); # new London 020 3 numbers
-print 'not ' unless($number);
-print 'ok '.(++$test)." 0203 numbers are recognised\n";
-print 'not ' unless($number->is_allocated() && $number->is_geographic());
-print 'ok '.(++$test)." ... and their type looks OK\n";
+ok($number, "0203 numbers are recognised");
+ok($number->is_allocated() && $number->is_geographic(), "... and their type looks OK");
 
 $number = Number::Phone->new('+442087712924');
-print 'not ' unless($number->location()->[0] == 51.38309 && $number->location()->[1] == -0.336079);
-print 'ok '.(++$test)." geo numbers have correct location\n";
+ok($number->location()->[0] == 51.38309 && $number->location()->[1] == -0.336079, "geo numbers have correct location");
 $number = Number::Phone->new('+447979866975');
-print 'not ' if(defined($number->location()));
-print 'ok '.(++$test)." non-geo numbers have no location\n";
+ok(!defined($number->location()), "non-geo numbers have no location");
 
 $number = Number::Phone->new('+443031231234');
-print 'not ' unless($number->operator() eq 'BT');
-print 'ok '.(++$test)." 03 numbers have right operator\n";
-print 'not ' unless(join(',', sort { $a cmp $b } $number->type()) eq 'is_allocated,is_valid');
-print 'ok '.(++$test)." 03 numbers have right type\n";
-print 'not ' unless($number->format() eq '+44 3031231234');
-print 'ok '.(++$test)." 03 numbers are formatted right\n";
+ok($number->operator() eq 'BT', "03 numbers have right operator");
+ok(join(',', sort { $a cmp $b } $number->type()) eq 'is_allocated,is_valid', "03 numbers have right type");
+ok($number->format() eq '+44 3031231234', "03 numbers are formatted right");
 
-print 'not ' unless(Number::Phone->new('+44169772200')->format() eq
-    '+44 16977 2200');
-print 'ok '.(++$test)." 5+4 format works\n";
+ok(Number::Phone->new('+44169772200')->format() eq '+44 16977 2200', "5+4 format works");
 
 # 01768 88 is "Mixed 4+5 & 4+6".  I wish someone would just set the village on fire.
-print 'not ' unless(Number::Phone->new('+44 1768 88 000')->format() eq '+44 1768 88000'); # 4+5
-print 'ok '.(++$test)." 4+5 (mixed) format works\n";
-print 'not ' unless(Number::Phone->new('+44 1768 88 100')->format() eq '+44 1768 88100');
-print 'ok '.(++$test)." 4+5 (mixed) format works\n";
+ok(Number::Phone->new('+44 1768 88 000')->format() eq '+44 1768 88000', "4+5 (mixed) format works");
+ok(Number::Phone->new('+44 1768 88 100')->format() eq '+44 1768 88100', "4+5 (mixed) format works");
 
-print 'not ' unless(Number::Phone->new('+44 1768 88 0000')->format() eq '+44 1768 880000'); # 4+6
-print 'ok '.(++$test)." 4+6 (mixed) format works\n";
-print 'not ' unless(Number::Phone->new('+44 1768 88 1000')->format() eq '+44 1768 881000');
-print 'ok '.(++$test)." 4+6 (mixed) format works\n";
+ok(Number::Phone->new('+44 1768 88 0000')->format() eq '+44 1768 880000', "4+6 (mixed) format works");
+ok(Number::Phone->new('+44 1768 88 1000')->format() eq '+44 1768 881000', "4+6 (mixed) format works");
 
-print 'not ' if(Number::Phone->new('+44 1768 88 0')); # 4+3
-print 'ok '.(++$test)." 4+3 in that range correctly fails\n";
-print 'not ' if(Number::Phone->new('+44 1768 88 00')); # 4+4
-print 'ok '.(++$test)." 4+4 in that range correctly fails\n";
-print 'not ' if(Number::Phone->new('+44 1768 88 00000')); # 4+7
-print 'ok '.(++$test)." 4+7 in that range correctly fails\n";
+ok(!Number::Phone->new('+44 1768 88 0'), "4+3 in that range correctly fails");
+ok(!Number::Phone->new('+44 1768 88 00'), "4+4 in that range correctly fails");
+ok(!Number::Phone->new('+44 1768 88 00000'), "4+7 in that range correctly fails");
 
 $number = Number::Phone->new('+447400000000');
-print 'not ' unless($number->is_mobile());
-print 'ok '.(++$test)." 074 mobiles correctly identified\n";
-print 'not ' unless($number->operator() eq 'Hutchison 3G UK Ltd');
-print 'ok '.(++$test)." 074 mobiles have right operator\n";
-print 'not ' unless($number->format() eq '+44 7400000000');
-print 'ok '.(++$test)." 074 mobiles have right operator\n";
+ok($number->is_mobile(), "074 mobiles correctly identified");
+ok($number->operator() eq 'Hutchison 3G UK Ltd', "074 mobiles have right operator");
+ok($number->format() eq '+44 7400000000', "074 mobiles have right operator");
 
 $number = Number::Phone->new('+447500000000');
-print 'not ' unless($number->is_mobile());
-print 'ok '.(++$test)." 075 mobiles correctly identified\n";
-print 'not ' unless($number->operator() eq 'Vodafone Ltd');
-print 'ok '.(++$test)." 075 mobiles have right operator\n";
-print 'not ' unless($number->format() eq '+44 7500000000');
-print 'ok '.(++$test)." 075 mobiles have right operator\n";
+ok($number->is_mobile(), "075 mobiles correctly identified");
+ok($number->operator() eq 'Vodafone Ltd', "075 mobiles have right operator");
+ok($number->format() eq '+44 7500000000', "075 mobiles have right operator");
 
 print "# bugfixes\n";
 
 $number = Number::Phone->new('+441954123456');
-print 'not ' unless($number->format() eq '+44 1954123456');
-print 'ok '.(++$test)." unallocated numbers format OK\n";
+ok($number->format() eq '+44 1954123456', "unallocated numbers format OK");
 
 $number = Number::Phone->new('+441954202020');
-print 'not ' unless($number->format() eq '+44 1954 202020');
-print 'ok '.(++$test)." allocated numbers format OK\n";
+ok($number->format() eq '+44 1954 202020', "allocated numbers format OK");
 
 $number = Number::Phone::UK->new('0844000000');
-print 'not ' if(defined($number));
-print 'ok '.(++$test)." 0844 000 000 is invalid (too short)\n";
+ok(!defined($number), "0844 000 000 is invalid (too short)");
 
 $number = Number::Phone->new('+44844000000');
-print 'not ' if(defined($number));
-print 'ok '.(++$test)." +44 844 000 000 is invalid (too short)\n";
+ok(!defined($number), "+44 844 000 000 is invalid (too short)");
 
 $number = Number::Phone->new('+441302622123');
-print 'not ' unless($number->format() eq '+44 1302 622123');
-print 'ok '.(++$test)." OFCOM's stupid 6+4 format for 1302 62[2459] is corrected\n";
+ok($number->format() eq '+44 1302 622123', "OFCOM's stupid 6+4 format for 1302 62[2459] is corrected");
 
 $number = Number::Phone->new('+441302623123');
-print 'not ' unless($number->format() eq '+44 1302 623123');
-print 'ok '.(++$test)." OFCOM's missing format for 1302 623 is corrected\n";
+ok($number->format() eq '+44 1302 623123', "OFCOM's missing format for 1302 623 is corrected");
 
 foreach my $tuple (
   [ 'Number::Phone'     => '+441954202020', '+44 1954 202020' ],
@@ -216,6 +151,5 @@ foreach my $tuple (
   [ 'Number::Phone::UK' => '01697384444',   '+44 1697384444' ],
 ) {
   $number = $tuple->[0]->new($tuple->[1]);
-  print 'not ' unless($number->format() eq $tuple->[2]);
-  print 'ok '.(++$test).' '.$tuple->[0].'->new('.$tuple->[1].')->format() works ('.$tuple->[2].")\n";
+  ok($number->format() eq $tuple->[2], $tuple->[0].'->new('.$tuple->[1].')->format() works ('.$tuple->[2].")");
 }
