@@ -1,3 +1,5 @@
+XXXX-XX-XX      X.X     Fix nasty bug in formatting unallocated UK numbers
+
 2011-10-29      1.9     New UK allocations;
                         Use libphonenumber's data for N::P::Country;
                         Use libphonenumber's data for N::P::NANP areanames
