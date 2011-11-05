@@ -1,7 +1,5 @@
 package Number::Phone::NANP::SX;
 
-# numbering plan at http://www.itu.int/itudoc/itu-t/number/a/sam/86412.html
-
 use strict;
 
 use base 'Number::Phone::NANP';
