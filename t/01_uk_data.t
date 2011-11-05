@@ -13,9 +13,9 @@ my $number = Number::Phone->new('+44 142422 0000');
 ok($number->country() eq 'UK', "inherited country() method works");
 ok($number->format() eq '+44 1424 220000', "4+6 number formatted OK");
 $number = Number::Phone->new('+44 115822 0000');
-ok($number->format() eq '+44 115 8220000', "3+7 number formatted OK");
+ok($number->format() eq '+44 115 822 0000', "3+7 number formatted OK");
 $number = Number::Phone->new('+442 0 8771 2924');
-ok($number->format() eq '+44 20 87712924', "2+8 number formatted OK");
+ok($number->format() eq '+44 20 8771 2924', "2+8 number formatted OK");
 ok($number->areacode() eq '20', "2+8 number has correct area code");
 ok($number->subscriber() eq '87712924', "2+8 number has correct subscriber number");
 foreach my $method (qw(is_allocated is_geographic is_valid)) {
