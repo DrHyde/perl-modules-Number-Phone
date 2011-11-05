@@ -2,7 +2,7 @@
 
 use strict;
 
-use Test::More tests => 127;
+use Test::More tests => 132;
 use Scalar::Util qw(blessed);
 
 BEGIN { use_ok('Number::Phone::NANP'); }
@@ -27,6 +27,7 @@ my %test_numbers = (
     MP   => '670 682 4555',
     MS   => '664 491 2230',
     PR   => '787 729 3131',
+    SX   => '721 555 0001',
     TC   => '649 946 5231',
     TT   => '868 624 6982',
     US   => '202 418 1440',
@@ -55,6 +56,7 @@ my %regulators = (
     MP   => '',
     MS   => '',
     PR   => '',
+    SX   => '',
     TC   => '',
     TT   => 'RIC',
     US   => 'FCC',

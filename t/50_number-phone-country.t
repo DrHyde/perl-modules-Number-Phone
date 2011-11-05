@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 300;
+use Test::More tests => 301;
 
 use Number::Phone::Country;
 
@@ -36,6 +36,7 @@ ok(phone2country('1 664 555 0199') eq 'MS', 'NANP: MS: 664');
 ok(phone2country('1 670 555 0199') eq 'MP', 'NANP: MP: 670');
 ok(phone2country('1 671 555 0199') eq 'GU', 'NANP: GU: 671');
 ok(phone2country('1 684 555 0199') eq 'AS', 'NANP: AS: 684');
+ok(phone2country('1 721 555 0199') eq 'SX', 'NANP: SX: 721');
 ok(phone2country('1 758 555 0199') eq 'LC', 'NANP: LC: 758');
 ok(phone2country('1 767 555 0199') eq 'DM', 'NANP: DM: 767');
 ok(phone2country('1 784 555 0199') eq 'VC', 'NANP: VC: 784');
@@ -50,7 +51,8 @@ ok(phone2country('1 939 555 0199') eq 'PR', 'NANP: PR: 939');
 
 # Sometimes countries move around. Pesky things.
 { no warnings;
-ok(phone2country('+6841234567') ne 'AS', "+684 *not* identified as AS"); 
+ok(phone2country('+6841234567') ne 'AS', "+684 *not* identified as AS");  # moved to NANP, +1 684
+ok(phone2country('+5995123')    ne 'SX', '+5995 *not* identified as SX'); # moved to NANP, +1 721
 }
 
 # FIXME - add Kazakhstan/Russia weirdness
@@ -226,7 +228,6 @@ ok(phone2country('+596123') eq 'MQ', '+596 is MQ');
 ok(phone2country('+597123') eq 'SR', '+597 is SR');
 ok(phone2country('+598123') eq 'UY', '+598 is UY');
 ok(phone2country('+599123') eq 'BQ', '+599 is BQ');
-ok(phone2country('+5995123') eq 'SX', '+5995 is SX');
 ok(phone2country('+5999123') eq 'CW', '+5990 is CW');
 ok(phone2country('+60123')  eq 'MY', '+60 is MY');
 ok(phone2country('+61123')  eq 'AU', '+61 is AU');

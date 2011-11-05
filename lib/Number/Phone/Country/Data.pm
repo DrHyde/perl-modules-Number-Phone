@@ -76,7 +76,6 @@ $VERSION = '1.0';
     594     => 'GF', 595     => 'PY', 596     => 'MQ', 597     => 'SR',
     598     => 'UY',
     599     => 'BQ',
-    5995    => 'SX', # will move to +1 721 in Sep 2011
     5999    => 'CW',
     
     # 6* checked against wtng.info 2011-07-08

@@ -149,6 +149,7 @@ sub phone2country_and_idd {
         elsif($1 eq '670') { return ('MP', 1); }
         elsif($1 eq '671') { return ('GU', 1); }
         elsif($1 eq '684') { return ('AS', 1); }
+        elsif($1 eq '721') { return ('SX', 1); }
         elsif($1 eq '758') { return ('LC', 1); }
         elsif($1 eq '767') { return ('DM', 1); }
         elsif($1 eq '784') { return ('VC', 1); }
