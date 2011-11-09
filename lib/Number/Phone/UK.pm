@@ -29,7 +29,7 @@ sub new {
     die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
     if(is_valid($number)) {
-        return bless(\$number, $class);
+        return bless(\$number, _get_class(_clean_number($number)));
     } else { return undef; }
 }
 
@@ -46,6 +46,18 @@ not yet be allocated, or it may be reserved.  Any number which returns
 true for any of the following methods will also be valid.
 
 =cut
+
+sub _get_class {
+  my $number = shift;
+  foreach my $prefix (_retards($number)) {
+    if(exists($Number::Phone::UK::Data::db->{class}->{$prefix})) {
+      eval 'use '.$Number::Phone::UK::Data::db->{class}->{$prefix};
+      die($@) if($@);
+      return $Number::Phone::UK::Data::db->{class}->{$prefix};
+    }
+  }
+  return __PACKAGE__;
+}
 
 sub _clean_number {
     my $clean = shift;

@@ -10,6 +10,7 @@ END { done_testing(); }
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
 my $number = Number::Phone->new('+44 142422 0000');
+isa_ok($number, 'Number::Phone::UK', 'isa N::P::UK');
 ok($number->country() eq 'UK', "inherited country() method works");
 ok($number->format() eq '+44 1424 220000', "4+6 number formatted OK");
 $number = Number::Phone->new('+44 115822 0000');

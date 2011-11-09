@@ -1,6 +1,8 @@
 XXXX-XX-XX      X.X     Fix nasty bug in formatting unallocated UK numbers;
                         Sint Maarten (SX) moved from +599 5 to +1 721;
-                        UK formatting improved for 3+7 and 2+8 formats
+                        UK formatting improved for 3+7 and 2+8 formats;
+                        Isle of Man (IM) now sort-of treated as a country;
+                        New UK allocations
 
 2011-10-29      1.9     New UK allocations;
                         Use libphonenumber's data for N::P::Country;

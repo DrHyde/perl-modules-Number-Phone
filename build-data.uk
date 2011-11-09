@@ -174,7 +174,7 @@ while(my $line = <S7>) {
     my $format = $fields[6] || '10 digit numbers';
 
     push @telco_length_data, [$retard, $telco, $format];
-    if($fields[5] eq 'Mobile services') {
+    if($fields[5] eq 'Mobile services' || $retard =~ /^7624/) { # 07624 is IoM mobiles, not pagers
         push @mobile_prefices, $retard;
     } elsif($fields[5] eq 'Radiopaging') {
         push @pager_prefices, $retard;
@@ -261,5 +261,11 @@ foreach my $datum (@telco_length_data) {
 
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
+$dbm->{class} = {
+  1624 => 'Number::Phone::IM',
+  7524 => 'Number::Phone::IM', # according to wikipedia, "withheld" according to OFCOM
+  7624 => 'Number::Phone::IM',
+  7924 => 'Number::Phone::IM',
+};
 
 $dbm->optimize();

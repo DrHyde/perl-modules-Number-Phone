@@ -58,3 +58,5 @@ GPL2.txt
 lib/Number/Phone/Country/Data.pm
 lib/Number/Phone/NANP/Data.pm
 lib/Number/Phone/NANP/SX.pm
+lib/Number/Phone/IM.pm
+t/02_weird_little_islands.t
