@@ -6,9 +6,6 @@ use base 'Number::Phone::UK';
 
 our $VERSION = 1.0;
 
-# NB this module doesn't register itself, the NANP module should be
-# used and will load this one as necessary
-
 =head1 NAME
 
 Number::Phone::NANP::IM - IM-specific methods for Number::Phone
