@@ -238,13 +238,11 @@ foreach my $datum (@telco_length_data) {
         $format = '4+5/6';
     } elsif(
         $format ne '2+8' &&
-        $format ne '2+8' &&
         $format ne '3+7' &&
-        # $format ne '4+4' &&
         $format ne '4+6' &&
         $format ne '4+5' &&
-        $format ne '5+4' &&
         $format ne '5+5' &&
+        $format ne '5+4' &&
         $format ne 'Mixed 4+5 & 4+6'
     ) {
         warn "Unknown format: $format (r: $retard; t: $telco)\n";
