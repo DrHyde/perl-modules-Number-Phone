@@ -66,8 +66,8 @@ sub type {
 sub country {
     my $class = blessed(shift);
     return unless $class;
-    my ($country) = $class =~ m/^Number::Phone::([A-Z]{2})(?:::|$)/;
-    $country
+    (my @two_letter_codes) = $class =~ /\b([A-Z]{2})\b/g;
+    return $two_letter_codes[-1];
 }
 
 1;
@@ -335,6 +335,14 @@ to implement your own version for countries where part of the number
 range is overlayed with another country.
 
 Exception: for the UK, return 'uk', not 'gb'.
+
+Specifically, the superclass implementation looks at the class name and
+returns the last two-letter code it finds.  eg ...
+
+  from Number::Phone::UK, it would return DE
+  from Number::Phone::UK::IM, it would return IM
+  from Number::Phone::NANP::US, it would return US
+  from Number::Phone::FR::Full, it would return FR
 
 =item translates_to
 

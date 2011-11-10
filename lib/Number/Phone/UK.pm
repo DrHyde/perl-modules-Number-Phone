@@ -29,7 +29,7 @@ sub new {
     die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
     if(is_valid($number)) {
-        return bless(\$number, _get_class(_clean_number($number)));
+        return bless(\$number, $class->_get_class(_clean_number($number)));
     } else { return undef; }
 }
 
@@ -48,15 +48,17 @@ true for any of the following methods will also be valid.
 =cut
 
 sub _get_class {
+  my $class = shift;
   my $number = shift;
   foreach my $prefix (_retards($number)) {
-    if(exists($Number::Phone::UK::Data::db->{class}->{$prefix})) {
-      eval 'use '.$Number::Phone::UK::Data::db->{class}->{$prefix};
+    if(exists($Number::Phone::UK::Data::db->{subclass}->{$prefix})) {
+      my $subclass = join('::', $class, $Number::Phone::UK::Data::db->{subclass}->{$prefix});
+      eval "use $subclass";
       die($@) if($@);
-      return $Number::Phone::UK::Data::db->{class}->{$prefix};
+      return $subclass;
     }
   }
-  return __PACKAGE__;
+  return $class;
 }
 
 sub _clean_number {

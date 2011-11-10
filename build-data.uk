@@ -259,11 +259,11 @@ foreach my $datum (@telco_length_data) {
 
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
-$dbm->{class} = {
-  1624 => 'Number::Phone::IM',
-  7524 => 'Number::Phone::IM', # according to wikipedia, "withheld" according to OFCOM
-  7624 => 'Number::Phone::IM',
-  7924 => 'Number::Phone::IM',
+$dbm->{subclass} = {
+  1624 => 'IM',
+  7524 => 'IM', # according to wikipedia, "withheld" according to OFCOM
+  7624 => 'IM',
+  7924 => 'IM',
 };
 
 $dbm->optimize();

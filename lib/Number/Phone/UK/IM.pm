@@ -1,4 +1,4 @@
-package Number::Phone::IM;
+package Number::Phone::UK::IM;
 
 use strict;
 
@@ -8,7 +8,7 @@ our $VERSION = 1.0;
 
 =head1 NAME
 
-Number::Phone::NANP::IM - IM-specific methods for Number::Phone
+Number::Phone::UK::IM - IM-specific methods for Number::Phone
 
 =head1 DESCRIPTION
 
