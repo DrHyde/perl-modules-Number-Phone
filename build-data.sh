@@ -28,3 +28,11 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/geocoding
 else
   echo lib/Number/Phone/NANP/Data.pm is up-to-date
 fi
+
+# lib/Number/Phone/StubCountry/MOCK.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetaData.xml is newer ...
+if test ! -e lib/Number/Phone/StubCountry/MOCK.pm -o libphonenumber/resources/PhoneNumberMetaData.xml -nt lib/Number/Phone/StubCountry/MOCK.pm; then
+  echo rebuilding lib/Number/Phone/StubCountry/\*.pm
+  perl build-data.stubs
+else
+  echo lib/Number/Phone/StubCountry/\*.pm are up-to-date
+fi

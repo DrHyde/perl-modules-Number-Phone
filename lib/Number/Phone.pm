@@ -9,6 +9,16 @@ use Number::Phone::StubCountry;
 
 our $VERSION = 1.9;
 
+my $NOSTUBS = 0;
+sub import {
+  my $class = shift;
+  my @params = @_;
+  if(grep { /^nostubs$/ } @params) {
+    $NOSTUBS++
+  }
+}
+
+
 my @is_methods = qw(
     is_valid is_allocated is_in_use
     is_geographic is_fixed_line is_mobile is_pager
@@ -103,10 +113,14 @@ If you pass in a bogus country code not recognised by
 Number::Phone::Country, the constructor will return undef.
 
 If you pass in a country code for which
-no supporting module is available, the constructor will return a
-minimal object that knows its country code and how to format a phone
-number, but nothing else.  Note that this is an incompatible change:
-previously it would return undef.
+no supporting module is available, the constructor will try to use a 'stub'
+class under Number::Phone::StubCountry::* that uses data automatically
+extracted from Google's libphonenumber project.  libphonenumber doesn't
+have enough data to support all the features of Number::Phone, and this
+is an experimental feature.  If you want to disable this, then pass 'nostubs'
+when you use the module:
+
+    use Number::Phone qw(nostubs);
 
 =cut
 
@@ -141,17 +155,14 @@ sub new {
 }
 
 sub _make_stub_object {
-  my $class = shift;
+  shift;
   my $number = shift;
-  my $self = {
-    country => 'STUBFORCOUNTRYWITHNOMODULE',
-    country_idd_code => ''.Number::Phone::Country::country_code(Number::Phone::Country::phone2country($number)),
-    country_code => ''.Number::Phone::Country::phone2country($number),
-    number => $number
-  };
-  # use Data::Dumper; local $Data::Dumper::Indent = 1;
-  # print Dumper($self);
-  bless($self, 'Number::Phone::StubCountry');
+  my $country_code = ''.Number::Phone::Country::phone2country($number);
+  die("no module available for +$country_code, and nostubs turned on\n") if($NOSTUBS);
+  my $class = "Number::Phone::StubCountry::$country_code";
+  eval "use $class";
+  die("Can't find $class: $@\n") if($@);
+  $class->new($number);
 }
 
 =head1 METHODS

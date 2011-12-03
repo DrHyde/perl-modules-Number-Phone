@@ -7,8 +7,6 @@
 use strict;
 use warnings;
 
-use lib 'lib';
-
 open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Phone/NANP/Data.pm\n");
 
 print MODULE "# automatically generated file, don't edit\n\n";

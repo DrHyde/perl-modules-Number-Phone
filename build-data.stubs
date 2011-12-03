@@ -1,0 +1,107 @@
+#!/usr/local/bin/perl
+
+# THIS SCRIPT IS NOT INTENDED FOR END USERS OR FOR PEOPLE INSTALLING
+# THE MODULES, BUT FOR THE AUTHOR'S USE WHEN UPDATING THE DATA FROM OFCOM'S
+# PUBLISHED DATA.
+
+use strict;
+use warnings;
+use Data::Dumper; local $Data::Dumper::Indent = 0;
+
+use XML::XPath;
+my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetaData.xml');
+my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
+
+open(my $manifest_fh, 'MANIFEST') || die("Can't read MANIFEST\n");
+my @manifest_files = grep { /./ } <$manifest_fh>;
+close($manifest_fh);
+open($manifest_fh, '>', 'MANIFEST') || die("Can't write MANIFEST\n");
+print $manifest_fh "$_" foreach( grep { $_ !~ m{^lib/Number/Phone/StubCountry/} } @manifest_files);
+
+mkdir('lib/Number/Phone/StubCountry');
+
+foreach my $territory (@territories) {
+  my $IDD_country_code = ''.$territory->find('@countryCode');
+  next if($IDD_country_code eq '1'); # no point stubbing NANP!
+
+  my $ISO_country_code = ''.$territory->find('@id');
+  # no need to create a stub for the UK, so use this for testing instead
+  $ISO_country_code = $ISO_country_code eq 'GB' ? 'MOCK' : $ISO_country_code;
+
+  open(my $module_fh, '>', "lib/Number/Phone/StubCountry/$ISO_country_code.pm")
+    || die("Can't write lib/Number/Phone/StubCountry/$ISO_country_code.pm: $!\n");
+  print $manifest_fh "lib/Number/Phone/StubCountry/$ISO_country_code.pm\n";
+  print $module_fh preamble($ISO_country_code);
+
+  my @number_formats = $territory->find('availableFormats/numberFormat')->get_nodelist();
+
+  my @formatters = ();
+  foreach my $number_format (@number_formats) {
+    my $number_format_pattern = ''.$number_format->find('@pattern');
+    my @leading_digit_patterns = $number_format->find('leadingDigits')->get_nodelist();
+    my $formatter = ''.$number_format->find('format');
+
+    foreach (map { (my $f = $_->string_value()) =~ s/\s//g; $f; } @leading_digit_patterns) {
+      push @formatters, {
+        leading_digits => $_,
+        pattern        => $number_format_pattern
+      };
+    }
+  }
+
+  print $module_fh 'my '.Data::Dumper->new([\@formatters], [qw(formatters)])->Dump()."\n";
+  print $module_fh 'my '.Data::Dumper->new([{
+                                             special_rate => join('|', map {
+                                               (my $foo = '('.$territory->find("$_/nationalNumberPattern")->string_value().')')
+                                                 =~ s/\s//g;
+                                               $foo;
+                                             } qw(sharedCost premiumRate)),
+                                             map {
+                                               (my $xpath = $_) =~ s/_(\w)/uc($1)/eg;
+                                               (my $pattern = $territory->find("$xpath/nationalNumberPattern")->string_value())
+                                                 =~ s/\s//g;
+                                               ($_ => $pattern);
+                                             } qw(fixed_line mobile pager toll_free personal_number)
+                                           }], [qw(validators)])->Dump();
+  print $module_fh <<EOCODE
+
+sub new {
+  my \$class = shift;
+  my \$number = shift;
+  \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
+  my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
+  return \$self->is_valid() ? \$self : undef;
+}
+
+1;
+EOCODE
+  ;
+}
+
+sub preamble {
+  my $iso_code = shift;
+  "# automatically generated file, don't edit\n\n".
+  q{
+
+# Copyright 2011 David Cantrell, derived from data from libphonenumber
+# http://code.google.com/p/libphonenumber/
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+package Number::Phone::StubCountry::}.$iso_code.q{;
+use base qw(Number::Phone::StubCountry);
+  
+use strict;
+use warnings;
+}.
+  "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n";
+}
