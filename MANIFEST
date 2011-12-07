@@ -61,6 +61,8 @@ lib/Number/Phone/NANP/SX.pm
 lib/Number/Phone/UK/IM.pm
 t/02_weird_little_islands.t
 t/40-no-stubs.t
+lib/Number/Phone/UK/GG.pm
+lib/Number/Phone/UK/JE.pm
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -128,7 +130,6 @@ lib/Number/Phone/StubCountry/GA.pm
 lib/Number/Phone/StubCountry/MOCK.pm
 lib/Number/Phone/StubCountry/GE.pm
 lib/Number/Phone/StubCountry/GF.pm
-lib/Number/Phone/StubCountry/GG.pm
 lib/Number/Phone/StubCountry/GH.pm
 lib/Number/Phone/StubCountry/GI.pm
 lib/Number/Phone/StubCountry/GL.pm
@@ -148,14 +149,12 @@ lib/Number/Phone/StubCountry/HU.pm
 lib/Number/Phone/StubCountry/ID.pm
 lib/Number/Phone/StubCountry/IE.pm
 lib/Number/Phone/StubCountry/IL.pm
-lib/Number/Phone/StubCountry/IM.pm
 lib/Number/Phone/StubCountry/IN.pm
 lib/Number/Phone/StubCountry/IO.pm
 lib/Number/Phone/StubCountry/IQ.pm
 lib/Number/Phone/StubCountry/IR.pm
 lib/Number/Phone/StubCountry/IS.pm
 lib/Number/Phone/StubCountry/IT.pm
-lib/Number/Phone/StubCountry/JE.pm
 lib/Number/Phone/StubCountry/JO.pm
 lib/Number/Phone/StubCountry/JP.pm
 lib/Number/Phone/StubCountry/KE.pm

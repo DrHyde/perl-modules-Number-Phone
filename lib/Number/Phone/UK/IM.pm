@@ -25,7 +25,7 @@ will load it automatically when needed.
     use Number::Phone::UK
     
     my $phone_number = Number::Phone->new('+44 1624 654321');
-    # returns a Number::Phone::IM object
+    # returns a Number::Phone::UK::IM object
     
 =head1 METHODS
 

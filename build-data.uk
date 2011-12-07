@@ -259,9 +259,19 @@ foreach my $datum (@telco_length_data) {
 
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
-$dbm->{subclass} = {
+$dbm->{subclass} = { # taken from libphonenumber
+  1481 => 'GG',
+  7781 => 'GG',
+  7839 => 'GG',
+  7911 => 'GG',
+  1534 => 'JE',
+  7509 => 'JE',
+  7700 => 'JE',
+  7797 => 'JE',
+  7829 => 'JE',
+  7937 => 'JE',
   1624 => 'IM',
-  7524 => 'IM', # according to wikipedia, "withheld" according to OFCOM
+  7524 => 'IM',
   7624 => 'IM',
   7924 => 'IM',
 };
