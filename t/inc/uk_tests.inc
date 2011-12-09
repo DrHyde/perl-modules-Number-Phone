@@ -2,33 +2,39 @@ use strict;
 
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
+sub is_mocked_uk { $Number::Phone::Country::idd_codes{'44'} eq 'MOCK' }
+
 my $number = Number::Phone->new('+44 142422 0000');
-isa_ok($number, 'Number::Phone::UK', 'isa N::P::UK');
-ok($number->country() eq 'UK', "inherited country() method works");
+isa_ok($number, 'Number::Phone::'.(is_mocked_uk() ? 'StubCountry::MOCK' : 'UK'));
+is($number->country(), (is_mocked_uk() ? 'MOCK' : 'UK'), "inherited country() method works");
 ok($number->format() eq '+44 1424 220000', "4+6 number formatted OK");
 $number = Number::Phone->new('+44 115822 0000');
 ok($number->format() eq '+44 115 822 0000', "3+7 number formatted OK");
 $number = Number::Phone->new('+442 0 8771 2924');
 ok($number->format() eq '+44 20 8771 2924', "2+8 number formatted OK");
-ok($number->areacode() eq '20', "2+8 number has correct area code");
-ok($number->subscriber() eq '87712924', "2+8 number has correct subscriber number");
-foreach my $method (qw(is_allocated is_geographic is_valid)) {
+ok($number->areacode() eq '20', "2+8 number has correct area code") unless(is_mocked_uk());
+ok($number->subscriber() eq '87712924', "2+8 number has correct subscriber number") unless(is_mocked_uk());
+foreach my $method (qw(is_geographic is_valid), is_mocked_uk() ? () : qw(is_allocated)) {
     ok($number->$method(), "$method works for a London number");
 }
 foreach my $method (qw(is_in_use is_fixed_line is_mobile is_pager is_ipphone is_isdn is_tollfree is_specialrate is_adult is_personal is_corporate is_government is_international is_network_service is_ipphone)) {
     ok(!$number->$method(), "$method works for a London number");
 }
-ok(!defined($number->is_fixed_line()), "geographic numbers return undef for is_fixed_line");
-ok(join(', ', sort $number->type()) eq 'is_allocated, is_geographic, is_valid', "type() works");
+# might be forwarded to a mobile at the switch
+ok(!defined($number->is_fixed_line()), "geographic numbers return is_fixed_line == undef");
+is(join(', ', sort $number->type()), join(', ', sort (qw(is_geographic is_valid), is_mocked_uk() ? () : qw(is_allocated))), "type() works");
 
 $number = Number::Phone->new('+448450033845');
-ok($number->format() eq '+44 8450033845', "0+10 number formatted OK");
-ok($number->areacode() eq '', "0+10 number has no area code");
-ok($number->subscriber() eq '8450033845', "0+10 number has correct subscriber number");
+is($number->format(), is_mocked_uk() ? '+44 845 003 3845' : '+44 8450033845', "0+10 number formatted OK");
+ok($number->areacode() eq '', "0+10 number has no area code") unless(is_mocked_uk());
+ok($number->subscriber() eq '8450033845', "0+10 number has correct subscriber number") unless(is_mocked_uk());
 
 $number = Number::Phone->new('+447979866975');
 ok($number->is_mobile(), "mobiles correctly identified");
 ok(defined($number->is_fixed_line()) && !$number->is_fixed_line(), "mobiles are identified as not fixed lines");
+
+ok(0, "Why do the tests stop here?\n");
+die("and why can't i see this message?\n");
 
 $number = Number::Phone->new('+445600123456');
 ok($number->is_ipphone(), "VoIP correctly identified");

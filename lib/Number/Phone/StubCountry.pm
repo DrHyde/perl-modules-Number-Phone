@@ -11,14 +11,17 @@ sub country      { (my $self = ref(shift)) =~ /::(\w\w(\w\w)?)$/; $1; } # extra 
 
 sub is_valid {
   my $self = shift;
-  foreach (map { "is_$_" } qw(special_rate fixed_line mobile pager tollfree personal)) {
+  foreach (map { "is_$_" } qw(special_rate geographic mobile pager tollfree personal)) {
     return 1 if($self->$_());
   }
   return 0;
 }
 
-sub is_geographic   { shift()->is_fixed_line() }
-sub is_fixed_line   { shift()->_validator('fixed_line'); }
+# NB for these two libphonenumber's definition of "fixed line" differs subtlely from
+# Number::Phone's.
+sub is_geographic   { shift()->_validator('fixed_line'); }
+sub is_fixed_line   { return shift()->_validator('mobile') ? 0 : undef; }
+
 sub is_mobile       { shift()->_validator('mobile'); }
 sub is_pager        { shift()->_validator('pager'); }
 sub is_personal     { shift()->_validator('personal_number'); }
