@@ -25,6 +25,4 @@ ok(Number::Phone->new('+79607001122')->is_mobile(), "Хороший товари
 $Number::Phone::Country::idd_codes{'44'} = 'MOCK';
 $Number::Phone::Country::prefix_codes{'MOCK'} = ['44',   '00',  undef];
 
-END { done_testing(); }
-
 require 't/inc/uk_tests.pl';

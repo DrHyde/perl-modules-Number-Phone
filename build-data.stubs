@@ -70,6 +70,25 @@ TERRITORY: foreach my $territory (@territories) {
                                                ($_ => $pattern);
                                              } qw(fixed_line mobile pager toll_free personal_number)
                                            }], [qw(validators)])->Dump();
+  my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
+  if(-e $codesfile) {
+    open(LIBPHONENUMBERDATA, $codesfile) || die("Can't read $codesfile\n");
+    my @lines = <LIBPHONENUMBERDATA>;
+    print $module_fh 'sub areaname { my $self = shift; my $number = $self->{number}; my %map = (';
+    foreach my $line (@lines) {
+      chomp($line);
+      next if($line =~ /^(#.*|\s+)?$/);
+      my($prefix, $area) = split(/\|/, $line);
+      $area = quotemeta($area);
+      print $module_fh "$prefix => '$area',";
+    }
+    print $module_fh ');
+      foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
+        return $map{"'.$IDD_country_code.'$prefix"} if exists($map{"'.$IDD_country_code.'$prefix"});
+      }
+      return undef;
+    }';
+  }
   print $module_fh <<EOCODE
 
 sub new {
