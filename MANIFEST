@@ -63,6 +63,8 @@ t/02_weird_little_islands.t
 t/40-no-stubs.t
 lib/Number/Phone/UK/GG.pm
 lib/Number/Phone/UK/JE.pm
+t/41-stubs.t
+t/inc/uk_tests.pl
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm

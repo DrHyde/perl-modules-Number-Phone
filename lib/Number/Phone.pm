@@ -38,7 +38,6 @@ foreach my $method (
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
         return undef if(blessed($self) && $self->isa(__PACKAGE__));
-        my $pkg = __PACKAGE__;
         $self = shift if(
             $self eq __PACKAGE__ ||
             substr($self, 0, 2 + length(__PACKAGE__)) eq __PACKAGE__.'::'

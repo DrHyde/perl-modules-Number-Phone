@@ -1,4 +1,5 @@
 use strict;
+use warnings;
 
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
@@ -33,12 +34,6 @@ $number = Number::Phone->new('+447979866975');
 ok($number->is_mobile(), "mobiles correctly identified");
 ok(defined($number->is_fixed_line()) && !$number->is_fixed_line(), "mobiles are identified as not fixed lines");
 
-ok(0, "Why do the tests stop here?\n");
-die("and why can't i see this message?\n");
-
-$number = Number::Phone->new('+445600123456');
-ok($number->is_ipphone(), "VoIP correctly identified");
-
 $number = Number::Phone->new('+447693912345');
 ok($number->is_pager(), "pagers correctly identified");
 
@@ -49,29 +44,39 @@ ok($number->is_tollfree(), "C&W 0500 numbers correctly identified as toll-free")
 $number = Number::Phone->new('+448000341234');
 ok($number->is_tollfree(), "generic toll-free numbers correctly identified");
 
-$number = Number::Phone->new('+448450033845');
-ok($number->is_specialrate(), "special-rate numbers correctly identified");
+SKIP: {
+  skip "libphonenumber doesn't know about location/operators/network-service/special-rate/adult/corporate numbers", 6 if(is_mocked_uk());
+  $number = Number::Phone->new('+448450033845');
+  ok($number->is_specialrate(), "special-rate numbers correctly identified");
 
-$number = Number::Phone->new('+449088791234');
-ok($number->is_adult() && $number->is_specialrate(), "0908 'adult' numbers correctly identified");
-$number = Number::Phone->new('+449090901234');
-ok($number->is_adult() && $number->is_specialrate(), "0909 'adult' numbers correctly identified");
+  $number = Number::Phone->new('+449088791234');
+  ok($number->is_adult() && $number->is_specialrate(), "0908 'adult' numbers correctly identified");
+  $number = Number::Phone->new('+449090901234');
+  ok($number->is_adult() && $number->is_specialrate(), "0909 'adult' numbers correctly identified");
+
+  $number = Number::Phone->new('+445588301234');
+  ok($number->is_corporate(), "corporate numbers correctly identified");
+
+  $number = Number::Phone->new('+448200123456');
+  ok($number->is_network_service(), "network service numbers correctly identified");
+
+  $number = Number::Phone->new('+448450033845');
+  ok($number->operator() eq 'Edge Telecom Limited', "operators correctly identified");
+
+  $number = Number::Phone->new('+442087712924');
+  ok($number->location()->[0] == 51.38309 && $number->location()->[1] == -0.336079, "geo numbers have correct location");
+  $number = Number::Phone->new('+447979866975');
+  ok(!defined($number->location()), "non-geo numbers have no location");
+};
 
 $number = Number::Phone->new('+447000012345');
 ok($number->is_personal(), "personal numbers correctly identified");
-
-$number = Number::Phone->new('+445588301234');
-ok($number->is_corporate(), "corporate numbers correctly identified");
-
-$number = Number::Phone->new('+448200123456');
-ok($number->is_network_service(), "network service numbers correctly identified");
-
-$number = Number::Phone->new('+448450033845');
-ok($number->operator() eq 'Edge Telecom Limited', "operators correctly identified");
-
-ok(!defined($number->areaname()), "good, no area name for non-geographic numbers");
-$number = Number::Phone->new('+442087712924');
-ok($number->areaname() eq 'London', "London numbers return correct area name");
+SKIP: {
+  skip "no areanames yet for UK libphonenumber stuff", 2 if(is_mocked_uk());
+  ok(!defined($number->areaname()), "good, no area name for non-geographic numbers");
+  $number = Number::Phone->new('+442087712924');
+  is($number->areaname(), 'London', "London numbers return correct area name");
+};
 
 $number = Number::Phone->new('+448457283848'); # "Allocated for Migration only"
 ok($number, "0845 'Allocated for Migration only' fixed");
@@ -84,17 +89,24 @@ ok($number, "bad 070 data fixed");
 
 $number = Number::Phone->new('+442030791234'); # new London 020 3 numbers
 ok($number, "0203 numbers are recognised");
-ok($number->is_allocated() && $number->is_geographic(), "... and their type looks OK");
+# libphonenumber doesn't do allocation
+is_deeply([sort $number->type()], [sort ((!is_mocked_uk() ? 'is_allocated' : ()), qw(is_valid is_geographic))], "... and their type looks OK");
 
-$number = Number::Phone->new('+442087712924');
-ok($number->location()->[0] == 51.38309 && $number->location()->[1] == -0.336079, "geo numbers have correct location");
-$number = Number::Phone->new('+447979866975');
-ok(!defined($number->location()), "non-geo numbers have no location");
+if(is_mocked_uk()) {
+  warn("VOIP test fails horribly when mocking the UK\n");
+} else {
+  $number = Number::Phone->new('+445600123456');
+  ok($number->is_ipphone(), "VoIP correctly identified");
+}
 
-$number = Number::Phone->new('+443031231234');
-ok($number->operator() eq 'BT', "03 numbers have right operator");
-ok(join(',', sort { $a cmp $b } $number->type()) eq 'is_allocated,is_valid', "03 numbers have right type");
-ok($number->format() eq '+44 3031231234', "03 numbers are formatted right");
+if(is_mocked_uk()) {
+  warn("03 test fails horribly when mocking the UK\n");
+} else {
+  $number = Number::Phone->new('+443031231234');
+  ok($number->operator() eq 'BT', "03 numbers have right operator");
+  is_deeply([sort $number->type()], [sort ((!is_mocked_uk() ? 'is_allocated' : ()), 'is_valid')], "03 numbers have right type");
+  ok($number->format() eq '+44 3031231234', "03 numbers are formatted right");
+}
 
 ok(Number::Phone->new('+44169772200')->format() eq '+44 16977 2200', "5+4 format works");
 
@@ -104,6 +116,7 @@ ok(Number::Phone->new('+44 1768 88 100')->format() eq '+44 1768 88100', "4+5 (mi
 
 ok(Number::Phone->new('+44 1768 88 0000')->format() eq '+44 1768 880000', "4+6 (mixed) format works");
 ok(Number::Phone->new('+44 1768 88 1000')->format() eq '+44 1768 881000', "4+6 (mixed) format works");
+is(Number::Phone->new('+44 1768 88 1000')->areaname(), "Penrith", "01768 88 area name");
 
 ok(!Number::Phone->new('+44 1768 88 0'), "4+3 in that range correctly fails");
 ok(!Number::Phone->new('+44 1768 88 00'), "4+4 in that range correctly fails");
@@ -148,3 +161,5 @@ foreach my $tuple (
   $number = $tuple->[0]->new($tuple->[1]);
   ok($number->format() eq $tuple->[2], $tuple->[0].'->new('.$tuple->[1].')->format() works ('.$tuple->[2].")");
 }
+
+1;

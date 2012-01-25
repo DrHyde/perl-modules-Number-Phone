@@ -7,4 +7,4 @@ use Test::More;
 
 END { done_testing(); }
 
-do 't/inc/uk_tests.inc';
+require 't/inc/uk_tests.pl';
