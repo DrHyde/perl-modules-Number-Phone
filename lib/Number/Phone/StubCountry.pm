@@ -32,7 +32,7 @@ sub _validator {
   my($self, $validator) = @_;
   $validator = $self->{validators}->{$validator};
   return undef unless($validator);
-  return $self->{number} =~ /^$validator$/ ? 1 : 0;
+  return $self->{number} =~ /^($validator)$/ ? 1 : 0;
 }
 
 sub format {
@@ -40,7 +40,7 @@ sub format {
   my $number = $self->{number};
   foreach my $formatter (@{$self->{formatters}}) {
     my($leading_digits, $pattern) = map { $formatter->{$_} } qw(leading_digits pattern);
-    if($number =~ /^$leading_digits/ && $number =~ /^$pattern$/) {
+    if($number =~ /^($leading_digits)/ && $number =~ /^$pattern$/) {
       my @bits = $number =~ /^$pattern$/;
       return join(' ', '+'.$self->country_code(), @bits);
     }

@@ -134,13 +134,16 @@ ok(Number::Phone->new('+44169772200')->format() eq '+44 16977 2200', "5+4 format
 # ok(Number::Phone->new('+44 1768 88 000')->format() eq '+44 1768 88000', "4+5 (mixed) format works");
 # ok(Number::Phone->new('+44 1768 88 100')->format() eq '+44 1768 88100', "4+5 (mixed) format works");
 
-is(Number::Phone->new('+44 1768 88 0000')->format(), '+44 1768 880000', "4+6 (mixed) format works");
-is(Number::Phone->new('+44 1768 88 1000')->format(), '+44 1768 881000', "4+6 (mixed) format works");
+skip_if_mocked("libphonenumber knows better than OFCOM for 01768", 2, sub {
+  is(Number::Phone->new('+44 1768 88 0000')->format(), '+44 1768 880000', "4+6 (mixed) format works");
+  is(Number::Phone->new('+44 1768 88 1000')->format(), '+44 1768 881000', "4+6 (mixed) format works");
+});
 is(Number::Phone->new('+44 1768 88 1000')->areaname(), "Penrith", "01768 88 area name");
 
 ok(!Number::Phone->new('+44 1768 88 0'), "4+3 in that range correctly fails");
 ok(!Number::Phone->new('+44 1768 88 00'), "4+4 in that range correctly fails");
-ok(!Number::Phone->new('+44 1768 88 00000'), "4+7 in that range correctly fails");
+$number = Number::Phone->new('+44 1768 88 00000');
+ok(!$number, "4+7 in that range correctly fails");
 
 $number = Number::Phone->new('+447400000000');
 ok($number->is_mobile(), "074 mobiles correctly identified");
