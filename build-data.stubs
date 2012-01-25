@@ -62,13 +62,13 @@ TERRITORY: foreach my $territory (@territories) {
                                                (my $foo = '('.$territory->find("$_/nationalNumberPattern")->string_value().')')
                                                  =~ s/\s//g;
                                                $foo;
-                                             } qw(sharedCost premiumRate)),
+                                             } qw(sharedCost premiumRate uan)),
                                              map {
                                                (my $xpath = $_) =~ s/_(\w)/uc($1)/eg;
                                                (my $pattern = $territory->find("$xpath/nationalNumberPattern")->string_value())
                                                  =~ s/\s//g;
                                                ($_ => $pattern);
-                                             } qw(fixed_line mobile pager toll_free personal_number)
+                                             } qw(fixed_line mobile pager voip toll_free personal_number)
                                            }], [qw(validators)])->Dump();
   my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
   if(-e $codesfile) {

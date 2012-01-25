@@ -115,18 +115,21 @@ $number = Number::Phone->new('+445600123456');
 ok($number->is_ipphone(), "VoIP correctly identified");
 
 $number = Number::Phone->new('+443031231234');
-ok($number->operator() eq 'BT', "03 numbers have right operator");
+skip_if_mocked("libphonenumber doesn't do operators", 1, sub {
+  ok($number->operator() eq 'BT', "03 numbers have right operator");
+});
 is_deeply([sort $number->type()], [sort ((!is_mocked_uk() ? 'is_allocated' : ()), 'is_valid')], "03 numbers have right type");
-ok($number->format() eq '+44 3031231234', "03 numbers are formatted right");
+skip_if_mocked("libphonenumber disagrees with me about formatting special rate numbers", 1, sub {
+  is($number->format(), '+44 3031231234', "03 numbers are formatted right");
+});
 
 ok(Number::Phone->new('+44169772200')->format() eq '+44 16977 2200', "5+4 format works");
 
 # 01768 88 is "Mixed 4+5 & 4+6".  I wish someone would just set the village on fire.
 
-ok(Number::Phone->new('+44 1768 88 000')->format() eq '+44 1768 88000', "4+5 (mixed) format works");
-ok(Number::Phone->new('+44 1768 88 100')->format() eq '+44 1768 88100', "4+5 (mixed) format works");
-
 skip_if_mocked("libphonenumber knows better than OFCOM for 01768", 2, sub {
+  ok(Number::Phone->new('+44 1768 88 000')->format() eq '+44 1768 88000', "4+5 (mixed) format works");
+  ok(Number::Phone->new('+44 1768 88 100')->format() eq '+44 1768 88100', "4+5 (mixed) format works");
   is(Number::Phone->new('+44 1768 88 0000')->format(), '+44 1768 880000', "4+6 (mixed) format works");
   is(Number::Phone->new('+44 1768 88 1000')->format(), '+44 1768 881000', "4+6 (mixed) format works");
 });

@@ -11,7 +11,7 @@ sub country      { (my $self = ref(shift)) =~ /::(\w\w(\w\w)?)$/; $1; } # extra 
 
 sub is_valid {
   my $self = shift;
-  foreach (map { "is_$_" } qw(special_rate geographic mobile pager tollfree personal)) {
+  foreach (map { "is_$_" } qw(special_rate geographic mobile pager tollfree personal ipphone)) {
     return 1 if($self->$_());
   }
   return 0;
@@ -27,6 +27,7 @@ sub is_pager        { shift()->_validator('pager'); }
 sub is_personal     { shift()->_validator('personal_number'); }
 sub is_special_rate { shift()->_validator('special_rate'); }
 sub is_tollfree     { shift()->_validator('toll_free'); }
+sub is_ipphone      { shift()->_validator('voip'); }
 
 sub _validator {
   my($self, $validator) = @_;
