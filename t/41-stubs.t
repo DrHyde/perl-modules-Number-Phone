@@ -17,6 +17,9 @@ my $ru = Number::Phone->new('+7 499 999 82 83'); # Rostelecom
 is($ru->country_code(), 7, "Number::Phone->new('+7 499 999 82 83')->country_code()");
 is($ru->country(), 'RU', "Number::Phone->new('+7 499 999 82 83')->country()");
 
+# good news comrade (courtesy of translate.google)
+ok(Number::Phone->new('+79607001122')->is_mobile(), "Хороший товарищ новость! is_mobile works for Russia!");
+
 # let's break the UK
 
 $Number::Phone::Country::idd_codes{'44'} = 'MOCK';
