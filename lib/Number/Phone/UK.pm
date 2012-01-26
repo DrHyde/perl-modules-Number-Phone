@@ -77,8 +77,9 @@ sub _retards {
 sub is_valid {
     my $number = shift;
 
-    # if called as an object method, it *must* be valid otherwise the
+    # If called as an object method, it *must* be valid otherwise the
     # object would never have been instantiated.
+    # If called as a subroutine, that's the constructor doing its thang.
     return 1 if(blessed($number) && $number->isa(__PACKAGE__));
 
     # otherwise we have to validate
@@ -135,6 +136,8 @@ foreach my $is (qw(
     no strict 'refs';
     *{__PACKAGE__."::is_$is"} = sub {
         my $self = shift;
+        warn("DEPRECATION: __PACKAGE__->is_$is should only be called as an object method\n")
+          unless(blessed($self));
         $self = shift if($self eq __PACKAGE__);
         $self = __PACKAGE__->new($self)
             unless(blessed($self) && $self->isa(__PACKAGE__));
@@ -166,6 +169,8 @@ foreach my $method (qw(operator areacode areaname subscriber)) {
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
+        warn("DEPRECATION: __PACKAGE__->$method should only be called as an object method\n")
+          unless(blessed($self));
         $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
             $self :
             __PACKAGE__->new($self);
@@ -261,6 +266,8 @@ that number is assigned, if available.  Otherwise returns undef.
 
 sub location {
     my $self = shift;
+    warn("DEPRECATION: __PACKAGE__->location should only be called as an object method\n")
+      unless(blessed($self));
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :
         __PACKAGE__->new($self);
@@ -305,6 +312,8 @@ for the UK number (0208) 771-2924 it would return +44 20 87712924.
 
 sub format {
     my $self = shift;
+    warn("DEPRECATION: __PACKAGE__->format should only be called as an object method\n")
+      unless(blessed($self));
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :
         __PACKAGE__->new($self);

@@ -54,7 +54,6 @@ sub new {
     my $number = shift;
     die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
-    # FIXME - construct in appropriate country
     return undef if(!is_valid($number));
     
     # cunningly, N::P::C::p2c supports local NANPish number formats
@@ -88,8 +87,9 @@ not yet be allocated, or it may be reserved.
 sub is_valid {
     my $number = shift;
 
-    # if called as an object method, it *must* be valid otherwise the
+    # If called as an object method, it *must* be valid otherwise the
     # object would never have been instantiated.
+    # If called as a sub, then it's the constructor that's calling.
     return 1 if(blessed($number) && $number->isa(__PACKAGE__));
 
     # otherwise we have to validate
@@ -129,6 +129,8 @@ foreach my $method (qw(areacode subscriber)) {
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
+        warn("DEPRECATION: __PACKAGE__->$method should only be called as an object method\n")
+          unless(blessed($self));
         $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
             $self :
             __PACKAGE__->new($self);
@@ -138,6 +140,8 @@ foreach my $method (qw(areacode subscriber)) {
 
 sub areaname {
   my $self = shift;
+  warn("DEPRECATION: __PACKAGE__->areaname should only be called as an object method\n")
+    unless(blessed($self));
   $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
     $self :
     __PACKAGE__->new($self);
@@ -204,6 +208,8 @@ Return a sanely formatted version of the number, complete with IDD code.
 
 sub format {
     my $self = shift;
+    warn("DEPRECATION: __PACKAGE__->format should only be called as an object method\n")
+      unless(blessed($self));
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :
         __PACKAGE__->new($self);
