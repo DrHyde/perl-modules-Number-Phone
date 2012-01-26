@@ -5,6 +5,8 @@ use strict;
 use Number::Phone;
 use Test::More;
 
+use lib 't/lib';
+
 eval "use Number::Phone::FO";
 ok($@, "good, there's no module for the Faroes");
 my $fo = Number::Phone->new('+298 303030'); # Faroes Telecom

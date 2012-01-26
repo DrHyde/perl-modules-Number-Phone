@@ -129,7 +129,7 @@ lib/Number/Phone/StubCountry/FM.pm
 lib/Number/Phone/StubCountry/FO.pm
 lib/Number/Phone/StubCountry/FR.pm
 lib/Number/Phone/StubCountry/GA.pm
-lib/Number/Phone/StubCountry/MOCK.pm
+t/lib/Number/Phone/StubCountry/MOCK.pm
 lib/Number/Phone/StubCountry/GE.pm
 lib/Number/Phone/StubCountry/GF.pm
 lib/Number/Phone/StubCountry/GH.pm

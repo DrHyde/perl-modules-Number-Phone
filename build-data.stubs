@@ -16,9 +16,13 @@ open(my $manifest_fh, 'MANIFEST') || die("Can't read MANIFEST\n");
 my @manifest_files = grep { /./ } <$manifest_fh>;
 close($manifest_fh);
 open($manifest_fh, '>', 'MANIFEST') || die("Can't write MANIFEST\n");
-print $manifest_fh "$_" foreach( grep { $_ !~ m{^lib/Number/Phone/StubCountry/} } @manifest_files);
+print $manifest_fh "$_" foreach( grep { $_ !~ m{^(t/)?lib/Number/Phone/StubCountry/} } @manifest_files);
 
 mkdir('lib/Number/Phone/StubCountry');
+mkdir('t/lib');
+mkdir('t/lib/Number');
+mkdir('t/lib/Number/Phone');
+mkdir('t/lib/Number/Phone/StubCountry');
 
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
@@ -31,13 +35,15 @@ TERRITORY: foreach my $territory (@territories) {
   }
   # no need to create a stub for the UK, so use this for testing instead
   $ISO_country_code = $ISO_country_code eq 'GB' ? 'MOCK' : $ISO_country_code;
-  unlink "lib/Number/Phone/StubCountry/$ISO_country_code.pm"; # to clear out countries that no longer exist
+  my $dir = ($ISO_country_code eq 'MOCK' ? 't/' : '').'lib/Number/Phone/StubCountry';
+
+  unlink "$dir/$ISO_country_code.pm"; # to clear out countries that no longer exist
 
   next if($ISO_country_code =~ /^(IM|GG|JE)$/); # special cases in N::P
 
-  open(my $module_fh, '>', "lib/Number/Phone/StubCountry/$ISO_country_code.pm")
-    || die("Can't write lib/Number/Phone/StubCountry/$ISO_country_code.pm: $!\n");
-  print $manifest_fh "lib/Number/Phone/StubCountry/$ISO_country_code.pm\n";
+  open(my $module_fh, '>', "$dir/$ISO_country_code.pm")
+    || die("Can't write $dir/$ISO_country_code.pm: $!\n");
+  print $manifest_fh "$dir/$ISO_country_code.pm\n";
   print $module_fh preamble($ISO_country_code);
 
   my @number_formats = $territory->find('availableFormats/numberFormat')->get_nodelist();

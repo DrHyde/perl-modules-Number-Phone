@@ -33,7 +33,7 @@ else
 fi
 
 # lib/Number/Phone/StubCountry/MOCK.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetaData.xml is newer ...
-if test ! -e lib/Number/Phone/StubCountry/MOCK.pm -o libphonenumber/resources/PhoneNumberMetaData.xml -nt lib/Number/Phone/StubCountry/MOCK.pm; then
+if test ! -e t/lib/Number/Phone/StubCountry/MOCK.pm -o libphonenumber/resources/PhoneNumberMetaData.xml -nt t/lib/Number/Phone/StubCountry/MOCK.pm; then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
   perl build-data.stubs

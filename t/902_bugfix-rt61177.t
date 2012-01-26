@@ -4,6 +4,8 @@ use strict;
 
 use Number::Phone;
 
+use lib 't/lib';
+
 use Test::More tests => 11;
 
 use Number::Phone::Country;
