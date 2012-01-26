@@ -6,7 +6,8 @@ XXXX-XX-XX      X.X     Fix nasty bug in formatting unallocated UK numbers;
                         The minimal objects returned when there's no detailed
                           country-specific module available are far more
                           intelligent, thanks to libphonenumber's data;
-                        New UK allocations
+                        New UK allocations;
+			Deprecated ridiculous ways of calling most methods;
 
 2011-10-29      1.9     New UK allocations;
                         Use libphonenumber's data for N::P::Country;
