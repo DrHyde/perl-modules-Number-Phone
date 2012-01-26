@@ -34,7 +34,7 @@ provide an C<is_valid> method or a constructor.
 
 in a program:
 
-    use Number::Phone::NANP;
+    use Number::Phone;
 
     my $phone_number = Number::Phone->new('+1 202 418 1440');
     # $phone_number is now a Number::Phone::NANP::US
@@ -237,7 +237,7 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2005
+Copyright 2012
 
 =cut
 

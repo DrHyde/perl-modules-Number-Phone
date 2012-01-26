@@ -17,7 +17,7 @@ Number::Phone::UK - UK-specific methods for Number::Phone
 
 =head1 SYNOPSIS
 
-    use Number::Phone::UK;
+    use Number::Phone;
 
     $daves_phone = Number::Phone->new('+44 1234 567890');
 
@@ -355,7 +355,7 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2004 - 2007
+Copyright 2012
 
 =cut
 

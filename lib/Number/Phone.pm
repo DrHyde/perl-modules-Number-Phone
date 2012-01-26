@@ -170,11 +170,11 @@ sub _make_stub_object {
 
 =head1 METHODS
 
-All Number::Phone classes should implement the following methods, both
-as object methods and as class methods.  Used as class methods they should
-take a scalar parameter which they should attempt to parse as a phone
-number.  Used as object methods, they should perform their duties on the
-phone number that was supplied to the constructor.
+All Number::Phone classes should implement the following methods, as
+object methods.  Note that in previous versions these were also required
+to work as class methods and could also work as subroutines.  That
+was a bad design decision and is deprecated.  Number::Phone will spit
+warnings if you try that now, and support will be removed in the future.
 
 Those methods whose names begin C<is_> should return the following
 values:
@@ -334,12 +334,12 @@ number.
 Return a listref of all the is_... methods above which are true.  Note that
 this method should only be implemented in the super-class.  eg, for the
 number +44 20 87712924 this might return
-C<[qw(valid allocated geographic fixed_line)]>.
+C<[qw(valid allocated geographic)]>.
 
 =item format
 
 Return a sanely formatted version of the number, complete with IDD code, eg
-for the UK number (0208) 771-2924 it would return +44 20 87712924.
+for the UK number (0208) 771-2924 it would return +44 20 8771 2924.
 
 =item country
 
@@ -364,7 +364,7 @@ If the number forwards to another number (such as a special rate number
 forwarding to a geographic number), or is part of a chunk of number-space
 mapped onto another chunk of number-space (such as where a country has a
 shortcut to (part of) another country's number-space, like how Gibraltar
-appears as an area code in Spain's numbering plan as well as having its
+used to appear as an area code in Spain's numbering plan as well as having its
 own country code), then this method may return an object representing the
 target number.  Otherwise it returns undef.
 
@@ -388,10 +388,8 @@ Number::Phone::Country.  That gives us a two letter country code that
 is used to try to load the right module.
 
 The constructor returns undef if it can not figure out what country
-you're talking about, or a minimal object if there's no country-specific
-module available.  Note that in the case of there being no country-specific
-module available this is an incompatible change: previously it would
-return undef.
+you're talking about, or an object based on Google's libphonenumber
+data if there's no complete country-specific module available.
 
 =back
 
@@ -414,15 +412,6 @@ ISO code for the country, in upper case.  So, for example, France would be
 FR and Ireland would be IE.  As usual, the UK is an exception, using UK
 instead of the ISO-mandated GB.  NANP countries are also an exception,
 going like Number::Phone::NANP::XX.
-
-Note that subclasses no longer need to register themselves with
-Number::Phone.  In fact, registration is now *ignored* as the magic
-country detector now works properly.
-
-=head1 WARNING
-
-There is an incompatible change in version 1.8.  See the SYNOPSIS and
-the documentation for the C<new> method above.
 
 =head1 BUGS/FEEDBACK
 
