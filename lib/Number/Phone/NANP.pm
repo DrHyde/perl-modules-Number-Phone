@@ -129,7 +129,7 @@ foreach my $method (qw(areacode subscriber)) {
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
-        warn("DEPRECATION: __PACKAGE__->$method should only be called as an object method\n")
+        warn("DEPRECATION: ".__PACKAGE__."->$method should only be called as an object method\n")
           unless(blessed($self));
         $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
             $self :
@@ -140,7 +140,7 @@ foreach my $method (qw(areacode subscriber)) {
 
 sub areaname {
   my $self = shift;
-  warn("DEPRECATION: __PACKAGE__->areaname should only be called as an object method\n")
+  warn("DEPRECATION: ".__PACKAGE__."->areaname should only be called as an object method\n")
     unless(blessed($self));
   $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
     $self :
@@ -208,7 +208,7 @@ Return a sanely formatted version of the number, complete with IDD code.
 
 sub format {
     my $self = shift;
-    warn("DEPRECATION: __PACKAGE__->format should only be called as an object method\n")
+    warn("DEPRECATION: ".__PACKAGE__."->format should only be called as an object method\n")
       unless(blessed($self));
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :

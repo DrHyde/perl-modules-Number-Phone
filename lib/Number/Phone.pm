@@ -37,7 +37,7 @@ foreach my $method (
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
-        warn("DEPRECATION: __PACKAGE__->$method should only be called as an object method\n")
+        warn("DEPRECATION: ".__PACKAGE__."->$method should only be called as an object method\n")
           unless(blessed($self));
         return undef if(blessed($self) && $self->isa(__PACKAGE__));
         $self = shift if(
@@ -53,7 +53,7 @@ foreach my $method (
 
 sub type {
     my $parm = shift;
-    warn("DEPRECATION: __PACKAGE__->type should only be called as an object method\n")
+    warn("DEPRECATION: ".__PACKAGE__."->type should only be called as an object method\n")
       unless(blessed($parm));
     my $class = __PACKAGE__;
 

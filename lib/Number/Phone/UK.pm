@@ -136,7 +136,7 @@ foreach my $is (qw(
     no strict 'refs';
     *{__PACKAGE__."::is_$is"} = sub {
         my $self = shift;
-        warn("DEPRECATION: __PACKAGE__->is_$is should only be called as an object method\n")
+        warn("DEPRECATION: ".__PACKAGE__."->is_$is should only be called as an object method\n")
           unless(blessed($self));
         $self = shift if($self eq __PACKAGE__);
         $self = __PACKAGE__->new($self)
@@ -169,7 +169,7 @@ foreach my $method (qw(operator areacode areaname subscriber)) {
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
-        warn("DEPRECATION: __PACKAGE__->$method should only be called as an object method\n")
+        warn("DEPRECATION: ".__PACKAGE__."->$method should only be called as an object method\n")
           unless(blessed($self));
         $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
             $self :
@@ -266,7 +266,7 @@ that number is assigned, if available.  Otherwise returns undef.
 
 sub location {
     my $self = shift;
-    warn("DEPRECATION: __PACKAGE__->location should only be called as an object method\n")
+    warn("DEPRECATION: ".__PACKAGE__."->location should only be called as an object method\n")
       unless(blessed($self));
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :
@@ -312,7 +312,7 @@ for the UK number (0208) 771-2924 it would return +44 20 87712924.
 
 sub format {
     my $self = shift;
-    warn("DEPRECATION: __PACKAGE__->format should only be called as an object method\n")
+    warn("DEPRECATION: ".__PACKAGE__."->format should only be called as an object method\n")
       unless(blessed($self));
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :
