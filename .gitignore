@@ -1,0 +1,11 @@
+MYMETA.json
+MYMETA.yml
+Makefile
+blib/
+lib/Number/Phone/NANP/Data.pm
+lib/Number/Phone/StubCountry/
+lib/Number/Phone/UK/Data.pm
+libphonenumber/
+pm_to_blib
+t/lib/
+.gitignore
