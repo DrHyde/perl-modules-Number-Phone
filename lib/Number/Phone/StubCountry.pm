@@ -5,6 +5,7 @@ use warnings;
 use Number::Phone::Country qw(noexport uk);
 
 use base qw(Number::Phone);
+our $VERSION = '1.0';
 
 sub country_code { return Number::Phone::Country::country_code(shift()->country()); }
 sub country      { (my $self = ref(shift)) =~ /::(\w\w(\w\w)?)$/; $1; } # extra \w\w is for MOCK during testing

@@ -7,7 +7,7 @@ use Scalar::Util 'blessed';
 use Number::Phone::Country qw(noexport uk);
 use Number::Phone::StubCountry;
 
-our $VERSION = 1.9;
+our $VERSION = '2.0';
 
 my $NOSTUBS = 0;
 sub import {
@@ -431,7 +431,7 @@ L<git://github.com/DrHyde/perl-modules-Number-Phone.git>
 
 =head1 AUTHOR, COPYRIGHT and LICENCE
 
-Copyright 2004 - 2011 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+Copyright 2004 - 2012 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
 This software is free-as-in-speech software, and may be used,
 distributed, and modified under the terms of either the GNU

@@ -9,7 +9,7 @@ use Number::Phone::NANP::Data;
 
 use Number::Phone::Country qw(noexport);
 
-our $VERSION = 1.2;
+our $VERSION = 1.3;
 
 my $cache = {};
 
