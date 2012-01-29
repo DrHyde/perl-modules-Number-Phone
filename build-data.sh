@@ -32,8 +32,8 @@ else
   echo lib/Number/Phone/NANP/Data.pm is up-to-date
 fi
 
-# lib/Number/Phone/StubCountry/MOCK.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetaData.xml is newer ...
-if test ! -e t/lib/Number/Phone/StubCountry/MOCK.pm -o libphonenumber/resources/PhoneNumberMetaData.xml -nt t/lib/Number/Phone/StubCountry/MOCK.pm; then
+# lib/Number/Phone/StubCountry/KZ.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetaData.xml is newer ...
+if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o libphonenumber/resources/PhoneNumberMetaData.xml -nt lib/Number/Phone/StubCountry/KZ.pm; then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
   perl build-data.stubs
