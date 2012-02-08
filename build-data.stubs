@@ -86,7 +86,7 @@ TERRITORY: foreach my $territory (@territories) {
       next if($line =~ /^(#.*|\s+)?$/);
       my($prefix, $area) = split(/\|/, $line);
       $area = quotemeta($area);
-      print $module_fh "$prefix => '$area',";
+      print $module_fh "$prefix => \"$area\",";
     }
     print $module_fh ');
       foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
