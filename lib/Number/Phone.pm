@@ -353,7 +353,7 @@ Exception: for the UK, return 'uk', not 'gb'.
 Specifically, the superclass implementation looks at the class name and
 returns the last two-letter code it finds.  eg ...
 
-  from Number::Phone::UK, it would return DE
+  from Number::Phone::UK, it would return UK
   from Number::Phone::UK::IM, it would return IM
   from Number::Phone::NANP::US, it would return US
   from Number::Phone::FR::Full, it would return FR

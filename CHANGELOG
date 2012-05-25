@@ -1,6 +1,8 @@
 XXXX-XX-XX      X.X     Bugfix stub countries to not have random \ in
                           area names;
-			New UK allocations
+                        Minor doco fix "from Number::Phone::UK, it would
+                          return DE" is obviously wrong;
+                        New UK allocations
 
 2012-01-29      2.0     Fix nasty bug in formatting unallocated UK numbers;
                         Sint Maarten (SX) moved from +599 5 to +1 721;
