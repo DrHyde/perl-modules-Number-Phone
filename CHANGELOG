@@ -2,6 +2,8 @@ XXXX-XX-XX      X.X     Bugfix stub countries to not have random \ in
                           area names;
                         Minor doco fix "from Number::Phone::UK, it would
                           return DE" is obviously wrong;
+			Some stuff in stubs for the breakup of the
+			  Dutch colonies in the Caribbean;
                         New UK allocations
 
 2012-01-29      2.0     Fix nasty bug in formatting unallocated UK numbers;
