@@ -437,6 +437,8 @@ The superclass implementation returns undef.
 
 =item dial_to
 
+EXPERIMENTAL METHOD
+
 Takes another Number::Phone object as its only argument and returns a
 string showing how to dial from the number represented by the invocant
 to that represented by the argument.
