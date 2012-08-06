@@ -90,6 +90,9 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   ok(!defined($number->location()), "non-geo numbers have no location");
 });
 
+# but when we're mocking we do know that we know nothing about portability
+ok(!defined($number->operator_ported()), "don't know anything about portability");
+
 $number = Number::Phone->new('+447000012345');
 ok($number->is_personal(), "personal numbers correctly identified");
 ok(!defined($number->areaname()), "good, no area name for non-geographic numbers");

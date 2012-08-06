@@ -30,7 +30,7 @@ my @is_methods = qw(
 foreach my $method (
     @is_methods, qw(
         country_code regulator areacode areaname
-        subscriber operator translates_to
+        subscriber operator operator_ported translates_to
         format location
     )
 ) {
@@ -82,6 +82,15 @@ sub country {
     (my @two_letter_codes) = $class =~ /\b([A-Z]{2})\b/g;
     return $two_letter_codes[-1];
 }
+
+sub dial_to {
+  my $from = shift;
+  my $to   = shift;
+
+  return undef;
+}
+
+sub intra_country_dial_to { die("don't know how\n"); }
 
 1;
 
@@ -170,16 +179,19 @@ sub _make_stub_object {
 
 =head1 METHODS
 
-All Number::Phone classes should implement the following methods, as
+All Number::Phone classes can implement the following methods, as
 object methods.  Note that in previous versions these were also required
 to work as class methods and could also work as subroutines.  That
 was a bad design decision and is deprecated.  Number::Phone will spit
 warnings if you try that now, and support will be removed in the future.
 
+The implementations in the parent class all return undef unless otherwise
+noted.
+
 Those methods whose names begin C<is_> should return the following
 values:
 
-=over 4
+=over
 
 =item undef
 
@@ -196,9 +208,9 @@ True
 
 =back
 
-The C<is_*> methods are:
+=head2 IS_* methods
 
-=over 4
+=over
 
 =item is_valid
 
@@ -282,15 +294,17 @@ enquiries, emergency services etc
 
 =back
 
-Other methods are as follows.  Some of them may return undef if the result
-is unknown or not applicable:
+=head2 OTHER NUMBER METADATA METHODS
 
-=over 4
+=over
 
 =item country_code
 
 The numeric code for this country.  eg, 44 for the UK.  Note that there is
 *no* + sign.
+
+While the superclass does indeed implement this (returning undef) this is
+nonsense in just about all cases, so you should always implement this.
 
 =item regulator
 
@@ -300,12 +314,13 @@ regulator is, with optional details such as their web site or phone number.
 =item areacode
 
 Return the area code - if applicable - for the number.  If not applicable,
-returns undef.
+the superclass implementation returns undef.
 
 =item areaname
 
 Return the name for the area code - if applicable.  If not applicable,
-returns undef.  For instance, for a number beginning +44 20 it would return
+the superclass definition returns undef.  For instance, for a number
+beginning +44 20 it would return
 'London'.  Note that this may return data in non-ASCII character sets.
 
 =item location
@@ -319,15 +334,32 @@ You may optionally return a third element indicating how confident you are
 of the location.  Specify this as a number in kilometers indicating the radius
 of the error circle.
 
+The superclass implementation returns undef, which is a reasonable default.
+
 =item subscriber
 
-Return the subscriber part of the number
+Return the subscriber part of the number.
+
+While the superclass implementation returns undef, this is nonsense in just
+about all cases, so you should always implement this.
 
 =item operator
 
-Return the name of the telco operating this number, in an appropriate
+Return the name of the telco assigned this number, in an appropriate
 character set and with optional details such as their web site or phone
-number.
+number.  Note that this should not take into account number portability.
+
+The superclass implementation returns undef, as this information is not
+easily available for most numbering plans.
+
+=item operator_ported
+
+Return the name of the telco to whom this number has been ported.  If it
+is known to have not been ported, then return the same as C<operator()>
+above.
+
+The superclass implementation returns undef, indicating that you don't
+know whether the number has been ported.
 
 =item type
 
@@ -340,6 +372,9 @@ C<[qw(valid allocated geographic)]>.
 
 Return a sanely formatted version of the number, complete with IDD code, eg
 for the UK number (0208) 771-2924 it would return +44 20 8771 2924.
+
+The superclass implementation returns undef, which is nonsense, so you
+should always implement this.
 
 =item country
 
@@ -368,11 +403,88 @@ used to appear as an area code in Spain's numbering plan as well as having its
 own country code), then this method may return an object representing the
 target number.  Otherwise it returns undef.
 
+The superclass implementation returns undef.
+
 =back
 
-Finally, there is a constructor:
+=head2 HOW TO DIAL FROM ONE NUMBER TO ANOTHER
 
-=over 4
+=over
+
+=item dial_to
+
+Takes another Number::Phone object as its only argument and returns a
+string showing how to dial from the number represented by the invocant
+to that represented by the argument.
+
+Examples:
+
+    Call from +44 20 7210 3613
+           to +44 1932 341 111
+     You dial 01932341111
+
+    Call from +44 20 7210 3613
+           to +44 1932 341 111
+     You dial 01932341111
+
+    Call from +44 20 7210 3613
+           to +1 202 224 6361
+     You dial 0012022246361
+
+    Call from +1 202 224 6361
+           to +44 20 7210 3613
+     You dial 011442072103613
+
+    Call from +44 7979 866975
+           to +44 7979 866976
+     You dial 07979 866976
+
+This method is implemented in the superclass, but you may have to
+define certain other methods to assist it.  The algorithm is as
+follows:
+
+=over
+
+=item international call
+
+Append together the source country's international dialling prefix
+(usually 00), then the destination country's code code, area code,
+and subscriber number.
+
+=item domestic call, different area code
+
+Call the object's C<_intra_country_dial_to()> method.
+If it dies, return undef.  If it returns anything other than undef,
+return that. Otherwise append together the country's out-of-area calling
+prefix (usually 0 or 1), the destination area code and subscriber
+number.
+
+=item domestic call, same area code
+
+Call the object's C<_intra_country_dial_to()> method.
+If it dies, return undef.  If it returns anything other than undef,
+return that.  Otherwise return the destination subscriber number.
+
+=back
+
+=item intra_country_dial_to
+
+Takes an object (which should be in the same country as the invocant)
+and returns either undef (meaning "use the default behaviour") or a
+dialling string.  If it dies this means "I don't know how to dial this
+number".
+
+The superclass implementation is to die.
+
+Note that the meaning of undef is a bit different for this method.
+
+Why die by default?  Some countries have weird arrangements for dialling
+some numbers domestically. In fact, both the countries I'm most familiar
+with do, so I assume that others do too.
+
+=head2 CONSTRUCTOR
+
+=over
 
 =item new
 
