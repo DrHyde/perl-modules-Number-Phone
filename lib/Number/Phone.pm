@@ -87,7 +87,31 @@ sub dial_to {
   my $from = shift;
   my $to   = shift;
 
-  return undef;
+  if($from->country_code() != $to->country_code()) {
+    return Number::Phone::Country::idd_code($from->country()).
+           $to->country_code().
+           ($to->areacode() ? $to->areacode() : '').
+           $to->subscriber();
+  }
+
+  # if we get here it's a domestic call
+
+  # do we know how to do this?
+  my $intra_country_dial_to = eval '$from->intra_country_dial_to($to)';
+  return undef if($@); # no
+  return $intra_country_dial_to if($intra_country_dial_to); # yes, and here's how
+
+  # if we get here, then we can use the default implementation ...
+
+  if(
+    defined($from->areacode()) &&
+    defined($to->areacode())   &&
+    $from->areacode() eq $to->areacode()
+  ) { return $to->subscriber(); }
+
+  return Number::Phone::Country::ndd_code($from->country()).
+         ($to->areacode() ? $to->areacode() : '').
+         $to->subscriber();
 }
 
 sub intra_country_dial_to { die("don't know how\n"); }

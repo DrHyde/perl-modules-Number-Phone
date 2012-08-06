@@ -327,6 +327,22 @@ sub format {
     );
 }
 
+=item intra_country_dial_to
+
+Returns how to dial, or undef in the case of an 0[12] number calling
+another 0[12] number whose subscriber part doesn't begin with 1 or 2.
+
+=cut
+
+sub intra_country_dial_to {
+  my $from = shift;
+  my $to   = shift;
+
+  if($from->areacode() && $to->areacode()) { return undef; }
+
+  return '0'.$to->subscriber();
+}
+
 =item country
 
 If the number is_international, return the two-letter ISO country code.

@@ -3,7 +3,7 @@
 use strict;
 
 use Number::Phone;
-use Test::More;
+use Test::More tests => 8;
 
 test_dial_to(
   desc => 'UK local call',
@@ -11,7 +11,7 @@ test_dial_to(
 );
 test_dial_to(
   desc => 'UK local call to National Dialling Only number',
-  from => '+44 1403 200000', to => '+44 1403 000001', expect => '01403000001'
+  from => '+44 1403 200000', to => '+44 1403 030001', expect => '01403030001'
 );
 test_dial_to(
   desc => 'UK call to another area',
@@ -45,8 +45,8 @@ sub test_dial_to {
   my $to   = Number::Phone->new($params{to});
 
   if(!defined($params{expect})) {
-    ok(!defined($from->dial_to($to)), "don't know how to dial from $from to $to");
+    ok(!defined($from->dial_to($to)), "don't know how to dial from ".$from->format()." to ".$to->format());
   } else {
-    ok($from->dial_to($to) eq $params{expect}, "dial $params{expect} to get from $from to $to");
+    is($from->dial_to($to), $params{expect}, "dial $params{expect} to get from ".$from->format()." to ".$to->format());
   }
 }
