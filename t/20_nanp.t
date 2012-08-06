@@ -2,6 +2,9 @@
 
 use strict;
 
+use lib 't/inc';
+use fatalwarnings;
+
 use Test::More tests => 132;
 use Scalar::Util qw(blessed);
 

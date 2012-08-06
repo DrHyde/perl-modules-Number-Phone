@@ -1,8 +1,9 @@
 #!/usr/bin/perl -w
 
-my $loaded;
-
 use strict;
+
+use lib 't/inc';
+use fatalwarnings;
 
 use Number::Phone;
 

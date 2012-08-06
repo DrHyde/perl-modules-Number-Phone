@@ -2,6 +2,9 @@
 
 use strict;
 
+use lib 't/inc';
+use fatalwarnings;
+
 use Test::More tests => 1;
 
 use Number::Phone::Country qw(uk);

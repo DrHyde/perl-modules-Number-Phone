@@ -2,15 +2,13 @@
 
 use strict;
 
+use lib 't/inc';
+use fatalwarnings;
+
 use Number::Phone::UK;
 use Test::More;
 
 END { done_testing(); }
-
-$SIG{__WARN__} = sub {
-  print STDERR grep { $_ !~ /^DEPRECATION: Number::Phone.*should only be called as an object method/ } @_;
-  print STDERR "\n" unless($_[-1] =~ /\n$/);
-};
 
 my $mobile = '+447979866975';
 my $pager  = '+447679866975';

@@ -2,6 +2,9 @@ use strict;
 use warnings;
 use Test::More tests => 5;
 
+use lib 't/inc';
+use fatalwarnings;
+
 use Number::Phone;
 
 {
