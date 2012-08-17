@@ -1,13 +1,14 @@
 #!/usr/bin/perl -w
 
 use strict;
+use lib 't/inc';
+use fatalwarnings;
 
-use Number::Phone;
-
-use lib 't/lib';
+use lib 't/lib'; # for mocking of the UK
 
 use Test::More tests => 11;
 
+use Number::Phone;
 use Number::Phone::Country;
 
 ok(Number::Phone->new("442087712924")->country_code() == 44, "known countries return objects");

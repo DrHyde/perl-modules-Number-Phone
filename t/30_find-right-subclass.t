@@ -5,6 +5,9 @@ use Scalar::Util qw(blessed);
 
 use Number::Phone;
 
+use lib 't/inc';
+use fatalwarnings;
+
 my $number = Number::Phone->new("+441234567890");
 ok(blessed($number) && $number->isa('Number::Phone::UK'),
     "N::P->new() works without specifically loading a country module");

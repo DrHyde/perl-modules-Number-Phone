@@ -2,6 +2,9 @@
 
 use strict;
 
+use lib 't/inc';
+use fatalwarnings;
+
 use lib 't/lib';
 
 use Number::Phone qw(nostubs);

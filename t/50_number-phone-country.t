@@ -2,6 +2,9 @@
 
 use Test::More tests => 301;
 
+use lib 't/inc';
+use fatalwarnings;
+
 use Number::Phone::Country;
 
 # NANP formats
