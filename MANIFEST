@@ -65,6 +65,8 @@ lib/Number/Phone/UK/GG.pm
 lib/Number/Phone/UK/JE.pm
 t/41-stubs.t
 t/inc/uk_tests.pl
+t/60_dial_to.t
+t/inc/fatalwarnings.pm
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -280,5 +282,3 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
-t/60_dial_to.t
-t/inc/fatalwarnings.pm
