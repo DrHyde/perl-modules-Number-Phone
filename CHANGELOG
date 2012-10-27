@@ -4,11 +4,14 @@ XXXX-XX-XX      X.X     Bugfix stub countries to not have random \ in
                           return DE" is obviously wrong;
                         Some stuff in stubs for the breakup of the
                           Dutch colonies in the Caribbean;
-                        New UK allocations;
+                        New allocations;
                         Documentation (and stub implementation in superclass)
                           for new operator_ported() method;
                         New dial_to() method;
                         Much doco improvement;
+
+2012-10-27      2.0001  New allocations, import from libphonenumber
+                          and OFCOM
 
 2012-01-29      2.0     Fix nasty bug in formatting unallocated UK numbers;
                         Sint Maarten (SX) moved from +599 5 to +1 721;
