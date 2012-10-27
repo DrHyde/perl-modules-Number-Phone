@@ -1,3 +1,6 @@
+2012-10-27      2.0001  New allocations, import from libphonenumber
+                          and OFCOM
+
 2012-01-29      2.0     Fix nasty bug in formatting unallocated UK numbers;
                         Sint Maarten (SX) moved from +599 5 to +1 721;
                         UK formatting improved for 3+7 and 2+8 formats;

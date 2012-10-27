@@ -71,7 +71,6 @@ lib/Number/Phone/StubCountry/AE.pm
 lib/Number/Phone/StubCountry/AF.pm
 lib/Number/Phone/StubCountry/AL.pm
 lib/Number/Phone/StubCountry/AM.pm
-lib/Number/Phone/StubCountry/AN.pm
 lib/Number/Phone/StubCountry/AO.pm
 lib/Number/Phone/StubCountry/AR.pm
 lib/Number/Phone/StubCountry/AT.pm
@@ -90,6 +89,7 @@ lib/Number/Phone/StubCountry/BJ.pm
 lib/Number/Phone/StubCountry/BL.pm
 lib/Number/Phone/StubCountry/BN.pm
 lib/Number/Phone/StubCountry/BO.pm
+lib/Number/Phone/StubCountry/BQ.pm
 lib/Number/Phone/StubCountry/BR.pm
 lib/Number/Phone/StubCountry/BT.pm
 lib/Number/Phone/StubCountry/BW.pm
@@ -109,6 +109,7 @@ lib/Number/Phone/StubCountry/CO.pm
 lib/Number/Phone/StubCountry/CR.pm
 lib/Number/Phone/StubCountry/CU.pm
 lib/Number/Phone/StubCountry/CV.pm
+lib/Number/Phone/StubCountry/CW.pm
 lib/Number/Phone/StubCountry/CY.pm
 lib/Number/Phone/StubCountry/CX.pm
 lib/Number/Phone/StubCountry/CZ.pm
@@ -245,6 +246,7 @@ lib/Number/Phone/StubCountry/SM.pm
 lib/Number/Phone/StubCountry/SN.pm
 lib/Number/Phone/StubCountry/SO.pm
 lib/Number/Phone/StubCountry/SR.pm
+lib/Number/Phone/StubCountry/SS.pm
 lib/Number/Phone/StubCountry/ST.pm
 lib/Number/Phone/StubCountry/SV.pm
 lib/Number/Phone/StubCountry/SY.pm
