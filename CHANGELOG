@@ -1,3 +1,9 @@
+2012-10-30      2.0002  Fixed how we extract patterns of leading digits
+                          for number formats from libphonenumber, see
+			  https://github.com/DrHyde/perl-modules-Number-Phone/issues/7;
+                        Added some minimal tests for this;
+			Import from libphonenumber
+
 2012-10-27      2.0001  New allocations, import from libphonenumber
                           and OFCOM
 
