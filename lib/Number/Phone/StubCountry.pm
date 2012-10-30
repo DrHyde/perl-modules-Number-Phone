@@ -7,11 +7,28 @@ use Number::Phone::Country qw(noexport uk);
 use base qw(Number::Phone);
 our $VERSION = '1.0';
 
-sub country_code { return Number::Phone::Country::country_code(shift()->country()); }
-sub country      { (my $self = ref(shift)) =~ /::(\w\w(\w\w)?)$/; $1; } # extra \w\w is for MOCK during testing
+sub country_code {
+    my $self = shift;
+    
+    return exists($self->{country_code})
+           ? $self->{country_code}
+           : Number::Phone::Country::country_code($self->country());
+}
+
+sub country {
+    my $self = shift;
+    if(exists($self->{country})) { return $self->{country}; }
+    if(ref($self) =~ /::(\w\w(\w\w)?)$/) { # extra \w\w is for MOCK during testing
+        return $1;
+    }
+    return undef;
+}
 
 sub is_valid {
   my $self = shift;
+  if(exists($self->{is_valid})) {
+      return $self->{is_valid};
+  }
   foreach (map { "is_$_" } qw(special_rate geographic mobile pager tollfree personal ipphone)) {
     return 1 if($self->$_());
   }
@@ -21,9 +38,17 @@ sub is_valid {
 # NB for these two libphonenumber's definition of "fixed line" differs subtlely from
 # Number::Phone's.
 sub is_geographic   { shift()->_validator('fixed_line'); }
-sub is_fixed_line   { return shift()->_validator('mobile') ? 0 : undef; }
+sub is_fixed_line   {
+    my $self = shift;
+    return undef if(!defined($self->is_valid()));
+    return $self->_validator('mobile') ? 0 : undef;
+}
 
-sub is_mobile       { shift()->_validator('mobile'); }
+sub is_mobile       {
+    my $self = shift;
+    if(exists($self->{is_mobile})) { return $self->{is_mobile} }
+    $self->_validator('mobile');
+}
 sub is_pager        { shift()->_validator('pager'); }
 sub is_personal     { shift()->_validator('personal_number'); }
 sub is_special_rate { shift()->_validator('special_rate'); }

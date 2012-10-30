@@ -7,6 +7,26 @@ use Test::More;
 
 use lib 't/lib';
 
+my $inmarsat870 = Number::Phone->new("+870123456");
+ok(1, "didn't die  when trying to load non-existent stub for Inmarsat +870");
+is($inmarsat870->country_code(), '870', 'Inmarsat number has right country_code');
+is($inmarsat870->country(), 'Inmarsat', 'Number::Phone->new("+870123456")->country()');
+is($inmarsat870->format(), '+870 123456', 'Number::Phone->new("+870123456")->format()');
+is($inmarsat870->is_valid(), undef, 'Number::Phone->new("+870123456")->is_valid()');
+is($inmarsat870->is_mobile(), undef, 'Number::Phone->new("+870123456")->is_mobile()');
+is($inmarsat870->is_geographic(), undef, 'Number::Phone->new("+870123456")->is_geographic()');
+is($inmarsat870->is_fixed_line(), undef, 'Number::Phone->new("+870123456")->is_fixed_line()');
+
+my $inmarsat871 = Number::Phone->new("+8719744591");
+ok(1, "didn't die  when trying to load non-existent stub for Inmarsat +871");
+is($inmarsat871->country_code(), '871', 'Inmarsat number has right country_code');
+is($inmarsat871->country(), 'Inmarsat', 'Number::Phone->new("+8719744591")->country()');
+is($inmarsat871->format(), '+871 9744591', 'Number::Phone->new("+8719744591")->format()');
+is($inmarsat871->is_valid(), undef, 'Number::Phone->new("+8719744591")->is_valid()');
+is($inmarsat871->is_mobile(), undef, 'Number::Phone->new("+8719744591")->is_mobile()');
+is($inmarsat871->is_geographic(), undef, 'Number::Phone->new("+8719744591")->is_geographic()');
+is($inmarsat871->is_fixed_line(), undef, 'Number::Phone->new("+8719744591")->is_fixed_line()');
+
 eval "use Number::Phone::FO";
 ok($@, "good, there's no module for the Faroes");
 my $fo = Number::Phone->new('+298 303030'); # Faroes Telecom
