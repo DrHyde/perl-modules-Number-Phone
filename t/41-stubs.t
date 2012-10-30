@@ -28,6 +28,14 @@ ok(Number::Phone->new('+79607001122')->is_mobile(), "Хороший товари
 is(Number::Phone->new('+81 744 54 4343')->areaname(), 'Yamatotakada, Nara',
   "area names don't have spurious \\s");
 
+# https://github.com/DrHyde/perl-modules-Number-Phone/issues/7
+my $de = Number::Phone->new('+493308250565');
+# libphonenumber doesn't do areacodes, enable this test once we fake it up in stubs
+# is($de->areacode(), 33082, "extracted area code for Menz Kr Oberhavel correctly");
+is($de->format(), "+49 33082 50565", "formatted Menz Kr Oberhavel number correctly");
+$de = Number::Phone->new('+493022730027'); # Bundestag
+is($de->format(), "+49 30 22730027", "formatted Berlin number correctly");
+
 # let's break the UK
 
 $Number::Phone::Country::idd_codes{'44'} = 'MOCK';
