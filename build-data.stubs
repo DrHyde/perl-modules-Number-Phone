@@ -51,12 +51,15 @@ TERRITORY: foreach my $territory (@territories) {
   my @formatters = ();
   foreach my $number_format (@number_formats) {
     my $number_format_pattern = ''.$number_format->find('@pattern');
-    my @leading_digit_patterns = $number_format->find('leadingDigits')->get_nodelist();
+    # only interested in the last one,
+    # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/7
+    my $leading_digit_pattern = ($number_format->find('leadingDigits')->get_nodelist())[-1];
     my $formatter = ''.$number_format->find('format');
 
-    foreach (map { (my $f = $_->string_value()) =~ s/\s//g; $f; } @leading_digit_patterns) {
+    if($leading_digit_pattern) {
+      ($leading_digit_pattern = $leading_digit_pattern->string_value()) =~ s/\s//g;
       push @formatters, {
-        leading_digits => $_,
+        leading_digits => $leading_digit_pattern,
         pattern        => $number_format_pattern
       };
     }
