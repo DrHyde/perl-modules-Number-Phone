@@ -7,7 +7,7 @@ use Scalar::Util 'blessed';
 use Number::Phone::Country qw(noexport uk);
 use Number::Phone::StubCountry;
 
-our $VERSION = '2.0002';
+our $VERSION = '2.1';
 
 my $NOSTUBS = 0;
 sub import {
@@ -191,14 +191,24 @@ sub new {
 }
 
 sub _make_stub_object {
-  shift;
+  my $class = shift;
   my $number = shift;
-  my $country_code = ''.Number::Phone::Country::phone2country($number);
-  die("no module available for +$country_code, and nostubs turned on\n") if($NOSTUBS);
-  my $class = "Number::Phone::StubCountry::$country_code";
-  eval "use $class";
-  die("Can't find $class: $@\n") if($@);
-  $class->new($number);
+  my($country_name, $country_idd)  = Number::Phone::Country::phone2country_and_idd($number);
+  die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
+  my $stub_class = "Number::Phone::StubCountry::$country_name";
+  eval "use $stub_class";
+  # die("Can't find $stub_class: $@\n") if($@);
+  if($@) {
+      # an instance of this class is the ultimate fallback
+      (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
+      return bless({
+          country_code => $country_idd,
+          country      => $country_name,
+          is_valid     => undef,
+          number       => $local_number,
+      }, 'Number::Phone::StubCountry');
+  }
+  $stub_class->new($number);
 }
 
 =head1 METHODS
