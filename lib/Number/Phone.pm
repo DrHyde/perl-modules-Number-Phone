@@ -518,6 +518,8 @@ Why die by default?  Some countries have weird arrangements for dialling
 some numbers domestically. In fact, both the countries I'm most familiar
 with do, so I assume that others do too.
 
+=back
+
 =head2 CONSTRUCTOR
 
 =over
