@@ -329,8 +329,11 @@ sub format {
 
 =item intra_country_dial_to
 
-Returns how to dial, or undef in the case of an 0[12] number calling
-another 0[12] number whose subscriber part doesn't begin with 1 or 2.
+Within the UK numbering plan you can *always* dial 0xxxx xxxxxx
+for intra-country calls. In most places the leading 0$areacode is
+optional but in some it is required (see
+L<http://consumers.ofcom.org.uk/dial-the-code/>) and over time this
+will apply to more areas.
 
 =cut
 
@@ -338,9 +341,7 @@ sub intra_country_dial_to {
   my $from = shift;
   my $to   = shift;
 
-  if($from->areacode() && $to->areacode()) { return undef; }
-
-  return '0'.$to->subscriber();
+  return '0'.($to->areacode() ? $to->areacode() : '').$to->subscriber();
 }
 
 =item country
