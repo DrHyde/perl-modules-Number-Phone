@@ -7,7 +7,7 @@ use Number::Phone::UK::Data;
 
 use base 'Number::Phone';
 
-our $VERSION = 1.6;
+our $VERSION = 1.61;
 
 my $cache = {};
 
