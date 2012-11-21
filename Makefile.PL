@@ -13,7 +13,8 @@ WriteMakefile(
   PREREQ_PM    => {
     'Scalar::Util'  => 0,
     'Test::More'    => 0,
-    'Digest::MD5'   => 0
+    'Digest::MD5'   => 0,
+    'DBM::Deep'     => 2.0008,
   },
   dist => {
     PREOP => "./build-data.sh"
