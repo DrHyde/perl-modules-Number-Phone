@@ -489,17 +489,25 @@ and subscriber number.
 
 =item domestic call, different area code
 
-Call the object's C<_intra_country_dial_to()> method.
-If it dies, return undef.  If it returns anything other than undef,
-return that. Otherwise append together the country's out-of-area calling
+Call the object's C<intra_country_dial_to()> method.
+
+If it dies, return undef.
+
+If it returns anything other than undef, return that.
+
+If it returns undef, append together the country's out-of-area calling
 prefix (usually 0 or 1), the destination area code and subscriber
 number.
 
 =item domestic call, same area code
 
-Call the object's C<_intra_country_dial_to()> method.
-If it dies, return undef.  If it returns anything other than undef,
-return that.  Otherwise return the destination subscriber number.
+Call the object's C<intra_country_dial_to()> method.
+
+If it dies, return undef.
+
+If it returns anything other than undef, return that.
+
+If it returns undef, return the destination subscriber number.
 
 =back
 
