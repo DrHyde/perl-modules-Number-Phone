@@ -45,8 +45,9 @@ is($ru->country(), 'RU', "Number::Phone->new('+7 499 999 82 83')->country()");
 # good news comrade (courtesy of translate.google)
 ok(Number::Phone->new('+79607001122')->is_mobile(), "Хороший товарищ новость! is_mobile works for Russia!");
 
-is(Number::Phone->new('+81 744 54 4343')->areaname(), 'Yamatotakada, Nara',
-  "area names don't have spurious \\s");
+my $jp = Number::Phone->new('+81 744 54 4343');
+isa_ok($jp, 'Number::Phone::StubCountry::JP', "stub loaded when N::P::CC exists but isn't a proper subclass");
+is($jp->areaname(), 'Yamatotakada, Nara', "area names don't have spurious \\s");
 
 # https://github.com/DrHyde/perl-modules-Number-Phone/issues/7
 my $de = Number::Phone->new('+493308250565');
