@@ -6,7 +6,7 @@
 
 EXIT_STATUS=0
 # first get OFCOM data
-curl -O http://www.ofcom.org.uk/static/numbering/codelist.zip
+curl -R -O -s http://www.ofcom.org.uk/static/numbering/codelist.zip
 # if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e lib/Number/Phone/UK/Data.pm -o codelist.zip -nt lib/Number/Phone/UK/Data.pm; then
   EXITSTATUS=1
