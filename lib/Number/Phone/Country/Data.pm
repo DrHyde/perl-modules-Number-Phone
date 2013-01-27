@@ -23,7 +23,7 @@ $VERSION = '1.0';
     246     => 'IO', 247     => 'AC', 248     => 'SC', 249     => 'SD',
     250     => 'RW', 251     => 'ET', 252     => 'SO', 253     => 'DJ',
     254     => 'KE', 255     => 'TZ', 256     => 'UG', 257     => 'BI',
-    258     => 'MZ', 260     => 'ZM', 261     => 'MG',
+    258     => 'MZ', 259     => 'ZA', 260     => 'ZM', 261     => 'MG',
     262269  => 'YT', # Mayotte fixed lines
     262639  => 'YT', # Mayotte GSM
     262     => 'RE', # Assume that Reunion is everything else in +262
