@@ -32,7 +32,7 @@ print MODULE q{
   use warnings;
   use vars qw(%areanames);
 }.
-"our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n".q{
+"our \$VERSION = '1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0])."';\n\n".q{
 
   sub _prefixes {
       my $number = shift;
