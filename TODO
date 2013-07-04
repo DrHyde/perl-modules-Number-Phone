@@ -3,3 +3,7 @@ more systematic UK tests
 details for NANP-ish countries
 details for non-geo NANP numbers
 support phone extensions - eg +44 1234 567890 ext 37
+
+Urgh, google have both Morocco (+212, MA) and Western Sahara (+212, EH)
+  need to treat that like the NANP. Yuck. Do RU/KZ at the same time.
+
