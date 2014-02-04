@@ -35,7 +35,7 @@ sub phone2country_and_idd {
 
     # deal with NANP insanity
 
-    if($phone =~ m!^1(\d{3})\d{7}$!) {
+    if($phone =~ m!^1(\d{3})(\d{7})?$!) {
 
         # see http://www.cnac.ca/co_codes/co_code_status_map.htm
 	# checked 2011-07-08
