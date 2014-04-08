@@ -20,7 +20,7 @@ my $data = {
   GG => {
     mobile     => '+44 7781 000000',
     geographic => '+44 1481 200000',
-    operator   => 'Cable and Wireless Guernsey Limited',
+    operator   => 'Sure (Guernsey) Limited',
     regulator  => 'Office of Utility Regulation, http://www.cicra.gg'
   },
   IM => {
