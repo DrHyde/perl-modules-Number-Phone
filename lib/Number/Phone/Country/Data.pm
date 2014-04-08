@@ -64,6 +64,11 @@ $VERSION = '1.0';
     43      => 'AT', 44      => 'GB',
     45      => 'DK', 46      => 'SE',
     47      => 'NO', 48      => 'PL', 49      => 'DE',
+
+    # http://en.wikipedia.org/wiki/Telephone_numbers_in_the_United_Kingdom#Crown_dependencies
+    441481 => 'GG', 447781 => 'GG', 447839 => 'GG', 447911 => 'GG',
+    441534 => 'JE', 447509 => 'JE', 447797 => 'JE', 447937 => 'JE', 447700 => 'JE', 447829 => 'JE',
+    441624 => 'IM', 447624 => 'IM', 447524 => 'IM', 447924 => 'IM',
     
     # 5* checked against wtng.info 2011-07-08
     500     => 'FK',
@@ -228,6 +233,7 @@ $VERSION = '1.0';
     'GD' => [  '1',  '011',    '4'], # Grenada
     'GE' => ['995',  '810',    '8'], # Georgia
     'GF' => ['594',   '00',  undef], # French Guiana
+    'GG' => [ '44',   '00',    '0'], # Guernsey
     'GH' => ['233',   '00',  undef], # Ghana
     'GI' => ['350',   '00',  undef], # Gibraltar
     'GL' => ['299',   '00',  undef], # Greenland
@@ -250,12 +256,14 @@ $VERSION = '1.0';
     'ID' => [ '62',  '001',    '0'], # Indonesia
     'IE' => ['353',   '00',    '0'], # Ireland
     'IL' => ['972',   '00',    '0'], # Israel
+    'IM' => [ '44',   '00',    '0'], # Isle of Man
     'IN' => [ '91',   '00',    '0'], # India
     'IO' => ['246',   '00',  undef], # British Indian Ocean Territory
     'IQ' => ['964',   '00',    '0'], # Iraq
     'IR' => [ '98',   '00',    '0'], # Iran, Islamic Republic of
     'IS' => ['354',   '00',    '0'], # Iceland
     'IT' => [ '39',   '00',  undef], # Italy
+    'JE' => [ '44',   '00',    '0'], # Jersey
     'JM' => [  '1',  '011',    '1'], # Jamaica
     'JO' => ['962',   '00',    '0'], # Jordan
     'JP' => [ '81',  '001',    '0'], # Japan
