@@ -160,7 +160,7 @@ when you use the module:
 
 =cut
 
-sub new {
+sub _new_args {
     my $class = shift;
     my($country, $number) = @_;
 
@@ -182,7 +182,13 @@ sub new {
     $number =~ s/[^+0-9]//g;
 
     $number = "+$number" unless($number =~ /^\+/);
-    $country = Number::Phone::Country::phone2country($number);
+    $country = Number::Phone::Country::phone2country($number) or return;
+    return $country, $number;
+}
+
+sub new {
+    my $class = shift;
+    my($country, $number) = $class->_new_args(@_);
     return undef unless($country);
     $country = "NANP" if($number =~ /^\+1/);
     eval "use Number::Phone::$country";
