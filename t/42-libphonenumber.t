@@ -73,6 +73,13 @@ isa_ok $gb, 'Number::Phone::StubCountry::GB';
 is($gb->country_code(), 44, "Number::Phone::Lib->new('$uk')->country_code()");
 is($gb->country(), 'GB', "Number::Phone::Lib->new('$uk')->country()");
 
+# Try another UK number.
+$uk = '+441275939345'; # 441275 is valid, but not 44275.
+$gb = Number::Phone::Lib->new($uk);
+isa_ok $gb, 'Number::Phone::StubCountry::GB';
+is($gb->country_code(), 44, "Number::Phone::Lib->new('$uk')->country_code()");
+is($gb->country(), 'GB', "Number::Phone::Lib->new('$uk')->country()");
+
 eval "use Number::Phone::IM";
 ok($@, "good, there's no module for IM");
 my $ukim = '+447624376698'; # Isle of Man
