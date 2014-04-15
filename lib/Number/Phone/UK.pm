@@ -87,13 +87,19 @@ sub is_valid {
     # if we've seen this number before, use cached result
     return 1 if($cache->{$number}->{is_valid});
 
+    # assume it's OK unless proven otherwise
+    $cache->{$number}->{is_valid} = 1;
+
     my $cleaned_number = _clean_number($number);
 
     my @retards = _retards($cleaned_number);
 
-    # and quickly check length
-    $cache->{$number}->{is_valid} = (length($cleaned_number) > 6 && length($cleaned_number) < 11) ? 1 : 0;
-    return 0 unless($cache->{$number}->{is_valid});
+    # quickly check length
+    return $cache->{$number}->{is_valid} = 0 if(length($cleaned_number) < 7 || length($cleaned_number) > 10);
+
+    # slightly more rigourous length check for some unallocated geographic numbers
+    # 07, 02x and 011x are always ten digits
+    return $cache->{$number}->{is_valid} = 0 if($cleaned_number =~ /^([27]|11)/ && length($cleaned_number) != 10);
 
     $cache->{$number}->{is_allocated} = 
         grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
@@ -115,7 +121,7 @@ sub is_valid {
             )[0];
             if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
                 # number wrong length!
-                $cache->{$number} = undef;
+                $cache->{$number} = { is_valid => 0 };
                 return 0;
             }
         }
