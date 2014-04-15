@@ -24,7 +24,7 @@ Number::Phone::Lib - Instantiate Number::Phone::* objects from libphonenumber
 
     use Number::Phone::Lib;
 
-    $daves_phone = Number::Phone::lib->new('+442087712924');
+    $daves_phone = Number::Phone::Lib->new('+442087712924');
     $daves_other_phone = Number::Phone::Lib->new('+44 7979 866 975');
     # alternatively      Number::Phone::Lib->new('+44', '7979 866 975');
     # or                 Number::Phone::Lib->new('UK', '07979 866 975');
@@ -53,9 +53,8 @@ simple validation and/or formatting, all that overhead is unnecessary.
 
 =back
 
-That said, the core Number::Phone UK and NANP (North American Numbering Plan)
-modules, in particular, are far more comprehensive. So use them if you need
-them.
+That said, the core Number::Phone UK module
+is far more comprehensive.
 
 =head1 LICENCE
 

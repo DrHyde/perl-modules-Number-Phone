@@ -148,6 +148,11 @@ so the appropriate country-specific module is loaded if available.
 If you pass in a bogus country code not recognised by
 Number::Phone::Country, the constructor will return undef.
 
+=head1 COMPATIBILTY WITH libphonenumber
+
+libphonenumber is a similar project for other languages, maintained
+by Google. 
+
 If you pass in a country code for which
 no supporting module is available, the constructor will try to use a 'stub'
 class under Number::Phone::StubCountry::* that uses data automatically
@@ -157,6 +162,12 @@ is an experimental feature.  If you want to disable this, then pass 'nostubs'
 when you use the module:
 
     use Number::Phone qw(nostubs);
+
+Alternatively, if you want to *always* use data derived from libphonenumber,
+you should use the L<Number::Phone::Lib> module instead. This is a subclass
+of Number::Phone that will use the libphonenumber-derived stub classes even
+when extra data is available in, for example, Number::Phone::UK. You might
+want to do this for compatibility or performance. Number::Phone::UK is quite slow, because it uses a huge database for some of its features.
 
 =cut
 
