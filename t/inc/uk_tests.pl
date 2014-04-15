@@ -187,8 +187,11 @@ foreach my $tuple (
   });
 }
 
-$number = Number::Phone->new('+44844000000');
-ok(!defined($number), "+44 844 000 000 is invalid (too short)");
+foreach my $invalid (qw(+44844000000 +44275939345 +44208771292 +44113203160 +44113325000)) {
+                  #                  Protected    Normal       Normal       Protected
+    $number = Number::Phone->new($invalid);
+    ok(!defined($number), "$invalid is invalid (too short)");
+}
 
 foreach my $tuple (
   [ 'Number::Phone'     => '+441954202020', '+44 1954 202020' ],
