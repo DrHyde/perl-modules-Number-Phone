@@ -160,7 +160,7 @@ when you use the module:
 
 =cut
 
-sub new {
+sub _new_args {
     my $class = shift;
     my($country, $number) = @_;
 
@@ -182,25 +182,34 @@ sub new {
     $number =~ s/[^+0-9]//g;
 
     $number = "+$number" unless($number =~ /^\+/);
-    $country = Number::Phone::Country::phone2country($number);
+    $country = Number::Phone::Country::phone2country($number) or return;
+    return $country, $number;
+}
+
+sub new {
+    my $class = shift;
+    my($country, $number) = $class->_new_args(@_);
     return undef unless($country);
-    $country = "NANP" if($number =~ /^\+1/);
+    if ($number =~ /^\+1/) {
+        $country = "NANP";
+    } elsif ($country =~ /^(?:GG|JE|IM)$/) {
+        $country = 'UK';
+    }
     eval "use Number::Phone::$country";
     if($@ || !"Number::Phone::$country"->isa('Number::Phone')) {
-        return $class->_make_stub_object($number)
+        return $class->_make_stub_object($number, $country)
     }
     return "Number::Phone::$country"->new($number);
 }
 
 sub _make_stub_object {
-  my $class = shift;
-  my $number = shift;
-  my($country_name, $country_idd)  = Number::Phone::Country::phone2country_and_idd($number);
+ my ($class, $number, $country_name) = @_;
   die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
   my $stub_class = "Number::Phone::StubCountry::$country_name";
   eval "use $stub_class";
   # die("Can't find $stub_class: $@\n") if($@);
   if($@) {
+      my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
       # an instance of this class is the ultimate fallback
       (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
       return bless({

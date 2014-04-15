@@ -22,11 +22,11 @@ mkdir('lib/Number/Phone/StubCountry');
 mkdir('t/lib');
 mkdir('t/lib/Number');
 mkdir('t/lib/Number/Phone');
-mkdir('t/lib/Number/Phone/StubCountry');
+my $dir = 'lib/Number/Phone/StubCountry';
 
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
-  next if($IDD_country_code eq '1'); # no point stubbing NANP!
+  # next if($IDD_country_code eq '1'); # no point stubbing NANP!
 
   my $ISO_country_code = ''.$territory->find('@id');
   if($ISO_country_code !~ /^..$/) {
@@ -34,12 +34,12 @@ TERRITORY: foreach my $territory (@territories) {
     next TERRITORY;
   }
   # no need to create a stub for the UK, so use this for testing instead
-  $ISO_country_code = $ISO_country_code eq 'GB' ? 'MOCK' : $ISO_country_code;
-  my $dir = ($ISO_country_code eq 'MOCK' ? 't/' : '').'lib/Number/Phone/StubCountry';
+  # $ISO_country_code = $ISO_country_code eq 'GB' ? 'MOCK' : $ISO_country_code;
+  # my $dir = ($ISO_country_code eq 'MOCK' ? 't/' : '').'lib/Number/Phone/StubCountry';
 
   unlink "$dir/$ISO_country_code.pm"; # to clear out countries that no longer exist
 
-  next if($ISO_country_code =~ /^(IM|GG|JE)$/); # special cases in N::P
+  # next if($ISO_country_code =~ /^(IM|GG|JE)$/); # special cases in N::P
 
   open(my $module_fh, '>', "$dir/$ISO_country_code.pm")
     || die("Can't write $dir/$ISO_country_code.pm: $!\n");
@@ -111,6 +111,18 @@ sub new {
 1;
 EOCODE
   ;
+}
+
+# Copy GB to MOCK for testing.
+  if (-e "$dir/GB.pm") {
+    my $mock_dir = 't/lib/Number/Phone/StubCountry';
+    mkdir $mock_dir;
+    open my $in, '<',  "$dir/GB.pm" or die "Cannot open $dir/GB.pm: $!\n";
+    open my $out, '>', "$mock_dir/MOCK.pm" or die "Cannot open $dir/MOCK.pm: $!\n";
+    while (<$in>) {
+        s/::GB/::MOCK/g;
+        print $out $_;
+    }
 }
 
 sub preamble {
