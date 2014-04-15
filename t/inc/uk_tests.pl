@@ -154,7 +154,7 @@ skip_if_mocked("libphonenumber disagrees with me about formatting mobile numbers
 $number = Number::Phone->new('+447500000000');
 ok($number->is_mobile(), "075 mobiles correctly identified");
 skip_if_mocked("libphonenumber doesn't do operators", 1, sub {
-  ok($number->operator() eq 'Vodafone Ltd', "075 mobiles have right operator");
+  is($number->operator(), 'Vodafone Uk Ltd', "075 mobiles have right operator");
 });
 skip_if_mocked("libphonenumber disagrees with me about formatting mobile numbers", 1, sub {
   is($number->format(), '+44 7500000000', "075 mobiles are formatted OK");

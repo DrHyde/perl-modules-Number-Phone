@@ -110,8 +110,8 @@ lib/Number/Phone/StubCountry/CR.pm
 lib/Number/Phone/StubCountry/CU.pm
 lib/Number/Phone/StubCountry/CV.pm
 lib/Number/Phone/StubCountry/CW.pm
-lib/Number/Phone/StubCountry/CY.pm
 lib/Number/Phone/StubCountry/CX.pm
+lib/Number/Phone/StubCountry/CY.pm
 lib/Number/Phone/StubCountry/CZ.pm
 lib/Number/Phone/StubCountry/DE.pm
 lib/Number/Phone/StubCountry/DJ.pm
@@ -184,8 +184,8 @@ lib/Number/Phone/StubCountry/MA.pm
 lib/Number/Phone/StubCountry/MC.pm
 lib/Number/Phone/StubCountry/MD.pm
 lib/Number/Phone/StubCountry/ME.pm
-lib/Number/Phone/StubCountry/MG.pm
 lib/Number/Phone/StubCountry/MF.pm
+lib/Number/Phone/StubCountry/MG.pm
 lib/Number/Phone/StubCountry/MH.pm
 lib/Number/Phone/StubCountry/MK.pm
 lib/Number/Phone/StubCountry/ML.pm
@@ -252,6 +252,7 @@ lib/Number/Phone/StubCountry/ST.pm
 lib/Number/Phone/StubCountry/SV.pm
 lib/Number/Phone/StubCountry/SY.pm
 lib/Number/Phone/StubCountry/SZ.pm
+lib/Number/Phone/StubCountry/TA.pm
 lib/Number/Phone/StubCountry/TD.pm
 lib/Number/Phone/StubCountry/TG.pm
 lib/Number/Phone/StubCountry/TH.pm
