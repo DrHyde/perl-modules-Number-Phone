@@ -68,13 +68,13 @@ is($us->country(), 'US', "Number::Phone::Lib->new('$the_man')->country()");
 is($us->areaname(), 'Washington D.C.', "Number::Phone::Lib->new('$the_man')->areaname()");
 is($us->format, '+1 202 456 6213', "Number::Phone::Lib->new('$the_man')->format()");
 
-# my $toll_free = '+1 (866) 623 2282';
-# my $tf = Number::Phone::Lib->new($toll_free);
-# isa_ok $tf, 'Number::Phone::StubCountry::US';
-# is($tf->country_code(), 1, "Number::Phone::Lib->new('$the_man')->country_code()");
-# is($tf->country(), 'US', "Number::Phone::Lib->new('$the_man')->country()");
-# is($tf->areaname(), undef, "Number::Phone::Lib->new('$toll_free')->areaname()");
-# is($tf->format, '+1 866 623 2282', "Number::Phone::Lib->new('$toll_free')->format()");
+my $toll_free = '+1 (866) 623 2282';
+my $tf = Number::Phone::Lib->new($toll_free);
+isa_ok $tf, 'Number::Phone::StubCountry::US';
+is($tf->country_code(), 1, "Number::Phone::Lib->new('$toll_free')->country_code()");
+is($tf->country(), 'US', "Number::Phone::Lib->new('$toll_free')->country()");
+is($tf->areaname(), undef, "Number::Phone::Lib->new('$toll_free')->areaname()");
+is($tf->format, '+1 866 623 2282', "Number::Phone::Lib->new('$toll_free')->format()");
 
 eval "cae Number::Phone::CA";
 ok($@, "good, there's no module for CA");
