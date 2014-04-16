@@ -24,6 +24,10 @@ mkdir('t/lib/Number');
 mkdir('t/lib/Number/Phone');
 my $dir = 'lib/Number/Phone/StubCountry';
 
+my @us_formats = formats_for($xml->find(
+    '/phoneNumberMetadata/territories/territory[@id="US"]')->get_node(1)
+);
+
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
   # next if($IDD_country_code eq '1'); # no point stubbing NANP!
@@ -46,27 +50,7 @@ TERRITORY: foreach my $territory (@territories) {
   print $manifest_fh "$dir/$ISO_country_code.pm\n";
   print $module_fh preamble($ISO_country_code);
 
-  my @number_formats = $territory->find('availableFormats/numberFormat')->get_nodelist();
-
-  my @formatters = ();
-  foreach my $number_format (@number_formats) {
-    my $number_format_pattern = ''.$number_format->find('@pattern');
-    # only interested in the last one,
-    # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/7
-    my $leading_digit_pattern = ($number_format->find('leadingDigits')->get_nodelist())[-1];
-    my $formatter = ''.$number_format->find('format');
-
-    if($leading_digit_pattern) {
-      ($leading_digit_pattern = $leading_digit_pattern->string_value()) =~ s/\s//g;
-      push @formatters, {
-        leading_digits => $leading_digit_pattern,
-        pattern        => $number_format_pattern
-      };
-    } else {
-      push @formatters, { pattern => $number_format_pattern };
-    }
-  }
-
+  my @formatters = formats_for($territory);
   print $module_fh 'my '.Data::Dumper->new([\@formatters], [qw(formatters)])->Dump()."\n";
   print $module_fh 'my '.Data::Dumper->new([{
                                              special_rate => join('|', map {
@@ -155,4 +139,34 @@ use strict;
 use warnings;
 }.
   "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n";
+}
+
+sub formats_for {
+  my $territory = shift;
+
+  return @us_formats if $territory->findvalue('generalDesc/comment()')->value
+      =~ /NANPA\s+country\s+-\s+uses\s+US\s+formatting\s+rules/;
+
+  my @number_formats = $territory->find('availableFormats/numberFormat')->get_nodelist();
+
+  my @formatters = ();
+  foreach my $number_format (@number_formats) {
+    my $number_format_pattern = ''.$number_format->find('@pattern');
+    # only interested in the last one,
+    # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/7
+    my $leading_digit_pattern = ($number_format->find('leadingDigits')->get_nodelist())[-1];
+    my $formatter = ''.$number_format->find('format');
+
+    if($leading_digit_pattern) {
+      ($leading_digit_pattern = $leading_digit_pattern->string_value()) =~ s/\s//g;
+      push @formatters, {
+        leading_digits => $leading_digit_pattern,
+        pattern        => $number_format_pattern
+      };
+    } else {
+      push @formatters, { pattern => $number_format_pattern };
+    }
+  }
+  return @formatters;
+
 }

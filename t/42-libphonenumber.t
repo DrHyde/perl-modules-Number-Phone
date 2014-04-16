@@ -76,6 +76,16 @@ is($us->format, '+1 202 456 6213', "Number::Phone::Lib->new('$the_man')->format(
 # is($tf->areaname(), undef, "Number::Phone::Lib->new('$toll_free')->areaname()");
 # is($tf->format, '+1 866 623 2282', "Number::Phone::Lib->new('$toll_free')->format()");
 
+eval "cae Number::Phone::CA";
+ok($@, "good, there's no module for CA");
+my $ca_numb = '+16135637242';
+my $ca = Number::Phone::Lib->new($ca_numb);
+isa_ok $ca, 'Number::Phone::StubCountry::CA';
+is($ca->country_code(), 1, "Number::Phone::Lib->new('$ca_numb')->country_code()");
+is($ca->country(), 'CA', "Number::Phone::Lib->new('$ca_numb')->country()");
+is($ca->areaname(), 'Ottawa, ON', "Number::Phone::Lib->new('$ca_numb')->areaname()");
+is($ca->format, '+1 613 563 7242', "Number::Phone::Lib->new('$ca_numb')->format()");
+
 eval "use Number::Phone::GB";
 ok($@, "good, there's no module for GB");
 my $uk = '+449090901234';
