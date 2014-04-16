@@ -62,6 +62,8 @@ TERRITORY: foreach my $territory (@territories) {
         leading_digits => $leading_digit_pattern,
         pattern        => $number_format_pattern
       };
+    } else {
+      push @formatters, { pattern => $number_format_pattern };
     }
   }
 
