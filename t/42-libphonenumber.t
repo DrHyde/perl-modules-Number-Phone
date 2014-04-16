@@ -56,14 +56,16 @@ my $de = Number::Phone::Lib->new('+493308250565');
 is($de->format(), "+49 33082 50565", "formatted Menz Kr Oberhavel number correctly");
 $de = Number::Phone::Lib->new('+493022730027'); # Bundestag
 is($de->format(), "+49 30 22730027", "formatted Berlin number correctly");
+is($de->areaname(), "Berlin", "got area name correctly");
 
 eval "use Number::Phone::US";
 ok($@, "good, there's no module for US");
-my $pdx = '+1 (503) 282-3434';
-my $us = Number::Phone::Lib->new($pdx);
+my $the_man = '+1 (202) 456-6213';
+my $us = Number::Phone::Lib->new($the_man);
 isa_ok $us, 'Number::Phone::StubCountry::US';
-is($us->country_code(), 1, "Number::Phone::Lib->new('$pdx')->country_code()");
-is($us->country(), 'US', "Number::Phone::Lib->new('$pdx')->country()");
+is($us->country_code(), 1, "Number::Phone::Lib->new('$the_man')->country_code()");
+is($us->country(), 'US', "Number::Phone::Lib->new('$the_man')->country()");
+is($us->areaname(), 'Washington D.C.', "Number::Phone::Lib->new('$the_man')->areaname()");
 
 eval "use Number::Phone::GB";
 ok($@, "good, there's no module for GB");

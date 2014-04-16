@@ -56,6 +56,7 @@ my $de = Number::Phone->new('+493308250565');
 is($de->format(), "+49 33082 50565", "formatted Menz Kr Oberhavel number correctly");
 $de = Number::Phone->new('+493022730027'); # Bundestag
 is($de->format(), "+49 30 22730027", "formatted Berlin number correctly");
+is($de->areaname(), "Berlin", "got area name correctly");
 
 # let's break the UK
 
