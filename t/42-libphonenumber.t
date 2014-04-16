@@ -76,7 +76,7 @@ is($tf->country(), 'US', "Number::Phone::Lib->new('$toll_free')->country()");
 is($tf->areaname(), undef, "Number::Phone::Lib->new('$toll_free')->areaname()");
 is($tf->format, '+1 866 623 2282', "Number::Phone::Lib->new('$toll_free')->format()");
 
-eval "cae Number::Phone::CA";
+eval "use Number::Phone::CA";
 ok($@, "good, there's no module for CA");
 my $ca_numb = '+16135637242';
 my $ca = Number::Phone::Lib->new($ca_numb);
