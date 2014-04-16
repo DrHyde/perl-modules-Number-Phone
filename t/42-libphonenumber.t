@@ -110,7 +110,7 @@ my $im = Number::Phone::Lib->new($ukim);
 isa_ok $im, 'Number::Phone::StubCountry::IM';
 is($im->country_code(), 44, "Number::Phone::Lib->new('$ukim')->country_code()");
 is($im->country(), 'IM', "Number::Phone::Lib->new('$ukim')->country()");
-is($im->format(), '+44 7624376698', "Number::Phone::Lib->new('$ukim')->format()");
+is($im->format(), '+44 7624 376698', "Number::Phone::Lib->new('$ukim')->format()");
 
 eval "use Number::Phone::GG";
 ok($@, "good, there's no module for GG");
@@ -119,7 +119,7 @@ my $gg = Number::Phone::Lib->new($ukgg);
 isa_ok $gg, 'Number::Phone::StubCountry::GG';
 is($gg->country_code(), 44, "Number::Phone::Lib->new('$ukgg')->country_code()");
 is($gg->country(), 'GG', "Number::Phone::Lib->new('$ukgg')->country()");
-is($gg->format(), '+44 1481723153', "Number::Phone::Lib->new('$ukgg')->format()");
+is($gg->format(), '+44 1481 723153', "Number::Phone::Lib->new('$ukgg')->format()");
 
 eval "use Number::Phone::JE";
 ok($@, "good, there's no module for JE");
@@ -128,6 +128,6 @@ my $je = Number::Phone::Lib->new($ukje);
 isa_ok $je, 'Number::Phone::StubCountry::JE';
 is($je->country_code(), 44, "Number::Phone::Lib->new('$ukje')->country_code()");
 is($je->country(), 'JE', "Number::Phone::Lib->new('$ukje')->country()");
-is($je->format(), '+44 1534556291', "Number::Phone::Lib->new('$ukje')->format()");
+is($je->format(), '+44 1534 556291', "Number::Phone::Lib->new('$ukje')->format()");
 
 done_testing;

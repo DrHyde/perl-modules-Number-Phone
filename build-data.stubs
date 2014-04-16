@@ -28,6 +28,10 @@ my @us_formats = formats_for($xml->find(
     '/phoneNumberMetadata/territories/territory[@id="US"]')->get_node(1)
 );
 
+my @gb_formats = formats_for($xml->find(
+    '/phoneNumberMetadata/territories/territory[@id="GB"]')->get_node(1)
+);
+
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
   # next if($IDD_country_code eq '1'); # no point stubbing NANP!
@@ -50,7 +54,7 @@ TERRITORY: foreach my $territory (@territories) {
   print $manifest_fh "$dir/$ISO_country_code.pm\n";
   print $module_fh preamble($ISO_country_code);
 
-  my @formatters = formats_for($territory);
+  my @formatters = formats_for($territory, $ISO_country_code);
   print $module_fh 'my '.Data::Dumper->new([\@formatters], [qw(formatters)])->Dump()."\n";
   print $module_fh 'my '.Data::Dumper->new([{
                                              special_rate => join('|', map {
@@ -142,10 +146,14 @@ use warnings;
 }
 
 sub formats_for {
-  my $territory = shift;
+  my ($territory, $ccode) = @_;
 
   return @us_formats if $territory->findvalue('generalDesc/comment()')->value
       =~ /NANPA\s+country\s+-\s+uses\s+US\s+formatting\s+rules/;
+
+  if ($ccode) {
+      return @gb_formats if $ccode eq 'GG' || $ccode eq 'IM' || $ccode eq 'JE';
+  }
 
   my @number_formats = $territory->find('availableFormats/numberFormat')->get_nodelist();
 
