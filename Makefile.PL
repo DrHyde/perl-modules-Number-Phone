@@ -5,8 +5,9 @@ WriteMakefile(
   NAME         => 'Number::Phone',
     META_MERGE => {
         license => 'other',
-        resource => {
-	    repository => 'https://github.com/DrHyde/perl-modules-Number-Phone'
+        resources => {
+            repository => 'https://github.com/DrHyde/perl-modules-Number-Phone'
+            bugtracker => 'https://github.com/DrHyde/perl-modules-Number-Phone/issues'
         }
     },
   VERSION_FROM => 'lib/Number/Phone.pm',
