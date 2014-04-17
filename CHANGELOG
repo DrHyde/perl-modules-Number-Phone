@@ -1,3 +1,8 @@
+XXXX-XX-XX      XXXXXX  Add Number::Phone::Lib, a libphonenumber-compatible
+                          subclass. This lacks some functionality but is
+                          considerably faster (for UK numbers) and compatible
+                          (for non-geographic NANP numbers)
+
 2014-04-15      2.2003  Bugfix to tighten up length checking for
                           unallocated UK numbers;
                         New allocations
