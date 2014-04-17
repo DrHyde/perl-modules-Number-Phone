@@ -3,15 +3,21 @@ use warnings;
 
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
-sub is_mocked_uk { $Number::Phone::Country::idd_codes{'44'} eq 'MOCK' }
-sub skip_if_mocked {
-  my($msg, $count, $sub) = @_;
-  SKIP: {
-    skip $msg, $count if(is_mocked_uk());
-    $sub->();
-  };
+{
+  no warnings 'redefine';
+  sub is_mocked_uk { $Number::Phone::Country::idd_codes{'44'} eq 'MOCK' }
+  sub skip_if_mocked {
+    my($msg, $count, $sub) = @_;
+    SKIP: {
+      skip $msg, $count if(is_mocked_uk());
+      $sub->();
+    };
+  }
 }
  
+note("Common tests for Number::Phone::UK, and also for N::P::StubCountry::MOCK");
+note("The latter is a sanity testto make sure that stubs are built correctly,");
+note("and the comprehensive UK tests make a good torture-test.");
 
 my $number = Number::Phone->new('+44 142422 0000');
 isa_ok($number, 'Number::Phone::'.(is_mocked_uk() ? 'StubCountry::MOCK' : 'UK'));
@@ -206,5 +212,4 @@ foreach my $tuple (
   });
 }
 
-done_testing();
 1;
