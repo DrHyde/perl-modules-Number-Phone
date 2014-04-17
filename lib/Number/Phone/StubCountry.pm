@@ -67,7 +67,7 @@ sub format {
   my $number = $self->{number};
   foreach my $formatter (@{$self->{formatters}}) {
     my($leading_digits, $pattern) = map { $formatter->{$_} } qw(leading_digits pattern);
-    if($number =~ /^($leading_digits)/ && $number =~ /^$pattern$/) {
+    if((!$leading_digits || $number =~ /^($leading_digits)/) && $number =~ /^$pattern$/) {
       my @bits = $number =~ /^$pattern$/;
       return join(' ', '+'.$self->country_code(), @bits);
     }

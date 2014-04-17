@@ -66,6 +66,25 @@ isa_ok $us, 'Number::Phone::StubCountry::US';
 is($us->country_code(), 1, "Number::Phone::Lib->new('$the_man')->country_code()");
 is($us->country(), 'US', "Number::Phone::Lib->new('$the_man')->country()");
 is($us->areaname(), 'Washington D.C.', "Number::Phone::Lib->new('$the_man')->areaname()");
+is($us->format, '+1 202 456 6213', "Number::Phone::Lib->new('$the_man')->format()");
+
+my $toll_free = '+1 (866) 623 2282';
+my $tf = Number::Phone::Lib->new($toll_free);
+isa_ok $tf, 'Number::Phone::StubCountry::US';
+is($tf->country_code(), 1, "Number::Phone::Lib->new('$toll_free')->country_code()");
+is($tf->country(), 'US', "Number::Phone::Lib->new('$toll_free')->country()");
+is($tf->areaname(), undef, "Number::Phone::Lib->new('$toll_free')->areaname()");
+is($tf->format, '+1 866 623 2282', "Number::Phone::Lib->new('$toll_free')->format()");
+
+eval "use Number::Phone::CA";
+ok($@, "good, there's no module for CA");
+my $ca_numb = '+16135637242';
+my $ca = Number::Phone::Lib->new($ca_numb);
+isa_ok $ca, 'Number::Phone::StubCountry::CA';
+is($ca->country_code(), 1, "Number::Phone::Lib->new('$ca_numb')->country_code()");
+is($ca->country(), 'CA', "Number::Phone::Lib->new('$ca_numb')->country()");
+is($ca->areaname(), 'Ottawa, ON', "Number::Phone::Lib->new('$ca_numb')->areaname()");
+is($ca->format, '+1 613 563 7242', "Number::Phone::Lib->new('$ca_numb')->format()");
 
 eval "use Number::Phone::GB";
 ok($@, "good, there's no module for GB");
@@ -74,6 +93,7 @@ my $gb = Number::Phone::Lib->new($uk);
 isa_ok $gb, 'Number::Phone::StubCountry::GB';
 is($gb->country_code(), 44, "Number::Phone::Lib->new('$uk')->country_code()");
 is($gb->country(), 'GB', "Number::Phone::Lib->new('$uk')->country()");
+is($gb->format(), '+44 909 090 1234', "Number::Phone::Lib->new('$uk')->format()");
 
 # Try another UK number.
 $uk = '+441275939345'; # 441275 is valid, but not 44275.
@@ -81,6 +101,7 @@ $gb = Number::Phone::Lib->new($uk);
 isa_ok $gb, 'Number::Phone::StubCountry::GB';
 is($gb->country_code(), 44, "Number::Phone::Lib->new('$uk')->country_code()");
 is($gb->country(), 'GB', "Number::Phone::Lib->new('$uk')->country()");
+is($gb->format(), '+44 1275 939345', "Number::Phone::Lib->new('$uk')->format()");
 
 eval "use Number::Phone::IM";
 ok($@, "good, there's no module for IM");
@@ -89,6 +110,7 @@ my $im = Number::Phone::Lib->new($ukim);
 isa_ok $im, 'Number::Phone::StubCountry::IM';
 is($im->country_code(), 44, "Number::Phone::Lib->new('$ukim')->country_code()");
 is($im->country(), 'IM', "Number::Phone::Lib->new('$ukim')->country()");
+is($im->format(), '+44 7624 376698', "Number::Phone::Lib->new('$ukim')->format()");
 
 eval "use Number::Phone::GG";
 ok($@, "good, there's no module for GG");
@@ -97,6 +119,7 @@ my $gg = Number::Phone::Lib->new($ukgg);
 isa_ok $gg, 'Number::Phone::StubCountry::GG';
 is($gg->country_code(), 44, "Number::Phone::Lib->new('$ukgg')->country_code()");
 is($gg->country(), 'GG', "Number::Phone::Lib->new('$ukgg')->country()");
+is($gg->format(), '+44 1481 723153', "Number::Phone::Lib->new('$ukgg')->format()");
 
 eval "use Number::Phone::JE";
 ok($@, "good, there's no module for JE");
@@ -105,5 +128,6 @@ my $je = Number::Phone::Lib->new($ukje);
 isa_ok $je, 'Number::Phone::StubCountry::JE';
 is($je->country_code(), 44, "Number::Phone::Lib->new('$ukje')->country_code()");
 is($je->country(), 'JE', "Number::Phone::Lib->new('$ukje')->country()");
+is($je->format(), '+44 1534 556291', "Number::Phone::Lib->new('$ukje')->format()");
 
 done_testing;
