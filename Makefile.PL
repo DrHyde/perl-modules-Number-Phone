@@ -6,7 +6,7 @@ WriteMakefile(
     META_MERGE => {
         license => 'other',
         resources => {
-            repository => 'https://github.com/DrHyde/perl-modules-Number-Phone'
+            repository => 'https://github.com/DrHyde/perl-modules-Number-Phone',
             bugtracker => 'https://github.com/DrHyde/perl-modules-Number-Phone/issues'
         }
     },
