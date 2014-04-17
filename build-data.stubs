@@ -9,7 +9,7 @@ use warnings;
 use Data::Dumper; local $Data::Dumper::Indent = 0;
 
 use XML::XPath;
-my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetaData.xml');
+my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
 
 open(my $manifest_fh, 'MANIFEST') || die("Can't read MANIFEST\n");
