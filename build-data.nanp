@@ -6,6 +6,7 @@
 
 use strict;
 use warnings;
+use XML::XPath;
 
 open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Phone/NANP/Data.pm\n");
 
@@ -30,7 +31,7 @@ print MODULE q{
 
   use strict;
   use warnings;
-  use vars qw(%areanames);
+  use vars qw(%areanames %country_regexes);
 }.
 "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n".q{
 
@@ -47,6 +48,14 @@ print MODULE q{
     return undef;
   }
 
+  sub ISO_country_code {
+    my $number = shift;
+    foreach my $regex (keys %country_regexes) {
+        return $country_regexes{$regex} if($number =~ /$regex/x);
+    }
+    return 'NANP';
+  }
+
   %areanames = (
 };
 open(LIBPHONENUMBERDATA, 'libphonenumber/resources/geocoding/en/1.txt') || die("Can't read libphonenumber/resources/geocoding/en/1.txt\n");
@@ -59,5 +68,17 @@ foreach my $line (@lines) {
   $area = quotemeta($area);
   print MODULE "    '$prefix' => \"$area\",\n";
 }
-print MODULE "  );";
+print MODULE "  ); %country_regexes = (";
+
+my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
+my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
+foreach my $territory (@territories) {
+    next unless($territory->find('@countryCode').'' eq '1');
+    my $fixed  = $territory->find("fixedLine/nationalNumberPattern")->string_value();
+    my $mobile = $territory->find("mobile/nationalNumberPattern")->string_value();
+    my $ISO_country_code = $territory->find('@id').'';
+    print MODULE "'($fixed)|($mobile)' => '$ISO_country_code',";
+}
+print MODULE ");";
+
 close(MODULE);
