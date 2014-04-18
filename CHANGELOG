@@ -1,7 +1,10 @@
 XXXX-XX-XX      XXXXXX  Add Number::Phone::Lib, a libphonenumber-compatible
                           subclass. This lacks some functionality but is
                           considerably faster (for UK numbers) and compatible
-                          (for non-geographic NANP numbers)
+                          (for non-geographic NANP numbers);
+                        Use libphonenumber data to figure out which +1 XXX
+                          area codes are for which country;
+                        Add more GMSS codes
 
 2014-04-15      2.2003  Bugfix to tighten up length checking for
                           unallocated UK numbers;
