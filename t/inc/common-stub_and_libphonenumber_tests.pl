@@ -18,7 +18,6 @@ use vars qw($CLASS);
 note("Common tests for Number::Phone::StubCountry::* and Number::Phone::Lib");
 
 my $inmarsat870 = $CLASS->new("+870123456");
-ok(1, "didn't die  when trying to load non-existent stub for Inmarsat +870");
 is($inmarsat870->country_code(), '870', 'Inmarsat number has right country_code');
 is($inmarsat870->country(), 'Inmarsat', "$CLASS->new('+870123456')->country()");
 is($inmarsat870->format(), '+870 123456', "$CLASS->new('+870123456')->format()");
@@ -28,7 +27,6 @@ is($inmarsat870->is_geographic(), undef, "$CLASS->new('+870123456')->is_geograph
 is($inmarsat870->is_fixed_line(), undef, "$CLASS->new('+870123456')->is_fixed_line()");
 
 my $inmarsat871 = $CLASS->new("+8719744591");
-ok(1, "didn't die  when trying to load non-existent stub for Inmarsat +871");
 is($inmarsat871->country_code(), '871', 'Inmarsat number has right country_code');
 is($inmarsat871->country(), 'Inmarsat', "$CLASS->new('+8719744591')->country()");
 is($inmarsat871->format(), '+871 9744591', "$CLASS->new('+8719744591')->format()");
@@ -36,6 +34,14 @@ is($inmarsat871->is_valid(), undef, "$CLASS->new('+8719744591')->is_valid()");
 is($inmarsat871->is_mobile(), undef, "$CLASS->new('+8719744591')->is_mobile()");
 is($inmarsat871->is_geographic(), undef, "$CLASS->new('+8719744591')->is_geographic()");
 is($inmarsat871->is_fixed_line(), undef, "$CLASS->new('+8719744591')->is_fixed_line()");
+
+my $international883 = $CLASS->new("+88300000000");
+isa_ok($international883, "Number::Phone::StubCountry");
+is($international883->country(), 'InternationalNetworks', '$CLASS->new("+88300000000")->country()');
+
+my $international883120 = $CLASS->new("+88312000000");
+isa_ok($international883120, "Number::Phone::StubCountry");
+is($international883120->country(), 'Telenor', '$CLASS->new("+88312000000")->country()');
 
 my $fo = $CLASS->new('+298 303030'); # Faroes Telecom
 is($fo->country_code(), 298, "$CLASS->new('+298 303030')->country_code()");
