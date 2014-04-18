@@ -23,7 +23,7 @@ $VERSION = '1.0';
     246     => 'IO', 247     => 'AC', 248     => 'SC', 249     => 'SD',
     250     => 'RW', 251     => 'ET', 252     => 'SO', 253     => 'DJ',
     254     => 'KE', 255     => 'TZ', 256     => 'UG', 257     => 'BI',
-    258     => 'MZ', 260     => 'ZM', 261     => 'MG',
+    258     => 'MZ', 259     => 'ZA', 260     => 'ZM', 261     => 'MG',
     262269  => 'YT', # Mayotte fixed lines
     262639  => 'YT', # Mayotte GSM
     262     => 'RE', # Assume that Reunion is everything else in +262
@@ -129,6 +129,8 @@ $VERSION = '1.0';
     996     => 'KG', 998     => 'UZ',
 
     # these checked against wtng.info 2011-07-08
+    # https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
+    # https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
     800     => 'InternationalFreephone',
     808     => 'SharedCostServices',
     870     => 'Inmarsat',
@@ -137,11 +139,23 @@ $VERSION = '1.0';
     873     => 'Inmarsat',
     874     => 'Inmarsat',
     878     => 'UniversalPersonalTelecoms',
-    8816    => 'Iridium',    # \ Sat-phones
+    # 8814 and 8815
+    # considered 'spare'
+    881     => 'GMSS',
+    8810    => 'ICO',        # \ Sat-phones
+    8811    => 'ICO',        # |
+    8812    => 'Ellipso',    # |
+    8813    => 'Ellipso',    # |
+    8816    => 'Iridium',    # |
     8817    => 'Iridium',    # |
     8818    => 'Globalstar', # |
     8819    => 'Globalstar', # /
     882     => 'InternationalNetworks',
+    883     => 'Inmarsat',
+    883120  => 'Telenor',
+    883130  => 'Mobistar',
+    883140  => 'MTTGlobalNetworks',
+    8835100 => 'VOXBON',
     888     => 'TelecomsForDisasterRelief',
     # 979 is used for testing when we fail to load a module when we
     # know what "country" it is
