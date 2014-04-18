@@ -595,9 +595,7 @@ going like Number::Phone::NANP::XX.
 
 =head1 BUGS/FEEDBACK
 
-Please report bugs by email or using
-L<https://github.com/DrHyde/perl-modules-Number-Phone/issues>,
-including, if possible, a test case.
+Please report bugs by at L<https://github.com/DrHyde/perl-modules-Number-Phone/issues>, including, if possible, a test case.
 
 I welcome feedback from users.
 

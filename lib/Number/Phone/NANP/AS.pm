@@ -53,7 +53,7 @@ sub regulator { return 'ASTCA, http://www.samoatelco.com/ ???'; }
 
 =head1 BUGS/FEEDBACK
 
-Please report bugs by email, including, if possible, a test case.             
+Please report bugs at L<https://github.com/DrHyde/perl-modules-Number-Phone/issues>, including, if possible, a test case.             
 
 I welcome feedback from users.
 
