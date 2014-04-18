@@ -66,6 +66,10 @@ t/inc/fatalwarnings.pm
 t/inc/uk_tests.pl
 t/lib/Number/Phone/JP.pm
 TODO
+t/inc/common-nanp_and_libphonenumber_tests.pl
+t/inc/common-stub_and_libphonenumber_tests.pl
+MANIFEST.SKIP
+t/lib/Number/Phone/StubCountry/MOCK.pm
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
