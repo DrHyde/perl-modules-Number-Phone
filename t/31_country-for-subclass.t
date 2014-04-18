@@ -13,7 +13,7 @@ use Number::Phone;
     #sub new { bless {}, shift }
 }
 
-is(Number::Phone->new('+1 268 480 4000')->country, 'AG', 'Basic country() check for NANP::AG');
+is(Number::Phone->new('+1 2684601234')->country, 'AG', 'Basic country() check for NANP::AG');
 is(Number::Phone->new('+44 142422 0000')->country, 'UK', 'Basic country() check for UK');
 is(Number::Phone::UK->new('+44 142422 0000')->country, 'UK', 'Basic country() check for UK');
 my $num = Number::Phone::UK::SubClass->new('+44 142422 0000');
