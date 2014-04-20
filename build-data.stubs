@@ -8,6 +8,9 @@ use strict;
 use warnings;
 use Data::Dumper; local $Data::Dumper::Indent = 0;
 
+use lib 'lib';
+use Number::Phone::NANP::Data;
+
 use XML::XPath;
 my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
@@ -50,19 +53,30 @@ TERRITORY: foreach my $territory (@territories) {
 
   my @formatters = formats_for($territory, $ISO_country_code);
   print $module_fh 'my '.Data::Dumper->new([\@formatters], [qw(formatters)])->Dump()."\n";
-  print $module_fh 'my '.Data::Dumper->new([{
-                                             special_rate => join('|', map {
-                                               (my $foo = '('.$territory->find("$_/nationalNumberPattern")->string_value().')')
-                                                 =~ s/\s//g;
-                                               $foo;
-                                             } qw(sharedCost premiumRate uan)),
-                                             map {
-                                               (my $xpath = $_) =~ s/_(\w)/uc($1)/eg;
-                                               (my $pattern = $territory->find("$xpath/nationalNumberPattern")->string_value())
-                                                 =~ s/\s//g;
-                                               ($_ => $pattern);
-                                             } qw(fixed_line mobile pager voip toll_free personal_number)
-                                           }], [qw(validators)])->Dump();
+  my $validators = {
+      special_rate => join('|', map {
+          (my $foo = '('.$territory->find("$_/nationalNumberPattern")->string_value().')')
+              =~ s/\s//g;
+          $foo;
+      } qw(sharedCost premiumRate uan)),
+      map {
+          (my $xpath = $_) =~ s/_(\w)/uc($1)/eg;
+          (my $pattern = $territory->find("$xpath/nationalNumberPattern")->string_value())
+              =~ s/\s//g;
+          ($_ => $pattern);
+      } qw(fixed_line mobile pager voip toll_free personal_number)
+  };
+  $validators->{geographic} = $validators->{fixed_line};
+  if($IDD_country_code == 1) {
+      # see if build-nanp detected dodgy data
+      if(!exists($Number::Phone::NANP::Data::fixed_line_regexes{$ISO_country_code})) {
+          warn("build-nanp detected dodgy fixed/mobile regexes for $ISO_country_code\n");
+          $validators->{geographic} = '('.$validators->{fixed_line}.'|'.$validators->{mobile}.')';
+          delete $validators->{fixed_line};
+          delete $validators->{mobile};
+      }
+  }
+  print $module_fh 'my '.Data::Dumper->new([$validators], [qw(validators)])->Dump();
   my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
   if($IDD_country_code == 1) {
     print $module_fh 'use Number::Phone::NANP::Data;sub areaname { Number::Phone::NANP::Data::areaname("1".shift()->{number}); }';

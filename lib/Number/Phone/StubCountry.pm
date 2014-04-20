@@ -35,10 +35,8 @@ sub is_valid {
   return 0;
 }
 
-# NB for these libphonenumber's definition of "fixed line" differs subtlely from
-# Number::Phone's. FIXME this makes no fucking sense at all
-sub is_geographic   { shift()->_validator('fixed_line'); }
-sub is_fixed_line   { shift()->_validator('mobile') ? 0 : undef; }
+sub is_geographic   { shift()->_validator('geographic'); }
+sub is_fixed_line   { shift()->_validator('fixed_line'); }
 sub is_mobile       { shift()->_validator('mobile'); }
 
 sub is_pager        { shift()->_validator('pager'); }

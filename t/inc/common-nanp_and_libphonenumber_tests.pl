@@ -35,7 +35,12 @@ is($tf->country(), (is_libphonenumber() ? 'US' : undef),
    "$CLASS->new('$toll_free')->country()");
 is($tf->areaname(), undef, "$CLASS->new('$toll_free')->areaname()");
 is($tf->format(), '+1 866 623 2282', "$CLASS->new('$toll_free')->format()");
-is($tf->is_mobile(), 0, "$CLASS->new('$toll_free')->is_mobile()");
+# libphonenumber thinks this is a US number, and the fixed/mobile regexes
+# for the US are the same, so we define them as broken. Hence it doesn't know.
+# N::P::NANP knows that this is a NANP-global and so ...
+is($tf->is_mobile(),
+   (is_libphonenumber() ? undef : 0),
+   "$CLASS->new('$toll_free')->is_mobile()");
 is($tf->is_fixed_line(),
    (is_libphonenumber() ? undef : 1),
    "$CLASS->new('$toll_free')->is_fixed_line()");
@@ -49,16 +54,10 @@ is($ca->country_code(), 1, "$CLASS->new('$ca_numb')->country_code()");
 is($ca->country(), 'CA', "$CLASS->new('$ca_numb')->country()");
 is($ca->areaname(), 'Ottawa, ON', "$CLASS->new('$ca_numb')->areaname()");
 is($ca->format(), '+1 613 563 7242', "$CLASS->new('$ca_numb')->format()");
-is($ca->is_mobile(),
-   # libphonenumber has a mobile regex that matches everything
-   # Number::Phone::NANP has the brains to ignore it for this country
-   (is_libphonenumber() ? 1 : undef),
-   "$CLASS->new('$ca_numb')->is_mobile()");
-is($ca->is_fixed_line(),
-   # libphonenumber has a fixed line regex that matches everything
-   # Number::Phone::NANP has the brains to ignore it for this country
-   (is_libphonenumber() ? 0 : undef),
-   "$CLASS->new('$ca_numb')->is_fixed_line()");
+# don't know, because CA's fixed/mobile regexes have overlaps so we define
+# them as broken
+is($ca->is_mobile(), undef, "$CLASS->new('$ca_numb')->is_mobile()");
+is($ca->is_fixed_line(), undef, "$CLASS->new('$ca_numb')->is_fixed_line()");
 is($ca->is_geographic(), 1, "$CLASS->new('$ca_numb')->is_geographic()");
 
 my $jm_fixed_numb = '+18765013333';
@@ -70,9 +69,7 @@ is($jm_fixed->country(), 'JM', "$CLASS->new('$jm_fixed_numb')->country()");
 is($jm_fixed->areaname(), undef, "$CLASS->new('$jm_fixed_numb')->areaname()");
 is($jm_fixed->format(), '+1 876 501 3333', "$CLASS->new('$jm_fixed_numb')->format()");
 is($jm_fixed->is_mobile(), 0, "$CLASS->new('$jm_fixed_numb')->is_mobile()");
-is($jm_fixed->is_fixed_line(),
-   (is_libphonenumber() ? undef : 1),
-   "$CLASS->new('$jm_fixed_numb')->is_fixed_line()");
+is($jm_fixed->is_fixed_line(), 1, "$CLASS->new('$jm_fixed_numb')->is_fixed_line()");
 is($jm_fixed->is_geographic(), 1,"$CLASS->new('$jm_fixed_numb')->is_geographic()");
 
 my $jm_mobile_numb = '+18762113333';
@@ -85,6 +82,8 @@ is($jm_mobile->areaname(), undef, "$CLASS->new('$jm_mobile_numb')->areaname()");
 is($jm_mobile->format(), '+1 876 211 3333', "$CLASS->new('$jm_mobile_numb')->format()");
 is($jm_mobile->is_mobile(), 1, "$CLASS->new('$jm_mobile_numb')->is_mobile()");
 is($jm_mobile->is_fixed_line(), 0, "$CLASS->new('$jm_mobile_numb')->is_fixed_line()");
+# in libphonenumber-land, fixed_line means geographic. N::P::NANP is a bit
+# smarter and knows that mobiles are geographic in the NANP.
 is($jm_mobile->is_geographic(),
    (is_libphonenumber() ? 0 : 1),
    "$CLASS->new('$jm_mobile_numb')->is_geographic()");
