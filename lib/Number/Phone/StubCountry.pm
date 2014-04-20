@@ -5,7 +5,7 @@ use warnings;
 use Number::Phone::Country qw(noexport uk);
 
 use base qw(Number::Phone);
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 sub country_code {
     my $self = shift;
@@ -38,17 +38,9 @@ sub is_valid {
 # NB for these two libphonenumber's definition of "fixed line" differs subtlely from
 # Number::Phone's.
 sub is_geographic   { shift()->_validator('fixed_line'); }
-sub is_fixed_line   {
-    my $self = shift;
-    return undef if(!defined($self->is_valid()));
-    return $self->_validator('mobile') ? 0 : undef;
-}
+sub is_fixed_line   { shift()->_validator('mobile') ? 0 : undef; }
+sub is_mobile       { shift()->_validator('mobile'); }
 
-sub is_mobile       {
-    my $self = shift;
-    if(exists($self->{is_mobile})) { return $self->{is_mobile} }
-    $self->_validator('mobile');
-}
 sub is_pager        { shift()->_validator('pager'); }
 sub is_personal     { shift()->_validator('personal_number'); }
 sub is_special_rate { shift()->_validator('special_rate'); }
