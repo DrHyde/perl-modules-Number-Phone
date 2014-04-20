@@ -78,15 +78,19 @@ print MODULE '  );';
 # # extract mobile/fixed-line prefix regexes
 # print MODULE 'my %fixed_line_regexes = ();';
 # print MODULE 'my %mobile_regexes = ();';
-# my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
-# my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
-# foreach my $territory (@territories) {
-#     next unless($territory->find('@countryCode').'' eq '1');
-#     my $fixed  = $territory->find("fixedLine/nationalNumberPattern")->string_value();
-#     my $mobile = $territory->find("mobile/nationalNumberPattern")->string_value();
-#     my $ISO_country_code = $territory->find('@id').'';
+my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
+my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
+foreach my $territory (@territories) {
+    next unless($territory->find('@countryCode').'' eq '1');
+    (my $fixed  = $territory->find("fixedLine/nationalNumberPattern")->string_value()) =~ s/\s+//g;
+    (my $mobile = $territory->find("mobile/nationalNumberPattern")->string_value()) =~ s/\s+//g;
+    my $ISO_country_code = $territory->find('@id').'';
+    if($fixed eq $mobile) {
+        warn("$ISO_country_code has the same regexes for fixed and mobile\n");
+    } else {
 #     print MODULE "\$fixed_line_regexes{$ISO_country_code} = '$fixed';\n";
 #     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
-# }
+    }
+}
 
 close(MODULE);
