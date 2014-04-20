@@ -24,7 +24,7 @@ isa_ok $us, is_libphonenumber() ? 'Number::Phone::StubCountry::US'
 is($us->country_code(), 1, "$CLASS->new('$the_man')->country_code()");
 is($us->country(), 'US', "$CLASS->new('$the_man')->country()");
 is($us->areaname(), 'Washington D.C.', "$CLASS->new('$the_man')->areaname()");
-is($us->format, '+1 202 456 6213', "$CLASS->new('$the_man')->format()");
+is($us->format(), '+1 202 456 6213', "$CLASS->new('$the_man')->format()");
 
 my $toll_free = '+1 (866) 623 2282';
 my $tf = $CLASS->new($toll_free);
@@ -34,7 +34,7 @@ is($tf->country_code(), 1, "$CLASS->new('$toll_free')->country_code()");
 is($tf->country(), (is_libphonenumber() ? 'US' : undef),
    "$CLASS->new('$toll_free')->country()");
 is($tf->areaname(), undef, "$CLASS->new('$toll_free')->areaname()");
-is($tf->format, '+1 866 623 2282', "$CLASS->new('$toll_free')->format()");
+is($tf->format(), '+1 866 623 2282', "$CLASS->new('$toll_free')->format()");
 
 my $ca_numb = '+16135637242';
 my $ca = $CLASS->new($ca_numb);
@@ -43,6 +43,6 @@ isa_ok $ca, is_libphonenumber() ? 'Number::Phone::StubCountry::CA'
 is($ca->country_code(), 1, "$CLASS->new('$ca_numb')->country_code()");
 is($ca->country(), 'CA', "$CLASS->new('$ca_numb')->country()");
 is($ca->areaname(), 'Ottawa, ON', "$CLASS->new('$ca_numb')->areaname()");
-is($ca->format, '+1 613 563 7242', "$CLASS->new('$ca_numb')->format()");
+is($ca->format(), '+1 613 563 7242', "$CLASS->new('$ca_numb')->format()");
 
 1;
