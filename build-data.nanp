@@ -7,6 +7,7 @@
 use strict;
 use warnings;
 use XML::XPath;
+use Data::Dumper;local $Data::Dumper::Indent = 1;
 
 open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Phone/NANP/Data.pm\n");
 
@@ -55,9 +56,10 @@ print MODULE q{
     }
     return 'NANP';
   }
-
-  %areanames = (
 };
+
+# Extract area names
+print MODULE '%areanames = (';
 open(LIBPHONENUMBERDATA, 'libphonenumber/resources/geocoding/en/1.txt') || die("Can't read libphonenumber/resources/geocoding/en/1.txt\n");
 my @lines = <LIBPHONENUMBERDATA>;
 close(LIBPHONENUMBERDATA);
@@ -68,8 +70,11 @@ foreach my $line (@lines) {
   $area = quotemeta($area);
   print MODULE "    '$prefix' => \"$area\",\n";
 }
-print MODULE "  ); %country_regexes = (";
+print MODULE '  );';
 
+# extract mobile/fixed-line prefix regexes
+print MODULE 'my %fixed_line_regexes = ();';
+print MODULE 'my %mobile_regexes = ();';
 my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
 foreach my $territory (@territories) {
@@ -77,8 +82,8 @@ foreach my $territory (@territories) {
     my $fixed  = $territory->find("fixedLine/nationalNumberPattern")->string_value();
     my $mobile = $territory->find("mobile/nationalNumberPattern")->string_value();
     my $ISO_country_code = $territory->find('@id').'';
-    print MODULE "'($fixed)|($mobile)' => '$ISO_country_code',";
+    print MODULE "\$fixed_line_regexes{$ISO_country_code} = '$fixed';\n";
+    print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
-print MODULE ");";
 
 close(MODULE);
