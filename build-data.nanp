@@ -9,6 +9,9 @@ use warnings;
 use XML::XPath;
 use Data::Dumper;local $Data::Dumper::Indent = 1;
 
+use lib 'lib';
+use Number::Phone::Country;
+
 open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Phone/NANP/Data.pm\n");
 
 print MODULE "# automatically generated file, don't edit\n\n";
@@ -32,7 +35,7 @@ print MODULE q{
 
   use strict;
   use warnings;
-  use vars qw(%areanames %country_regexes);
+  use vars qw(%areanames %fixed_line_regexes %mobile_regexes);
 }.
 "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n".q{
 
@@ -47,14 +50,6 @@ print MODULE q{
       if(exists($areanames{$prefix})) { return $areanames{$prefix} };
     }
     return undef;
-  }
-
-  sub ISO_country_code {
-    my $number = shift;
-    foreach my $regex (keys %country_regexes) {
-        return $country_regexes{$regex} if($number =~ /$regex/x);
-    }
-    return 'NANP';
   }
 };
 
@@ -76,21 +71,30 @@ print MODULE '  );';
 # some countries. eg it looks sane for JM but not for CA
 # they list +1 204 as being both fixed line and mobile. Grargh!
 # # extract mobile/fixed-line prefix regexes
-# print MODULE 'my %fixed_line_regexes = ();';
-# print MODULE 'my %mobile_regexes = ();';
 my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
-foreach my $territory (@territories) {
-    next unless($territory->find('@countryCode').'' eq '1');
+TERRITORY: foreach my $territory (@territories) {
+    next TERRITORY unless($territory->find('@countryCode').'' eq '1');
     (my $fixed  = $territory->find("fixedLine/nationalNumberPattern")->string_value()) =~ s/\s+//g;
     (my $mobile = $territory->find("mobile/nationalNumberPattern")->string_value()) =~ s/\s+//g;
     my $ISO_country_code = $territory->find('@id').'';
     if($fixed eq $mobile) {
-        warn("$ISO_country_code has the same regexes for fixed and mobile\n");
+        warn("$ISO_country_code: same regexes for fixed and mobile\n");
+        next TERRITORY;
     } else {
-#     print MODULE "\$fixed_line_regexes{$ISO_country_code} = '$fixed';\n";
-#     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
+        my @area_codes = Number::Phone::Country::_NANP_area_codes($ISO_country_code);
+        foreach my $area_code (@area_codes) {
+            foreach my $co (map { sprintf("%03d", $_ ) } 0 .. 999) {
+                my $number = "${area_code}${co}3333";
+                if($number =~ /^$fixed$/x && $number =~ /^$mobile$/x) {
+                    warn("$ISO_country_code: Overlap between fixed/mobile regexes for $number\n");
+                    next TERRITORY;
+                }
+            }
+        }
     }
+    print MODULE "\$fixed_line_regexes{$ISO_country_code} = '$fixed';\n";
+    print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
 
 close(MODULE);

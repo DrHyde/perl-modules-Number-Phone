@@ -138,6 +138,30 @@ foreach my $method (qw(areacode subscriber)) {
     }
 }
 
+sub is_geographic {
+    my $self = shift;
+    # NANP-globals like 1-800 aren't geographic, the rest are
+    return ref($self) eq __PACKAGE__ ? 0 : 1;
+}
+
+sub is_mobile {
+    my $self = shift;
+    # NANP-globals like 1-800 aren't mobile
+    if(ref($self) eq __PACKAGE__) { return 0; }
+    (my $ISO_country_code = ref($self)) =~ s/.*(..)$/$1/;
+    return undef if(!exists($Number::Phone::NANP::Data::mobile_regexes{$ISO_country_code}));
+    return ${$self} =~ /^\+1($Number::Phone::NANP::Data::mobile_regexes{$ISO_country_code})$/ ? 1 : 0;
+}
+
+sub is_fixed_line {
+    my $self = shift;
+    # NANP-globals like 1-800 are fixed
+    if(ref($self) eq __PACKAGE__) { return 1; }
+    (my $ISO_country_code = ref($self)) =~ s/.*(..)$/$1/;
+    return undef if(!exists($Number::Phone::NANP::Data::fixed_line_regexes{$ISO_country_code}));
+    return ${$self} =~ /^\+1($Number::Phone::NANP::Data::fixed_line_regexes{$ISO_country_code})$/ ? 1 : 0;
+}
+
 sub areaname {
   my $self = shift;
   warn("DEPRECATION: ".__PACKAGE__."->areaname should only be called as an object method\n")
