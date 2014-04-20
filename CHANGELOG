@@ -8,8 +8,8 @@ XXXX-XX-XX      XXXXXX  Add Number::Phone::Lib, a libphonenumber-compatible
                           have dodgy data*) for is_mobile, is_fixed_line;
                         New UK allocations;
 
-* In N::P-land, 'is_mobile' means 'we know that this is mobile'.
-  In libphonenumber a match means 'this might be mobile'.
+* Some countries have duplicate regexes for fixed_line/mobile in libphonenumber,
+  and others have regexes that match the same data
 
 2014-04-15      2.2003  Bugfix to tighten up length checking for
                           unallocated UK numbers;
