@@ -53,7 +53,7 @@ our %NANP_areas = (
         $usa    = join('|', $usa,    710);
     },
     # see http://wtng.info/wtng-cod.html#WZ1
-    # checked 2011-07-08
+    # checked 2014-04-21
     PR => '787|939',
     DO => '809|829|849',
     BS => '242',
