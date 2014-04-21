@@ -42,6 +42,8 @@ use Digest::MD5 'md5_base64';
 use Data::Dumper;
 use DBM::Deep;
 
+system('unzip -q codelist.zip');
+
 my $dbm = DBM::Deep->new(
     file => 'temp.db',
     data_sector_size => 32,
@@ -275,3 +277,6 @@ $dbm->{subclass} = { # taken from libphonenumber
 };
 
 $dbm->optimize();
+
+system('cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm');
+system('rm s[0123456789]*.txt sabc.txt Data.pm temp.db');

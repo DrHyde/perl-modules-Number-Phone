@@ -17,10 +17,7 @@ curl -R -O -s http://www.ofcom.org.uk/static/numbering/codelist.zip
 if test ! -e lib/Number/Phone/UK/Data.pm -o codelist.zip -nt lib/Number/Phone/UK/Data.pm; then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/UK/Data.pm
-  unzip -q codelist.zip
   perl build-data.uk
-  cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm
-  rm s[0123456789]*.txt sabc.txt Data.pm temp.db
 else
   echo lib/Number/Phone/UK/Data.pm is up-to-date
 fi
