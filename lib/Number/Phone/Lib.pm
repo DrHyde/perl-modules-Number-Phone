@@ -3,7 +3,7 @@ package Number::Phone::Lib;
 use strict;
 use base 'Number::Phone';
 
-our $VERSION = '2.2002';
+our $VERSION = '1.0';
 
 sub new {
     my $class = shift;
