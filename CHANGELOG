@@ -1,12 +1,11 @@
-XXXX-XX-XX      XXXXXX  Add Number::Phone::Lib, a libphonenumber-compatible
+2014-04-25      3.0     Add Number::Phone::Lib, a libphonenumber-compatible
                           subclass. This lacks some functionality but is
                           considerably faster (for UK numbers) and compatible
                           (for non-geographic NANP numbers);
                         Add some new CA/US area codes;
                         Add more GMSS codes;
                         Use libphonenumber data for some NANP countries (some
-                          have dodgy data*) for is_mobile, is_fixed_line;
-                        New UK allocations;
+                          have dodgy data*) for is_mobile, is_fixed_line
 
 * Some countries have duplicate regexes for fixed_line/mobile in libphonenumber,
   and others have regexes that match the same data
