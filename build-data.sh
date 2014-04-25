@@ -10,7 +10,7 @@ if [ "$1" == "--force" ]; then
   rm lib/Number/Phone/StubCountry/KZ.pm
 fi
 
-EXIT_STATUS=0
+EXITSTATUS=0
 # first get OFCOM data
 curl -R -O -s http://www.ofcom.org.uk/static/numbering/codelist.zip
 # if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
@@ -43,6 +43,13 @@ if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o libphonenumber/resources/Phon
   perl build-data.stubs
 else
   echo lib/Number/Phone/StubCountry/\*.pm are up-to-date
+fi
+
+if [ $EXITSTATUS == 1 ]; then
+  if test -e Makefile; then
+    echo stuff changed, need to re-run Makefile.PL
+    `grep "^PERL " Makefile|awk '{print $3}'` Makefile.PL
+  fi
 fi
 
 exit $EXITSTATUS

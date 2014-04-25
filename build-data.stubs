@@ -70,7 +70,6 @@ TERRITORY: foreach my $territory (@territories) {
   if($IDD_country_code == 1) {
       # see if build-nanp detected dodgy data
       if(!exists($Number::Phone::NANP::Data::fixed_line_regexes{$ISO_country_code})) {
-          warn("build-nanp detected dodgy fixed/mobile regexes for $ISO_country_code\n");
           $validators->{geographic} = '('.$validators->{fixed_line}.'|'.$validators->{mobile}.')';
           delete $validators->{fixed_line};
           delete $validators->{mobile};
