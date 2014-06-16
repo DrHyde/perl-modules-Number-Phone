@@ -198,6 +198,18 @@ is($number->format(), '+44 1302 622123', "OFCOM's stupid 6+4 format for 1302 62[
 $number = Number::Phone->new('+441302623123');
 is($number->format(), '+44 1302 623123', "OFCOM's missing format for 1302 623 is corrected");
 
+$number = Number::Phone->new('+448435235305');
+is(
+    $number->format(),
+    is_mocked_uk() ? '+44 843 523 5305' : '+448435235305',
+    "OFCOM's missing format for 843 doesn't break shit"
+);
+is_deeply(
+    [sort $number->type()],
+    [sort ('is_valid', is_mocked_uk() ? (): qw(is_allocated is_specialrate))],
+    "... and its type looks OK"
+) || print Dumper($number->type());
+
 foreach my $tuple (
   [ 'Number::Phone::UK' => '0844000000'   ],
   [ 'Number::Phone'     => '+44844000000' ]

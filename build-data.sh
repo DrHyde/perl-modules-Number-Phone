@@ -12,7 +12,9 @@ fi
 
 EXITSTATUS=0
 # first get OFCOM data
-curl -R -O -s http://www.ofcom.org.uk/static/numbering/codelist.zip
+(curl -R -O -s http://www.ofcom.org.uk/static/numbering/codelist.zip) ||
+  (wget -q -O codelist.zip http://www.ofcom.org.uk/static/numbering/codelist.zip)
+
 # if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e lib/Number/Phone/UK/Data.pm -o codelist.zip -nt lib/Number/Phone/UK/Data.pm; then
   EXITSTATUS=1
@@ -24,7 +26,7 @@ fi
 rm codelist.zip
 
 # now get an up-to-date libphonenumber
-(cd libphonenumber && svn -q up) || svn co http://libphonenumber.googlecode.com/svn/trunk libphonenumber
+(cd libphonenumber && svn -q up) || (echo Checking out libphonenumber ...; svn co http://libphonenumber.googlecode.com/svn/trunk libphonenumber)
 
 # lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt or PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm; then

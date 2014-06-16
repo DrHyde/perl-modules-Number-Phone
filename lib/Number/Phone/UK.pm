@@ -323,13 +323,18 @@ sub format {
     $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
         $self :
         __PACKAGE__->new($self);
-    return '+'.country_code().' '.(
-        $self->areacode()      ? ($self->areacode().' '.(
+    return (
+	# if there's an areacode ...
+        $self->areacode()      ? ('+'.country_code().' '.$self->areacode().' '.(
           length($self->subscriber()) == 7 ? substr($self->subscriber(), 0, 3).' '.substr($self->subscriber(), 3) :
           length($self->subscriber()) == 8 ? substr($self->subscriber(), 0, 4).' '.substr($self->subscriber(), 4) :
                                              $self->subscriber() )) : 
-        !$self->is_allocated() ? ( ${$self} =~ /^\+44/ ? substr(${$self}, 3) : substr(${$self}, 1)) :
-                                 $self->subscriber()
+	# if not allocated ...
+        !$self->is_allocated() ? '+'.country_code().' '.( ${$self} =~ /^\+44/ ? substr(${$self}, 3) : substr(${$self}, 1)) :
+	# if there's a subscriber ...
+        $self->subscriber() ? '+'.country_code().' '.$self->subscriber :
+	# otherwise ...
+	  ${$self}
     );
 }
 
