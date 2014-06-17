@@ -1,4 +1,5 @@
 better OFCOM parser
+clean up N::P::UK->format()
 more systematic UK tests
 details for NANP-ish countries
 details for non-geo NANP numbers

@@ -1,3 +1,7 @@
+2014-07-17      3.0001  Make N::P::UK->format() cope better when OFCOM
+                          don't tell us how long 08 numbers are;
+                        New UK allocations
+
 2014-04-25      3.0     Add Number::Phone::Lib, a libphonenumber-compatible
                           subclass. This lacks some functionality but is
                           considerably faster (for UK numbers) and compatible
