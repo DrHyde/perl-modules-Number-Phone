@@ -29,6 +29,7 @@ sub new {
     die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
     if(is_valid($number)) {
+        $number =~ s/^0/+44/;
         return bless(\$number, $class->_get_class(_clean_number($number)));
     } else { return undef; }
 }
