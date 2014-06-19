@@ -200,12 +200,13 @@ is($number->format(), '+44 1302 623123', "OFCOM's missing format for 1302 623 is
 
 foreach my $tuple (
   [ 'Number::Phone'     => '+448435235305' ],
-  [ 'Number::Phone::UK' =>   '08435235305' ],
+  (is_mocked_uk() ? () : [ 'Number::Phone::UK' =>   '08435235305' ]),
 ) {
   my($class, $digits) = @{$tuple};
   $number = $class->new($digits);
   is(
       $number->format(),
+      # libphonenumber can format this, N::P::UK can't because OFCOM's data is deficient
       is_mocked_uk() ? '+44 843 523 5305' : '+448435235305',
       "OFCOM's missing format for 843 doesn't break shit: $class->new($digits)->format()"
   );
