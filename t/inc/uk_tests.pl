@@ -1,8 +1,6 @@
 use strict;
 use warnings;
 
-use Data::Dumper;
-
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
 {
@@ -220,18 +218,18 @@ foreach my $tuple (
 }
 
 foreach my $tuple (
-  [ 'Number::Phone::UK' => '0844000000'   ],
-  [ 'Number::Phone'     => '+44844000000' ]
+  [ 'Number::Phone::UK' => '0844000100'   ],
+  [ 'Number::Phone'     => '+44844000100' ]
 ) {
   my($class, $number) = @{$tuple};
   skip_if_mocked("Stubs aren't intended to be constructed directly", 1, sub {
     ok(!defined($class->new($number)),
-      "$class->new($number) is undef (too short)") || print Dumper($class->new($number));
+      "$class->new($number) is undef (too short)");
   });
 }
 
-foreach my $invalid (qw(+44844000000 +44275939345 +44208771292 +44113203160 +44113325000)) {
-                  #                  Protected    Normal       Normal       Protected
+foreach my $invalid (qw(+44275939345 +44208771292 +44113203160 +44113325000)) {
+                  #        Protected    Normal       Normal       Protected
     $number = Number::Phone->new($invalid);
     ok(!defined($number), "$invalid is invalid (too short)");
 }
