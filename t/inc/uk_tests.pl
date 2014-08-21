@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 
+use Data::Dumper;
+
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
 {
@@ -87,7 +89,7 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   $number = Number::Phone->new('+448450033845');
   ok($number->is_specialrate(), "special-rate numbers correctly identified");
 
-  $number = Number::Phone->new('+449088791234');
+  $number = Number::Phone->new('+449088761234');
   ok($number->is_adult() && $number->is_specialrate(), "0908 'adult' numbers correctly identified");
   $number = Number::Phone->new('+449090901234');
   ok($number->is_adult() && $number->is_specialrate(), "0909 'adult' numbers correctly identified");
@@ -95,7 +97,7 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   $number = Number::Phone->new('+445588301234');
   ok($number->is_corporate(), "corporate numbers correctly identified");
 
-  $number = Number::Phone->new('+448200123456');
+  $number = Number::Phone->new('+448200803456');
   ok($number->is_network_service(), "network service numbers correctly identified");
 
   $number = Number::Phone->new('+448450033845');
@@ -224,7 +226,7 @@ foreach my $tuple (
   my($class, $number) = @{$tuple};
   skip_if_mocked("Stubs aren't intended to be constructed directly", 1, sub {
     ok(!defined($class->new($number)),
-      "$class->new($number) is undef (too short)");
+      "$class->new($number) is undef (too short)") || print Dumper($class->new($number));
   });
 }
 
