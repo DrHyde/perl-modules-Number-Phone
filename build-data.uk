@@ -44,11 +44,6 @@ use DBM::Deep;
 
 system('unzip -q codelist.zip');
 
-my $dbm = DBM::Deep->new(
-    file => 'temp.db',
-    data_sector_size => 32,
-);
-
 my $csv = Text::CSV_XS->new({
     binary => 1
 });
@@ -162,6 +157,11 @@ foreach my $tuple (
     }
     close($fh);
 }
+
+my $dbm = DBM::Deep->new(
+    file => 'temp.db',
+    data_sector_size => 32,
+);
 
 $dbm->{geo_prefices}         = { map { ($_, 1) } @geo_prefices };
 $dbm->{network_svc_prefices} = { map { ($_, 1) } @network_svc_prefices };
