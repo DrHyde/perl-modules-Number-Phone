@@ -1,4 +1,4 @@
-XXXX-XX-XX      XXXXXX  Be more consistent when formatting UK numbers
+2014-08-22      3.0002  Be more consistent when formatting UK numbers
                           for which we have incomplete data from OFCOM,,
                           no matter how they're instantiated;
                         New UK allocations
