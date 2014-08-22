@@ -3,7 +3,7 @@
                           no matter how they're instantiated;
                         New UK allocations
 
-2014-07-17      3.0001  Make N::P::UK->format() cope better when OFCOM
+2014-06-17      3.0001  Make N::P::UK->format() cope better when OFCOM
                           don't tell us how long 08 numbers are;
                         New UK allocations
 
