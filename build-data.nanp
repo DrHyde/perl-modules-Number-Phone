@@ -12,6 +12,8 @@ use Data::Dumper;local $Data::Dumper::Indent = 1;
 use lib 'lib';
 use Number::Phone::Country;
 
+$| = 1;
+
 open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Phone/NANP/Data.pm\n");
 
 print MODULE "# automatically generated file, don't edit\n\n";

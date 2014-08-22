@@ -11,6 +11,8 @@ use Data::Dumper; local $Data::Dumper::Indent = 0;
 use lib 'lib';
 use Number::Phone::NANP::Data;
 
+$| = 1;
+
 use XML::XPath;
 my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();

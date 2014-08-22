@@ -37,6 +37,8 @@ use warnings;
 
 use lib 'lib';
 
+$| = 1;
+
 use Text::CSV_XS;
 use Digest::MD5 'md5_base64';
 use Data::Dumper;
@@ -158,23 +160,7 @@ foreach my $tuple (
     close($fh);
 }
 
-my $dbm = DBM::Deep->new(
-    file => 'temp.db',
-    data_sector_size => 32,
-);
-
-$dbm->{geo_prefices}         = { map { ($_, 1) } @geo_prefices };
-$dbm->{network_svc_prefices} = { map { ($_, 1) } @network_svc_prefices };
-$dbm->{free_prefices}        = { map { ($_, 1) } @free_prefices };
-$dbm->{corporate_prefices}   = { map { ($_, 1) } @corporate_prefices };
-$dbm->{personal_prefices}    = { map { ($_, 1) } @personal_prefices };
-$dbm->{pager_prefices}       = { map { ($_, 1) } @pager_prefices };
-$dbm->{mobile_prefices}      = { map { ($_, 1) } @mobile_prefices };
-$dbm->{special_prefices}     = { map { ($_, 1) } @special_prefices };
-$dbm->{adult_prefices}       = { map { ($_, 1) } @adult_prefices };
-$dbm->{ip_prefices}          = { map { ($_, 1) } @ip_prefices };
-$dbm->{areanames}            = { map { s/( National Dialling)//ig; $_; } %areanames };
-
+print "Building telco/length data ...\n";
 my %telco_format_cache = ();
 my %telco_and_length = ();
 foreach my $datum (@telco_length_data) {
@@ -213,6 +199,22 @@ foreach my $datum (@telco_length_data) {
     $telco_and_length{$retard} = $cache_key;
 }
 
+print "Creating DBM::Deep file ...\n";
+my $dbm = DBM::Deep->new(
+    file => 'temp.db',
+    data_sector_size => 32,
+);
+$dbm->{geo_prefices}         = { map { ($_, 1) } @geo_prefices };
+$dbm->{network_svc_prefices} = { map { ($_, 1) } @network_svc_prefices };
+$dbm->{free_prefices}        = { map { ($_, 1) } @free_prefices };
+$dbm->{corporate_prefices}   = { map { ($_, 1) } @corporate_prefices };
+$dbm->{personal_prefices}    = { map { ($_, 1) } @personal_prefices };
+$dbm->{pager_prefices}       = { map { ($_, 1) } @pager_prefices };
+$dbm->{mobile_prefices}      = { map { ($_, 1) } @mobile_prefices };
+$dbm->{special_prefices}     = { map { ($_, 1) } @special_prefices };
+$dbm->{adult_prefices}       = { map { ($_, 1) } @adult_prefices };
+$dbm->{ip_prefices}          = { map { ($_, 1) } @ip_prefices };
+$dbm->{areanames}            = { map { s/( National Dialling)//ig; $_; } %areanames };
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
 $dbm->{subclass} = { # taken from libphonenumber
@@ -231,8 +233,6 @@ $dbm->{subclass} = { # taken from libphonenumber
   7624 => 'IM',
   7924 => 'IM',
 };
-
-$dbm->optimize();
 
 system('cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm');
 system('rm s[0123456789]*.txt sabc.txt Data.pm temp.db');
