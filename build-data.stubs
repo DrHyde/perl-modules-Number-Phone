@@ -39,6 +39,7 @@ my @gb_formats = formats_for($xml->find(
 
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
+  my $national_code    = ''.$territory->find('@nationalPrefix');
 
   my $ISO_country_code = ''.$territory->find('@id');
   if($ISO_country_code !~ /^..$/) {
@@ -105,6 +106,7 @@ sub new {
   my \$class = shift;
   my \$number = shift;
   \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
+  \$number =~ s/(^$national_code)//g;
   my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
   return \$self->is_valid() ? \$self : undef;
 }

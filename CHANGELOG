@@ -1,3 +1,7 @@
+XXXX-XX-XX      3.0003  Bugfix: N::P->new("CC", 0...") now works
+                          (where 0 is the national dialling prefix);
+                        New UK allocations
+
 2014-08-22      3.0002  Be more consistent when formatting UK numbers
                           for which we have incomplete data from OFCOM,,
                           no matter how they're instantiated;
