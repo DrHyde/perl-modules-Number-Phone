@@ -1,3 +1,5 @@
+XXXX-XX-XX      XXXXXX  Mailing list for users created!
+
 2014-09-04      3.0003  Bugfix: N::P->new("CC", 0...") now works
                           (where 0 is the national dialling prefix);
                         New UK allocations
