@@ -48,7 +48,7 @@ reasons:
 
 =item *
 
-Compatability with libphonenumber's Java, C++, and JavaScript implementations.
+Compatibility with libphonenumber's Java, C++, and JavaScript implementations.
 
 =item *
 
