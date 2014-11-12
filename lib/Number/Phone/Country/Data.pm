@@ -1,6 +1,6 @@
 package Number::Phone::Country::Data;
 
-$VERSION = '1.1';
+$VERSION = '1.2';
 %Number::Phone::Country::idd_codes = (
     # 1     => 'NANP',
 
@@ -170,6 +170,7 @@ $VERSION = '1.1';
 # - IDD prefix (for dialling from this country prefix to another)
 # - NDD prefix (for dialling from one area of this country to another)
 %Number::Phone::Country::prefix_codes = (
+    'AC' => ['247',   '00',  undef], # Ascension Island
     'AD' => ['376',   '00',  undef], # Andorra
     'AE' => ['971',   '00',    '0'], # United Arab Emirates
     'AF' => [ '93',   '00',    '0'], # Afghanistan
@@ -178,6 +179,7 @@ $VERSION = '1.1';
     'AL' => ['355',   '00',    '0'], # Albania
     'AM' => ['374',   '00',    '8'], # Armenia
     'BQ' => ['599',   '00',    '0'], # Bonaire, Saint Eustatius and Saba (ex-Netherland Antilles)
+    'CW' => ['599',   '00',    '0'], # Curacao
     'AO' => ['244',   '00',    '0'], # Angola
     'AQ' => ['672',  undef,  undef], # Antarctica
     'AR' => [ '54',   '00',    '0'], # Argentina
