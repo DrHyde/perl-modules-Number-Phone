@@ -26,7 +26,7 @@ while (<DATA>) {
     is Number::Phone::Country::country_code($country), $prefix,
        "$country code";
 
-    is Number::Phone::Country::idd_code($country), $idd, 
+    is Number::Phone::Country::idd_code($country), $idd,
        "$country idd prefix";
 
     is Number::Phone::Country::ndd_code($country), $ndd,
@@ -230,7 +230,7 @@ SE:46:00:0
 SG:65:001:
 SH:290:00:
 SI:386:00:0
-SJ:378:00:0
+SJ:47:00:0
 SK:421:00:0
 SL:232:00:0
 SM:378:00:0

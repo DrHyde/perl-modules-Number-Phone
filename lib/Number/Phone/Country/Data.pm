@@ -26,7 +26,7 @@ $VERSION = '1.3';
     258     => 'MZ', 260     => 'ZM', 261     => 'MG',
     262269  => 'YT', # Mayotte fixed lines
     262639  => 'YT', # Mayotte GSM
-    262     => ['RE', 'YT'], # Assume that Reunion is everything else in +262
+    262     => 'RE', # Assume that Reunion is everything else in +262
     263     => 'ZW',
     264     => 'NA', 265     => 'MW', 266     => 'LS', 267     => 'BW',
     268     => 'SZ',
