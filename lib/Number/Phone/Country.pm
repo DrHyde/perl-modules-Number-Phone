@@ -3,7 +3,6 @@ package Number::Phone::Country;
 use strict;
 use Number::Phone::Country::Data;
 use Number::Phone::NANP::Data;
-use Data::Dumper;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
