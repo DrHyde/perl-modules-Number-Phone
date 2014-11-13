@@ -3,6 +3,7 @@ package Number::Phone::Country;
 use strict;
 use Number::Phone::Country::Data;
 use Number::Phone::NANP::Data;
+use Data::Dumper;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
@@ -115,10 +116,11 @@ sub phone2country_and_idd {
                             return ($country_code, $idd) if $class->new('+' . $phone);
                         }
                     }
-                } else {
-                    if($country eq 'GB' && $use_uk) { $country = 'UK'; }
-                    return ($country, $idd);
+                    $country = @$country[0];
                 }
+
+                if($country eq 'GB' && $use_uk) { $country = 'UK'; }
+                return ($country, $idd);
             }
         }
     }
@@ -276,6 +278,6 @@ Copyright 2003 by MaxMind LLC
 Copyright 2004 - 2011 David Cantrell
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself. 
+it under the same terms as Perl itself.
 
 =cut
