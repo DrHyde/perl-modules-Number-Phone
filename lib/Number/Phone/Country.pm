@@ -104,8 +104,21 @@ sub phone2country_and_idd {
         foreach my $idd (@retards) {
             if(exists $idd_codes{$idd}) {
                 my $country = $idd_codes{$idd};
-                if($country eq 'GB' && $use_uk) { $country = 'UK'; }
-                return ($country, $idd);
+                if(ref($country) eq 'ARRAY'){
+                    foreach my $country_code (@$country) {
+                        my $class = "Number\::Phone\::StubCountry\::" . $country_code;
+                        eval "require $class";
+                        if ($@)
+                        {
+                            my $error = $@;
+                        } else {
+                            return ($country_code, $idd) if $class->new('+' . $phone);
+                        }
+                    }
+                } else {
+                    if($country eq 'GB' && $use_uk) { $country = 'UK'; }
+                    return ($country, $idd);
+                }
             }
         }
     }
