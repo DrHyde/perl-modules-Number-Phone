@@ -378,6 +378,7 @@ $VERSION = '1.3';
     'SS' => ['211',   '00',    '0'], # South Sudan
     'ST' => ['239',   '00',    '0'], # Sao Tome and Principe
     'SV' => ['503',   '00',  undef], # El Salvador
+    'SX' => [  '1',  '011',    '1'], # Sint Maarten
     'SY' => ['963',   '00',    '0'], # Syria
     'SZ' => ['268',   '00',  undef], # Swaziland
     'TC' => [  '1',  '011',    '1'], # Turks and Caicos Islands
