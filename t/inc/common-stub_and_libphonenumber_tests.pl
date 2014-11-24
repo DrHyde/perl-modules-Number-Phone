@@ -51,6 +51,10 @@ my $ru = $CLASS->new('+7 499 999 82 83'); # Rostelecom
 is($ru->country_code(), 7, "$CLASS->new('+7 499 999 82 83')->country_code()");
 is($ru->country(), 'RU', "$CLASS->new('+7 499 999 82 83')->country()");
 
+$ru = $CLASS->new('+7(812)315-98-83'); # national dialling prefix is 8, but
+                                       # this is a valid number
+is($ru->format(), '+7 812 315 98 83', '+7 8 numbers work');
+
 # good news comrade (courtesy of translate.google)
 ok($CLASS->new('+79607001122')->is_mobile(), "Хороший товарищ новость! is_mobile works for Russia!");
 
