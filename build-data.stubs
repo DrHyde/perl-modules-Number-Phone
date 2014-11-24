@@ -100,25 +100,15 @@ TERRITORY: foreach my $territory (@territories) {
       return undef;
     }';
   }
-  print $module_fh <<SUBNEWCODE
+  print $module_fh <<EOCODE
 
 sub new {
   my \$class = shift;
   my \$number = shift;
   \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
-  my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
-  return \$self if (\$self->is_valid());
-SUBNEWCODE
-;
-  if ($national_code ne '') {
-    print $module_fh <<SUBNEWCODE
   \$number =~ s/(^$national_code)//g;
-  \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
+  my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
   return \$self->is_valid() ? \$self : undef;
-SUBNEWCODE
-;
-  }
-  print $module_fh <<EOCODE
 }
 
 1;
@@ -137,9 +127,9 @@ sub preamble {
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #     http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -147,7 +137,7 @@ sub preamble {
 # limitations under the License.
 package Number::Phone::StubCountry::}.$iso_code.q{;
 use base qw(Number::Phone::StubCountry);
-
+  
 use strict;
 use warnings;
 }.
