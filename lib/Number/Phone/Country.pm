@@ -6,7 +6,7 @@ use Number::Phone::NANP::Data;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
-$VERSION = 1.8;
+$VERSION = 1.9;
 my $use_uk = 0;
 
 sub import {
