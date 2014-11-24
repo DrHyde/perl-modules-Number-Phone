@@ -1,6 +1,6 @@
 package Number::Phone::Country::Data;
 
-$VERSION = '1.1';
+$VERSION = '1.3';
 %Number::Phone::Country::idd_codes = (
     # 1     => 'NANP',
 
@@ -34,7 +34,7 @@ $VERSION = '1.1';
     27      => 'ZA', 290     => 'SH',
     291     => 'ER',
     297     => 'AW', 298     => 'FO', 299     => 'GL',
-    
+
     # 3* checked against wtng.info 2011-07-08
     30      => 'GR', 31      => 'NL', 32      => 'BE', 33      => 'FR',
     34      => 'ES', 350     => 'GI', 351     => 'PT',
@@ -63,13 +63,13 @@ $VERSION = '1.1';
     423     => 'LI',
     43      => 'AT', 44      => 'GB',
     45      => 'DK', 46      => 'SE',
-    47      => 'NO', 48      => 'PL', 49      => 'DE',
+    47      => ['NO', 'BV', 'SJ'], 48      => 'PL', 49      => 'DE',
 
     # http://en.wikipedia.org/wiki/Telephone_numbers_in_the_United_Kingdom#Crown_dependencies
     441481 => 'GG', 447781 => 'GG', 447839 => 'GG', 447911 => 'GG',
     441534 => 'JE', 447509 => 'JE', 447797 => 'JE', 447937 => 'JE', 447700 => 'JE', 447829 => 'JE',
     441624 => 'IM', 447624 => 'IM', 447524 => 'IM', 447924 => 'IM',
-    
+
     # 5* checked against wtng.info 2011-07-08
     500     => 'FK',
     501     => 'BZ', 502     => 'GT', 503     => 'SV', 504     => 'HN',
@@ -78,11 +78,11 @@ $VERSION = '1.1';
     51      => 'PE', 52      => 'MX', 53      => 'CU', 54      => 'AR',
     55      => 'BR', 56      => 'CL', 57      => 'CO', 58      => 'VE',
     590     => 'GP', 591     => 'BO', 592     => 'GY', 593     => 'EC',
-    594     => 'GF', 595     => 'PY', 596     => 'MQ', 597     => 'SR',
+    594     => 'GF', 595     => 'PY', 596     => ['MQ', 'TF'], 597     => 'SR',
     598     => 'UY',
     599     => 'BQ',
     5999    => 'CW',
-    
+
     # 6* checked against wtng.info 2011-07-08
     60      => 'MY',
     61      => 'AU',
@@ -100,21 +100,21 @@ $VERSION = '1.1';
     681     => 'WF', 682     => 'CK',
     683     => 'NU', 685     => 'WS', 686     => 'KI', 687     => 'NC',
     688     => 'TV',
-    689     => 'PF', 690     => 'TK', 691     => 'FM', 692     => 'MH',
-    
+    689     => 'PF', 690     => 'TK', 691     => 'FM', 692     => ['MH', 'HM'],
+
     # 7* from http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
     # checked 2011-07-08
     76      => 'KZ',
     77      => 'KZ',
     7       => 'RU',
-    
+
     # 8* checked against wtng.info 2011-07-08
     81      => 'JP', 82      => 'KR', 84      => 'VN', 850     => 'KP',
     852     => 'HK', 853     => 'MO', 855     => 'KH', 856     => 'LA',
     86      => 'CN',
     880     => 'BD',
     886     => 'TW',
-    
+
     # 9* checked against wtng.info 2011-07-08
     90      => 'TR', 91      => 'IN', 92      => 'PK', 93      => 'AF',
     94      => 'LK', 95      => 'MM', 960     => 'MV', 961     => 'LB',
@@ -125,7 +125,7 @@ $VERSION = '1.1';
     976     => 'MN', 977     => 'NP',
     98      => 'IR',
     992     => 'TJ',
-    993     => 'TM', 994     => 'AZ', 995     => 'GE',
+    993     => 'TM', 994     => 'AZ', 995     => ['GE', 'GS'],
     996     => 'KG', 998     => 'UZ',
 
     # these checked against wtng.info 2011-07-08
@@ -170,6 +170,7 @@ $VERSION = '1.1';
 # - IDD prefix (for dialling from this country prefix to another)
 # - NDD prefix (for dialling from one area of this country to another)
 %Number::Phone::Country::prefix_codes = (
+    'AC' => ['247',   '00',  undef], # Ascension Island
     'AD' => ['376',   '00',  undef], # Andorra
     'AE' => ['971',   '00',    '0'], # United Arab Emirates
     'AF' => [ '93',   '00',    '0'], # Afghanistan
@@ -178,6 +179,7 @@ $VERSION = '1.1';
     'AL' => ['355',   '00',    '0'], # Albania
     'AM' => ['374',   '00',    '8'], # Armenia
     'BQ' => ['599',   '00',    '0'], # Bonaire, Saint Eustatius and Saba (ex-Netherland Antilles)
+    'CW' => ['599',   '00',    '0'], # Curacao
     'AO' => ['244',   '00',    '0'], # Angola
     'AQ' => ['672',  undef,  undef], # Antarctica
     'AR' => [ '54',   '00',    '0'], # Argentina
@@ -366,7 +368,7 @@ $VERSION = '1.1';
     'SG' => [ '65',  '001',  undef], # Singapore
     'SH' => ['290',   '00',  undef], # Saint Helena
     'SI' => ['386',   '00',    '0'], # Slovenia
-    'SJ' => ['378',   '00',    '0'], # Svalbard and Jan Mayen
+    'SJ' => ['47',    '00',    '0'], # Svalbard and Jan Mayen
     'SK' => ['421',   '00',    '0'], # Slovakia
     'SL' => ['232',   '00',    '0'], # Sierra Leone
     'SM' => ['378',   '00',    '0'], # San Marino
@@ -376,6 +378,7 @@ $VERSION = '1.1';
     'SS' => ['211',   '00',    '0'], # South Sudan
     'ST' => ['239',   '00',    '0'], # Sao Tome and Principe
     'SV' => ['503',   '00',  undef], # El Salvador
+    'SX' => [  '1',  '011',    '1'], # Sint Maarten
     'SY' => ['963',   '00',    '0'], # Syria
     'SZ' => ['268',   '00',  undef], # Swaziland
     'TC' => [  '1',  '011',    '1'], # Turks and Caicos Islands

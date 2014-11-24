@@ -14,7 +14,7 @@ $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
     };
   }
 }
- 
+
 note("Common tests for Number::Phone::UK, and also for N::P::StubCountry::MOCK");
 note("The latter is a sanity testto make sure that stubs are built correctly,");
 note("and the comprehensive UK tests make a good torture-test.");
@@ -136,7 +136,7 @@ is_deeply(
     "... and their type looks OK"
 );
 
-$number = Number::Phone->new('+445600123456');
+$number = Number::Phone->new('+445602041914');
 ok($number->is_ipphone(), "VoIP correctly identified");
 
 $number = Number::Phone->new('+443031231234');

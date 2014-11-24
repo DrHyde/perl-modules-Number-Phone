@@ -72,4 +72,7 @@ $de = $CLASS->new('+493022730027'); # Bundestag
 is($de->format(), "+49 30 22730027", "formatted Berlin number correctly");
 is($de->areaname(), "Berlin", "got area name correctly");
 
+my $no = $CLASS->new('+4779023450'); # Some Norway islands
+isa_ok($no, "Number::Phone::StubCountry");
+
 1;
