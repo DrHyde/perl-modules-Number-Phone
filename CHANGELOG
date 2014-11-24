@@ -1,4 +1,10 @@
-XXXX-XX-XX      XXXXXX  Mailing list for users created!
+2014-11-24      3.0004  Mailing list for users created;
+                        Bugfixes for Curacao, Svalbard;
+			Bugfixes for countries where numbers can begin
+			  with the national dialling prefix, eg Russia,
+			  where the prefix is 8 but area codes like 812
+			  exist;
+			New UK allocations
 
 2014-09-04      3.0003  Bugfix: N::P->new("CC", 0...") now works
                           (where 0 is the national dialling prefix);
