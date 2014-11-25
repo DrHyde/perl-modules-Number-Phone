@@ -107,13 +107,19 @@ sub new {
   my \$number = shift;
   \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
   my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
-  return \$self if (\$self->is_valid());
 SUBNEWCODE
 ;
+
   if ($national_code ne '') {
     print $module_fh <<SUBNEWCODE
+  return \$self if (\$self->is_valid());
   \$number =~ s/(^$national_code)//g;
   \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
+  return \$self->is_valid() ? \$self : undef;
+SUBNEWCODE
+;
+  } else {
+    print $module_fh <<SUBNEWCODE
   return \$self->is_valid() ? \$self : undef;
 SUBNEWCODE
 ;
