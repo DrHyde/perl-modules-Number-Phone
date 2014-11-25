@@ -79,4 +79,7 @@ is($de->areaname(), "Berlin", "got area name correctly");
 my $no = $CLASS->new('+4779023450'); # Some Norway islands
 isa_ok($no, "Number::Phone::StubCountry");
 
+$no = $CLASS->new('+479690448'); # invalid, should be undef. NO has no national dialling prefix
+is($no, undef, "invalid numbers in countries with no national dialing prefix return undef from constructor");
+
 1;
