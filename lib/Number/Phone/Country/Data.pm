@@ -71,7 +71,10 @@ $VERSION = '1.4';
     441624 => 'IM', 447624 => 'IM', 447524 => 'IM', 447924 => 'IM',
 
     # 5* checked against wtng.info 2011-07-08
-    500     => 'FK',
+    # GS apparently shares (according to wikipedia) +500 with FK, but it's
+    # unknown whether it actually has any phone service at all or whether
+    # the handful of people there just use sat-phones
+    500     => ['FK', 'GS'],
     501     => 'BZ', 502     => 'GT', 503     => 'SV', 504     => 'HN',
     505     => 'NI', 506     => 'CR', 507     => 'PA',
     508     => 'PM', 509     => 'HT',
@@ -127,7 +130,7 @@ $VERSION = '1.4';
     976     => 'MN', 977     => 'NP',
     98      => 'IR',
     992     => 'TJ',
-    993     => 'TM', 994     => 'AZ', 995     => ['GE', 'GS'],
+    993     => 'TM', 994     => 'AZ', 995     => 'GE',
     996     => 'KG', 998     => 'UZ',
 
     # these checked against wtng.info 2011-07-08
@@ -261,7 +264,7 @@ $VERSION = '1.4';
     'GP' => ['590',   '00',  undef], # Guadeloupe
     'GQ' => ['240',   '00',  undef], # Equatorial Guinea
     'GR' => [ '30',   '00',  undef], # Greece
-    'GS' => ['995',  '810',    '8'], # South Georgia and the South Sandwich Islands (IDD really 8**10)
+    'GS' => ['500',   '00',  undef], # South Georgia and the South Sandwich Islands
     'GT' => ['502',   '00',  undef], # Guatemala
     'GU' => [  '1',  '011',    '1'], # Guam
     'GW' => ['245',   '00',  undef], # Guinea-Bissau
