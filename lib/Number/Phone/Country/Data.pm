@@ -1,6 +1,6 @@
 package Number::Phone::Country::Data;
 
-$VERSION = '1.3';
+$VERSION = '1.4';
 %Number::Phone::Country::idd_codes = (
     # 1     => 'NANP',
 
@@ -77,7 +77,9 @@ $VERSION = '1.3';
     508     => 'PM', 509     => 'HT',
     51      => 'PE', 52      => 'MX', 53      => 'CU', 54      => 'AR',
     55      => 'BR', 56      => 'CL', 57      => 'CO', 58      => 'VE',
-    590     => 'GP', 591     => 'BO', 592     => 'GY', 593     => 'EC',
+    # http://en.wikipedia.org/wiki/Telephone_numbers_in_France#Overseas_Departments_and_Territories
+    590     => ['GP', 'BL', 'MF'],
+    591     => 'BO', 592     => 'GY', 593     => 'EC',
     594     => 'GF', 595     => 'PY', 596     => ['MQ', 'TF'], 597     => 'SR',
     598     => 'UY',
     599     => 'BQ',
@@ -197,6 +199,7 @@ $VERSION = '1.3';
     'BH' => ['973',   '00',  undef], # Bahrain
     'BI' => ['257',   '00',  undef], # Burundi
     'BJ' => ['229',   '00',  undef], # Benin
+    'BL' => ['590',   '00',  undef], # Saint Barthélemy
     'BM' => [  '1',  '011',    '1'], # Bermuda
     'BN' => ['673',   '00',    '0'], # Brunei Darussalam
     'BO' => ['591',   '00',    '0'], # Bolivia
@@ -247,7 +250,7 @@ $VERSION = '1.3';
     'GA' => ['241',   '00',  undef], # Gabonese Republic
     'GB' => [ '44',   '00',    '0'], # United Kingdom
     'GD' => [  '1',  '011',    '4'], # Grenada
-    'GE' => ['995',  '810',    '8'], # Georgia
+    'GE' => ['995',   '00',    '0'], # Georgia
     'GF' => ['594',   '00',  undef], # French Guiana
     'GG' => [ '44',   '00',    '0'], # Guernsey
     'GH' => ['233',   '00',  undef], # Ghana
@@ -303,12 +306,13 @@ $VERSION = '1.3';
     'LS' => ['266',   '00',    '0'], # Lesotho
     'LT' => ['370',   '00',    '8'], # Lithuania
     'LU' => ['352',   '00',  undef], # Luxembourg
-    'LV' => ['371',   '00',    '8'], # Latvia
+    'LV' => ['371',   '00',  undef], # Latvia
     'LY' => ['218',   '00',    '0'], # Libyan Arab Jamahiriya
     'MA' => ['212',   '00',  undef], # Morocco
     'MC' => ['377',   '00',    '0'], # Monaco
     'MD' => ['373',   '00',    '0'], # Moldova, Republic of
     'ME' => ['382',   '99',    '0'], # Montenegro
+    'MF' => ['590',   '00',  undef], # Saint Martin
     'MG' => ['261',   '00',    '0'], # Madagascar
     'MH' => ['692',  '011',    '1'], # Marshall Islands
     'MK' => ['389',   '00',    '0'], # Macedonia, the Former Yugoslav Republic of
@@ -397,7 +401,7 @@ $VERSION = '1.3';
     'TV' => ['688',   '00',  undef], # Tuvalu
     'TW' => ['886',  '002',  undef], # Taiwan, Province of China
     'TZ' => ['255',  '000',    '0'], # Tanzania, United Republic of
-    'UA' => ['380',  '810',    '8'], # Ukraine (IDD really 8**10)
+    'UA' => ['380',   '00',    '0'], # Ukraine
     'UG' => ['256',  '000',    '0'], # Uganda
     'US' => [  '1',  '011',    '1'], # United States
     'UY' => ['598',   '00',    '0'], # Uruguay
