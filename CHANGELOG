@@ -1,5 +1,6 @@
 2014-XX-XX      3.0006  Updated country codes and access codes for some
-                          French overseas departments and ex-Soviet countries
+                          French overseas departments and ex-Soviet countries;
+                        Fix bug confusing Georgia (GE) and South Georgia (GS);
 
 2014-11-25      3.0005  Bugfix for stubs of countries with no national dialing
                           code.
