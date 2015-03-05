@@ -76,7 +76,7 @@ foreach my $tuple (
               $areanames{$fields[0]} = $fields[3];
           }
     } ],
-    [ 's1_code.txt', sub {
+    [ 'S1_code.csv', sub {
           my @fields = map { s/£/UKP/g; $_ } @_;
           return if($fields[3] ne 'Allocated');
           my $retard = join('',@fields[0,1,2]);
@@ -84,7 +84,7 @@ foreach my $tuple (
           my $format = $fields[6];
           push @telco_length_data, [$retard, $telco, $format];
     } ],
-    [ 's3_code.txt', sub {
+    [ 'S3_code.csv', sub {
           my @fields = map { s/£/UKP/g; $_ } @_;
           return if($fields[3] ne 'Allocated');
           my $retard = join('',@fields[0 .. 2]);
@@ -92,7 +92,7 @@ foreach my $tuple (
           my $format = '10 digit numbers';
           push @telco_length_data, [$retard, $telco, $format];
     } ],
-    [ 's8_code.txt', sub {
+    [ 'S8_code.csv', sub {
           my @fields = map {
               s/£/UKP/g;
               s/,,/,"",/g;
@@ -114,7 +114,7 @@ foreach my $tuple (
           }
           push @telco_length_data, [$retard, $telco, $format];
     } ],
-    [ 's5_code.txt', sub {
+    [ 'S5_code.csv', sub {
           my @fields = map { s/£/UKP/g; $_ } @_;
           return if($fields[2] ne 'Allocated');
           my $retard = join('',@fields[0, 1]);
@@ -124,7 +124,7 @@ foreach my $tuple (
           push @ip_prefices, $retard if($retard =~ /^56/i);
           push @telco_length_data, [$retard, $telco, $format];
     } ],
-    [ 's7_code.txt', sub {
+    [ 'S7_code.csv', sub {
           my @fields = map { s/£/UKP/g; $_ } @_;
           return if($fields[2] ne 'Allocated');
           (my $retard = join('',@fields[0, 1])) =~ s/\D//g; # there's spaces in OFCOM's data!
@@ -139,7 +139,7 @@ foreach my $tuple (
               push @personal_prefices, $retard;
           } 
     } ],
-    [ 's9_code.txt', sub {
+    [ 'S9_code.csv', sub {
           my @fields = map { s/£/UKP/g; $_ } @_;
           return if($fields[2] ne 'Allocated');
           my $retard = join('',@fields[0, 1]);
@@ -235,4 +235,4 @@ $dbm->{subclass} = { # taken from libphonenumber
 };
 
 system('cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm');
-system('rm s[0123456789]*.txt sabc.txt Data.pm temp.db');
+system('rm s[0123456789]*.txt S*.csv sabc.txt Data.pm temp.db');
