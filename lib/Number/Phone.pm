@@ -593,6 +593,11 @@ FR and Ireland would be IE.  As usual, the UK is an exception, using UK
 instead of the ISO-mandated GB.  NANP countries are also an exception,
 going like Number::Phone::NANP::XX.
 
+=head1 UPDATES
+
+Starting in March 2015 I intend to release updates approximately every
+three months, including new data from libphonenumber and OFCOM.
+
 =head1 BUGS/FEEDBACK
 
 Please report bugs by at L<https://github.com/DrHyde/perl-modules-Number-Phone/issues>, including, if possible, a test case.
