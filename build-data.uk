@@ -242,4 +242,4 @@ $dbm->{subclass} = { # taken from libphonenumber
 };
 
 system('cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm');
-system('rm -q s[0123456789]*.txt S*.csv sabc.txt Data.pm temp.db');
+system('rm s[0123456789]*.txt S*.csv sabc.txt Data.pm temp.db 2>/dev/null');
