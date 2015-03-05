@@ -154,7 +154,14 @@ foreach my $tuple (
     my $filename = $tuple->[0];
     print "Processing $filename ...\n";
     open(my $fh, '<', $filename) || die("Can't read $filename: $!\n");
-    while(my $row = $csv->getline($fh)) {
+    RECORD: while(my $row = $csv->getline($fh)) {
+	# What kind of shitwit thinks that a date/time stamp should be
+	# a record at the end of the file? An OFCOM employee shitwit,
+	# that's what kind of shitwit.
+	next RECORD if(
+	    $#{$row} == 0 &&
+	    $row->[0] =~ m{^\d\d/\d\d/\d{4} \d\d:\d\d:\d\d$}
+	);
         $tuple->[1]->(@{$row});
     }
     close($fh);
@@ -235,4 +242,4 @@ $dbm->{subclass} = { # taken from libphonenumber
 };
 
 system('cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm');
-system('rm s[0123456789]*.txt S*.csv sabc.txt Data.pm temp.db');
+system('rm -q s[0123456789]*.txt S*.csv sabc.txt Data.pm temp.db');
