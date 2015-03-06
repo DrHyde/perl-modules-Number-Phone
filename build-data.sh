@@ -12,18 +12,63 @@ fi
 
 EXITSTATUS=0
 # first get OFCOM data
-(curl -R -O -s http://www.ofcom.org.uk/static/numbering/codelist.zip) ||
-  (wget -q -O codelist.zip http://www.ofcom.org.uk/static/numbering/codelist.zip)
+for i in \
+    http://www.ofcom.org.uk/static/numbering/codelist.zip    \
+    http://www.ofcom.org.uk/static/numbering/sabcde11_12.xls \
+    http://www.ofcom.org.uk/static/numbering/sabcde13.xls    \
+    http://www.ofcom.org.uk/static/numbering/sabcde14.xls    \
+    http://www.ofcom.org.uk/static/numbering/sabcde15.xls    \
+    http://www.ofcom.org.uk/static/numbering/sabcde16.xls    \
+    http://www.ofcom.org.uk/static/numbering/sabcde17.xls    \
+    http://www.ofcom.org.uk/static/numbering/sabcde18.xls    \
+    http://www.ofcom.org.uk/static/numbering/sabcde19.xls    \
+    http://www.ofcom.org.uk/static/numbering/sabcde2.xls     \
+    http://www.ofcom.org.uk/static/numbering/S3.xls          \
+    http://www.ofcom.org.uk/static/numbering/S5.xls          \
+    http://www.ofcom.org.uk/static/numbering/S7.xls          \
+    http://www.ofcom.org.uk/static/numbering/S8.xls          \
+    http://www.ofcom.org.uk/static/numbering/S9.xls;
+do
+    echo Fetching $i;
+    curl -R -O -s $i || wget -q $i;
+done
+
+# FIXME remove this!
+rm lib/Number/Phone/UK/Data.pm
 
 # if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
-if test ! -e lib/Number/Phone/UK/Data.pm -o codelist.zip -nt lib/Number/Phone/UK/Data.pm; then
+if test ! -e lib/Number/Phone/UK/Data.pm -o \
+  sabcde11_12.xls -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde13.xls    -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde14.xls    -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde15.xls    -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde16.xls    -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde17.xls    -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde18.xls    -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde19.xls    -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde2.xls     -nt lib/Number/Phone/UK/Data.pm -o \
+  S3.xls          -nt lib/Number/Phone/UK/Data.pm -o \
+  S5.xls          -nt lib/Number/Phone/UK/Data.pm -o \
+  S7.xls          -nt lib/Number/Phone/UK/Data.pm -o \
+  S8.xls          -nt lib/Number/Phone/UK/Data.pm -o \
+  S9.xls          -nt lib/Number/Phone/UK/Data.pm -o \
+  codelist.zip    -nt lib/Number/Phone/UK/Data.pm;
+then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/UK/Data.pm
-  perl build-data.uk
+  perl build-data.uk-xls
 else
   echo lib/Number/Phone/UK/Data.pm is up-to-date
 fi
-rm codelist.zip
+exit
+# if test ! -e lib/Number/Phone/UK/Data.pm -o codelist.zip -nt lib/Number/Phone/UK/Data.pm; then
+#   EXITSTATUS=1
+#   echo rebuilding lib/Number/Phone/UK/Data.pm
+#   perl build-data.uk
+# else
+#   echo lib/Number/Phone/UK/Data.pm is up-to-date
+# fi
+rm codelist.zip *xls
 
 # now get an up-to-date libphonenumber
 (cd libphonenumber && git pull) || (echo Checking out libphonenumber ...; git clone git@github.com:googlei18n/libphonenumber.git)

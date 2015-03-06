@@ -218,8 +218,8 @@ foreach my $tuple (
 }
 
 foreach my $tuple (
-  [ 'Number::Phone::UK' => '0844000100'   ],
-  [ 'Number::Phone'     => '+44844000100' ]
+  [ 'Number::Phone::UK' => '0800 903 900'    ],
+  [ 'Number::Phone'     => '+44 800 903 900' ]
 ) {
   my($class, $number) = @{$tuple};
   skip_if_mocked("Stubs aren't intended to be constructed directly", 1, sub {

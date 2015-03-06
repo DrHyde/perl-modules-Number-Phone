@@ -44,7 +44,7 @@ use Digest::MD5 'md5_base64';
 use Data::Dumper;
 use DBM::Deep;
 
-system('unzip -q codelist.zip');
+system('unzip -oq codelist.zip');
 
 my $csv = Text::CSV_XS->new({
     binary => 1
@@ -93,26 +93,27 @@ foreach my $tuple (
           push @telco_length_data, [$retard, $telco, $format];
     } ],
     [ 'S8_code.csv', sub {
-          my @fields = map {
-              s/£/UKP/g;
-              s/,,/,"",/g;
-              s/,$/,""/;
-              $_
-          } @_;
-          return if($fields[3] !~ /^Allocated( \(Closed Range\)| for Migration only)?$/);
-          my $retard = join('',@fields[0,1,2]);
-          my $telco = $fields[6];
-          my $service = $fields[7];
-          my $format = $fields[8];
-          if($service =~ /(Emergency Services|Internet for Schools|(Internal|Inbound) Routing|Broadband Services)/i) {
-              push @network_svc_prefices, $retard;
-          }
-          if($retard =~ /^80/) { push @free_prefices, $retard }
-           elsif($retard eq '500') { push @free_prefices, $retard }
-           elsif($service  =~ /^(PRS|Special Services)/i) {
-              push @special_prefices, $fields[0];
-          }
-          push @telco_length_data, [$retard, $telco, $format];
+        # 0      1    2    3        4      5                         6
+	# "SABC","DE","FG","Status","Date","Communications Provider","Number Length","Change","Notes"
+        my @fields = map {
+            s/£/UKP/g;
+            s/,,/,"",/g;
+            s/,$/,""/;
+            $_
+        } @_;
+        return if($fields[3] !~ /^Allocated ?(\(Closed Range\)|for Migration only)?$/);
+        my $retard = join('',@fields[0,1,2]);
+        my $telco = $fields[5];
+        my $format = $fields[6];
+        # 80: free
+	# 82: internet for schools
+	# 84: special rate
+	# 87: special rate
+	# 89: inbound routing codes
+        if($retard =~ /^(500|80)/) { push @free_prefices, $retard }
+         elsif($retard =~ /^8[47]/) { push @special_prefices, $retard }
+	 elsif($retard =~ /^8[29]/) { push @network_svc_prefices, $retard }
+        push @telco_length_data, [$retard, $telco, $format];
     } ],
     [ 'S5_code.csv', sub {
           my @fields = map { s/£/UKP/g; $_ } @_;
@@ -125,30 +126,48 @@ foreach my $tuple (
           push @telco_length_data, [$retard, $telco, $format];
     } ],
     [ 'S7_code.csv', sub {
-          my @fields = map { s/£/UKP/g; $_ } @_;
-          return if($fields[2] ne 'Allocated');
-          (my $retard = join('',@fields[0, 1])) =~ s/\D//g; # there's spaces in OFCOM's data!
-          my $telco = $fields[4];
-          my $format = $fields[6] || '10 digit numbers';
-          push @telco_length_data, [$retard, $telco, $format];
-          if($fields[5] eq 'Mobile services' || $retard =~ /^7624/) { # 07624 is IoM mobiles, not pagers
-              push @mobile_prefices, $retard;
-          } elsif($fields[5] eq 'Radiopaging') {
-              push @pager_prefices, $retard;
-          } elsif($fields[5] eq 'Personal Numbers') {
-              push @personal_prefices, $retard;
-          } 
+        # 0      1    2    3        4      5                         6               7        8
+        # "SABC","DE","FG","Status","Date","Communications Provider","Number Length","Change","Notes"
+        my @fields = map { s/£/UKP/g; $_ } @_;
+        return if($fields[3] ne 'Allocated');
+        (my $retard = join('',@fields[0 .. 2])) =~ s/\D//g; # there's spaces in OFCOM's data!
+        my $telco = $fields[5];
+        my $format = $fields[6] || '10 digit numbers';
+        push @telco_length_data, [$retard, $telco, $format];
+        # 70: personal numbering
+        # 71: mobile
+        # 72: mobile
+        # 73: mobile
+        # 74: mobile
+        # 75: mobile
+        # 76: paging # yuck, hole in middle of mobile range
+        # 7624: mobile # yuck, hole in middle of a hole.  (IOM mobiles)
+        # 77: mobile
+        # 78: mobile
+        # 79: mobile
+        if($retard =~ /^(71|72|73|74|75|7624|77|78|79)/) {
+            push @mobile_prefices, $retard;
+        } elsif($retard =~ /^76/) {
+            push @pager_prefices, $retard;
+        } elsif($retard =~ /^70/) {
+            push @personal_prefices, $retard;
+        } 
     } ],
     [ 'S9_code.csv', sub {
-          my @fields = map { s/£/UKP/g; $_ } @_;
-          return if($fields[2] ne 'Allocated');
-          my $retard = join('',@fields[0, 1]);
-          my $telco = $fields[5];
-          my $type   = $fields[6];
-          my $format = $fields[7];
-          push @adult_prefices, $retard if($type =~ /(sexual entertainment|sexual nature)/i);
-          push @special_prefices, $fields[0];
-          push @telco_length_data, [$retard, $telco, $format];
+        # 0      1    2    3        4      5                         6               7        8
+        # "SABC","DE","FG","Status","Date","Communications Provider","Number Length","Change","Notes"
+        my @fields = map { s/£/UKP/g; $_ } @_;
+        return if($fields[3] ne 'Allocated');
+        my $retard = join('',@fields[0 .. 2]);
+        my $telco = $fields[5];
+        my $format = $fields[6];
+	# 9: premium rate
+	# 908: porn
+	# 909: porn
+	# 98: porn
+        push @adult_prefices, $retard if($retard =~ /^9(8|0[89])/);
+        push @special_prefices, $retard;
+        push @telco_length_data, [$retard, $telco, $format];
     } ],
 ) {
     my $filename = $tuple->[0];
@@ -176,7 +195,7 @@ foreach my $datum (@telco_length_data) {
         $format = '0+10';
     } elsif($format =~ /^7 digit number/i) {
         $format = '0+7';
-    } elsif($format =~ /^9 +digit number/i) {
+    } elsif($format eq '(0)+9' || $format =~ /^9 +digit number/i) {
         $format = '0+9';
     } elsif($format eq 'RTO') {
         $format = '?';
@@ -242,4 +261,4 @@ $dbm->{subclass} = { # taken from libphonenumber
 };
 
 system('cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm');
-system('rm s[0123456789]*.txt S*.csv sabc.txt Data.pm temp.db 2>/dev/null');
+# system('rm s[0123456789]*.txt S*.csv sabc.txt Data.pm temp.db 2>/dev/null');
