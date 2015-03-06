@@ -26,7 +26,7 @@ fi
 rm codelist.zip
 
 # now get an up-to-date libphonenumber
-(cd libphonenumber && svn -q up) || (echo Checking out libphonenumber ...; svn co http://libphonenumber.googlecode.com/svn/trunk libphonenumber)
+(cd libphonenumber && git pull) || (echo Checking out libphonenumber ...; git clone git@github.com:googlei18n/libphonenumber.git)
 
 # lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt or PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm; then
