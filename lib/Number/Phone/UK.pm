@@ -28,6 +28,7 @@ sub new {
     my $number = shift;
     die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
+    $number = '+44'._clean_number($number);
     if(is_valid($number)) {
         $number =~ s/^0/+44/;
         return bless(\$number, $class->_get_class(_clean_number($number)));
@@ -104,6 +105,7 @@ sub is_valid {
 
     $cache->{$number}->{is_allocated} = 
         grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
+
     if($cache->{$number}->{is_allocated}) {
         my($telco_and_length) = map { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
         $cache->{$number}->{operator} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{telco};

@@ -200,7 +200,7 @@ is($number->format(), '+44 1302 623123', "OFCOM's missing format for 1302 623 is
 
 foreach my $tuple (
   [ 'Number::Phone'     => '+448435235305' ],
-  (is_mocked_uk() ? () : [ 'Number::Phone::UK' =>   '08435235305' ]),
+  (is_mocked_uk() ? () : [ 'Number::Phone::UK' =>   '0843 523 5305' ]),
 ) {
   my($class, $digits) = @{$tuple};
   $number = $class->new($digits);
@@ -223,8 +223,10 @@ foreach my $tuple (
 ) {
   my($class, $number) = @{$tuple};
   skip_if_mocked("Stubs aren't intended to be constructed directly", 1, sub {
-    ok(!defined($class->new($number)),
-      "$class->new($number) is undef (too short)");
+    ok(my $obj = $class->new($number),
+      "$class->new($number) 9 digit 08 numbers are A-OK");
+    is($obj->format(), '+44 800903900',
+      "... and formats OK");
   });
 }
 

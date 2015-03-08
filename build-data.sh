@@ -30,14 +30,14 @@ for i in \
     http://www.ofcom.org.uk/static/numbering/S9.xls;
 do
     echo Fetching $i;
-    curl -R -O -s $i || wget -q $i;
+    curl -z `basename $i` -R -O -s $i;
 done
 
-# FIXME remove this!
-rm lib/Number/Phone/UK/Data.pm
+unzip -q -o codelist.zip sabc.txt
 
 # if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e lib/Number/Phone/UK/Data.pm -o \
+  sabc.txt        -nt lib/Number/Phone/UK/Data.pm -o \
   sabcde11_12.xls -nt lib/Number/Phone/UK/Data.pm -o \
   sabcde13.xls    -nt lib/Number/Phone/UK/Data.pm -o \
   sabcde14.xls    -nt lib/Number/Phone/UK/Data.pm -o \
@@ -68,7 +68,6 @@ exit
 # else
 #   echo lib/Number/Phone/UK/Data.pm is up-to-date
 # fi
-rm codelist.zip *xls
 
 # now get an up-to-date libphonenumber
 (cd libphonenumber && git pull) || (echo Checking out libphonenumber ...; git clone git@github.com:googlei18n/libphonenumber.git)

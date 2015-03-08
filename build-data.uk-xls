@@ -1,0 +1,162 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use DBM::Deep;
+use Digest::MD5 'md5_base64';
+use Data::Dumper;
+use File::Find::Rule;
+use Spreadsheet::ParseExcel;
+use Text::CSV_XS;
+
+my $csv = Text::CSV_XS->new({
+    binary => 1
+});
+
+my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = ();
+
+system('unzip -oq codelist.zip sabc.txt');
+open(my $sabc, '<', 'sabc.txt') || die("Couldn't open sabc.txt: $!\n");
+print "Working on sabc.txt\n";
+while(my $row = $csv->getline($sabc)) {
+    next if($#{$row} == 0 && $row->[0] =~ m{^\d\d/\d\d/\d{4} \d\d:\d\d:\d\d$});
+    my @fields = @{$row};
+    next if($fields[3] =~ /(unassigned|not to be used|expansion$)/i || $fields[2] eq 'Not Designated');
+    if($fields[2] eq 'Designated' && $fields[3] !~ /^Geographic - unassigned/) {
+        $areanames{$fields[0]} = $fields[3];
+    }
+}
+
+foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
+    print "Working on $xlsfile\n";
+    my $workbook = Spreadsheet::ParseExcel->new()->parse($xlsfile);
+    if(!defined($workbook)) {
+        die("Error parsing $xlsfile\n");
+    }
+    if(scalar($workbook->worksheets()) != 1) {
+        die("$xlsfile doesn't contain just one worksheet\n");
+    }
+    my $worksheet = ($workbook->worksheets())[0];
+    my ( $row_min, $row_max ) = $worksheet->row_range();
+    my ( $col_min, $col_max ) = $worksheet->col_range();
+
+    my @rows = ();
+    ROW: foreach my $rowindex ($row_min .. $row_max) {
+        push @rows, [];
+        COL: foreach my $colindex ($col_min .. $col_max) {
+            my $cell = $worksheet->get_cell($rowindex, $colindex);
+            if(!$cell) { next COL };
+            $rows[-1]->[$colindex] = $cell->value();
+        }
+    }
+    if(scalar(@{$rows[-1]}) == 1 && $rows[-1]->[0] =~ m{^\d\d/\d\d/\d\d\d\d \d\d:\d\d:\d\d$}) {
+        # get rid of trailing date/time stamp row
+        pop(@rows);
+    }
+    my $count = 0;
+    my %header_fields_index_by_name = map { $_ => $count++ } my @header_fields_index_by_column = @{shift(@rows)};
+    my @prefix_fields = grep { exists($header_fields_index_by_name{$_}) } qw(SABC D/DE FG);
+    foreach my $row (@rows) {
+        my $prefix = join('', map { s/\s//gr }  grep { defined } map { $row->[$_] } @header_fields_index_by_name{@prefix_fields});
+        my($status, $telco, $format) = map {
+            $row->[$_]
+        } @header_fields_index_by_name{'Status', 'Communications Provider', 'Number Length'};
+        $status ||= '';
+        $telco  ||= '';
+        $format ||= '';
+
+        next if($status !~ /^Allocated ?(\(Closed Range\)|for Migration only)?$/);
+
+        if($prefix =~ /^[12]/)                  { push @geo_prefices, $prefix }
+         elsif($prefix =~ /^(500|80)/)          { push @free_prefices, $prefix }
+         elsif($prefix =~ /^55/)                { push @corporate_prefices, $prefix }
+         elsif($prefix =~ /^56/)                { push @ip_prefices, $prefix }
+         elsif($prefix =~ /^70/)                { push @personal_prefices, $prefix }
+         elsif($prefix =~ /^7([12345789]|624)/) { push @mobile_prefices, $prefix }
+         elsif($prefix =~ /^76/)                { push @pager_prefices, $prefix }
+         elsif($prefix =~ /^(8[47]|9)/)         { push @special_prefices, $prefix }
+         elsif($prefix =~ /^82[09]/)            { push @network_svc_prefices, $prefix } # internet for schools
+        if($prefix =~ /^9(8|0[89])/) { push @adult_prefices, $prefix }
+        push @telco_length_data, [$prefix, $telco, $format];
+    }
+}
+
+print "Building telco/length data ...\n";
+my %telco_format_cache = ();
+my %telco_and_length = ();
+foreach my $datum (@telco_length_data) {
+    my($prefix, $telco, $format) = @{$datum};
+
+    if($format eq '') {
+        if($prefix =~ /^[37]/) { $format = '10 digit numbers' }
+    }
+
+    if($format eq '(0)+10' || $format =~ /^10 digit number/i) {
+        $format = '0+10';
+    } elsif($format =~ /^9 +digit number/i) {
+        $format = '0+9';
+    } elsif($format =~ /^7 digit number/i) {
+        $format = '0+7';
+    } elsif($format eq 'Mixed 4+5 & 4+6') {
+        $format = '4+5/6';
+    } elsif(
+        $format ne '2+8' &&
+        $format ne '3+7' &&
+        $format ne '4+6' &&
+        $format ne '4+5' &&
+        $format ne '5+5' &&
+        $format ne '5+4' &&
+        $format ne 'Mixed 4+5 & 4+6'
+    ) {
+        warn "Unknown format: $format (r: $prefix; t: $telco)\n"
+            unless($prefix =~ /^[89]/)
+    }
+
+    my $cache_key = md5_base64($telco.'_'.$format);
+    $telco_format_cache{$cache_key} = {
+        telco => $telco,
+        format => $format
+    };
+
+    $telco_and_length{$prefix} = $cache_key;
+}
+
+print "Creating DBM::Deep file ...\n";
+unlink('temp.db');
+my $dbm = DBM::Deep->new(
+    file => 'temp.db',
+    data_sector_size => 32,
+);
+$dbm->{geo_prefices}         = { map { ($_, 1) } @geo_prefices };
+$dbm->{network_svc_prefices} = { map { ($_, 1) } @network_svc_prefices };
+$dbm->{free_prefices}        = { map { ($_, 1) } @free_prefices };
+$dbm->{corporate_prefices}   = { map { ($_, 1) } @corporate_prefices };
+$dbm->{personal_prefices}    = { map { ($_, 1) } @personal_prefices };
+$dbm->{pager_prefices}       = { map { ($_, 1) } @pager_prefices };
+$dbm->{mobile_prefices}      = { map { ($_, 1) } @mobile_prefices };
+$dbm->{special_prefices}     = { map { ($_, 1) } @special_prefices };
+$dbm->{adult_prefices}       = { map { ($_, 1) } @adult_prefices };
+$dbm->{ip_prefices}          = { map { ($_, 1) } @ip_prefices };
+$dbm->{areanames}            = { map { s/( National Dialling)//igr; } %areanames };
+$dbm->{telco_format} = \%telco_format_cache;
+$dbm->{telco_and_length} = \%telco_and_length;
+$dbm->{subclass} = { # taken from libphonenumber
+  1481 => 'GG', 7781 => 'GG', 7839 => 'GG', 7911 => 'GG',
+  1534 => 'JE', 7509 => 'JE', 7700 => 'JE', 7797 => 'JE', 7829 => 'JE', 7937 => 'JE',
+  1624 => 'IM', 7524 => 'IM', 7624 => 'IM', 7924 => 'IM',
+};
+
+open(MODULE, '>Data.pm') || die("Can't write Data.pm\n");
+print MODULE "package Number::Phone::UK::Data;\n\n";
+print MODULE "# automatically generated file, don't edit\n\n";
+print MODULE "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n";
+print MODULE q{
+    use DBM::Deep;
+    our $db = DBM::Deep->new(fh => *DATA);
+    1;
+    __DATA__
+};
+close(MODULE);
+system('cat Data.pm temp.db > lib/Number/Phone/UK/Data.pm');
+unlink('Data.pm', 'temp.db');
