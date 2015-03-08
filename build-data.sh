@@ -29,7 +29,6 @@ for i in \
     http://www.ofcom.org.uk/static/numbering/S8.xls          \
     http://www.ofcom.org.uk/static/numbering/S9.xls;
 do
-    echo Fetching $i;
     curl -z `basename $i` -R -O -s $i;
 done
 
@@ -60,7 +59,6 @@ then
 else
   echo lib/Number/Phone/UK/Data.pm is up-to-date
 fi
-exit
 # if test ! -e lib/Number/Phone/UK/Data.pm -o codelist.zip -nt lib/Number/Phone/UK/Data.pm; then
 #   EXITSTATUS=1
 #   echo rebuilding lib/Number/Phone/UK/Data.pm
@@ -70,7 +68,7 @@ exit
 # fi
 
 # now get an up-to-date libphonenumber
-(cd libphonenumber && git pull) || (echo Checking out libphonenumber ...; git clone git@github.com:googlei18n/libphonenumber.git)
+(cd libphonenumber && git pull -q) || (echo Checking out libphonenumber ...; git clone git@github.com:googlei18n/libphonenumber.git)
 
 # lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt or PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm; then
