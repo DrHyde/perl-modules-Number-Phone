@@ -58,7 +58,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
     my %header_fields_index_by_name = map { $_ => $count++ } my @header_fields_index_by_column = @{shift(@rows)};
     my @prefix_fields = grep { exists($header_fields_index_by_name{$_}) } qw(SABC D/DE FG);
     foreach my $row (@rows) {
-        my $prefix = join('', map { s/\s//gr }  grep { defined } map { $row->[$_] } @header_fields_index_by_name{@prefix_fields});
+        my $prefix = join('', map { s/\s//g; $_; }  grep { defined } map { $row->[$_] } @header_fields_index_by_name{@prefix_fields});
         my($status, $telco, $format) = map {
             $row->[$_]
         } @header_fields_index_by_name{'Status', 'Communications Provider', 'Number Length'};
@@ -138,7 +138,7 @@ $dbm->{mobile_prefices}      = { map { ($_, 1) } @mobile_prefices };
 $dbm->{special_prefices}     = { map { ($_, 1) } @special_prefices };
 $dbm->{adult_prefices}       = { map { ($_, 1) } @adult_prefices };
 $dbm->{ip_prefices}          = { map { ($_, 1) } @ip_prefices };
-$dbm->{areanames}            = { map { s/( National Dialling)//igr; } %areanames };
+$dbm->{areanames}            = { map { s/( National Dialling)//ig; $_; } %areanames };
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
 $dbm->{subclass} = { # taken from libphonenumber
