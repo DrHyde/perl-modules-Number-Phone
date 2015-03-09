@@ -36,22 +36,23 @@ unzip -q -o codelist.zip sabc.txt
 
 # if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e lib/Number/Phone/UK/Data.pm -o \
-  sabc.txt        -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde11_12.xls -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde13.xls    -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde14.xls    -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde15.xls    -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde16.xls    -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde17.xls    -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde18.xls    -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde19.xls    -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde2.xls     -nt lib/Number/Phone/UK/Data.pm -o \
-  S3.xls          -nt lib/Number/Phone/UK/Data.pm -o \
-  S5.xls          -nt lib/Number/Phone/UK/Data.pm -o \
-  S7.xls          -nt lib/Number/Phone/UK/Data.pm -o \
-  S8.xls          -nt lib/Number/Phone/UK/Data.pm -o \
-  S9.xls          -nt lib/Number/Phone/UK/Data.pm -o \
-  codelist.zip    -nt lib/Number/Phone/UK/Data.pm;
+  build-data.uk-xls -nt lib/Number/Phone/UK/Data.pm -o \
+  sabc.txt          -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde11_12.xls   -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde13.xls      -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde14.xls      -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde15.xls      -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde16.xls      -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde17.xls      -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde18.xls      -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde19.xls      -nt lib/Number/Phone/UK/Data.pm -o \
+  sabcde2.xls       -nt lib/Number/Phone/UK/Data.pm -o \
+  S3.xls            -nt lib/Number/Phone/UK/Data.pm -o \
+  S5.xls            -nt lib/Number/Phone/UK/Data.pm -o \
+  S7.xls            -nt lib/Number/Phone/UK/Data.pm -o \
+  S8.xls            -nt lib/Number/Phone/UK/Data.pm -o \
+  S9.xls            -nt lib/Number/Phone/UK/Data.pm -o \
+  codelist.zip      -nt lib/Number/Phone/UK/Data.pm;
 then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/UK/Data.pm
