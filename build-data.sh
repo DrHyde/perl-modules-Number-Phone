@@ -72,7 +72,11 @@ fi
 (cd libphonenumber && git pull -q) || (echo Checking out libphonenumber ...; git clone git@github.com:googlei18n/libphonenumber.git)
 
 # lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt or PhoneNumberMetadata.xml is newer ...
-if test ! -e lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm; then
+if test ! -e lib/Number/Phone/NANP/Data.pm -o \
+  build-data.nanp -nt lib/Number/Phone/NANP/Data.pm -o \
+  libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o \
+  libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm;
+then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/NANP/Data.pm
   perl build-data.nanp
@@ -82,7 +86,12 @@ fi
 
 # lib/Number/Phone/StubCountry/KZ.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer,
 # or if lib/Number/Phone/NANP/Data.pm is newer ...
-if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o lib/Number/Phone/NANP/Data.pm -nt lib/Number/Phone/StubCountry/KZ.pm; then
+if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
+  build-data.stubs -nt lib/Number/Phone/StubCountry/KZ.pm -o \
+  libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/StubCountry/KZ.pm -o \
+  libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
+  lib/Number/Phone/NANP/Data.pm -nt lib/Number/Phone/StubCountry/KZ.pm;
+then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
   perl build-data.stubs
