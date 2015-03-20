@@ -56,7 +56,9 @@ if test ! -e lib/Number/Phone/UK/Data.pm -o \
   S9.xls            -nt lib/Number/Phone/UK/Data.pm -o \
   build-data.uk-xls -nt lib/Number/Phone/UK/Data.pm;
 then
-  EXITSTATUS=1
+  if [ "$TRAVIS" != "true" ]; then
+    EXITSTATUS=1
+  fi
   echo rebuilding lib/Number/Phone/UK/Data.pm
   perl build-data.uk-xls
 else
@@ -72,7 +74,9 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm;
 then
-  EXITSTATUS=1
+  if [ "$TRAVIS" != "true" ]; then
+    EXITSTATUS=1
+  fi
   echo rebuilding lib/Number/Phone/NANP/Data.pm
   perl build-data.nanp
 else
@@ -87,7 +91,9 @@ if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   lib/Number/Phone/NANP/Data.pm -nt lib/Number/Phone/StubCountry/KZ.pm;
 then
-  EXITSTATUS=1
+  if [ "$TRAVIS" != "true" ]; then
+    EXITSTATUS=1
+  fi
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
   perl build-data.stubs
 else
