@@ -12,8 +12,10 @@ fi
 
 EXITSTATUS=0
 # first get OFCOM data
+# sabc.txt now exists on its own do this is commented out for now
+# http://www.ofcom.org.uk/static/numbering/codelist.zip    \
 for i in \
-    http://www.ofcom.org.uk/static/numbering/codelist.zip    \
+    http://www.ofcom.org.uk/static/numbering/sabc.txt        \
     http://www.ofcom.org.uk/static/numbering/sabcde11_12.xls \
     http://www.ofcom.org.uk/static/numbering/sabcde13.xls    \
     http://www.ofcom.org.uk/static/numbering/sabcde14.xls    \
@@ -32,11 +34,11 @@ do
     curl -z `basename $i` -R -O -s $i;
 done
 
-unzip -q -o codelist.zip sabc.txt
+# unzip -q -o codelist.zip sabc.txt
 
 # if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
+# codelist.zip      -nt lib/Number/Phone/UK/Data.pm -o \
 if test ! -e lib/Number/Phone/UK/Data.pm -o \
-  build-data.uk-xls -nt lib/Number/Phone/UK/Data.pm -o \
   sabc.txt          -nt lib/Number/Phone/UK/Data.pm -o \
   sabcde11_12.xls   -nt lib/Number/Phone/UK/Data.pm -o \
   sabcde13.xls      -nt lib/Number/Phone/UK/Data.pm -o \
@@ -52,7 +54,7 @@ if test ! -e lib/Number/Phone/UK/Data.pm -o \
   S7.xls            -nt lib/Number/Phone/UK/Data.pm -o \
   S8.xls            -nt lib/Number/Phone/UK/Data.pm -o \
   S9.xls            -nt lib/Number/Phone/UK/Data.pm -o \
-  codelist.zip      -nt lib/Number/Phone/UK/Data.pm;
+  build-data.uk-xls -nt lib/Number/Phone/UK/Data.pm;
 then
   EXITSTATUS=1
   echo rebuilding lib/Number/Phone/UK/Data.pm
@@ -60,13 +62,6 @@ then
 else
   echo lib/Number/Phone/UK/Data.pm is up-to-date
 fi
-# if test ! -e lib/Number/Phone/UK/Data.pm -o codelist.zip -nt lib/Number/Phone/UK/Data.pm; then
-#   EXITSTATUS=1
-#   echo rebuilding lib/Number/Phone/UK/Data.pm
-#   perl build-data.uk
-# else
-#   echo lib/Number/Phone/UK/Data.pm is up-to-date
-# fi
 
 # now get an up-to-date libphonenumber
 (cd libphonenumber && git pull -q) || (echo Checking out libphonenumber ...; git clone git@github.com:googlei18n/libphonenumber.git)
