@@ -16,7 +16,6 @@ my $csv = Text::CSV_XS->new({
 
 my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = ();
 
-system('unzip -oq codelist.zip sabc.txt');
 open(my $sabc, '<', 'sabc.txt') || die("Couldn't open sabc.txt: $!\n");
 print "Working on sabc.txt\n";
 while(my $row = $csv->getline($sabc)) {
