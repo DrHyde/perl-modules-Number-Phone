@@ -18,6 +18,6 @@ before_install:
   - cpanm --quiet --notest Digest::MD5
   - cpanm --quiet --notest File::Find::Rule
   - cpanm --quiet --notest Spreadsheet::ParseExcel
-  - cpanm --quite --notest Text::CSV_XS
+  - cpanm --quiet --notest Text::CSV_XS
   - ./build-data.sh
   - eval $(curl https://travis-perl.github.io/init) --auto
