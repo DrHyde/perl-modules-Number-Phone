@@ -13,7 +13,6 @@ matrix:
       env: COVERAGE=1
 before_install:
   - cpanm --quiet --notest XML::XPath
-  - cpanm --quiet --notest Number::Phone::Country
   - cpanm --quiet --notest DBM::Deep
   - cpanm --quiet --notest Digest::MD5
   - cpanm --quiet --notest File::Find::Rule
