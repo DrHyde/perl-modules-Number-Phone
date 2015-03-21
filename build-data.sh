@@ -31,6 +31,10 @@ for i in \
     http://www.ofcom.org.uk/static/numbering/S8.xls          \
     http://www.ofcom.org.uk/static/numbering/S9.xls;
 do
+    # make sure that there's a file that curl -z can look at
+    if test ! -e `basename $i`; then
+        touch -t 198001010101 `basename $i`
+    fi
     curl -z `basename $i` -R -O -s $i;
 done
 
