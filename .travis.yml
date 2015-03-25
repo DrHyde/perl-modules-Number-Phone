@@ -11,7 +11,7 @@ matrix:
   include:
     - perl: 5.20
       before_install: cpanm --quiet --notest Devel::Cover::Report::Coveralls
-      script: "perl Makefile.pl && make && cover -test -report coveralls"
+      script: "perl Makefile.PL && make && cover -test -report coveralls"
       # env: COVERAGE=1
 before_install:
   - cpanm --quiet --notest XML::XPath
