@@ -10,7 +10,15 @@ perl:
 matrix:
   include:
     - perl: 5.20
-      before_install: cpanm --quiet --notest Devel::Cover::Report::Coveralls
+      before_install:
+        - cpanm --quiet --notest XML::XPath
+        - cpanm --quiet --notest DBM::Deep
+        - cpanm --quiet --notest Digest::MD5
+        - cpanm --quiet --notest File::Find::Rule
+        - cpanm --quiet --notest Spreadsheet::ParseExcel
+        - cpanm --quiet --notest Text::CSV_XS
+        - ./build-data.sh
+        - cpanm --quiet --notest Devel::Cover::Report::Coveralls
       script: "perl Makefile.PL && make && cover -test -report coveralls"
       # env: COVERAGE=1
 before_install:
