@@ -10,7 +10,9 @@ perl:
 matrix:
   include:
     - perl: 5.20
-      env: COVERAGE=1
+      before_install: cpanm --quiet --notest Devel::Cover::Report::Coveralls
+      script: "perl Makefile.pl && make && cover -test -report coveralls"
+      # env: COVERAGE=1
 before_install:
   - cpanm --quiet --notest XML::XPath
   - cpanm --quiet --notest DBM::Deep
@@ -19,4 +21,4 @@ before_install:
   - cpanm --quiet --notest Spreadsheet::ParseExcel
   - cpanm --quiet --notest Text::CSV_XS
   - ./build-data.sh
-  - eval $(curl https://travis-perl.github.io/init) --auto
+#   - eval $(curl https://travis-perl.github.io/init) --auto
