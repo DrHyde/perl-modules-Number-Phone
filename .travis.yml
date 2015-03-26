@@ -1,11 +1,6 @@
 language: perl
 perl:
   - "5.8"
-#   - "5.10"
-#   - "5.12"
-#   - "5.14"
-#   - "5.16"
-#   - "5.18"
   - "5.20"
 matrix:
   include:
@@ -17,8 +12,8 @@ matrix:
         - cpanm --quiet --notest File::Find::Rule
         - cpanm --quiet --notest Spreadsheet::ParseExcel
         - cpanm --quiet --notest Text::CSV_XS
-        - ./build-data.sh
         - cpanm --quiet --notest Devel::Cover::Report::Coveralls
+        - ./build-data.sh
       script: "perl Makefile.PL && make && cover -ignore blib/lib/Number/Phone/UK/Data.pm -test -report coveralls"
       # env: COVERAGE=1
 before_install:
@@ -29,4 +24,3 @@ before_install:
   - cpanm --quiet --notest Spreadsheet::ParseExcel
   - cpanm --quiet --notest Text::CSV_XS
   - ./build-data.sh
-#   - eval $(curl https://travis-perl.github.io/init) --auto
