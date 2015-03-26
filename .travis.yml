@@ -5,7 +5,9 @@ perl:
 matrix:
   include:
     - perl: 5.20
-      env: COVERAGE=1 cover_opts=-ignore\ blib/lib/Number/Phone/UK/Data.pm
+      env:
+        - COVERAGE=1
+        - cover_opts="-ignore blib/lib/Number/Phone/UK/Data.pm"
 before_install:
   - cpanm --quiet --notest XML::XPath
   - cpanm --quiet --notest DBM::Deep
