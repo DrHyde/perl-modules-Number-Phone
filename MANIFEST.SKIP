@@ -18,3 +18,6 @@ sabcde17.xls
 sabcde18.xls
 sabcde19.xls
 sabcde2.xls
+.travis.yml
+t/coverage.sh
+t/profile.sh
