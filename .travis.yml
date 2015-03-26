@@ -19,7 +19,7 @@ matrix:
         - cpanm --quiet --notest Text::CSV_XS
         - ./build-data.sh
         - cpanm --quiet --notest Devel::Cover::Report::Coveralls
-      script: "perl Makefile.PL && make && cover -test -report coveralls"
+      script: "perl Makefile.PL && make && cover -ignore blib/lib/Number/Phone/UK/Data.pm -test -report coveralls"
       # env: COVERAGE=1
 before_install:
   - cpanm --quiet --notest XML::XPath
