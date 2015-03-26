@@ -7,7 +7,8 @@ matrix:
     - perl: 5.20
       env:
         - COVERAGE=1
-        - cover_opts="-ignore=lib/Number/Phone/UK/Data.pm"
+        - cover_opts=-ignore=lib/Number/Phone/UK/Data.pm
+        # -ignore_re=blib/lib/Number/Phone/\(UK/Data\|\(NANP\|StubCountry\)/.*\).pm
 before_install:
   - cpanm --quiet --notest XML::XPath
   - cpanm --quiet --notest DBM::Deep
