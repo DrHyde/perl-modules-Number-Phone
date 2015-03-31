@@ -1,4 +1,4 @@
-t/unicode.t
+t/99_unicode.t
 Apache-2.0.txt
 ARTISTIC.txt
 CHANGELOG
