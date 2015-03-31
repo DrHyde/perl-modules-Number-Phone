@@ -85,7 +85,7 @@ TERRITORY: foreach my $territory (@territories) {
   } elsif(-e $codesfile) {
     open(LIBPHONENUMBERDATA, $codesfile) || die("Can't read $codesfile\n");
     my @lines = <LIBPHONENUMBERDATA>;
-    print $module_fh 'sub areaname { my $self = shift; my $number = $self->{number}; my %map = (';
+    print $module_fh 'sub areaname { my $self = shift; my $number = $self->{number}; my %map = map { Encode::decode("UTF-8", $_) } (';
     foreach my $line (@lines) {
       chomp($line);
       next if($line =~ /^(#.*|\s+)?$/);
@@ -156,6 +156,7 @@ use base qw(Number::Phone::StubCountry);
 
 use strict;
 use warnings;
+use Encode;
 }.
   "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n";
 }

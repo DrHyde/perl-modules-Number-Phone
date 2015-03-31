@@ -16,6 +16,8 @@ WriteMakefile(
     'Test::More'    => '0.88', # done_testing
     'Digest::MD5'   => 0,
     'DBM::Deep'     => 2.0008,
+    'Test::utf8'    => 0,
+    'Encode'        => 0,
   },
   dist => {
     PREOP => "./build-data.sh"
