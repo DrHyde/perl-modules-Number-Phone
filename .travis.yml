@@ -4,7 +4,7 @@ perl:
   - "5.20"
 matrix:
   include:
-    - perl: 5.20
+    - perl: "5.20"
       before_install:
         - cpanm --quiet --notest Devel::Cover::Report::Coveralls
         # eeuuww, repetition from the global 'before_install'
