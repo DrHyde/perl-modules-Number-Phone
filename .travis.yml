@@ -16,7 +16,8 @@ matrix:
         - cpanm --quiet --notest Text::CSV_XS
         - ./build-data.sh
         # repetition ends here
-      script: "perl Makefile.PL && make && cover -ignore blib/lib/Number/Phone/UK/Data.pm -ignore blib/lib/Number/Phone/StubCountry/??.pm -ignore blib/lib/Number/Phone/NANP/??.pm -test -report coveralls"
+      script: "perl Makefile.PL && make && cover -ignore blib/lib/Number/Phone/UK/Data.pm -test -report coveralls"
+        # -ignore blib/lib/Number/Phone/StubCountry/??.pm -ignore blib/lib/Number/Phone/NANP/??.pm
 before_install:
   - cpanm --quiet --notest XML::XPath
   - cpanm --quiet --notest DBM::Deep
