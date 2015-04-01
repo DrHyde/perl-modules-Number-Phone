@@ -107,7 +107,7 @@ fi
 if [ $EXITSTATUS == 1 ]; then
   if test -e Makefile; then
     echo stuff changed, need to re-run Makefile.PL
-    `grep "^PERL " Makefile|awk '{print $3}'` Makefile.PL
+    `grep "^PERL " Makefile|awk '{print $3}'|sed 's/"//g'` Makefile.PL
   fi
 fi
 
