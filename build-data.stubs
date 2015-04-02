@@ -49,7 +49,7 @@ TERRITORY: foreach my $territory (@territories) {
 
   unlink "$dir/$ISO_country_code.pm"; # to clear out countries that no longer exist
 
-  open(my $module_fh, '>', "$dir/$ISO_country_code.pm")
+  open(my $module_fh, '>:encoding(UTF-8)', "$dir/$ISO_country_code.pm")
     || die("Can't write $dir/$ISO_country_code.pm: $!\n");
   print $manifest_fh "$dir/$ISO_country_code.pm\n";
   print $module_fh preamble($ISO_country_code);
@@ -83,9 +83,9 @@ TERRITORY: foreach my $territory (@territories) {
   if($IDD_country_code == 1) {
     print $module_fh 'use Number::Phone::NANP::Data;sub areaname { Number::Phone::NANP::Data::areaname("1".shift()->{number}); }';
   } elsif(-e $codesfile) {
-    open(LIBPHONENUMBERDATA, $codesfile) || die("Can't read $codesfile\n");
-    my @lines = <LIBPHONENUMBERDATA>;
-    print $module_fh 'sub areaname { my $self = shift; my $number = $self->{number}; my %map = map { Encode::decode("UTF-8", $_) } (';
+    open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
+    my @lines = <$geocoding>;
+    print $module_fh 'sub areaname { my $self = shift; my $number = $self->{number}; my %map = (';
     foreach my $line (@lines) {
       chomp($line);
       next if($line =~ /^(#.*|\s+)?$/);
@@ -156,7 +156,7 @@ use base qw(Number::Phone::StubCountry);
 
 use strict;
 use warnings;
-use Encode;
+use utf8;
 }.
   "our \$VERSION = 1.".join("", (gmtime())[5] + 1900, sprintf('%02d', (gmtime())[4] + 1), map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]).";\n\n";
 }
