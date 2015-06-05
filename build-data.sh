@@ -58,13 +58,13 @@ if test ! -e lib/Number/Phone/UK/Data.pm -o \
   S7.xls            -nt lib/Number/Phone/UK/Data.pm -o \
   S8.xls            -nt lib/Number/Phone/UK/Data.pm -o \
   S9.xls            -nt lib/Number/Phone/UK/Data.pm -o \
-  build-data.uk-xls -nt lib/Number/Phone/UK/Data.pm;
+  build-data.uk     -nt lib/Number/Phone/UK/Data.pm;
 then
   if [ "$TRAVIS" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/UK/Data.pm
-  perl build-data.uk-xls
+  perl build-data.uk
 else
   echo lib/Number/Phone/UK/Data.pm is up-to-date
 fi
