@@ -29,9 +29,10 @@ while(my $row = $csv->getline($sabc)) {
 
 foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
     print "Working on $xlsfile\n";
-    my $workbook = Spreadsheet::ParseExcel->new()->parse($xlsfile);
+    my $parser   = Spreadsheet::ParseExcel->new();
+    my $workbook = $parser->parse($xlsfile);
     if(!defined($workbook)) {
-        die("Error parsing $xlsfile\n");
+        die("Error parsing $xlsfile: ".$parser->error()."\n");
     }
     if(scalar($workbook->worksheets()) != 1) {
         die("$xlsfile doesn't contain just one worksheet\n");
@@ -87,6 +88,11 @@ my %telco_and_length = ();
 foreach my $datum (@telco_length_data) {
     my($prefix, $telco, $format) = @{$datum};
 
+    if($prefix eq '1442600') {
+        warn "Correcting OFCOM's broken data for 1442 60 0\n";
+        warn "  check this and remove the warning if fixed in XLS file\n";
+        if($format eq '') { $format = '4+6' }
+    }
     if($format eq '') {
         if($prefix =~ /^[37]/) { $format = '10 digit numbers' }
     }
