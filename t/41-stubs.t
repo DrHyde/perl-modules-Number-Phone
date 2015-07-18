@@ -33,7 +33,7 @@ is(Number::Phone->new("NL", "+312"), undef, "number too short? undef");
 is(Number::Phone->new("NL", "2"),    undef, "number too short? undef");
 is(Number::Phone->new("NL", "02"),   undef, "number too short? undef");
 
-foreach my $idd (grep { length($_) < 11 } (1, 1246, keys %Number::Phone::Country::idd_codes)) {
+foreach my $idd (1, 1246, keys %Number::Phone::Country::idd_codes) {
     is(
         Number::Phone->new("+$idd"),
         undef,
