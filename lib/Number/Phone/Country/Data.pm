@@ -105,7 +105,7 @@ $VERSION = '1.4';
     681     => 'WF', 682     => 'CK',
     683     => 'NU', 685     => 'WS', 686     => 'KI', 687     => 'NC',
     688     => 'TV',
-    689     => 'PF', 690     => 'TK', 691     => 'FM', 692     => ['MH', 'HM'],
+    689     => 'PF', 690     => 'TK', 691     => 'FM', 692     => 'MH',
 
     # 7* from http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
     # checked 2011-07-08
@@ -270,7 +270,6 @@ $VERSION = '1.4';
     'GW' => ['245',   '00',  undef], # Guinea-Bissau
     'GY' => ['592',  '001',    '0'], # Guyana
     'HK' => ['852',  '001',  undef], # Hong Kong
-    'HM' => ['692',   '00',    '0'], # Heard Island & McDonald Islands
     'HN' => ['504',   '00',    '0'], # Honduras
     'HR' => ['385',   '00',    '0'], # Croatia
     'HT' => ['509',   '00',    '0'], # Haiti
