@@ -1,3 +1,8 @@
+2015-07-18      3.0009  Data updates;
+                        Heard Island has nothing to do with the Marshall Islands!
+                        Don't create stub objects when given just a country code
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/40)
+
 2015-06-05      3.0008  Turn on the utf-8 flag on areacode names;
                         Data updates
 
