@@ -26,3 +26,4 @@ before_install:
   - cpanm --quiet --notest Spreadsheet::ParseExcel
   - cpanm --quiet --notest Text::CSV_XS
   - ./build-data.sh
+sudo: false
