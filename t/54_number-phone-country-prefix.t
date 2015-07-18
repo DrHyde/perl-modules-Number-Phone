@@ -8,7 +8,9 @@ use strict;
 use lib 't/inc';
 use fatalwarnings;
 
-use Test::More tests => 724;
+use Test::More;
+
+END { done_testing(); }
 
 use_ok('Number::Phone::Country') or exit 1;
 
