@@ -223,6 +223,7 @@ sub _make_stub_object {
       my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
       # an instance of this class is the ultimate fallback
       (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
+      if($local_number eq '') { return undef; }
       return bless({
           country_code => $country_idd,
           country      => $country_name,
