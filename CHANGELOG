@@ -1,3 +1,7 @@
+2015-07-20      3.0010  Fix a minor bug in the tests which were throiwing up
+                          misleading failures if a country-specific subclass
+                          was installed
+
 2015-07-18      3.0009  Data updates;
                         Heard Island has nothing to do with the Marshall Islands!
                         Don't create stub objects when given just a country code
