@@ -9,6 +9,25 @@ our $CLASS = 'Number::Phone::Lib';
 eval "use $CLASS";
 use Test::More;
 
+# make sure we avoid instantiating stubs when supplied with just
+# a +NNN country code. This is looking both for bugs in our code,
+# but also bogus regexes in libphonenumber, such as
+# https://github.com/googlei18n/libphonenumber/issues/749
+is($CLASS->new("NL", "+312"), undef, "Country code only (CC and IDD supplied)");
+foreach my $idd (1, 1246, keys %Number::Phone::Country::idd_codes) {
+    is(
+        $CLASS->new("+$idd"),
+        undef,
+        "country-code +$idd (".
+            ($idd eq '1'                                   ? 'NANP' :
+             $idd eq '1246'                                ? 'Barbados (NANP)' :
+             ref($Number::Phone::Country::idd_codes{$idd}) ? '['.join(', ', @{$Number::Phone::Country::idd_codes{$idd}}).']' :
+                                                             $Number::Phone::Country::idd_codes{$idd}
+            ).
+        ") alone is bogus"
+    );
+}
+
 use lib 't/lib';
 
 require 'common-stub_and_libphonenumber_tests.pl';
