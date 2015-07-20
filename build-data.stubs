@@ -70,12 +70,6 @@ TERRITORY: foreach my $territory (@territories) {
       } qw(fixed_line mobile pager voip toll_free personal_number)
   };
 
-  if($ISO_country_code eq 'PL') {
-      warn " Has https://github.com/googlei18n/libphonenumber/issues/749 been fixed yet?\n";
-      warn " If it has, remove this.\n";
-      $validators->{fixed_line} =~ s/\|$//;
-  }
-
   $validators->{geographic} = $validators->{fixed_line};
   if($IDD_country_code == 1) {
       # see if build-nanp detected dodgy data
