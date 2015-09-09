@@ -612,8 +612,8 @@ Kindly hosted by L<Shadowcat|http://scsys.co.uk>.
 
 =head1 SEE ALSO
 
-L<http://code.google.com/p/libphonenumber/>, a similar project for Java,
-C++ and Javascript
+L<https://github.com/googlei18n/libphonenumber>, a similar project for Java,
+C++ and Javascript. Number::Phone imports its data.
 
 =head1 SOURCE CODE REPOSITORY
 
@@ -621,7 +621,7 @@ L<git://github.com/DrHyde/perl-modules-Number-Phone.git>
 
 =head1 AUTHOR, COPYRIGHT and LICENCE
 
-Copyright 2004 - 2014 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+Copyright 2004 - 2015 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
 This software is free-as-in-speech software, and may be used,
 distributed, and modified under the terms of either the GNU
