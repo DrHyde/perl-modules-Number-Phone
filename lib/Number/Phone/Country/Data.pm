@@ -419,7 +419,7 @@ $VERSION = '1.5';
     'WS' => ['685',    '0',  undef], # Samoa (Western)
     'YE' => ['967',   '00',    '0'], # Yemen
     'YT' => ['262',   '00',    '0'], # Mayotte
-    'ZA' => [ '27',   '09',    '0'], # South Africa
+    'ZA' => [ '27',   '00',    '0'], # South Africa
     'ZM' => ['260',   '00',    '0'], # Zambia
     'ZW' => ['263',  '110',    '0'], # Zimbabwe
 );
