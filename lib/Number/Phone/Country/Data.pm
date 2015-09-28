@@ -421,6 +421,6 @@ $VERSION = '1.5';
     'YT' => ['262',   '00',    '0'], # Mayotte
     'ZA' => [ '27',   '00',    '0'], # South Africa
     'ZM' => ['260',   '00',    '0'], # Zambia
-    'ZW' => ['263',  '110',    '0'], # Zimbabwe
+    'ZW' => ['263',   '00',    '0'], # Zimbabwe
 );
 $Number::Phone::Country::prefix_codes{UK} = $Number::Phone::Country::prefix_codes{GB};
