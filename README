@@ -37,7 +37,8 @@ all responsibility for errors too, even if my code makes your PBX turn
 purple.
 
 Data sources used include:
-  http://wtng.info/
+  http://wtng.info/ - treat this with caution, it seems to be no
+    longer maintained
   various telcos and regulatory bodies linked from the above:
   http://www.itu.int/itu-t/inr/nnp/
   http://www.ofcom.org.uk/ - for UK data
