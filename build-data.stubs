@@ -57,7 +57,7 @@ TERRITORY: foreach my $territory (@territories) {
   my @formatters = formats_for($territory, $ISO_country_code);
   print $module_fh 'my '.Data::Dumper->new([\@formatters], [qw(formatters)])->Dump()."\n";
   my $validators = {
-      special_rate => join('|', grep { $_ ne '()' } map {
+      specialrate => join('|', grep { $_ ne '()' } map {
           (my $foo = '('.$territory->find("$_/nationalNumberPattern")->string_value().')')
               =~ s/\s//g;
           $foo;

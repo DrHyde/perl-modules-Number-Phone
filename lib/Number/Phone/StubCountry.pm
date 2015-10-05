@@ -29,7 +29,7 @@ sub is_valid {
   if(exists($self->{is_valid})) {
       return $self->{is_valid};
   }
-  foreach (map { "is_$_" } qw(special_rate geographic mobile pager tollfree personal ipphone)) {
+  foreach (map { "is_$_" } qw(specialrate geographic mobile pager tollfree personal ipphone)) {
     return 1 if($self->$_());
   }
   return 0;
@@ -38,10 +38,9 @@ sub is_valid {
 sub is_geographic   { shift()->_validator('geographic'); }
 sub is_fixed_line   { shift()->_validator('fixed_line'); }
 sub is_mobile       { shift()->_validator('mobile'); }
-
 sub is_pager        { shift()->_validator('pager'); }
 sub is_personal     { shift()->_validator('personal_number'); }
-sub is_special_rate { shift()->_validator('special_rate'); }
+sub is_specialrate  { shift()->_validator('specialrate'); }
 sub is_tollfree     { shift()->_validator('toll_free'); }
 sub is_ipphone      { shift()->_validator('voip'); }
 
