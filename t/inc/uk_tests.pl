@@ -22,24 +22,24 @@ note("and the comprehensive UK tests make a good torture-test.");
 my $number = Number::Phone->new('+44 142422 0000');
 isa_ok($number, 'Number::Phone::'.(is_mocked_uk() ? 'StubCountry::MOCK' : 'UK'));
 is($number->country(), (is_mocked_uk() ? 'MOCK' : 'UK'), "inherited country() method works");
-ok($number->format() eq '+44 1424 220000', "4+6 number formatted OK");
+is($number->format(), '+44 1424 220000', "4+6 number formatted OK");
 skip_if_mocked("libphonenumber doesn't do areacode/subscriber", 2, sub {
   is($number->areacode(), '1424', "... right area code");
   is($number->subscriber(), '220000', "... right subscriber");
 });
 
 $number = Number::Phone->new('+44 115822 0000');
-ok($number->format() eq '+44 115 822 0000', "3+7 number formatted OK");
+is($number->format(), '+44 115 822 0000', "3+7 number formatted OK");
 skip_if_mocked("libphonenumber doesn't do areacode/subscriber", 2, sub {
   is($number->areacode(), '115', "... right area code");
   is($number->subscriber(), '8220000', "... right subscriber");
 });
 
 $number = Number::Phone->new('+442 0 8771 2924');
-ok($number->format() eq '+44 20 8771 2924', "2+8 number formatted OK");
+is($number->format(), '+44 20 8771 2924', "2+8 number formatted OK");
 skip_if_mocked("libphonenumber doesn't do areacode/subscriber", 2, sub {
-  ok($number->areacode() eq '20', "2+8 number has correct area code");
-  ok($number->subscriber() eq '87712924', "2+8 number has correct subscriber number");
+  is($number->areacode(), '20', "2+8 number has correct area code");
+  is($number->subscriber(), '87712924', "2+8 number has correct subscriber number");
 });
 foreach my $method (qw(is_geographic is_valid), is_mocked_uk() ? () : qw(is_allocated)) {
     ok($number->$method(), "$method works for a London number");
@@ -65,8 +65,8 @@ is_deeply(
 $number = Number::Phone->new('+448450033845');
 is($number->format(), is_mocked_uk() ? '+44 845 003 3845' : '+44 8450033845', "0+10 number formatted OK");
 skip_if_mocked("libphonenumber doesn't do areacode/subscriber", 2, sub {
-  ok($number->areacode() eq '', "0+10 number has no area code");
-  ok($number->subscriber() eq '8450033845', "0+10 number has correct subscriber number");
+  is($number->areacode(), '', "0+10 number has no area code");
+  is($number->subscriber(), '8450033845', "0+10 number has correct subscriber number");
 });
 
 $number = Number::Phone->new('+447979866975');
@@ -99,10 +99,15 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   ok($number->is_network_service(), "network service numbers correctly identified");
 
   $number = Number::Phone->new('+448450033845');
-  ok($number->operator() eq 'Edge Telecom Limited', "operators correctly identified");
+  is($number->operator(), 'Edge Telecom Limited', "operators correctly identified");
 
   $number = Number::Phone->new('+442087712924');
-  ok($number->location()->[0] == 51.38309 && $number->location()->[1] == -0.336079, "geo numbers have correct location");
+  subtest "geo numbers have correct location" => sub {
+      plan tests => 2;
+      my $loc = $number->location();
+      is($loc->[0], 51.38309,  "latitude");
+      is($loc->[1], -0.336079, "longitude");
+  };
   $number = Number::Phone->new('+447979866975');
   ok(!defined($number->location()), "non-geo numbers have no location");
 });
