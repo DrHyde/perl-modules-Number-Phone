@@ -13,7 +13,7 @@ use Test::More tests => 2;
 
 use Number::Phone::Country;
 
-ok(Number::Phone->new("+442087712924")->country_code() == 44, "known countries return objects");
+is(Number::Phone->new("+442087712924")->country_code(), 44, "known countries return objects");
 
 # let's break the UK
 $Number::Phone::Country::idd_codes{'44'} = 'MOCK';
