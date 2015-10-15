@@ -75,7 +75,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
          elsif($prefix =~ /^70/)                { push @personal_prefices, $prefix }
          elsif($prefix =~ /^7([12345789]|624)/) { push @mobile_prefices, $prefix }
          elsif($prefix =~ /^76/)                { push @pager_prefices, $prefix }
-         elsif($prefix =~ /^(8[47]|9)/)         { push @special_prefices, $prefix }
+         elsif($prefix =~ /^(3|8[47]|9)/)       { push @special_prefices, $prefix }
          elsif($prefix =~ /^82[09]/)            { push @network_svc_prefices, $prefix } # internet for schools
         if($prefix =~ /^9(8|0[89])/) { push @adult_prefices, $prefix }
         push @telco_length_data, [$prefix, $telco, $format];

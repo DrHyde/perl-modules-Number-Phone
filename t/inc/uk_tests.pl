@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 
+use Data::Dumper;
+
 $ENV{TESTINGKILLTHEWABBIT} = 1; # make sure we don't load detailed exchg data
 
 {
@@ -143,7 +145,12 @@ $number = Number::Phone->new('+443031231234');
 skip_if_mocked("libphonenumber doesn't do operators", 1, sub {
   ok($number->operator() eq 'BT', "03 numbers have right operator");
 });
-is_deeply([sort $number->type()], [sort ((!is_mocked_uk() ? 'is_allocated' : ()), 'is_valid')], "03 numbers have right type");
+is_deeply(
+    [sort $number->type()],
+    [sort ((!is_mocked_uk() ? 'is_allocated' : ()), qw(is_specialrate is_valid))],
+    "03 numbers have right type"
+);
+
 skip_if_mocked("libphonenumber disagrees with me about formatting special rate numbers", 1, sub {
   is($number->format(), '+44 3031231234', "03 numbers are formatted right");
 });
@@ -212,7 +219,7 @@ foreach my $tuple (
   );
   is_deeply(
       [sort $number->type()],
-      [sort ('is_valid', is_mocked_uk() ? (): qw(is_allocated is_specialrate))],
+      [sort ((!is_mocked_uk() ? 'is_allocated' : ()), qw(is_specialrate is_valid))],
       "... and its type looks OK"
   ) || print Dumper($number->type());
 }

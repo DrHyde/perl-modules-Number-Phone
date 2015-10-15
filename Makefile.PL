@@ -20,5 +20,8 @@ WriteMakefile(
   },
   dist => {
     PREOP => "./build-data.sh"
-  }
+  },
+  realclean => {
+    FILES => "*.xls sabc.txt codelist.zip"
+  },
 );

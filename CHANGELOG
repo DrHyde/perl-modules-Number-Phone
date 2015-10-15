@@ -4,7 +4,8 @@ XXXX-XX-XX      XXXXXX  Updated dialing prefixes in N::P::Country
                           which previously always returned undef (ie
                           unknown) even when libphonenumber knew it was
                           eg premium rate (bug found by Gerhard Poul's
-                          PR 46)
+                          PR 46);
+			+44 3 numbers have is_specialrate set
 
 2015-09-09      3.0011  Data updates
 
