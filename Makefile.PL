@@ -13,7 +13,7 @@ WriteMakefile(
   VERSION_FROM => 'lib/Number/Phone.pm',
   PREREQ_PM    => {
     'Scalar::Util'  => 0,
-    'Test::More'    => '0.88', # done_testing
+    'Test::More'    => '0.96', # need done_testing (0.88) and subtests (0.95_01)
     'Digest::MD5'   => 0,
     'DBM::Deep'     => 2.0008,
     'Test::utf8'    => 0,
