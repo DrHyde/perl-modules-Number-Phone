@@ -2,7 +2,7 @@ package Number::Phone::StubCountry;
 
 use strict;
 use warnings;
-use Number::Phone::Country qw(noexport uk);
+use Number::Phone::Country qw(noexport);
 
 use base qw(Number::Phone);
 our $VERSION = '1.1';

@@ -4,7 +4,7 @@ use strict;
 
 use Scalar::Util 'blessed';
 
-use Number::Phone::Country qw(noexport uk);
+use Number::Phone::Country qw(noexport);
 use Number::Phone::StubCountry;
 
 our $VERSION = '3.0011';
@@ -203,7 +203,7 @@ sub new {
     return undef unless($country);
     if ($number =~ /^\+1/) {
         $country = "NANP";
-    } elsif ($country =~ /^(?:GG|JE|IM)$/) {
+    } elsif ($country =~ /^(?:GB|GG|JE|IM)$/) {
         $country = 'UK';
     }
     eval "use Number::Phone::$country";
