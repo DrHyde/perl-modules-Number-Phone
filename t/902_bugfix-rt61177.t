@@ -11,8 +11,8 @@ use Test::More tests => 11;
 use Number::Phone;
 use Number::Phone::Country;
 
-ok(Number::Phone->new("442087712924")->country_code() == 44, "known countries return objects");
-ok(Number::Phone->new("+442087712924")->country_code() == 44, "known countries with a + return objects");
+is(Number::Phone->new("442087712924")->country_code(), 44, "known countries return objects");
+is(Number::Phone->new("+442087712924")->country_code(), 44, "known countries with a + return objects");
 is(Number::Phone->new("+447979866975")->format(), '+44 7979866975' , "format() works (sanity check cos it changes later)");
 
 # let's break the UK

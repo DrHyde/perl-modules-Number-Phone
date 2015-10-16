@@ -14,19 +14,19 @@ use Number::Phone::Country::Data;
 # picking NL as our random victim because https://github.com/DrHyde/perl-modules-Number-Phone/issues/22
 my $nl_obj = Number::Phone->new("+31201234567");
 ok($nl_obj->isa('Number::Phone::StubCountry::NL'), "NL numbers are handled by a stub");
-ok($nl_obj->format() eq '+31 20 123 4567', 'Number::Phone->new("+31201234567")->format() is correct');
+is($nl_obj->format(), '+31 20 123 4567', 'Number::Phone->new("+31201234567")->format() is correct');
 
 $nl_obj = Number::Phone->new('nl', "+31201234567");
-ok($nl_obj->format() eq '+31 20 123 4567', 'Number::Phone->new("nl", "+31201234567") also works as a constructor');
+is($nl_obj->format(), '+31 20 123 4567', 'Number::Phone->new("nl", "+31201234567") also works as a constructor');
 
 $nl_obj = Number::Phone->new('NL', "+31201234567");
-ok($nl_obj->format() eq '+31 20 123 4567', 'Number::Phone->new("NL", "+31201234567") also works as a constructor (specified country, and provided IDD)');
+is($nl_obj->format(), '+31 20 123 4567', 'Number::Phone->new("NL", "+31201234567") also works as a constructor (specified country, and provided IDD)');
 
 $nl_obj = Number::Phone->new('NL', "201234567");
-ok($nl_obj->format() eq '+31 20 123 4567', 'Number::Phone->new("NL", "201234567") also works as a constructor (no national prefix)');
+is($nl_obj->format(), '+31 20 123 4567', 'Number::Phone->new("NL", "201234567") also works as a constructor (no national prefix)');
 
 $nl_obj = Number::Phone->new('NL', "0201234567");
-ok($nl_obj->format() eq '+31 20 123 4567', 'Number::Phone->new("NL", "0201234567") also works as a constructor (national prefix)');
+is($nl_obj->format(), '+31 20 123 4567', 'Number::Phone->new("NL", "0201234567") also works as a constructor (national prefix)');
 
 is(Number::Phone->new("NL", "2"),    undef, "number too short? undef");
 is(Number::Phone->new("NL", "02"),   undef, "number too short? undef");
