@@ -20,6 +20,11 @@ ok(!Number::Phone->is_tollfree("+431211452358"), "is +431 landline tollfree");
 ok(Number::Phone->is_geographic("+431211452358"), "is +431 landline geographic");
 ok(!Number::Phone->is_specialrate("+431211452358"), "is +431 landline specialrate");
 
+# Land line for Innsbruck
+ok(Number::Phone->is_fixed_line("+4351253600"), "is +43512 landline fixed line");
+ok(Number::Phone->is_geographic("+4351253600"), "is +43512 landline geographic");
+is(Number::Phone->format("+4351253600"), "+43 512 53600", "is formatting for +43512 correct?");
+
 # Non-Geo line
 ok(!Number::Phone->is_fixed_line("+435050525"), "is +4350 a fixed line");
 ok(!Number::Phone->is_tollfree("+435050525"), "is +4350 tollfree");
@@ -35,6 +40,7 @@ ok(Number::Phone->is_specialrate("+43720000121"), "is +43720 specialrate");
 # Non-Geo Convergence Number
 ok(!Number::Phone->is_fixed_line("+43780392257"), "is +43780 a fixed line");
 ok(!Number::Phone->is_geographic("+43780392257"), "is +43780 geographic");
+ok(Number::Phone->is_ipphone("+43780392257"), "is +43780 IP-Phone");
 ok(!Number::Phone->is_specialrate("+43780392257"), "is +43780 specialrate");
 
 # Non-Geo Toll-Free Numbers
