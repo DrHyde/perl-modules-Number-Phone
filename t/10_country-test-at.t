@@ -24,6 +24,7 @@ ok(!Number::Phone->is_specialrate("+431211452358"), "is +431 landline specialrat
 ok(Number::Phone->is_fixed_line("+4351253600"), "is +43512 landline fixed line");
 ok(Number::Phone->is_geographic("+4351253600"), "is +43512 landline geographic");
 is(Number::Phone->format("+4351253600"), "+43 512 53600", "is formatting for +43512 correct?");
+is(Number::Phone->areaname("+4351253600"), "Innsbruck", "+43512 has right area name");
 
 # Non-Geo line
 ok(!Number::Phone->is_fixed_line("+435050525"), "is +4350 a fixed line");
