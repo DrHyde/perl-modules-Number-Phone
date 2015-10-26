@@ -69,26 +69,18 @@ ok(!Number::Phone->is_tollfree("+43821112300"), "is +43821 tollfree");
 ok(Number::Phone->is_specialrate("+43821112300"), "is +43821 specialrate");
 
 # Non-Geo Number Regulated Charge
-SKIP: {
-    skip "Waiting for https://github.com/googlei18n/libphonenumber/issues/841 to be fixed",
-         10
-         unless(Number::Phone->is_valid("+43828 20200"));
-
-    diag("You can get rid of the SKIP now");
-
-    ok(!Number::Phone->is_fixed_line("+4382820200"), "is +43828 a fixed line");
-    ok(!Number::Phone->is_geographic("+4382820200"), "is +43828 geographic");
-    ok(!Number::Phone->is_tollfree("+4382820200"), "is +43828 tollfree");
-    ok(Number::Phone->is_specialrate("+4382820200"), "is +43828 specialrate");
+ok(!Number::Phone->is_fixed_line("+4382820200"), "is +43828 a fixed line");
+ok(!Number::Phone->is_geographic("+4382820200"), "is +43828 geographic");
+ok(!Number::Phone->is_tollfree("+4382820200"), "is +43828 tollfree");
+ok(Number::Phone->is_specialrate("+4382820200"), "is +43828 specialrate");
     
-    ok(!Number::Phone->is_valid("+43820 20200"),  "+43 820 must be followed by at least six digits");
-    ok( Number::Phone->is_valid("+43820 220200"), "+43 820 followed by six digits is OK");
-    ok(!Number::Phone->is_valid("+43821 20200"),  "+43 821 must be followed by at least six digits");
-    ok( Number::Phone->is_valid("+43821 220200"), "+43 821 followed by six digits is OK");
+ok(!Number::Phone->is_valid("+43820 20200"),  "+43 820 must be followed by at least six digits");
+ok( Number::Phone->is_valid("+43820 220200"), "+43 820 followed by six digits is OK");
+ok(!Number::Phone->is_valid("+43821 20200"),  "+43 821 must be followed by at least six digits");
+ok( Number::Phone->is_valid("+43821 220200"), "+43 821 followed by six digits is OK");
     
-    ok(Number::Phone->is_valid("+43828 20200"),  "+43 828 can be followed by five digits");
-    ok(Number::Phone->is_valid("+43828 220200"), "+43 828 can be followed by more than five digits");
-}
+ok(Number::Phone->is_valid("+43828 20200"),  "+43 828 can be followed by five digits");
+ok(Number::Phone->is_valid("+43828 220200"), "+43 828 can be followed by more than five digits");
 
 # Non-Geo Unregulated Toll Numbers
 ok(!Number::Phone->is_fixed_line("+43900030800"), "is +43900 a fixed line");
