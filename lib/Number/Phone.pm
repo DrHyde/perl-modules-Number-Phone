@@ -7,7 +7,7 @@ use Scalar::Util 'blessed';
 use Number::Phone::Country qw(noexport);
 use Number::Phone::StubCountry;
 
-our $VERSION = '3.0011';
+our $VERSION = '3.0012';
 
 my $NOSTUBS = 0;
 sub import {
