@@ -5,106 +5,106 @@ use strict;
 use lib 't/inc';
 use fatalwarnings;
 
-use Number::Phone;
+use Number::Phone::Lib; # need to force it to use stubs in case N::P::AT exists
 use Test::More;
 
 END { done_testing(); }
 
 # Mobile Number
-ok(Number::Phone->is_mobile("+43677111111111"), "is +43677 mobile");
+ok(Number::Phone::Lib->new("+43677111111111")->is_mobile(), "is +43677 mobile");
 
 # Land line in Vienna
-ok(!Number::Phone->is_mobile("+431211452358"), "is +431 landline mobile");
-ok(Number::Phone->is_fixed_line("+431211452358"), "is +431 landline fixed line");
-ok(!Number::Phone->is_tollfree("+431211452358"), "is +431 landline tollfree");
-ok(Number::Phone->is_geographic("+431211452358"), "is +431 landline geographic");
-ok(!Number::Phone->is_specialrate("+431211452358"), "is +431 landline specialrate");
+ok(!Number::Phone::Lib->new("+431211452358")->is_mobile(), "is +431 landline mobile");
+ok(Number::Phone::Lib->new("+431211452358")->is_fixed_line(), "is +431 landline fixed line");
+ok(!Number::Phone::Lib->new("+431211452358")->is_tollfree(), "is +431 landline tollfree");
+ok(Number::Phone::Lib->new("+431211452358")->is_geographic(), "is +431 landline geographic");
+ok(!Number::Phone::Lib->new("+431211452358")->is_specialrate(), "is +431 landline specialrate");
 
 # Land line for Innsbruck
-ok(Number::Phone->is_fixed_line("+4351253600"), "is +43512 landline fixed line");
-ok(Number::Phone->is_geographic("+4351253600"), "is +43512 landline geographic");
-is(Number::Phone->format("+4351253600"), "+43 512 53600", "is formatting for +43512 correct?");
-is(Number::Phone->areaname("+4351253600"), "Innsbruck", "+43512 has right area name");
+ok(Number::Phone::Lib->new("+4351253600")->is_fixed_line(), "is +43512 landline fixed line");
+ok(Number::Phone::Lib->new("+4351253600")->is_geographic(), "is +43512 landline geographic");
+is(Number::Phone::Lib->new("+4351253600")->format(), "+43 512 53600", "is formatting for +43512 correct?");
+is(Number::Phone::Lib->new("+4351253600")->areaname(), "Innsbruck", "+43512 has right area name");
 
 # Non-Geo line
-ok(!Number::Phone->is_fixed_line("+435050525"), "is +4350 a fixed line");
-ok(!Number::Phone->is_tollfree("+435050525"), "is +4350 tollfree");
-ok(Number::Phone->is_specialrate("+435050525"), "is +4350 specialrate");
-ok(!Number::Phone->is_geographic("+435050525"), "is +4350 geographic");
+ok(!Number::Phone::Lib->new("+435050525")->is_fixed_line(), "is +4350 a fixed line");
+ok(!Number::Phone::Lib->new("+435050525")->is_tollfree(), "is +4350 tollfree");
+ok(Number::Phone::Lib->new("+435050525")->is_specialrate(), "is +4350 specialrate");
+ok(!Number::Phone::Lib->new("+435050525")->is_geographic(), "is +4350 geographic");
 
 # Non-Geo location-independant number
-ok(!Number::Phone->is_fixed_line("+43720000121"), "is +43720 a fixed line");
-ok(!Number::Phone->is_geographic("+43720000121"), "is +43720 geographic");
-ok(!Number::Phone->is_ipphone("+43720000121"), "is +43720 IP-Phone");
-ok(Number::Phone->is_specialrate("+43720000121"), "is +43720 specialrate");
+ok(!Number::Phone::Lib->new("+43720000121")->is_fixed_line(), "is +43720 a fixed line");
+ok(!Number::Phone::Lib->new("+43720000121")->is_geographic(), "is +43720 geographic");
+ok(!Number::Phone::Lib->new("+43720000121")->is_ipphone(), "is +43720 IP-Phone");
+ok(Number::Phone::Lib->new("+43720000121")->is_specialrate(), "is +43720 specialrate");
 
 # Non-Geo Convergence Number
-ok(!Number::Phone->is_fixed_line("+43780392257"), "is +43780 a fixed line");
-ok(!Number::Phone->is_geographic("+43780392257"), "is +43780 geographic");
-ok(Number::Phone->is_ipphone("+43780392257"), "is +43780 IP-Phone");
-ok(!Number::Phone->is_specialrate("+43780392257"), "is +43780 specialrate");
+ok(!Number::Phone::Lib->new("+43780392257")->is_fixed_line(), "is +43780 a fixed line");
+ok(!Number::Phone::Lib->new("+43780392257")->is_geographic(), "is +43780 geographic");
+ok(Number::Phone::Lib->new("+43780392257")->is_ipphone(), "is +43780 IP-Phone");
+ok(!Number::Phone::Lib->new("+43780392257")->is_specialrate(), "is +43780 specialrate");
 
 # Non-Geo Toll-Free Numbers
-ok(!Number::Phone->is_fixed_line("+43800221800"), "is +43800 a fixed line");
-ok(!Number::Phone->is_geographic("+43800221800"), "is +43800 geographic");
-ok(Number::Phone->is_tollfree("+43800221800"), "is +43800 tollfree");
-ok(!Number::Phone->is_specialrate("+43800221800"), "is +43800 specialrate");
+ok(!Number::Phone::Lib->new("+43800221800")->is_fixed_line(), "is +43800 a fixed line");
+ok(!Number::Phone::Lib->new("+43800221800")->is_geographic(), "is +43800 geographic");
+ok(Number::Phone::Lib->new("+43800221800")->is_tollfree(), "is +43800 tollfree");
+ok(!Number::Phone::Lib->new("+43800221800")->is_specialrate(), "is +43800 specialrate");
 
 # Non-Geo Number Regulated Charge 0.10 EUR / min
-ok(!Number::Phone->is_fixed_line("+43810726786"), "is +43810 a fixed line");
-ok(!Number::Phone->is_geographic("+43810726786"), "is +43810 geographic");
-ok(!Number::Phone->is_tollfree("+43810726786"), "is +43810 tollfree");
-ok(Number::Phone->is_specialrate("+43810726786"), "is +43810 specialrate");
+ok(!Number::Phone::Lib->new("+43810726786")->is_fixed_line(), "is +43810 a fixed line");
+ok(!Number::Phone::Lib->new("+43810726786")->is_geographic(), "is +43810 geographic");
+ok(!Number::Phone::Lib->new("+43810726786")->is_tollfree(), "is +43810 tollfree");
+ok(Number::Phone::Lib->new("+43810726786")->is_specialrate(), "is +43810 specialrate");
 
 # Non-Geo Number Regulated Charge 0.20 EUR / min
-ok(!Number::Phone->is_fixed_line("+43820122122"), "is +43820 a fixed line");
-ok(!Number::Phone->is_geographic("+43820122122"), "is +43820 geographic");
-ok(!Number::Phone->is_tollfree("+43820122122"), "is +43820 tollfree");
-ok(Number::Phone->is_specialrate("+43820122122"), "is +43820 specialrate");
+ok(!Number::Phone::Lib->new("+43820122122")->is_fixed_line(), "is +43820 a fixed line");
+ok(!Number::Phone::Lib->new("+43820122122")->is_geographic(), "is +43820 geographic");
+ok(!Number::Phone::Lib->new("+43820122122")->is_tollfree(), "is +43820 tollfree");
+ok(Number::Phone::Lib->new("+43820122122")->is_specialrate(), "is +43820 specialrate");
 
 # Non-Geo Number Regulated Charge 0.20 EUR / event
-ok(!Number::Phone->is_fixed_line("+43821112300"), "is +43821 a fixed line");
-ok(!Number::Phone->is_geographic("+43821112300"), "is +43821 geographic");
-ok(!Number::Phone->is_tollfree("+43821112300"), "is +43821 tollfree");
-ok(Number::Phone->is_specialrate("+43821112300"), "is +43821 specialrate");
+ok(!Number::Phone::Lib->new("+43821112300")->is_fixed_line(), "is +43821 a fixed line");
+ok(!Number::Phone::Lib->new("+43821112300")->is_geographic(), "is +43821 geographic");
+ok(!Number::Phone::Lib->new("+43821112300")->is_tollfree(), "is +43821 tollfree");
+ok(Number::Phone::Lib->new("+43821112300")->is_specialrate(), "is +43821 specialrate");
 
 # Non-Geo Number Regulated Charge
-ok(!Number::Phone->is_fixed_line("+4382820200"), "is +43828 a fixed line");
-ok(!Number::Phone->is_geographic("+4382820200"), "is +43828 geographic");
-ok(!Number::Phone->is_tollfree("+4382820200"), "is +43828 tollfree");
-ok(Number::Phone->is_specialrate("+4382820200"), "is +43828 specialrate");
+ok(!Number::Phone::Lib->new("+4382820200")->is_fixed_line(), "is +43828 a fixed line");
+ok(!Number::Phone::Lib->new("+4382820200")->is_geographic(), "is +43828 geographic");
+ok(!Number::Phone::Lib->new("+4382820200")->is_tollfree(), "is +43828 tollfree");
+ok(Number::Phone::Lib->new("+4382820200")->is_specialrate(), "is +43828 specialrate");
     
-ok(!Number::Phone->is_valid("+43820 20200"),  "+43 820 must be followed by at least six digits");
-ok( Number::Phone->is_valid("+43820 220200"), "+43 820 followed by six digits is OK");
-ok(!Number::Phone->is_valid("+43821 20200"),  "+43 821 must be followed by at least six digits");
-ok( Number::Phone->is_valid("+43821 220200"), "+43 821 followed by six digits is OK");
+ok(!defined(Number::Phone::Lib->new("+43820 20200")),     "+43 820 must be followed by at least six digits");
+ok( Number::Phone::Lib->new("+43820 220200")->is_valid(), "+43 820 followed by six digits is OK");
+ok(!defined(Number::Phone::Lib->new("+43821 20200")),     "+43 821 must be followed by at least six digits");
+ok( Number::Phone::Lib->new("+43821 220200")->is_valid(), "+43 821 followed by six digits is OK");
     
-ok(Number::Phone->is_valid("+43828 20200"),  "+43 828 can be followed by five digits");
-ok(Number::Phone->is_valid("+43828 220200"), "+43 828 can be followed by more than five digits");
+ok(Number::Phone::Lib->new("+43828 20200")->is_valid(),  "+43 828 can be followed by five digits");
+ok(Number::Phone::Lib->new("+43828 220200")->is_valid(), "+43 828 can be followed by more than five digits");
 
 # Non-Geo Unregulated Toll Numbers
-ok(!Number::Phone->is_fixed_line("+43900030800"), "is +43900 a fixed line");
-ok(!Number::Phone->is_geographic("+43900030800"), "is +43900 geographic");
-ok(!Number::Phone->is_tollfree("+43900030800"), "is +43900 tollfree");
-ok(Number::Phone->is_specialrate("+43900030800"), "is +43900 specialrate");
+ok(!Number::Phone::Lib->new("+43900030800")->is_fixed_line(), "is +43900 a fixed line");
+ok(!Number::Phone::Lib->new("+43900030800")->is_geographic(), "is +43900 geographic");
+ok(!Number::Phone::Lib->new("+43900030800")->is_tollfree(), "is +43900 tollfree");
+ok(Number::Phone::Lib->new("+43900030800")->is_specialrate(), "is +43900 specialrate");
 
-ok(!Number::Phone->is_fixed_line("+43901601600"), "is +43901 a fixed line");
-ok(!Number::Phone->is_geographic("+43901601600"), "is +43901 geographic");
-ok(!Number::Phone->is_tollfree("+43901601600"), "is +43901 tollfree");
-ok(Number::Phone->is_specialrate("+43901601600"), "is +43901 specialrate");
+ok(!Number::Phone::Lib->new("+43901601600")->is_fixed_line(), "is +43901 a fixed line");
+ok(!Number::Phone::Lib->new("+43901601600")->is_geographic(), "is +43901 geographic");
+ok(!Number::Phone::Lib->new("+43901601600")->is_tollfree(), "is +43901 tollfree");
+ok(Number::Phone::Lib->new("+43901601600")->is_specialrate(), "is +43901 specialrate");
 
-ok(!Number::Phone->is_fixed_line("+43930060261"), "is +43930 a fixed line");
-ok(!Number::Phone->is_geographic("+43930060261"), "is +43930 geographic");
-ok(!Number::Phone->is_tollfree("+43930060261"), "is +43930 tollfree");
-ok(Number::Phone->is_specialrate("+43930060261"), "is +43930 specialrate");
+ok(!Number::Phone::Lib->new("+43930060261")->is_fixed_line(), "is +43930 a fixed line");
+ok(!Number::Phone::Lib->new("+43930060261")->is_geographic(), "is +43930 geographic");
+ok(!Number::Phone::Lib->new("+43930060261")->is_tollfree(), "is +43930 tollfree");
+ok(Number::Phone::Lib->new("+43930060261")->is_specialrate(), "is +43930 specialrate");
 
-ok(!Number::Phone->is_fixed_line("+43931906100"), "is +43931 a fixed line");
-ok(!Number::Phone->is_geographic("+43931906100"), "is +43931 geographic");
-ok(!Number::Phone->is_tollfree("+43931906100"), "is +43931 tollfree");
-ok(Number::Phone->is_specialrate("+43931906100"), "is +43931 specialrate");
+ok(!Number::Phone::Lib->new("+43931906100")->is_fixed_line(), "is +43931 a fixed line");
+ok(!Number::Phone::Lib->new("+43931906100")->is_geographic(), "is +43931 geographic");
+ok(!Number::Phone::Lib->new("+43931906100")->is_tollfree(), "is +43931 tollfree");
+ok(Number::Phone::Lib->new("+43931906100")->is_specialrate(), "is +43931 specialrate");
 
-ok(!Number::Phone->is_fixed_line("+43939609900"), "is +43939 a fixed line");
-ok(!Number::Phone->is_geographic("+43939609900"), "is +43939 geographic");
-ok(!Number::Phone->is_tollfree("+43939609900"), "is +43939 tollfree");
-ok(Number::Phone->is_specialrate("+43939609900"), "is +43939 specialrate");
+ok(!Number::Phone::Lib->new("+43939609900")->is_fixed_line(), "is +43939 a fixed line");
+ok(!Number::Phone::Lib->new("+43939609900")->is_geographic(), "is +43939 geographic");
+ok(!Number::Phone::Lib->new("+43939609900")->is_tollfree(), "is +43939 tollfree");
+ok(Number::Phone::Lib->new("+43939609900")->is_specialrate(), "is +43939 specialrate");
 
