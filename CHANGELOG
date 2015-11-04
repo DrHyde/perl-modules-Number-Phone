@@ -1,6 +1,8 @@
 XXXX-XX-XX      XXXXXX  Deprecated APIs of being able to call most methods as
                           class methods of functions instead of object methods
-                          deleted
+                          deleted;
+                        Remove unnecessary N::P::NANP->country method - the
+                           implementation in the superclass is sufficient
 
 2015-11-04      3.0013  Fix another bug in the tests which threw up
                           misleading failures if a country-specific subclass
