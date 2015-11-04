@@ -35,44 +35,12 @@ foreach my $method (
     )
 ) {
     no strict 'refs';
-    *{__PACKAGE__."::$method"} = sub {
-        my $self = shift;
-        warn("DEPRECATION: ".__PACKAGE__."->$method should only be called as an object method\n")
-          unless(blessed($self));
-        return undef if(blessed($self) && $self->isa(__PACKAGE__));
-        $self = shift if(
-            $self eq __PACKAGE__ ||
-            substr($self, 0, 2 + length(__PACKAGE__)) eq __PACKAGE__.'::'
-        );
-        $self = __PACKAGE__->new($self)
-            unless(blessed($self) && $self->isa(__PACKAGE__));
-        return $self->$method() if($self);
-        undef;
-    }
+    *{__PACKAGE__."::$method"} = sub { undef; }
 }
 
 sub type {
-    my $parm = shift;
-    warn("DEPRECATION: ".__PACKAGE__."->type should only be called as an object method\n")
-      unless(blessed($parm));
-    my $class = __PACKAGE__;
-
-    no strict 'refs';
-
-    unless(blessed($parm) && $parm->isa(__PACKAGE__)) {
-        if(
-            $parm eq __PACKAGE__ ||
-            substr($parm, 0, 2 + length(__PACKAGE__)) eq __PACKAGE__.'::'
-        ) {
-            $class = $parm;
-            $parm = shift;
-        }
-        $parm = $class->new($parm);
-    }
-
-    my $rval = $parm ?
-        [grep { $parm->$_() } @is_methods] :
-        undef;
+    my $self = shift;
+    my $rval = [grep { $self->$_() } @is_methods];
     wantarray() ? @{$rval} : $rval;
 }
 
@@ -147,6 +115,16 @@ so the appropriate country-specific module is loaded if available.
 
 If you pass in a bogus country code not recognised by
 Number::Phone::Country, the constructor will return undef.
+
+=head1 INCOMPATIBLE CHANGES
+
+Early versions of this module allowed what are now object methods
+to also be called as class methods or even as functions. This was a
+bad design decision. Use of those calling conventions was deprecated
+in version 2.0, released in January 2012, and started to emit
+warnings.
+
+All code to support those calling conventions has now been removed.
 
 =head1 COMPATIBILTY WITH libphonenumber
 
@@ -236,11 +214,7 @@ sub _make_stub_object {
 
 =head1 METHODS
 
-All Number::Phone classes can implement the following methods, as
-object methods.  Note that in previous versions these were also required
-to work as class methods and could also work as subroutines.  That
-was a bad design decision and is deprecated.  Number::Phone will spit
-warnings if you try that now, and support will be removed in the future.
+All Number::Phone classes can implement the following object methods.
 
 The implementations in the parent class all return undef unless otherwise
 noted.

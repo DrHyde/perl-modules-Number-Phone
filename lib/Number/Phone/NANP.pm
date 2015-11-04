@@ -129,11 +129,6 @@ foreach my $method (qw(areacode subscriber)) {
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub {
         my $self = shift;
-        warn("DEPRECATION: ".__PACKAGE__."->$method should only be called as an object method\n")
-          unless(blessed($self));
-        $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
-            $self :
-            __PACKAGE__->new($self);
         return $cache->{${$self}}->{$method};
     }
 }
@@ -164,11 +159,6 @@ sub is_fixed_line {
 
 sub areaname {
   my $self = shift;
-  warn("DEPRECATION: ".__PACKAGE__."->areaname should only be called as an object method\n")
-    unless(blessed($self));
-  $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
-    $self :
-    __PACKAGE__->new($self);
   return Number::Phone::NANP::Data::areaname('1'.$self->areacode().$self->subscriber());
 }
 
@@ -232,12 +222,6 @@ Return a sanely formatted version of the number, complete with IDD code.
 
 sub format {
     my $self = shift;
-    warn("DEPRECATION: ".__PACKAGE__."->format should only be called as an object method\n")
-      unless(blessed($self));
-    $self = (blessed($self) && $self->isa(__PACKAGE__)) ?
-        $self :
-        __PACKAGE__->new($self);
-    # my $format = $cache->{${$self}}->{format};
     return '+'.country_code().' '.
         $self->areacode().' '.
         substr($self->subscriber(), 0, 3).' '.
