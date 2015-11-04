@@ -9,7 +9,9 @@ use lib 't/lib';
 
 use Number::Phone qw(nostubs);
 
-use Test::More tests => 2;
+use Test::More;
+
+END { done_testing(); }
 
 use Number::Phone::Country;
 

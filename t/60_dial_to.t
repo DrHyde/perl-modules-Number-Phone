@@ -6,7 +6,9 @@ use lib 't/inc';
 use fatalwarnings;
 
 use Number::Phone;
-use Test::More tests => 12;
+use Test::More;
+
+END { done_testing(); }
 
 foreach my $test (
   # including the area code in dialstring works for local calls in the UK, and

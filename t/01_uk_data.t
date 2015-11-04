@@ -8,6 +8,6 @@ use fatalwarnings;
 use Number::Phone::UK;
 use Test::More;
 
-require 'uk_tests.pl';
+END { done_testing(); }
 
-done_testing;
+require 'uk_tests.pl';

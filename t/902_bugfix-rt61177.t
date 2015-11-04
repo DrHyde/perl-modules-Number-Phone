@@ -6,7 +6,9 @@ use fatalwarnings;
 
 use lib 't/lib'; # for mocking of the UK
 
-use Test::More tests => 11;
+use Test::More;
+
+END { done_testing(); }
 
 use Number::Phone;
 use Number::Phone::Country;

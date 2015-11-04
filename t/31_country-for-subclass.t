@@ -1,6 +1,8 @@
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More;
+
+END { done_testing(); }
 
 use lib 't/inc';
 use fatalwarnings;

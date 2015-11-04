@@ -7,7 +7,9 @@ use fatalwarnings;
 
 use Number::Phone;
 
-use Test::More tests => 7;
+use Test::More;
+
+END { done_testing(); }
 
 ok(Number::Phone->new('UK', '07970866975'), "N::P->new('CC', '012345')");
 ok(Number::Phone->new('UK', '7970866975'), "N::P->new('CC', '12345')");

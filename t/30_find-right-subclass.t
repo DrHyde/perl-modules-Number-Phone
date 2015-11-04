@@ -1,7 +1,9 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 4;
+use Test::More;
 use Scalar::Util qw(blessed);
+
+END { done_testing(); }
 
 use Number::Phone;
 

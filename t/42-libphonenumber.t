@@ -9,6 +9,8 @@ our $CLASS = 'Number::Phone::Lib';
 eval "use $CLASS";
 use Test::More;
 
+END { done_testing(); }
+
 # make sure we avoid instantiating stubs when supplied with just
 # a +NNN country code. This is looking both for bugs in our code,
 # but also bogus regexes in libphonenumber, such as
@@ -76,5 +78,3 @@ isa_ok($CLASS->new('+44 20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P:
 isa_ok($CLASS->new('+44', '20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('+44', 'NNNNN')");
 isa_ok($CLASS->new('UK', '020 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('UK', '0NNNNN')");
 isa_ok($CLASS->new('UK', '20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('UK', 'NNNNN')");
-
-done_testing;

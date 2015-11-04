@@ -5,7 +5,9 @@ use strict;
 use lib 't/inc';
 use fatalwarnings;
 
-use Test::More tests => 3;
+use Test::More;
+
+END { done_testing(); }
 
 use Number::Phone;
 

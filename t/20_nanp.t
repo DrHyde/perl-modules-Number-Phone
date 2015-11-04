@@ -10,11 +10,11 @@ eval "use $CLASS";
 use Test::More;
 use Scalar::Util qw(blessed);
 
+END { done_testing(); }
+
 require 'common-nanp_and_libphonenumber_tests.pl';
 
 regulators();
-
-done_testing;
 
 sub regulators {
     note("NANP regulators");
