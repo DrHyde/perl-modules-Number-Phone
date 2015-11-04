@@ -99,8 +99,8 @@ sub phone2country_and_idd {
         }
         return ('NANP', 1);
     } else {
-        my @retards = map { substr($phone, 0, $_) } reverse 1..length($phone);
-        foreach my $idd (@retards) {
+        my @prefixes = map { substr($phone, 0, $_) } reverse 1..length($phone);
+        foreach my $idd (@prefixes) {
             if(exists $idd_codes{$idd}) {
                 my $country = $idd_codes{$idd};
                 if(ref($country) eq 'ARRAY'){

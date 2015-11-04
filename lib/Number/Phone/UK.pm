@@ -52,7 +52,7 @@ true for any of the following methods will also be valid.
 sub _get_class {
   my $class = shift;
   my $number = shift;
-  foreach my $prefix (_retards($number)) {
+  foreach my $prefix (_prefixes($number)) {
     if(exists($Number::Phone::UK::Data::db->{subclass}->{$prefix})) {
       my $subclass = join('::', $class, $Number::Phone::UK::Data::db->{subclass}->{$prefix});
       eval "use $subclass";
@@ -71,7 +71,7 @@ sub _clean_number {
     return $clean;
 }
 
-sub _retards {
+sub _prefixes {
     my $number = shift;
     map { substr($number, 0, $_) } reverse(1..length($number));
 }
@@ -94,7 +94,7 @@ sub is_valid {
 
     my $cleaned_number = _clean_number($number);
 
-    my @retards = _retards($cleaned_number);
+    my @prefixes = _prefixes($cleaned_number);
 
     # quickly check length
     return $cache->{$number}->{is_valid} = 0 if(length($cleaned_number) < 7 || length($cleaned_number) > 10);
@@ -104,10 +104,10 @@ sub is_valid {
     return $cache->{$number}->{is_valid} = 0 if($cleaned_number =~ /^([27]|11)/ && length($cleaned_number) != 10);
 
     $cache->{$number}->{is_allocated} = 
-        grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
+        grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @prefixes;
 
     if($cache->{$number}->{is_allocated}) {
-        my($telco_and_length) = map { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @retards;
+        my($telco_and_length) = map { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @prefixes;
         $cache->{$number}->{operator} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{telco};
         $cache->{$number}->{format} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{format};
         if(defined($cache->{$number}->{format}) && $cache->{$number}->{format} =~ /\+/) {
@@ -120,7 +120,7 @@ sub is_valid {
             $cache->{$number}->{areaname} = (
                 map {
                     $Number::Phone::UK::Data::db->{areanames}->{$_}
-                } grep { $Number::Phone::UK::Data::db->{areanames}->{$_} } @retards
+                } grep { $Number::Phone::UK::Data::db->{areanames}->{$_} } @prefixes
             )[0];
             if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
                 # number wrong length!
@@ -161,7 +161,7 @@ foreach my $is (qw(
                   ipphone         => 'ip_prefices'
                 }->{$is}
               }->{$_}
-            } _retards(_clean_number(${$self}));
+            } _prefixes(_clean_number(${$self}));
         }
         $cache->{${$self}}->{"is_$is"};
     }
@@ -270,12 +270,12 @@ sub location {
 
     my $cleaned_number = _clean_number(${$self});
 
-    my @retards = _retards($cleaned_number);
+    my @prefixes = _prefixes($cleaned_number);
 
     eval "require Number::Phone::UK::DetailedLocations" unless($ENV{TESTINGKILLTHEWABBIT});
     require Number::Phone::UK::Exchanges if(!$Number::Phone::UK::Exchanges::db);
 
-    foreach(@retards) {
+    foreach(@prefixes) {
         if(exists($Number::Phone::UK::Exchanges::db->{exchg_prefices}->{$_})) {
             return [
                 $Number::Phone::UK::Exchanges::db->{exchg_positions}->{$Number::Phone::UK::Exchanges::db->{exchg_prefices}->{$_}}->{lat},
