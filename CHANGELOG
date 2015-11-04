@@ -1,3 +1,7 @@
+2015-11-04      3.0013  Fix another bug in the tests which threw up
+                          misleading failures if a country-specific subclass
+                          was installed
+
 2015-10-26      3.0012  Updated dialing prefixes in N::P::Country
                           from Michael Gray;
                         Fix broken code for is_specialrate in stubs,
