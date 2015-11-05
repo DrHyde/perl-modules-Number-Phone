@@ -6,7 +6,7 @@
 
 use strict;
 use warnings;
-use Data::Dumper; local $Data::Dumper::Indent = 0;
+use Data::Dumper; local $Data::Dumper::Indent = 2;
 
 use lib 'lib';
 use Number::Phone::NANP::Data;
@@ -58,15 +58,11 @@ TERRITORY: foreach my $territory (@territories) {
   print $module_fh 'my '.Data::Dumper->new([\@formatters], [qw(formatters)])->Dump()."\n";
   my $validators = {
       specialrate => join('|', grep { $_ ne '()' } map {
-          (my $foo = '('.$territory->find("$_/nationalNumberPattern")->string_value().')')
-              =~ s/\s//g;
-          $foo;
+          '('.$territory->find("$_/nationalNumberPattern")->string_value().')'
       } qw(sharedCost premiumRate uan)),
       map {
           (my $xpath = $_) =~ s/_(\w)/uc($1)/eg;
-          (my $pattern = $territory->find("$xpath/nationalNumberPattern")->string_value())
-              =~ s/\s//g;
-          ($_ => $pattern);
+          ($_ => $territory->find("$xpath/nationalNumberPattern")->string_value());
       } qw(fixed_line mobile pager voip toll_free personal_number)
   };
 
@@ -82,17 +78,17 @@ TERRITORY: foreach my $territory (@territories) {
   print $module_fh 'my '.Data::Dumper->new([$validators], [qw(validators)])->Dump();
   my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
   if($IDD_country_code == 1) {
-    print $module_fh 'use Number::Phone::NANP::Data;sub areaname { Number::Phone::NANP::Data::areaname("1".shift()->{number}); }';
+    print $module_fh "use Number::Phone::NANP::Data;sub areaname { Number::Phone::NANP::Data::areaname('1'.shift()->{number}); }\n";
   } elsif(-e $codesfile) {
     open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
     my @lines = <$geocoding>;
-    print $module_fh 'sub areaname { my $self = shift; my $number = $self->{number}; my %map = (';
+    print $module_fh "sub areaname { my \$self = shift; my \$number = \$self->{number}; my \%map = (\n";
     foreach my $line (@lines) {
       chomp($line);
       next if($line =~ /^(#.*|\s+)?$/);
       my($prefix, $area) = split(/\|/, $line);
       $area = quotemeta($area);
-      print $module_fh "$prefix => \"$area\",";
+      print $module_fh "  $prefix => \"$area\",\n";
     }
     print $module_fh ');
       foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
@@ -183,7 +179,7 @@ sub formats_for {
     my $formatter = ''.$number_format->find('format');
 
     if($leading_digit_pattern) {
-      ($leading_digit_pattern = $leading_digit_pattern->string_value()) =~ s/\s//g;
+      ($leading_digit_pattern = $leading_digit_pattern->string_value()); # =~ s/\s//g;
       push @formatters, {
         leading_digits => $leading_digit_pattern,
         pattern        => $number_format_pattern
