@@ -2,6 +2,7 @@ language: perl
 perl:
   - "5.8"
   - "5.20"
+  - "5.22"
 matrix:
   include:
     - perl: "5.20"
