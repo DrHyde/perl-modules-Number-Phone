@@ -46,6 +46,8 @@ MANIFEST
 MANIFEST.SKIP
 NOTES
 README
+t/pod.t
+t/pod-coverage.t
 t/00_superclass_and_uk_different_method_invocations.t
 t/01_uk_data.t
 t/02_weird_little_islands.t
