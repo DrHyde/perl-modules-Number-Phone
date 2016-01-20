@@ -1,3 +1,5 @@
+                3.0015  Added number() method
+
 2015-12-08      3.0014  Deprecated APIs of being able to call most methods as
                           class methods or functions instead of object methods
                           have now been deleted;

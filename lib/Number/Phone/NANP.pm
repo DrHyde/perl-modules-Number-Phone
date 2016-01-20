@@ -133,6 +133,13 @@ foreach my $method (qw(areacode subscriber)) {
     }
 }
 
+sub number {
+    my $self = shift;
+
+    # skip "+1";
+    return substr $$self, 2;
+}
+
 sub is_geographic {
     my $self = shift;
     # NANP-globals like 1-800 aren't geographic, the rest are
@@ -196,6 +203,11 @@ Return the area code for the number.
 
 Return the name for the area code, if applicable, otherwise returns undef.
 For instance, for a number beginning with +1 201 200 it would return "Jersey City, NJ".
+
+=item number
+
+Return the raw unformatted phone number.  This is the same as the areacode and
+subscriber number joined togehter.
 
 =item subscriber
 

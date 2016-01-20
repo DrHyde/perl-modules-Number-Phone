@@ -64,4 +64,8 @@ sub format {
   return '+'.$self->country_code().' '.$number;
 }
 
+sub number {
+    shift->{number};
+}
+
 1;

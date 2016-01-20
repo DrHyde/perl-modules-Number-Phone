@@ -374,6 +374,10 @@ Return the subscriber part of the number.
 While the superclass implementation returns undef, this is nonsense in just
 about all cases, so you should always implement this.
 
+=item number
+
+Return the unformatted phone number, minus the country code.
+
 =item operator
 
 Return the name of the telco assigned this number, in an appropriate
