@@ -287,6 +287,18 @@ sub location {
     return undef;
 }
 
+=item number
+
+Return the raw unformatted number.  That is, the number minus the country code.
+
+=cut
+
+sub number {
+    my $self = shift;
+    # skip '+44'
+    return substr $$self, 3;
+}
+
 =item subscriber
 
 Return the subscriber part of the number
