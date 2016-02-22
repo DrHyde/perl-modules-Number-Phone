@@ -84,6 +84,14 @@ sub dial_to {
 
 sub intra_country_dial_to { die("don't know how\n"); }
 
+sub raw_number {
+    my $self = shift;
+    my $fmted = $self->format();
+    $fmted =~ s/.*?\s//;
+    $fmted =~ s/\D//g;
+    return $fmted
+}
+
 1;
 
 =head1 NAME
@@ -401,11 +409,19 @@ C<[qw(valid allocated geographic)]>.
 
 =item format
 
-Return a sanely formatted version of the number, complete with IDD code, eg
-for the UK number (0208) 771-2924 it would return +44 20 8771 2924.
+Return a sanely formatted E.123-compliant version of the number, complete with
+IDD code, eg for the UK number (0208) 771-2924 it would return +44 20 8771
+2924.
 
 The superclass implementation returns undef, which is nonsense, so you
 should always implement this.
+
+=item raw_number
+
+Return just the raw number. This is implemented in the super-class as a wrapper
+around the C<format()> method, which strips off the leading +CC and any non-digits.
+
+So for example +44 20 8771 2924 is returns as 2087712924.
 
 =item country
 

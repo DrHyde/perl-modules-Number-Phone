@@ -1,3 +1,7 @@
+XXXX-XX-XX      XXXXXX  Added the raw_number() method, thanks to Michael Schout
+                          for the suggestion;
+                        Data updates
+
 2015-12-08      3.0014  Deprecated APIs of being able to call most methods as
                           class methods or functions instead of object methods
                           have now been deleted;
