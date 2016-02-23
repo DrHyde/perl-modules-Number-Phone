@@ -84,12 +84,16 @@ sub dial_to {
 
 sub intra_country_dial_to { die("don't know how\n"); }
 
-sub raw_number {
-    my $self = shift;
-    my $fmted = $self->format();
-    $fmted =~ s/.*?\s//;
-    $fmted =~ s/\D//g;
-    return $fmted
+sub format_using {
+    my $self   = shift;
+    my $format = shift;
+
+    return $self->format() if($format eq 'E123');
+
+    eval "use Number::Phone::Formatter::$format";
+    die("Couldn't load format '$format': $@\n") if($@);
+    return "Number::Phone::Formatter::$format"->format($self->format());
+
 }
 
 1;
@@ -416,12 +420,19 @@ IDD code, eg for the UK number (0208) 771-2924 it would return +44 20 8771
 The superclass implementation returns undef, which is nonsense, so you
 should always implement this.
 
-=item raw_number
+=item format_using
 
-Return just the raw number. This is implemented in the super-class as a wrapper
-around the C<format()> method, which strips off the leading +CC and any non-digits.
+If you want something different from E.123, then pass this the name of a
+L<formatter|Number::Phone::Formatters> to use.
 
-So for example +44 20 8771 2924 is returns as 2087712924.
+For example, if you want to get "just the digits, ma'am", use the
+L<Raw|Number::Phone::Formatter::Raw> formatter thus:
+
+  Number::Phone->new('+44 20 8771 2924')->format_using('Raw');
+
+which will return:
+
+  2087712924
 
 =item country
 

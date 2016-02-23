@@ -1,0 +1,48 @@
+=head1 NAME
+
+Number::Phone::Formatters
+
+=head1 DESCRIPTION
+
+How to write custom formatters for phone numbers.
+
+=head1 NAMING
+
+Formatters are modules that live in the C<Number::Phone::Formatter::*>
+namespace. Users only need to type the last bit of the name, without the
+leading C<Number::Phone::Formatter::>, when calling the C<format_using>
+method of L<Number::Phone>.
+
+The 'E123' formatter name is reserved and implemented by Number::Phone
+subclasses in their C<format()> methods.
+
+=head1 METHODS
+
+There is one compulsory method, C<format> that you must write. It will
+be called as a class method, with a number in E.123 international format as its
+only argument, looking something like '+CC NNN NNN NNN'. The gory details
+are at L<http://www.itu.int/rec/T-REC-E.123/en> but in summary, you'll get:
+
+=over
+
+=item a plus sign
+
+=item a 1, 2 or 3 digit country code
+
+=item whitespace
+
+=item a mixture of digits and whitespace
+
+=back
+
+=head1 EXAMPLE
+
+See L<Number::Phone::Formatter::Raw> for an example.
+
+=head1 COPYRIGHT and LICENCE
+
+Copyright 2016 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+
+This documentation is free-as-in-speech software.  It may be used, distributed, and modified under the terms of the Creative Commons Attribution-Share Alike 2.0 UK: England & Wales License, whose text you may read at L<http://creativecommons.org/licenses/by-sa/2.0/uk/>.
+
+=cut

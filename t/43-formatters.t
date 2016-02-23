@@ -20,7 +20,15 @@ my %tests = (
     '+81 3-3580-3311'  => '335803311'     # StubCountry::JP
 );
 
+note("format_using('Raw')");
 while (my ($num, $expect) = each %tests) {
     my $number = Number::Phone->new($num);
-    is($number->raw_number, $expect, blessed($number)."'s raw_number() works");
+    is($number->format_using('Raw'), $expect, blessed($number)."'s raw_number() works");
 }
+
+note("format_using('E123')");
+is(
+    Number::Phone->new('+44 20 8771 2924')->format_using('E123'),
+    '+44 20 8771 2924',
+    "format_using('E123') works too"
+);
