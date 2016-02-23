@@ -74,6 +74,7 @@ TODO
 t/10_country-test-at.t
 t/55_number-phone-country-multiple.t
 t/10_country-test-br.t
+t/43-raw_number.t
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -318,4 +319,3 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
-t/43-raw_number.t
