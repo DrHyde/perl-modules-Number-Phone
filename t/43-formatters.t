@@ -10,10 +10,6 @@ use Scalar::Util qw(blessed);
 
 END { done_testing(); }
 
-# number() is implemented in the base class, just make sure we
-# can get there from everywhere
-# those.
-
 my %tests = (
     '+44 20 8771 2924' => '2087712924',   # UK
     '+1 202 418 1440'  => '2024181440',   # NANP::US
