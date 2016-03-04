@@ -75,6 +75,8 @@ t/10_country-test-at.t
 t/55_number-phone-country-multiple.t
 t/10_country-test-br.t
 t/43-formatters.t
+lib/Number/Phone/Formatter/Raw.pm
+lib/Number/Phone/Formatters.pod
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -319,5 +321,3 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
-lib/Number/Phone/Formatter/Raw.pm
-lib/Number/Phone/Formatters.pod

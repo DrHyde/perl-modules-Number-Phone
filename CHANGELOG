@@ -1,4 +1,4 @@
-XXXX-XX-XX      XXXXXX  Added the format_using() method and the ability to
+2016-03-04      3.1     Added the format_using() method and the ability to
                           use third-party formatters, thanks to Michael
                           Schout for the suggestion;
                         Data updates
