@@ -1,3 +1,7 @@
+XXXX-XX-XX      XXXXXX  Bump version number because rpm is stupid and thinks
+                          3.1 < 3.0014;
+                        Data updates
+
 2016-03-04      3.1     Added the format_using() method and the ability to
                           use third-party formatters, thanks to Michael
                           Schout for the suggestion;

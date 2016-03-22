@@ -7,7 +7,8 @@ use Scalar::Util 'blessed';
 use Number::Phone::Country qw(noexport);
 use Number::Phone::StubCountry;
 
-our $VERSION = '3.1';
+# MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
+our $VERSION = '3.2000';
 
 my $NOSTUBS = 0;
 sub import {
