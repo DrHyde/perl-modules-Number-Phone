@@ -1,5 +1,7 @@
 XXXX-XX-XX      XXXXXX  Bump version number because rpm is stupid and thinks
                           3.1 < 3.0014;
+                        Recognize Isle of Man (IM) free/special-rate
+                          numbers;
                         Data updates
 
 2016-03-04      3.1     Added the format_using() method and the ability to

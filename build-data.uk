@@ -55,6 +55,12 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
         pop(@rows);
     }
     my $count = 0;
+
+    if($xlsfile eq 'sabcde17.xls' && !defined($rows[0]->[0])) {
+        warn "Fixing missing SABC header field in sabcde17.xls\n";
+        warn "  check this and remove the warning if fixed in XLS file\n";
+        $rows[0]->[0] = 'SABC';
+    }
     my %header_fields_index_by_name = map { $_ => $count++ } my @header_fields_index_by_column = @{shift(@rows)};
     my @prefix_fields = grep { exists($header_fields_index_by_name{$_}) } qw(SABC D/DE FG);
     foreach my $row (@rows) {
@@ -147,9 +153,16 @@ $dbm->{areanames}            = { map { s/( National Dialling)//ig; $_; } %areana
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
 $dbm->{subclass} = { # taken from libphonenumber
-  1481 => 'GG', 7781 => 'GG', 7839 => 'GG', 7911 => 'GG',
-  1534 => 'JE', 7509 => 'JE', 7700 => 'JE', 7797 => 'JE', 7829 => 'JE', 7937 => 'JE',
-  1624 => 'IM', 7524 => 'IM', 7624 => 'IM', 7924 => 'IM',
+  (map { $_ => 'GG' } (
+      1481, 7781, 7839, 7911
+  )),
+  (map { $_ => 'JE' } (
+      1534, 7509, 7700, 7797, 7829, 7937
+  )),
+  (map { $_ => 'IM' } (
+      1624, 7524, 7624, 7924, 808162, 872299, 900624, 901624,
+      906624, 907624, 8440406, 8440906, 845624, 870624
+  )),
 };
 
 open(MODULE, '>Data.pm') || die("Can't write Data.pm\n");
