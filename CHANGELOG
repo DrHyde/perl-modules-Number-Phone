@@ -1,4 +1,4 @@
-XXXX-XX-XX      XXXXXX  Bump version number because rpm is stupid and thinks
+2016-06-05      3.2000  Bump version number because rpm is stupid and thinks
                           3.1 < 3.0014;
                         Recognize Isle of Man (IM) free/special-rate
                           numbers;
