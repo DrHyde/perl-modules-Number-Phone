@@ -25,7 +25,7 @@ my @is_methods = qw(
     is_geographic is_fixed_line is_mobile is_pager
     is_tollfree is_specialrate is_adult is_network_service is_personal
     is_corporate is_government is_international
-    is_ipphone is_isdn
+    is_ipphone is_isdn is_drama
 );
 
 foreach my $method (
@@ -335,6 +335,10 @@ various "Country Direct"-a-likes.  See also the C<country()> method.
 
 The number is some kind of network service such as the operator, directory
 enquiries, emergency services etc
+
+=item is_drama
+
+The number is for use in TV and Radio drama programmes
 
 =back
 

@@ -138,6 +138,48 @@ sub is_fixed_line {
   return undef;
 }
 
+
+sub is_drama {
+    my $self = shift;
+
+    my $num = _clean_number(${$self});
+
+    my @drama_numbers = (
+	# Leeds, Sheffield, Nottingham, Leicester, Bristol, Reading
+   	qr/^11[3-8]4960[0-9]{3}$/,
+	# Birmingham, Edinburgh, Glasgow, Liverpool, Manchester
+	qr/^1[2-6]14960[0-9]{3}$/,
+	# London
+	qr/^2079460[0-9]{3}$/,
+	# Tyneside/Durham/Sunderland
+	qr/^1914980[0-9]{3}$/,
+	# Northern Ireland
+	qr/^2896496[0-9]{3}$/,
+	# Cardiff
+	qr/^2920180[0-9]{3}$/,
+	# No area
+	qr/^1632960[0-9]{3}$/,
+	# Mobile
+	qr/^7700900[0-9]{3}$/,
+	# Freephone
+	qr/^8081570[0-9]{3}$/,
+	# Premium Rate
+	qr/^9098790[0-9]{3}$/,
+	# UK Wide
+	qr/^3069990[0-9]{3}$/,
+    );
+
+    foreach my $d (@drama_numbers) {
+        
+        return 1 if ($num =~ $d);
+    
+    }
+
+    return 0;
+}
+
+
+
 foreach my $is (qw(
     geographic network_service tollfree corporate
     personal pager mobile specialrate adult allocated ipphone
