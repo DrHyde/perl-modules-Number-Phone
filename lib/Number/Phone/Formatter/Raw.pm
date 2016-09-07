@@ -15,7 +15,7 @@ sub format {
 
 =head1 NAME
 
-Number::Phone::Formatter::Raw
+Number::Phone::Formatter::Raw - simple formatter for E.123-formatted phone numbers
 
 =head1 DESCRIPTION
 

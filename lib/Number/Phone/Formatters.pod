@@ -1,6 +1,6 @@
 =head1 NAME
 
-Number::Phone::Formatters
+Number::Phone::Formatters - how to write custom formatters
 
 =head1 DESCRIPTION
 
