@@ -1,5 +1,7 @@
 2016-XX-XX      XXXXXX  Implemented is_drama
-                          (see https://github.com/DrHyde/perl-modules-Number-Phone/pull/61)
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/pull/61);
+                        Minor doco improvements from the Debian project
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/60);
 
 2016-09-07      3.2001  Data updates
 
