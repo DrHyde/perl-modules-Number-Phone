@@ -338,7 +338,8 @@ enquiries, emergency services etc
 
 =item is_drama
 
-The number is for use in TV and Radio drama programmes
+The number is for use in fiction, such as TV and Radio drama programmes.
+It will not be allocated for use in real life.
 
 =back
 

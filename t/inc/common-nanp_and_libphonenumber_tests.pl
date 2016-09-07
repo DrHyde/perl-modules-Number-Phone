@@ -88,4 +88,9 @@ is($jm_mobile->is_geographic(),
    (is_libphonenumber() ? 0 : 1),
    "$CLASS->new('$jm_mobile_numb')->is_geographic()");
 
+note("is_drama");
+skip_if_libphonenumber("Stubs don't support is_drama", 2, sub {
+    is($CLASS->new('+12125552368')->is_drama(), 1, "Ghostbusters have an is_drama number");
+    is($CLASS->new('+12024566213')->is_drama(), 0, "The president doesn't have an is_drama number");
+});
 1;

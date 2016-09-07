@@ -79,6 +79,27 @@ The following methods from Number::Phone are overridden:
 The number is valid within the numbering scheme.  It may or may
 not yet be allocated, or it may be reserved.
 
+=item is_geographic
+
+NANP-globals like 1-800 aren't geographic, the rest are.
+
+=item is_mobile
+
+NANP-globals like 1-800 aren't mobile. For most others we just don't know because
+the data isn't published. libphonenumber has data for *some* countries, so we use
+that if we can.
+
+=item is_fixed_line
+
+NANP-globals are fixed lines, for the rest we generally don't know with some
+exceptions as per is_mobile above.
+
+=item is_drama
+
+The number is a '555' number. Numbers with the D, E, and F digits set to 555
+are not allocated to real customers, and are intended for use in fiction. eg
+212 555 2368 for Ghostbusters.
+
 =cut
 
 # See Message-ID: <008001c406ba$6bd01820$dad4a645@anhmca.adelphia.net>
@@ -155,6 +176,11 @@ sub is_fixed_line {
     (my $ISO_country_code = ref($self)) =~ s/.*(..)$/$1/;
     return undef if(!exists($Number::Phone::NANP::Data::fixed_line_regexes{$ISO_country_code}));
     return ${$self} =~ /^\+1($Number::Phone::NANP::Data::fixed_line_regexes{$ISO_country_code})$/ ? 1 : 0;
+}
+
+sub is_drama {
+    my $self = shift;
+    return ${$self} =~ /555\d{4}$/ ? 1 : 0;
 }
 
 sub areaname {

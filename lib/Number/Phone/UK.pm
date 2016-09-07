@@ -138,35 +138,34 @@ sub is_fixed_line {
   return undef;
 }
 
-
 sub is_drama {
     my $self = shift;
 
     my $num = _clean_number(${$self});
 
     my @drama_numbers = (
-	# Leeds, Sheffield, Nottingham, Leicester, Bristol, Reading
-   	qr/^11[3-8]4960[0-9]{3}$/,
-	# Birmingham, Edinburgh, Glasgow, Liverpool, Manchester
-	qr/^1[2-6]14960[0-9]{3}$/,
-	# London
-	qr/^2079460[0-9]{3}$/,
-	# Tyneside/Durham/Sunderland
-	qr/^1914980[0-9]{3}$/,
-	# Northern Ireland
-	qr/^2896496[0-9]{3}$/,
-	# Cardiff
-	qr/^2920180[0-9]{3}$/,
-	# No area
-	qr/^1632960[0-9]{3}$/,
-	# Mobile
-	qr/^7700900[0-9]{3}$/,
-	# Freephone
-	qr/^8081570[0-9]{3}$/,
-	# Premium Rate
-	qr/^9098790[0-9]{3}$/,
-	# UK Wide
-	qr/^3069990[0-9]{3}$/,
+        # Leeds, Sheffield, Nottingham, Leicester, Bristol, Reading
+        qr/^11[3-8]4960[0-9]{3}$/,
+        # Birmingham, Edinburgh, Glasgow, Liverpool, Manchester
+        qr/^1[2-6]14960[0-9]{3}$/,
+        # London
+        qr/^2079460[0-9]{3}$/,
+        # Tyneside/Durham/Sunderland
+        qr/^1914980[0-9]{3}$/,
+        # Northern Ireland
+        qr/^2896496[0-9]{3}$/,
+        # Cardiff
+        qr/^2920180[0-9]{3}$/,
+        # No area
+        qr/^1632960[0-9]{3}$/,
+        # Mobile
+        qr/^7700900[0-9]{3}$/,
+        # Freephone
+        qr/^8081570[0-9]{3}$/,
+        # Premium Rate
+        qr/^9098790[0-9]{3}$/,
+        # UK Wide
+        qr/^3069990[0-9]{3}$/,
     );
 
     foreach my $d (@drama_numbers) {
@@ -177,8 +176,6 @@ sub is_drama {
 
     return 0;
 }
-
-
 
 foreach my $is (qw(
     geographic network_service tollfree corporate
@@ -223,6 +220,13 @@ foreach my $method (qw(operator areacode areaname subscriber)) {
 
 The number has been allocated to a telco for use.  It may or may not yet
 be in use or may be reserved.
+
+=item is_drama
+
+The number is intended for use in fiction. OFCOM has allocated numerous small
+ranges for this purpose. These numbers will not be allocated to real customers.
+See L<http://stakeholders.ofcom.org.uk/telecoms/numbering/guidance-tele-no/numbers-for-drama>
+for the authoritative source.
 
 =item is_geographic
 
@@ -349,17 +353,17 @@ for the UK number (0208) 771-2924 it would return +44 20 87712924.
 sub format {
     my $self = shift;
     return (
-	# if there's an areacode ...
+        # if there's an areacode ...
         $self->areacode()      ? ('+'.country_code().' '.$self->areacode().' '.(
           length($self->subscriber()) == 7 ? substr($self->subscriber(), 0, 3).' '.substr($self->subscriber(), 3) :
           length($self->subscriber()) == 8 ? substr($self->subscriber(), 0, 4).' '.substr($self->subscriber(), 4) :
                                              $self->subscriber() )) : 
-	# if not allocated ...
+        # if not allocated ...
         !$self->is_allocated() ? '+'.country_code().' '.( ${$self} =~ /^\+44/ ? substr(${$self}, 3) : substr(${$self}, 1)) :
-	# if there's a subscriber ...
+        # if there's a subscriber ...
         $self->subscriber() ? '+'.country_code().' '.$self->subscriber :
-	# otherwise ...
-	  ${$self}
+        # otherwise ...
+        ${$self}
     );
 }
 
