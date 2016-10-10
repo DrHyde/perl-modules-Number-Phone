@@ -13,23 +13,23 @@ fi
 EXITSTATUS=0
 # first get OFCOM data
 # sabc.txt now exists on its own do this is commented out for now
-# http://www.ofcom.org.uk/static/numbering/codelist.zip    \
+# http://static.ofcom.org.uk/static/numbering/codelist.zip    \
 for i in \
-    http://www.ofcom.org.uk/static/numbering/sabc.txt        \
-    http://www.ofcom.org.uk/static/numbering/sabcde11_12.xls \
-    http://www.ofcom.org.uk/static/numbering/sabcde13.xls    \
-    http://www.ofcom.org.uk/static/numbering/sabcde14.xls    \
-    http://www.ofcom.org.uk/static/numbering/sabcde15.xls    \
-    http://www.ofcom.org.uk/static/numbering/sabcde16.xls    \
-    http://www.ofcom.org.uk/static/numbering/sabcde17.xls    \
-    http://www.ofcom.org.uk/static/numbering/sabcde18.xls    \
-    http://www.ofcom.org.uk/static/numbering/sabcde19.xls    \
-    http://www.ofcom.org.uk/static/numbering/sabcde2.xls     \
-    http://www.ofcom.org.uk/static/numbering/S3.xls          \
-    http://www.ofcom.org.uk/static/numbering/S5.xls          \
-    http://www.ofcom.org.uk/static/numbering/S7.xls          \
-    http://www.ofcom.org.uk/static/numbering/S8.xls          \
-    http://www.ofcom.org.uk/static/numbering/S9.xls;
+    http://static.ofcom.org.uk/static/numbering/sabc.txt        \
+    http://static.ofcom.org.uk/static/numbering/sabcde11_12.xls \
+    http://static.ofcom.org.uk/static/numbering/sabcde13.xls    \
+    http://static.ofcom.org.uk/static/numbering/sabcde14.xls    \
+    http://static.ofcom.org.uk/static/numbering/sabcde15.xls    \
+    http://static.ofcom.org.uk/static/numbering/sabcde16.xls    \
+    http://static.ofcom.org.uk/static/numbering/sabcde17.xls    \
+    http://static.ofcom.org.uk/static/numbering/sabcde18.xls    \
+    http://static.ofcom.org.uk/static/numbering/sabcde19.xls    \
+    http://static.ofcom.org.uk/static/numbering/sabcde2.xls     \
+    http://static.ofcom.org.uk/static/numbering/S3.xls          \
+    http://static.ofcom.org.uk/static/numbering/S5.xls          \
+    http://static.ofcom.org.uk/static/numbering/S7.xls          \
+    http://static.ofcom.org.uk/static/numbering/S8.xls          \
+    http://static.ofcom.org.uk/static/numbering/S9.xls;
 do
     # make sure that there's a file that curl -z can look at
     if test ! -e `basename $i`; then
