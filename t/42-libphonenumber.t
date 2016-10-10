@@ -76,5 +76,6 @@ note("different invocation styles");
 
 isa_ok($CLASS->new('+44 20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('+44NNNNN')");
 isa_ok($CLASS->new('+44', '20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('+44', 'NNNNN')");
+isa_ok($CLASS->new('GB', '020 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('GB', '0NNNNN')");
+isa_ok($CLASS->new('GB', '20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('GB', 'NNNNN')");
 isa_ok($CLASS->new('UK', '020 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('UK', '0NNNNN')");
-isa_ok($CLASS->new('UK', '20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('UK', 'NNNNN')");
