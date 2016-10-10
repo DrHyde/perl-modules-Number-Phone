@@ -104,6 +104,9 @@ are not allocated to real customers, and are intended for use in fiction. eg
 
 # See Message-ID: <008001c406ba$6bd01820$dad4a645@anhmca.adelphia.net>
 # by Doug Ewell on Wed Mar 10 2004 in telnum-l.
+#
+# NB the EF digits being 11 *is* legal in at least some area codes.
+# Obviously you can't dial, eg, 911-1234
 
 sub is_valid {
     my $number = shift;

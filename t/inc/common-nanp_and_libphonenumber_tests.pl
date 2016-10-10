@@ -93,4 +93,15 @@ skip_if_libphonenumber("Stubs don't support is_drama", 2, sub {
     is($CLASS->new('+12125552368')->is_drama(), 1, "Ghostbusters have an is_drama number");
     is($CLASS->new('+12024566213')->is_drama(), 0, "The president doesn't have an is_drama number");
 });
+
+note("dodgy numbers");
+
+ok(!defined($CLASS->new('+1 613 563 72423')), "too long");
+ok(!defined($CLASS->new('+1 613 563 724')),   "too short");
+ok(!defined($CLASS->new('+1 113 563 7242')),  "A digit must be 2-9");
+ok(!defined($CLASS->new('+1 613 163 7242')),  "D digit must be 2-9");
+ok(!defined($CLASS->new('+1 373 563 7242')),  "AB must not be 37");
+ok(!defined($CLASS->new('+1 963 563 7242')),  "AB must not be 96");
+ok(!defined($CLASS->new('+1 611 563 7242')),  "BC must not be 11");
+
 1;
