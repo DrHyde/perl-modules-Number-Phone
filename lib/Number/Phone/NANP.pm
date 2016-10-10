@@ -9,7 +9,7 @@ use Number::Phone::NANP::Data;
 
 use Number::Phone::Country qw(noexport);
 
-our $VERSION = 1.4;
+our $VERSION = 1.5;
 
 my $cache = {};
 
@@ -185,7 +185,7 @@ sub is_drama {
 
 sub areaname {
   my $self = shift;
-  return Number::Phone::NANP::Data::areaname('1'.$self->areacode().$self->subscriber());
+  return Number::Phone::NANP::Data::_areaname('1'.$self->areacode().$self->subscriber());
 }
 
 =item country_code

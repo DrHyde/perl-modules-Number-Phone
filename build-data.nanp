@@ -46,7 +46,7 @@ print MODULE q{
       map { substr($number, 0, $_) } reverse(1..length($number));
   }
 
-  sub areaname {
+  sub _areaname {
     my $number = shift;
     foreach my $prefix (_prefixes($number)) {
       if(exists($areanames{$prefix})) { return $areanames{$prefix} };
