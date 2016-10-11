@@ -2,6 +2,8 @@
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/pull/61);
                         Minor doco improvements from the Debian project
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/60);
+                        Minor coverage improvements by getting rid of some redundant
+                          code paths;
 
 2016-09-07      3.2001  Data updates
 
