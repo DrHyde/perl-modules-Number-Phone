@@ -106,7 +106,7 @@ sub is_valid {
     # If called as an object method, it *must* be valid otherwise the
     # object would never have been instantiated.
     # If called as a sub, then it's the constructor that's calling.
-    return 1 if(blessed($number) && $number->isa(__PACKAGE__));
+    return 1 if(blessed($number));
 
     # otherwise we have to validate
 
