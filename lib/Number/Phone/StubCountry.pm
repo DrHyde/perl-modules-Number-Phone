@@ -5,7 +5,7 @@ use warnings;
 use Number::Phone::Country qw(noexport);
 
 use base qw(Number::Phone);
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
 sub country_code {
     my $self = shift;
@@ -18,10 +18,8 @@ sub country_code {
 sub country {
     my $self = shift;
     if(exists($self->{country})) { return $self->{country}; }
-    if(ref($self) =~ /::(\w\w(\w\w)?)$/) { # extra \w\w is for MOCK during testing
-        return $1;
-    }
-    return undef;
+    ref($self)=~ /::(\w\w(\w\w)?)$/; # extra \w\w is for MOCK during testing
+    return $1;
 }
 
 sub is_valid {

@@ -22,9 +22,7 @@ Number::Phone::NANP - NANP-specific methods for Number::Phone
 This is a base class which encapsulates that information about phone
 numbers in the North American Numbering Plan (NANP) which are
 common to all NANP countries - that is, those whose international
-dialling code is +1.  If you are dealing with phone numbers in any of
-those countries, you should C<use> this module.  It will then load
-the country-specific modules for you as needed.
+dialling code is +1.
 
 Country-specific modules should inherit from this module and provide
 their own versions of methods as necessary.  However, they should not
@@ -32,7 +30,8 @@ provide an C<is_valid> method or a constructor.
 
 =head1 SYNOPSIS
 
-in a program:
+This module should not be used directly. It will be loaded as necessary
+by Number::Phone:
 
     use Number::Phone;
 
@@ -52,7 +51,6 @@ in a subclass:
 sub new {
     my $class = shift;
     my $number = shift;
-    die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
     return undef if(!is_valid($number));
     
