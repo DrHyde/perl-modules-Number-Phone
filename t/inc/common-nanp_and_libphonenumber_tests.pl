@@ -90,7 +90,9 @@ is($jm_mobile->is_geographic(),
 
 note("is_drama");
 skip_if_libphonenumber("Stubs don't support is_drama", 2, sub {
-    is($CLASS->new('+12125552368')->is_drama(), 1, "Ghostbusters have an is_drama number");
+    is($CLASS->new('+12125552368')->is_drama(), 0, "Ghostbusters isn't is_drama (last four digits too high)");
+    is($CLASS->new('+12125550001')->is_drama(), 0, "555-0001 isn't is_drama (last four digits too low)");
+    is($CLASS->new('+12125550123')->is_drama(), 1, "555-0123 is is_drama (last four digits just right, like porridge)");
     is($CLASS->new('+12024566213')->is_drama(), 0, "The president doesn't have an is_drama number");
 });
 
