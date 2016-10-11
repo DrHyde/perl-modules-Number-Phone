@@ -71,6 +71,7 @@ is($jm_fixed->format(), '+1 876 501 3333', "$CLASS->new('$jm_fixed_numb')->forma
 is($jm_fixed->is_mobile(), 0, "$CLASS->new('$jm_fixed_numb')->is_mobile()");
 is($jm_fixed->is_fixed_line(), 1, "$CLASS->new('$jm_fixed_numb')->is_fixed_line()");
 is($jm_fixed->is_geographic(), 1,"$CLASS->new('$jm_fixed_numb')->is_geographic()");
+is($jm_fixed->is_valid(), 1,"$CLASS->new('$jm_fixed_numb')->is_valid()");
 
 my $jm_mobile_numb = '+18762113333';
 my $jm_mobile = $CLASS->new($jm_mobile_numb);
