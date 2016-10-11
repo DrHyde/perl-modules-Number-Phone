@@ -6,7 +6,14 @@ END { done_testing }
 use lib 't/inc';
 use fatalwarnings;
 
-use Number::Phone::Country;
+use Number::Phone::Country qw(noexport);
+
+sub phone2country { goto &Number::Phone::Country::phone2country }
+
+# return nothing for nonsense country codes
+ok(!defined(Number::Phone::Country::country_code("XX")), "N::P::C::country_code returns undef for a nonsense country code");
+ok(!defined(Number::Phone::Country::idd_code("XX")),     "N::P::C::idd_code returns undef for a nonsense country code");
+ok(!defined(Number::Phone::Country::ndd_code("XX")),     "N::P::C::ndd_code returns undef for a nonsense country code");
 
 # NANP formats
 is(phone2country(  "219-555-0199"), "US",   "NANP: xxx-xxx-xxxx format");

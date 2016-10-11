@@ -10,7 +10,7 @@ use XML::XPath;
 use Data::Dumper;local $Data::Dumper::Indent = 1;
 
 use lib 'lib';
-use Number::Phone::Country;
+use Number::Phone::Country qw(noexport);
 
 $| = 1;
 

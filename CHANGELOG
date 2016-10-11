@@ -4,6 +4,7 @@
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/60);
                         Minor coverage improvements by getting rid of some redundant
                           code paths;
+                        Number::Phone::Country will now warn that exporting is deprecated;
 
 2016-09-07      3.2001  Data updates
 

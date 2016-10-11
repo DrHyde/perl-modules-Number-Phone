@@ -5,7 +5,7 @@ use Number::Phone::Country::Data;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
-$VERSION = 1.9;
+$VERSION = 1.91;
 my $use_uk = 0;
 
 sub import {
@@ -18,6 +18,7 @@ sub import {
     if($export) {
         my $callpkg = caller(1);
         no strict 'refs';
+        warn("Exporting from Number::Phone::Country is deprecated at ".join(' line ', (caller())[1,2])."\n");
         *{"$callpkg\::phone2country"} = \&{__PACKAGE__."\::phone2country"};
     }
 }
@@ -80,6 +81,7 @@ our %NANP_areas = (
 
 # private sub, returns list of NANP areas for the given ISO country code
 sub _NANP_area_codes {
+    # uncoverable subroutine - only used in build scripts
     return split('\|', $NANP_areas{shift()});
 }
 

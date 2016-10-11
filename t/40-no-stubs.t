@@ -13,7 +13,7 @@ use Test::More;
 
 END { done_testing(); }
 
-use Number::Phone::Country;
+use Number::Phone::Country qw(noexport);
 
 is(Number::Phone->new("+442087712924")->country_code(), 44, "known countries return objects");
 

@@ -12,7 +12,7 @@ use Test::More;
 
 END { done_testing(); }
 
-use_ok('Number::Phone::Country') or exit 1;
+use Number::Phone::Country qw(noexport);
 
 while (<DATA>) {
     chomp;
