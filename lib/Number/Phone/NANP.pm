@@ -191,8 +191,10 @@ NB, despite Ghostbusters above, only 555-0100 to 555-0199 are actually reserved.
 
 sub is_drama {
     my $self = shift;
-    ${$self} =~ /(555)(\d{4})$/;
-    return ($1 eq '555' && $2 gt '0099' && $2 lt '0200') ? 1 : 0;
+    if(${$self} =~ /555(\d{4})$/) {
+        return ($1 gt '0099' && $1 lt '0200') ? 1 : 0;
+    }
+    return 0;
 }
 
 sub areaname {
