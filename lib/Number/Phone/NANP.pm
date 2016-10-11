@@ -128,11 +128,15 @@ sub is_valid {
 
     @digits{qw(A B C D)} = split(//, $parsed_number, 5);
 
-    # and quickly check length
-    if(length($parsed_number) != 10) {
-        $cache->{$number}->{is_valid} = 0;
-        return 0;
-    }
+    # this is checked in N::P::C::phone2country_and_idd waaaay before we
+    # ever get here. NB leave this here in case a refactor makes that go
+    # away. There are tests for this!
+    #
+    # # and quickly check length
+    # if(length($parsed_number) != 10) {
+    #     $cache->{$number}->{is_valid} = 0;
+    #     return 0;
+    # }
     
     $cache->{$number}->{is_valid} = (
         $digits{A} >= 2 && $digits{A} <= 9 &&
