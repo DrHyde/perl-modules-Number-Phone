@@ -56,7 +56,6 @@ t/40-no-stubs.t
 t/41-stubs.t
 t/42-libphonenumber.t
 t/50_number-phone-country.t
-t/51_number-phone-country-noexport.t
 t/52_number-phone-country-uk.t
 t/53_number-phone-country-idd.t
 t/54_number-phone-country-prefix.t
@@ -321,3 +320,4 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
+t/51_number-phone-country-warns-about-exports.t
