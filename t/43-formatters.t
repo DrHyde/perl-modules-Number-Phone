@@ -28,3 +28,11 @@ is(
     '+44 20 8771 2924',
     "format_using('E123') works too"
 );
+
+note("format_using('non-existent formatter')");
+eval { Number::Phone->new('+44 20 8771 2924')->format_using('FishAndChips') };
+like(
+    $@,
+    qr/^Couldn't load format 'FishAndChips':/,
+    "format_using dies when asked to use a non-existent formatter"
+)

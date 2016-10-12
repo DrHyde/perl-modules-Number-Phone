@@ -437,6 +437,8 @@ which will return:
 
   2087712924
 
+It is a fatal error to specify a non-existent formatter.
+
 =item country
 
 The two letter ISO country code for the country in which the call will

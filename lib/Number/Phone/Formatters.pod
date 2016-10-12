@@ -16,6 +16,9 @@ method of L<Number::Phone>.
 The 'E123' formatter name is reserved and implemented by Number::Phone
 subclasses in their C<format()> methods.
 
+The 'FishAndChips' formatter name is reserved because I needed something
+guaranteed to not exist so I could test that it failed correctly.
+
 =head1 METHODS
 
 There is one compulsory method, C<format> that you must write. It will
