@@ -47,7 +47,6 @@ sub type {
 
 sub country {
     my $class = blessed(shift);
-    return unless $class;
     (my @two_letter_codes) = $class =~ /\b([A-Z]{2})\b/g;
     return $two_letter_codes[-1];
 }
@@ -177,8 +176,6 @@ sub _new_args {
       $number = join('', grep { defined } ($country, $number));
     }
 
-    die("Need to specify a number for ".__PACKAGE__."->new()\n")
-        unless($number);
     die("Number::Phone->new(): too many params\n")
         if(exists($_[2]));
     $number =~ s/[^+0-9]//g;
