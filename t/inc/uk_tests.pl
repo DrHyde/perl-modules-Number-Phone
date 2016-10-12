@@ -106,7 +106,11 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   $number = Number::Phone->new('+442087712924');
   subtest "geo numbers have correct location" => sub {
       plan tests => 2;
+      # call it twice to make sure we cover the situation where N:P:UK::Exchanges
+      # has already been loaded. NB this isn't tickled when we check
+      # with a non-geo number
       my $loc = $number->location();
+      $number->location();
       is($loc->[0], 51.38309,  "latitude");
       is($loc->[1], -0.336079, "longitude");
   };
@@ -242,10 +246,15 @@ foreach my $tuple (
   });
 }
 
-foreach my $invalid (qw(+44275939345 +44208771292 +44113203160 +44113325000)) {
-                  #        Protected    Normal       Normal       Protected
+foreach my $invalid (qw(+442 +44275939345 +44208771292 +44113203160 +44113325000)) {
+                  #   Tiny!   Protected    Normal       Normal       Protected
     $number = Number::Phone->new($invalid);
     ok(!defined($number), "$invalid is invalid (too short)");
+}
+foreach my $invalid (qw(+4427593934500 +4420877129200 +4411320316000 +4411332500000)) {
+                  #        Protected       Normal         Normal         Protected
+    $number = Number::Phone->new($invalid);
+    ok(!defined($number), "$invalid is invalid (too long)");
 }
 
 foreach my $tuple (

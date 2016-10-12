@@ -26,7 +26,6 @@ Number::Phone::UK - UK-specific methods for Number::Phone
 sub new {
     my $class = shift;
     my $number = shift;
-    die("No number given to ".__PACKAGE__."->new()\n") unless($number);
 
     $number = '+44'._clean_number($number);
     if(is_valid($number)) {
@@ -56,7 +55,6 @@ sub _get_class {
     if(exists($Number::Phone::UK::Data::db->{subclass}->{$prefix})) {
       my $subclass = join('::', $class, $Number::Phone::UK::Data::db->{subclass}->{$prefix});
       eval "use $subclass";
-      die($@) if($@);
       return $subclass;
     }
   }
@@ -82,7 +80,7 @@ sub is_valid {
     # If called as an object method, it *must* be valid otherwise the
     # object would never have been instantiated.
     # If called as a subroutine, that's the constructor doing its thang.
-    return 1 if(blessed($number) && $number->isa(__PACKAGE__));
+    return 1 if(blessed($number));
 
     # otherwise we have to validate
 
