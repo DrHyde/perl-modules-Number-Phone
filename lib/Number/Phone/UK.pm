@@ -108,6 +108,7 @@ sub is_valid {
         my($telco_and_length) = map { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @prefixes;
         $cache->{$number}->{operator} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{telco};
         $cache->{$number}->{format} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{format};
+        # uncoverable condition left
         if(defined($cache->{$number}->{format}) && $cache->{$number}->{format} =~ /\+/) {
             my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
             # for hateful mixed thing
@@ -316,7 +317,10 @@ sub location {
 
     my @prefixes = _prefixes($cleaned_number);
 
-    eval "require Number::Phone::UK::DetailedLocations" unless($ENV{TESTINGKILLTHEWABBIT});
+    # uncoverable branch true
+    if(!$ENV{TESTINGKILLTHEWABBIT}) {
+        eval "require Number::Phone::UK::DetailedLocations"; # uncoverable statement
+    }
     require Number::Phone::UK::Exchanges if(!$Number::Phone::UK::Exchanges::db);
 
     foreach(@prefixes) {
@@ -327,8 +331,9 @@ sub location {
             ];
         }
     }
-
-    return undef;
+    # may become coverable if I ever test the location of a number
+    # in an areacode that wasn't in the data dump I got years ago
+    return undef; # uncoverable statement
 }
 
 =item subscriber
