@@ -1,13 +1,13 @@
 package Number::Phone::Country::Data;
 
-$VERSION = '1.5';
+$VERSION = '1.6';
 %Number::Phone::Country::idd_codes = (
     # 1     => 'NANP',
 
     # 2* checked against wtng.info 2011-07-08
     20      => 'EG',
     211     => 'SS',
-    212     => 'MA',
+    212     => ['MA', 'EH'],
     2125288 => 'EH', # \ from http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
     2125289 => 'EH', # /
     213     => 'DZ', 216     => 'TN',
@@ -26,12 +26,12 @@ $VERSION = '1.5';
     258     => 'MZ', 260     => 'ZM', 261     => 'MG',
     262269  => 'YT', # Mayotte fixed lines
     262639  => 'YT', # Mayotte GSM
-    262     => 'RE', # Assume that Reunion is everything else in +262
+    262     => ['RE', 'YT'],
     263     => 'ZW',
     264     => 'NA', 265     => 'MW', 266     => 'LS', 267     => 'BW',
     268     => 'SZ',
     269     => 'KM',
-    27      => 'ZA', 290     => 'SH',
+    27      => 'ZA', 290     => ['SH', 'TA'],
     291     => 'ER',
     297     => 'AW', 298     => 'FO', 299     => 'GL',
 
@@ -39,7 +39,7 @@ $VERSION = '1.5';
     30      => 'GR', 31      => 'NL', 32      => 'BE', 33      => 'FR',
     34      => 'ES', 350     => 'GI', 351     => 'PT',
     352     => 'LU', 353     => 'IE', 35348   => 'GB', 354     => 'IS',
-    355     => 'AL', 356     => 'MT', 357     => 'CY', 358     => 'FI',
+    355     => 'AL', 356     => 'MT', 357     => 'CY', 358     => ['FI', 'AX'],
     359     => 'BG', 36      => 'HU', 370     => 'LT', 371     => 'LV',
     372     => 'EE', 373     => 'MD', 374     => 'AM', 375     => 'BY',
     376     => 'AD', 377     => 'MC',
@@ -56,7 +56,7 @@ $VERSION = '1.5';
     382     => 'ME', 385     => 'HR',
     386     => 'SI',
     387     => 'BA',
-    389     => 'MK', 39      => 'IT', 3966982 => 'VA',
+    389     => 'MK', 39      => ['IT', 'VA'], 3966982 => 'VA',
 
     # 4* checked against wtng.info 2011-07-08
     40      => 'RO', 41      => 'CH', 420     => 'CZ', 421     => 'SK',
@@ -85,16 +85,17 @@ $VERSION = '1.5';
     591     => 'BO', 592     => 'GY', 593     => 'EC',
     594     => 'GF', 595     => 'PY', 596     => ['MQ', 'TF'], 597     => 'SR',
     598     => 'UY',
-    599     => 'BQ',
+    599     => ['BQ', 'CW'],
     5999    => 'CW',
 
     # 6* checked against wtng.info 2011-07-08
     60      => 'MY',
-    61      => 'AU',
+    61      => ['AU', 'CC', 'CX'],
     6189162 => 'CC', # Cocos (Keeling) Islands
     6189164 => 'CX', # Christmas Island
     62      => 'ID', 63      => 'PH',
     64      => 'NZ', 65      => 'SG', 66      => 'TH', 670     => 'TL',
+    672     => ['AQ', 'NF'],
     67210   => 'AQ', # Davis station    \
     67211   => 'AQ', # Mawson           | Australian Antarctic bases
     67212   => 'AQ', # Casey            |
@@ -111,7 +112,7 @@ $VERSION = '1.5';
     # checked 2011-07-08
     76      => 'KZ',
     77      => 'KZ',
-    7       => 'RU',
+    7       => ['RU', 'KZ'],
 
     # 8* checked against wtng.info 2011-07-08
     81      => 'JP', 82      => 'KR', 84      => 'VN', 850     => 'KP',
@@ -183,6 +184,7 @@ $VERSION = '1.5';
     'AI' => [  '1',  '011',    '1'], # Anguilla
     'AL' => ['355',   '00',    '0'], # Albania
     'AM' => ['374',   '00',    '0'], # Armenia
+    'AX' => ['358',   '00',    '0'], # Aland Islands - Finland
     'BQ' => ['599',   '00',  undef], # Bonaire, Saint Eustatius and Saba (ex-Netherland Antilles)
     'CW' => ['599',   '00',  undef], # Curacao
     'AO' => ['244',   '00',  undef], # Angola
@@ -387,6 +389,7 @@ $VERSION = '1.5';
     'SX' => [  '1',  '011',    '1'], # Sint Maarten
     'SY' => ['963',   '00',    '0'], # Syria
     'SZ' => ['268',   '00',  undef], # Swaziland
+    'TA' => ['290',   '00',  undef], # Tristan da Cunha - kinda sorta part of Saint Helena
     'TC' => [  '1',  '011',    '1'], # Turks and Caicos Islands
     'TD' => ['235',   '00',  undef], # Chad
     'TF' => ['596',   '00',    '0'], # French Southern Territories
