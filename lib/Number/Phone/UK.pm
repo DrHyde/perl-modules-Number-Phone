@@ -40,6 +40,11 @@ The following methods from Number::Phone are overridden:
 
 =over 4
 
+=item new
+
+The constructor, you should never have to call this yourself. To create an
+object the canonical incantation is C<Number::Phone->new('+44 ...')>.
+
 =item is_valid
 
 The number is valid within the national numbering scheme.  It may or may

@@ -38,8 +38,9 @@ Number::Phone::Lib - Instantiate Number::Phone::* objects from libphonenumber
         send_rude_SMS();
     }
 
-This subclass of Number::Phone exclusively uses classes generated from
-Google's L<libphonenumber project|https://code.google.com/p/libphonenumber/>.
+This subclass of L<Number::Phone> is used in exactly the same way as the normal
+Number::Phone, but it exclusively uses classes generated from Google's
+L<libphonenumber project|https://code.google.com/p/libphonenumber/>.
 libphonenumber doesn't have enough data to support all the features of
 Number::Phone, but you might want to use its data and no other for a few
 reasons:
@@ -60,6 +61,16 @@ simple validation and/or formatting, all that overhead is unnecessary.
 
 That said, the core Number::Phone UK module
 is far more comprehensive.
+
+=head1 METHODS
+
+There is one method, a constructor:
+
+=head2 new
+
+Call this in exactly the same way as you would call C<Number::Phone->new()>. The
+only difference is that you will get stubs back instead of "full-fat" objects,
+even if full-fat classes are available.
 
 =head1 LICENCE
 

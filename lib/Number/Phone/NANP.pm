@@ -41,11 +41,6 @@ by Number::Phone:
     my $other_phone_number = Number::Phone->new('+1 866 623 2282');
     # $phone_number is non-geographic so is a Number::Phone::NANP
 
-in a subclass:
-
-    package Number::Phone::NANP::CA;
-    use base 'Number::Phone::NANP';
-
 =cut
 
 sub new {
@@ -71,6 +66,11 @@ sub new {
 The following methods from Number::Phone are overridden:
 
 =over 4
+
+=item new
+
+The constructor, you should never have to call this yourself. To create an
+object the canonical incantation is C<Number::Phone->new('+1 ...')>.
 
 =item is_valid
 
