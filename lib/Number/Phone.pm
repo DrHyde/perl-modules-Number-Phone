@@ -147,8 +147,8 @@ If you pass in a country code for which
 no supporting module is available, the constructor will try to use a 'stub'
 class under Number::Phone::StubCountry::* that uses data automatically
 extracted from Google's libphonenumber project.  libphonenumber doesn't
-have enough data to support all the features of Number::Phone, and this
-is an experimental feature.  If you want to disable this, then pass 'nostubs'
+have enough data to support all the features of Number::Phone.
+If you want to disable this, then pass 'nostubs'
 when you use the module:
 
     use Number::Phone qw(nostubs);
@@ -475,8 +475,6 @@ The superclass implementation returns undef.
 =over
 
 =item dial_to
-
-EXPERIMENTAL METHOD
 
 Takes another Number::Phone object as its only argument and returns a
 string showing how to dial from the number represented by the invocant
