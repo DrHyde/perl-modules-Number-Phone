@@ -82,7 +82,7 @@ TERRITORY: foreach my $territory (@territories) {
   } elsif(-e $codesfile) {
     open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
     my @lines = <$geocoding>;
-    print $module_fh "sub areaname { my \$self = shift; my \$number = \$self->{number}; my \%map = (\n";
+    print $module_fh "my %areanames = (\n";
     foreach my $line (@lines) {
       chomp($line);
       next if($line =~ /^(#.*|\s+)?$/);
@@ -90,43 +90,29 @@ TERRITORY: foreach my $territory (@territories) {
       $area = quotemeta($area);
       print $module_fh "  $prefix => \"$area\",\n";
     }
-    print $module_fh ');
-      foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
-        return $map{"'.$IDD_country_code.'$prefix"} if exists($map{"'.$IDD_country_code.'$prefix"});
-      }
-      return undef;
-    }';
+    print $module_fh ');';
   }
-  print $module_fh <<SUBNEWCODE
-
-sub new {
-  my \$class = shift;
-  my \$number = shift;
-  \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
-  my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
-SUBNEWCODE
-;
+  print $module_fh "
+    sub new {
+      my \$class = shift;
+      my \$number = shift;
+      \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
+      my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
+      (($IDD_country_code != 1 && -e $codesfile) ? 'areanames => \\%areanames' : '')
+      ."}, \$class);
+  ";
 
   if ($national_code ne '') {
-    print $module_fh <<SUBNEWCODE
-  return \$self if (\$self->is_valid());
-  \$number =~ s/(^$national_code)//g;
-  \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators }, \$class);
-  return \$self->is_valid() ? \$self : undef;
-SUBNEWCODE
-;
-  } else {
-    print $module_fh <<SUBNEWCODE
-  return \$self->is_valid() ? \$self : undef;
-SUBNEWCODE
-;
+    print $module_fh "
+      return \$self if (\$self->is_valid());
+      \$number =~ s/(^$national_code)//g;
+      \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
+      (($IDD_country_code != 1 && -e $codesfile) ? 'areanames => \\%areanames' : '')
+      ."}, \$class);
+    ";
   }
-  print $module_fh <<EOCODE
-}
-
-1;
-EOCODE
-  ;
+  print $module_fh "return \$self->is_valid() ? \$self : undef;";
+  print $module_fh '} 1;';
 }
 
 sub preamble {

@@ -5,7 +5,7 @@ use warnings;
 use Number::Phone::Country qw(noexport);
 
 use base qw(Number::Phone);
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 sub country_code {
     my $self = shift;
@@ -47,6 +47,16 @@ sub _validator {
   $validator = $self->{validators}->{$validator};
   return undef unless($validator);
   return $self->{number} =~ /^($validator)$/x ? 1 : 0;
+}
+
+sub areaname {
+    my $self   = shift;
+    my $number = $self->{number};
+    my %map = %{$self->{areanames}};
+    foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
+        return $map{$self->country_code().$prefix} if exists($map{$self->country_code().$prefix});
+    }
+    return undef;
 }
 
 sub format {
