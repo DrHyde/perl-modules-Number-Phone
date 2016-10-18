@@ -18,6 +18,8 @@ print $testfh preamble();
 my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
 
+my @tests = ();
+
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
   my $national_code    = ''.($IDD_country_code != 1 ? $territory->find('@nationalPrefix') : '');
@@ -94,16 +96,32 @@ TERRITORY: foreach my $territory (@territories) {
               warn("$ISO_country_code number $number in libphonenumber's example data is wrong\n");
               next TUPLE;
           }
-          my $constructor_args = join(', ', map { "'$_'" } @{$test_tuple});
+          my $constructor_args = [map { "'$_'" } @{$test_tuple}];
           my @classes = $IDD_country_code eq '44' ? qw(Number::Phone Number::Phone::Lib) :
                         $IDD_country_code eq '1'  ? qw(Number::Phone Number::Phone::Lib) :
                                                     qw(Number::Phone::Lib);
-          print $testfh "ok($_->new($constructor_args)->$test_method(), 
-                     \"$_->new($constructor_args)->$test_method() does the right thing\");\n"
-              foreach (@classes);
+          # print $testfh "ok($_->new($constructor_args)->$test_method(), 
+          #            \"$_->new($constructor_args)->$test_method() does the right thing\");\n"
+          #     foreach (@classes);
+          foreach my $class (@classes) {
+              push @tests, {
+                  class => $class,
+                  args  => $constructor_args,
+                  method => $test_method
+              };
+          }
       }
   }
 }
+
+print $testfh 'foreach my $test (';
+foreach my $test (@tests) {
+    print $testfh "{ class => '".$test->{class}."', args => [".join(',',@{$test->{args}})."], method => '".$test->{method}."' },\n"
+}
+print $testfh ') {
+    my($class, $args, $method) = map { $test->{$_} } qw(class args method);
+    ok($class->new(@{$args})->$method(), "$class->new(".join(", ", @{$args}).")->$method() does the right thing");
+}';
 
 sub preamble {
     q{
