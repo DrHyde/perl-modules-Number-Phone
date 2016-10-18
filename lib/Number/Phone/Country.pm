@@ -109,17 +109,18 @@ sub phone2country_and_idd {
                     foreach my $country_code (@$country) {
                         my $class = "Number\::Phone\::StubCountry\::" . $country_code;
                         eval "require $class";
-                        if ($@)
-                        {
+                        if ($@) {
                             my $error = $@;
                         } else {
-                            return ($country_code, $idd) if $class->new('+' . $phone);
+                            return (
+                                (($country_code eq 'GB' && $use_uk) ? 'UK' : $country_code),
+                                $idd
+                            ) if $class->new('+' . $phone);
                         }
                     }
                     $country = @$country[0];
                 }
 
-                if($country eq 'GB' && $use_uk) { $country = 'UK'; }
                 return ($country, $idd);
             }
         }

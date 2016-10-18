@@ -95,8 +95,12 @@ TERRITORY: foreach my $territory (@territories) {
               next TUPLE;
           }
           my $constructor_args = join(', ', map { "'$_'" } @{$test_tuple});
-          print $testfh "ok(Number::Phone->new($constructor_args)->$test_method(), 
-                     \"Number::Phone->new($constructor_args)->$test_method() does the right thing\");\n";
+          my @classes = $IDD_country_code eq '44' ? qw(Number::Phone Number::Phone::Lib) :
+                        $IDD_country_code eq '1'  ? qw(Number::Phone Number::Phone::Lib) :
+                                                    qw(Number::Phone::Lib);
+          print $testfh "ok($_->new($constructor_args)->$test_method(), 
+                     \"$_->new($constructor_args)->$test_method() does the right thing\");\n"
+              foreach (@classes);
       }
   }
 }
@@ -126,5 +130,6 @@ sub preamble {
         END { done_testing }
 
         use Number::Phone;
+        use Number::Phone::Lib;
     };
 }
