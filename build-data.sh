@@ -8,6 +8,7 @@ if [ "$1" == "--force" ]; then
   rm lib/Number/Phone/UK/Data.pm
   rm lib/Number/Phone/NANP/Data.pm
   rm lib/Number/Phone/StubCountry/KZ.pm
+  rm t/example-phone-numbers.t
 fi
 
 EXITSTATUS=0
@@ -102,6 +103,20 @@ then
   perl build-data.stubs
 else
   echo lib/Number/Phone/StubCountry/\*.pm are up-to-date
+fi
+
+# t/example-phone-numbers.t doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer
+if test ! -e t/example-phone-numbers.t -o \
+  build-tests.pl -nt t/example-phone-numbers.t -o \
+  libphonenumber/resources/PhoneNumberMetadata.xml -nt t/example-phone-numbers.t;
+then
+  if [ "$TRAVIS" != "true" ]; then
+    EXITSTATUS=1
+  fi
+  echo rebuilding t/example-phone-numbers.t
+  perl build-tests.pl
+else
+  echo t/example-phone-numbers.t is up-to-date
 fi
 
 if [ $EXITSTATUS == 1 ]; then
