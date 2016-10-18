@@ -1,6 +1,6 @@
 ^libphonenumber
 ^\.git
-^build-data\.
+^build-
 S3.xls
 S5.xls
 S7.xls
