@@ -124,9 +124,18 @@ note("dodgy numbers");
 ok(!defined($CLASS->new('+1 613 563 72423')), "too long");
 ok(!defined($CLASS->new('+1 613 563 724')),   "too short");
 ok(!defined($CLASS->new('+1 113 563 7242')),  "A digit must be 2-9");
-ok(!defined($CLASS->new('+1 613 163 7242')),  "D digit must be 2-9");
 ok(!defined($CLASS->new('+1 373 563 7242')),  "AB must not be 37");
 ok(!defined($CLASS->new('+1 963 563 7242')),  "AB must not be 96");
 ok(!defined($CLASS->new('+1 611 563 7242')),  "BC must not be 11");
+
+# the following work with a valid area code so at this point we will be down in a stub's
+# constructor before we reject the number, so we need to check this for all countries
+my %areas = %Number::Phone::Country::NANP_areas;
+die("Yargh, where's \%Number::Phone::Country::NANP_areas") unless(%areas);
+foreach my $tuple (
+    map { (my $code = $areas{$_}) =~ s/\D.*//; [ $code, $_ ] } sort keys %areas
+) {
+    ok(!defined($CLASS->new("+1 ".$tuple->[0]." 163 7242")),  "D digit must be 2-9 (".join(': ', $tuple->[1], $tuple->[0]).")");
+}
 
 1;
