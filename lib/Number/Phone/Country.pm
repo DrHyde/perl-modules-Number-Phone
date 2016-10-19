@@ -112,11 +112,11 @@ sub phone2country_and_idd {
                         eval "require $class";
                         if ($@) {
                             my $error = $@;
-                        } else {
+                        } elsif($class->new('+' . $phone)) {
                             return (
                                 (($country_code eq 'GB' && $use_uk) ? 'UK' : $country_code),
                                 $idd
-                            ) if $class->new('+' . $phone);
+                            );
                         }
                     }
                     $country = @$country[0];
