@@ -14,6 +14,7 @@ sub import {
     foreach my $param (@_) {
         if(lc($param) eq 'noexport') { $export = 0; }
          elsif(lc($param) eq 'uk') { $use_uk = 1; }
+         else { warn("Unknown param to ".__PACKAGE__." '$param' at ".join(' line ', (caller())[1,2])."\n"); }
     }
     if($export) {
         my $callpkg = caller(1);

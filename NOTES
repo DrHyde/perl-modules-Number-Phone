@@ -10,4 +10,3 @@ Coverage:
     NANP.pm: appears to be some oddity around eval "use ..."
 
   Number::Phone needs branch/cond coverage improving
-  N::P::Country needs branch improvements

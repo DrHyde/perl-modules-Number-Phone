@@ -77,7 +77,7 @@ t/country-test-br.t
 t/formatters.t
 lib/Number/Phone/Formatter/Raw.pm
 lib/Number/Phone/Formatters.pod
-t/number-phone-country-warns-about-exports.t
+t/number-phone-country-warnings.t
 t/pod-coverage.t
 t/example-phone-numbers.t
 lib/Number/Phone/StubCountry/AC.pm
