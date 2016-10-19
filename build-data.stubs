@@ -78,11 +78,14 @@ TERRITORY: foreach my $territory (@territories) {
   print $module_fh 'my '.Data::Dumper->new([$validators], [qw(validators)])->Dump();
   my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
   if($IDD_country_code == 1) {
-    print $module_fh "use Number::Phone::NANP::Data;\n";
-    print $module_fh "sub areaname {
-        # uncoverable subroutine - kinda. covered for some countries, no data for others.
-        # uncoverable statement
-        Number::Phone::NANP::Data::_areaname('1'.shift()->{number}); }\n";
+    print $module_fh "use Number::Phone::NANP::Data;\nsub areaname {\n";
+    if($ISO_country_code !~ /^(US|CA|JM)$/) {
+        # we have explicit tests for US and CA areaname, and use JM to
+        # check it DTRT when there's no data
+        print $module_fh "# uncoverable subroutine - no data for most NANP countries
+                          # uncoverable statement\n";
+    }
+    print $module_fh "Number::Phone::NANP::Data::_areaname('1'.shift()->{number}); }\n";
   } elsif(-e $codesfile) {
     open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
     my @lines = <$geocoding>;
