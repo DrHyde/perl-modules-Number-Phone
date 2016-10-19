@@ -45,9 +45,31 @@ is($tf->is_fixed_line(),
    (is_libphonenumber() ? undef : 1),
    "$CLASS->new('$toll_free')->is_fixed_line()");
 is($tf->is_geographic(), 0, "$CLASS->new('$toll_free')->is_geographic()");
+is($tf->is_tollfree(), 1, "$CLASS->new('$toll_free')->is_tollfree()");
+
+my $special_rate = '+1 (900) 623 2282';
+my $sr = $CLASS->new($special_rate);
+isa_ok $sr, is_libphonenumber() ? 'Number::Phone::StubCountry::US'
+                                : 'Number::Phone::NANP';
+is($sr->is_specialrate(), 1, "$CLASS->new('$special_rate')->is_specialrate()");
+
+my $bb_special_rate = '+1 (246) 417 1234';
+my $bbsr = $CLASS->new($bb_special_rate);
+isa_ok $bbsr, is_libphonenumber() ? 'Number::Phone::StubCountry::BB'
+                                  : 'Number::Phone::NANP::BB';
+is($bbsr->is_specialrate(), 1, "$CLASS->new('$bb_special_rate')->is_specialrate()");
+
+my $personal = '+1 (500) 623 2282';
+my $pn = $CLASS->new($personal);
+isa_ok $pn, is_libphonenumber() ? 'Number::Phone::StubCountry::US'
+                                : 'Number::Phone::NANP';
+is($pn->is_personal(), 1, "$CLASS->new('$personal')->is_personal()");
 
 my $ca_numb = '+16135637242';
 my $ca = $CLASS->new($ca_numb);
+is($ca->is_tollfree(), 0, "$CLASS->new('$ca_numb')->is_tollfree()");
+is($ca->is_specialrate(), 0, "$CLASS->new('$ca_numb')->is_specialrate()");
+is($ca->is_personal(), 0, "$CLASS->new('$ca_numb')->is_personal()");
 isa_ok $ca, is_libphonenumber() ? 'Number::Phone::StubCountry::CA'
                                 : 'Number::Phone::NANP::CA';
 is($ca->country_code(), 1, "$CLASS->new('$ca_numb')->country_code()");

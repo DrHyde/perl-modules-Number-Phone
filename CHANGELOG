@@ -1,11 +1,13 @@
 2016-XX-XX      XXXXXX  Implemented is_drama
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/pull/61);
+                        NANP modules now know about is_tollfree, is_specialrate and
+                          is_personal;
+                        Number::Phone::Country will now warn that exporting is deprecated;
+                        Stubs and dial_to are no longer experimental;
                         Minor doco improvements, including some from the Debian project
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/60);
                         Minor coverage improvements by getting rid of some redundant
                           code paths;
-                        Number::Phone::Country will now warn that exporting is deprecated;
-                        Stubs and dial_to are no longer experimental;
                         More comprehensive testing of stubs, and resulting bug-fixes for
                           territories that appear as part of another's number plan, such
                           as enormous Kazakhstan and tiny Tristan da Cunha;

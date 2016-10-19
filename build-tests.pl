@@ -55,18 +55,22 @@ TERRITORY: foreach my $territory (@territories) {
               $type eq 'tollFree' ? 'is_tollfree' :
               $type eq 'personalNumber' ? 'is_personal' :
               die("WTF is $type\n");
+
           if($IDD_country_code == 1 && $test_method =~ /
               is_ipphone |
               is_mobile |
               is_fixed_line |
-              is_pager |
-              is_tollfree |
-              is_specialrate |
-              is_personal 
+              is_pager
           /x) {
-              warn("skipping $ISO_country_code number $number, NANP::* don't fully support $test_method\n");
-              next TUPLE;
+              if($test_method =~ /is_fixed_line|is_mobile/) {
+                  warn("checking $ISO_country_code number $number, as is_geographic *or* $test_method\n");
+                  $test_method = [$test_method, 'is_geographic'];
+              } else {
+                 warn("skipping $ISO_country_code number $number, NANP::* don't fully support $test_method\n");
+                 next TUPLE;
+             }
           }
+
           if($IDD_country_code eq '44' && $number =~ /
               ^
               121 234 5678
@@ -100,14 +104,15 @@ TERRITORY: foreach my $territory (@territories) {
           my @classes = $IDD_country_code eq '44' ? qw(Number::Phone Number::Phone::Lib) :
                         $IDD_country_code eq '1'  ? qw(Number::Phone Number::Phone::Lib) :
                                                     qw(Number::Phone::Lib);
-          # print $testfh "ok($_->new($constructor_args)->$test_method(), 
-          #            \"$_->new($constructor_args)->$test_method() does the right thing\");\n"
-          #     foreach (@classes);
+
+          if(!ref($test_method)) { $test_method = [$test_method] }
+          my $test_methods     = [map { "'$_'" } @{$test_method}];
+
           foreach my $class (@classes) {
               push @tests, {
-                  class => $class,
-                  args  => $constructor_args,
-                  method => $test_method
+                  class   => $class,
+                  args    => $constructor_args,
+                  methods => $test_methods
               };
           }
       }
@@ -116,11 +121,14 @@ TERRITORY: foreach my $territory (@territories) {
 
 print $testfh 'foreach my $test (';
 foreach my $test (@tests) {
-    print $testfh "{ class => '".$test->{class}."', args => [".join(',',@{$test->{args}})."], method => '".$test->{method}."' },\n"
+    print $testfh "{ class => '".$test->{class}."', args => [".join(',',@{$test->{args}})."], methods => [".join(',',@{$test->{methods}})."] },\n";
 }
 print $testfh ') {
-    my($class, $args, $method) = map { $test->{$_} } qw(class args method);
-    ok($class->new(@{$args})->$method(), "$class->new(".join(", ", @{$args}).")->$method() does the right thing");
+    my($class, $args, $methods) = map { $test->{$_} } qw(class args methods);
+    ok(
+        (grep { $class->new(@{$args})->$_() } @{$methods}),
+        "$class->new(".join(", ", @{$args}).")->{".join(", ", @{$methods})."}() does the right thing"
+    );
 }';
 
 sub preamble {

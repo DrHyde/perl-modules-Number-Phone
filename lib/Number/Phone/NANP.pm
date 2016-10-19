@@ -195,6 +195,48 @@ sub is_drama {
     return 0;
 }
 
+=item is_tollfree
+
+The number is free to the caller. 800, 844, 855, 866, 877 and 888 "area codes"
+
+=cut
+
+sub is_tollfree {
+    my $self = shift;
+    if(${$self} =~ /^(\+1)?8[045678]{2}/) { return 1; }
+     else { return 0; }
+}
+
+=item is_specialrate
+
+The number is charged at a higher rate than normal. The 900 "area code".
+
+=cut
+
+sub is_specialrate {
+    my $self = shift;
+    if(${$self} =~ /
+        ^(\+1)?
+        (
+            900 |                          # NANP-global
+            246 ( 292 | 41[7-9] | 43[01] ) # BB-specific, apparently
+        )
+    /x) { return 1; }
+     else { return 0; }
+}
+
+=item is_personal
+
+The number is a "personal" number. The 500, 533, 544, 566 and 577 "area codes".
+
+=cut
+
+sub is_personal {
+    my $self = shift;
+    if(${$self} =~ /^(\+1)?5[03467]{2}/) { return 1; }
+     else { return 0; }
+}
+
 sub areaname {
   my $self = shift;
   return Number::Phone::NANP::Data::_areaname('1'.$self->areacode().$self->subscriber());
