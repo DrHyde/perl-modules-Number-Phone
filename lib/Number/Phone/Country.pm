@@ -82,6 +82,7 @@ our %NANP_areas = (
 # private sub, returns list of NANP areas for the given ISO country code
 sub _NANP_area_codes {
     # uncoverable subroutine - only used in build scripts
+    # uncoverable statement
     return split('\|', $NANP_areas{shift()});
 }
 

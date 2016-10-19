@@ -78,7 +78,11 @@ TERRITORY: foreach my $territory (@territories) {
   print $module_fh 'my '.Data::Dumper->new([$validators], [qw(validators)])->Dump();
   my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
   if($IDD_country_code == 1) {
-    print $module_fh "use Number::Phone::NANP::Data;sub areaname { Number::Phone::NANP::Data::_areaname('1'.shift()->{number}); }\n";
+    print $module_fh "use Number::Phone::NANP::Data;\n";
+    print $module_fh "sub areaname {
+        # uncoverable subroutine - kinda. covered for some countries, no data for others.
+        # uncoverable statement
+        Number::Phone::NANP::Data::_areaname('1'.shift()->{number}); }\n";
   } elsif(-e $codesfile) {
     open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
     my @lines = <$geocoding>;
@@ -102,7 +106,7 @@ TERRITORY: foreach my $territory (@territories) {
       ."}, \$class);
   ";
 
-  if ($national_code ne '') {
+  if ($national_code ne '' && $IDD_country_code ne '1') {
     print $module_fh "
       return \$self if (\$self->is_valid());
       \$number =~ s/(^$national_code)//g;
@@ -111,8 +115,8 @@ TERRITORY: foreach my $territory (@territories) {
       ."}, \$class);
     ";
   }
-  print $module_fh "return \$self->is_valid() ? \$self : undef;";
-  print $module_fh '} 1;';
+  print $module_fh "return \$self->is_valid() ? \$self : undef;\n";
+  print $module_fh "}\n1;";
 }
 
 sub preamble {
