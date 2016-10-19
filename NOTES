@@ -1,2 +1,13 @@
 National numbering plans:
   http://www.itu.int/ITU-T/inr/nnp/index.html
+
+Coverage:
+  stubs at 100% except:
+    JE: mysterious!
+    MF: because of overlapping number ranges with GP and BL
+    VA: because it's part of Italy as far as libphonenumber is concerned
+  NANP at 100% except:
+    NANP.pm: appears to be some oddity around eval "use ..."
+
+  Number::Phone needs branch/cond coverage improving
+  N::P::Country needs branch improvements

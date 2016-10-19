@@ -113,8 +113,8 @@ sub is_valid {
         my($telco_and_length) = map { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } grep { $Number::Phone::UK::Data::db->{telco_and_length}->{$_} } @prefixes;
         $cache->{$number}->{operator} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{telco};
         $cache->{$number}->{format} = $Number::Phone::UK::Data::db->{telco_format}->{$telco_and_length}->{format};
-        # uncoverable condition left
-        if(defined($cache->{$number}->{format}) && $cache->{$number}->{format} =~ /\+/) {
+
+        if($cache->{$number}->{format} =~ /\+/) {
             my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
             # for hateful mixed thing
             my @subscriberlengths = ($subscriberlength =~ m{/}) ? split(/\//, $subscriberlength) : ($subscriberlength);
@@ -354,25 +354,24 @@ number.
 =item format
 
 Return a sanely formatted version of the number, complete with IDD code, eg
-for the UK number (0208) 771-2924 it would return +44 20 87712924.
+for the UK number (0208) 771-2924 it would return +44 20 8771 2924.
 
 =cut
 
 sub format {
     my $self = shift;
-    return (
-        # if there's an areacode ...
-        $self->areacode()      ? ('+'.country_code().' '.$self->areacode().' '.(
-          length($self->subscriber()) == 7 ? substr($self->subscriber(), 0, 3).' '.substr($self->subscriber(), 3) :
-          length($self->subscriber()) == 8 ? substr($self->subscriber(), 0, 4).' '.substr($self->subscriber(), 4) :
-                                             $self->subscriber() )) : 
-        # if not allocated ...
-        !$self->is_allocated() ? '+'.country_code().' '.( ${$self} =~ /^\+44/ ? substr(${$self}, 3) : substr(${$self}, 1)) :
-        # if there's a subscriber ...
-        $self->subscriber() ? '+'.country_code().' '.$self->subscriber :
-        # otherwise ...
-        ${$self}
-    );
+    my $r = ${$self};
+    if($self->areacode()) { # if there's an areacode ...
+        $r = '+'.country_code().' '.$self->areacode().' ';
+        if(    length($self->subscriber()) == 7) { $r .= substr($self->subscriber(), 0, 3).' '.substr($self->subscriber(), 3) }
+         elsif(length($self->subscriber()) == 8) { $r .= substr($self->subscriber(), 0, 4).' '.substr($self->subscriber(), 4) }
+         else                                    { $r .= $self->subscriber() }
+    } elsif(!$self->is_allocated()) { # if not allocated ...
+        $r = '+'.country_code().' '.substr(${$self}, 3)
+    } elsif($self->subscriber()) { # if there's a subscriber ...
+        $r = '+'.country_code().' '.$self->subscriber
+    }
+    return $r;
 }
 
 =item intra_country_dial_to
