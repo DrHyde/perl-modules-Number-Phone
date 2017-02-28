@@ -99,6 +99,11 @@ foreach my $datum (@telco_length_data) {
         warn "  check this and remove the warning if fixed in XLS file\n";
         if($format eq '') { $format = '4+6' }
     }
+    if($prefix eq '17683320') {
+        warn "Correcting OFCOM's broken data for 1768 33 20\n";
+        warn "  check this and remove the warning if fixed in XLS file\n";
+        if($format eq '') { $format = '5+5' }
+    }
     if($format eq '') {
         if($prefix =~ /^[37]/) { $format = '10 digit numbers' }
     }
