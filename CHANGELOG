@@ -1,3 +1,7 @@
+XXXX-XX-XX      XXXXXX  Changed Kosovo's placeholder country-code from KOS to XK;
+                        +383 (Kosovo) is now a special-case for validation;
+                        Data updates
+
 2016-12-06      3.3000  Implemented is_drama
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/pull/61);
                         NANP modules now know about is_tollfree, is_specialrate and

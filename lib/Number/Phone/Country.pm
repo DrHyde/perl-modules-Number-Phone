@@ -194,9 +194,11 @@ off by passing the 'noexport' constant when you use the module.
 Also be aware that the ISO code for the United Kingdom is GB, not UK.  If
 you would prefer UK, pass the 'uk' constant.
 
-I have put in number ranges for Kosovo, which does not yet have an ISO
-country code.  I have used KOS, as that is used by the UN Development
-Programme.  This may change in the future.
+I have put in number ranges for Kosovo, which does not yet have an ISO country
+code.  I have used XK, as that is the de facto standard as used by numerous
+international bodies such as the European Commission and the IMF.  I previously
+used KOS, as used by the UN Development Programme.  This may change again in
+the future.
 
 =head1 FUNCTIONS
 
@@ -229,7 +231,7 @@ country.
 
 =item phone2country($phone)
 
-Returns the ISO country code (or KOS for Kosovo) for a phone number.
+Returns the ISO country code (or XK for Kosovo) for a phone number.
 eg, for +441234567890 it returns 'GB' (or 'UK' if you've told it to).
 
 =item phone2country_and_idd($phone)

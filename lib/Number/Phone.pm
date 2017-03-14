@@ -134,9 +134,10 @@ Early versions of this module allowed what are now object methods
 to also be called as class methods or even as functions. This was a
 bad design decision. Use of those calling conventions was deprecated
 in version 2.0, released in January 2012, and started to emit
-warnings.
+warnings. All code to support those calling conventions has now been removed.
 
-All code to support those calling conventions has now been removed.
+Until 2017 we ued KOS for the country code for Kosovo, that has now changed to
+XK. See L<Number::Phone::Country>.
 
 =head1 COMPATIBILTY WITH libphonenumber
 
@@ -158,6 +159,16 @@ you should use the L<Number::Phone::Lib> module instead. This is a subclass
 of Number::Phone that will use the libphonenumber-derived stub classes even
 when extra data is available in, for example, Number::Phone::UK. You might
 want to do this for compatibility or performance. Number::Phone::UK is quite slow, because it uses a huge database for some of its features.
+
+=head1 SPECIAL CASE FOR KOSOVO
+
+Kosovo has been allocated country code +383, and it is apparently in use as of
+March 2017, but no number plan has been published and libphonenumber has no
+data. Therefore *all* +383 numbers will be considered valid. This is strictly
+speaking the wrong thing to do, but the alternative is to consider them all
+invalid, which is just as wrong. This will no doubt change in the future.
+See L<https://github.com/DrHyde/perl-modules-Number-Phone/issues/66> and
+L<https://github.com/googlei18n/libphonenumber/issues/1486>.
 
 =cut
 
@@ -215,7 +226,8 @@ sub _make_stub_object {
       return bless({
           country_code => $country_idd,
           country      => $country_name,
-          is_valid     => undef,
+          # Kosovo special case
+          is_valid     => ($country_idd eq '383') ? 1 : undef,
           number       => $local_number,
       }, 'Number::Phone::StubCountry');
   }
