@@ -5,7 +5,7 @@ use Number::Phone::Country::Data;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
-$VERSION = 1.91;
+$VERSION = 1.92;
 my $use_uk = 0;
 
 sub import {
