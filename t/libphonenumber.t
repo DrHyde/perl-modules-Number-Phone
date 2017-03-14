@@ -51,12 +51,12 @@ is($gb->country_code(), 44, "$CLASS->new('$uk')->country_code()");
 is($gb->country(), 'GB', "$CLASS->new('$uk')->country()");
 is($gb->format(), '+44 1275 939345', "$CLASS->new('$uk')->format()");
 
-my $ukim = '+447624376698'; # Isle of Man
+my $ukim = '+447624212345'; # Isle of Man
 my $im = $CLASS->new($ukim);
 isa_ok $im, 'Number::Phone::StubCountry::IM';
 is($im->country_code(), 44, "$CLASS->new('$ukim')->country_code()");
 is($im->country(), 'IM', "$CLASS->new('$ukim')->country()");
-is($im->format(), '+44 7624 376698', "$CLASS->new('$ukim')->format()");
+is($im->format(), '+44 7624 212345', "$CLASS->new('$ukim')->format()");
 
 my $ukgg = '+441481723153'; # Guernsey
 my $gg = $CLASS->new($ukgg);

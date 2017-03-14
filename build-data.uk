@@ -74,15 +74,16 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
 
         next if($status !~ /^Allocated ?(\(Closed Range\)|for Migration only)?$/);
 
-        if($prefix =~ /^[12]/)                  { push @geo_prefices, $prefix }
-         elsif($prefix =~ /^(500|80)/)          { push @free_prefices, $prefix }
-         elsif($prefix =~ /^55/)                { push @corporate_prefices, $prefix }
-         elsif($prefix =~ /^56/)                { push @ip_prefices, $prefix }
-         elsif($prefix =~ /^70/)                { push @personal_prefices, $prefix }
-         elsif($prefix =~ /^7([12345789]|624)/) { push @mobile_prefices, $prefix }
-         elsif($prefix =~ /^76/)                { push @pager_prefices, $prefix }
-         elsif($prefix =~ /^(3|8[47]|9)/)       { push @special_prefices, $prefix }
-         elsif($prefix =~ /^82[09]/)            { push @network_svc_prefices, $prefix } # internet for schools
+        if($prefix =~ /^[12]/)                         { push @geo_prefices, $prefix }
+         elsif($prefix =~ /^(500|80)/)                 { push @free_prefices, $prefix }
+         elsif($prefix =~ /^55/)                       { push @corporate_prefices, $prefix }
+         elsif($prefix =~ /^56/)                       { push @ip_prefices, $prefix }
+         elsif($prefix =~ /^70/)                       { push @personal_prefices, $prefix }
+         # NB order is important. 7624 is IOM mobiles except 76242 which is pagers. Apparently.
+         elsif($prefix =~ /^7([12345789]|624[013-9])/) { push @mobile_prefices, $prefix }
+         elsif($prefix =~ /^76/)                       { push @pager_prefices, $prefix }
+         elsif($prefix =~ /^(3|8[47]|9)/)              { push @special_prefices, $prefix }
+         elsif($prefix =~ /^82[09]/)                   { push @network_svc_prefices, $prefix } # internet for schools
         if($prefix =~ /^9(8|0[89])/) { push @adult_prefices, $prefix }
         push @telco_length_data, [$prefix, $telco, $format];
     }

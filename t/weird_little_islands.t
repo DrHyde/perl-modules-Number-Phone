@@ -14,7 +14,7 @@ my $data = {
   JE => {
     mobile     => '+44 7509000000',
     geographic => '+44 1534 440000',
-    operator   => 'Jersey Telecom',
+    operator   => 'JT (Jersey) Limited',
     regulator  => 'Office of Utility Regulation, http://www.cicra.gg'
   },
   GG => {
@@ -27,7 +27,7 @@ my $data = {
     mobile      => '+44 7624000000',
     geographic  => '+44 1624 500000',
     specialrate => '+44 8456247890',
-    operator    => 'Manx Telecom',
+    operator    => 'Manx Telecom Trading Limited',
     regulator   => 'Isle of Man Communications Commission, http://www.gov.im/government/boards/telecommunications.xml'
   },
 };
