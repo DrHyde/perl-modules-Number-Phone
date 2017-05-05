@@ -11,6 +11,18 @@ WriteMakefile(
         }
     },
   VERSION_FROM => 'lib/Number/Phone.pm',
+  BUILD_REQUIRES => {
+    'ExtUtils::MakeMaker' => 6.52,
+    'ExtUtils::Manifest'  => 0,
+    'ExtUtlls::Install'   => 0,
+  },
+
+  CONFIGURE_REQUIRES => {
+    'ExtUtils::MakeMaker' => 6.52,
+    'ExtUtils::Manifest'  => 0,
+    'ExtUtlls::Install'   => 0,
+  },
+
   PREREQ_PM    => {
     'Scalar::Util'  => 0,
     'Test::More'    => '0.96', # need done_testing (0.88) and subtests (0.95_01)
