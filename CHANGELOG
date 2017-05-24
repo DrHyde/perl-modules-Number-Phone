@@ -1,3 +1,5 @@
+2017-XX-XX      XXXXXX  Added some nominally redundant dependencies (see
+                          https://github.com/DrHyde/perl-modules-Number-Phone/pull/68)
 2017-03-14      3.4000  Changed Kosovo's placeholder country-code from KOS to XK;
                         +383 (Kosovo) is now a special-case for validation
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/66);
