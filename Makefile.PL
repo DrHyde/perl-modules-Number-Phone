@@ -14,13 +14,13 @@ WriteMakefile(
   BUILD_REQUIRES => {
     'ExtUtils::MakeMaker' => 6.52,
     'ExtUtils::Manifest'  => 0,
-    'ExtUtlls::Install'   => 0,
+    'ExtUtils::Install'   => 0,
   },
 
   CONFIGURE_REQUIRES => {
     'ExtUtils::MakeMaker' => 6.52,
     'ExtUtils::Manifest'  => 0,
-    'ExtUtlls::Install'   => 0,
+    'ExtUtils::Install'   => 0,
   },
 
   PREREQ_PM    => {
