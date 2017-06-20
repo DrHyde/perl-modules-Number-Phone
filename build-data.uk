@@ -14,7 +14,7 @@ my $csv = Text::CSV_XS->new({
     binary => 1
 });
 
-my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = ();
+my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = my %statuses = ();
 
 open(my $sabc, '<', 'sabc.txt') || die("Couldn't open sabc.txt: $!\n");
 print "Working on sabc.txt\n";
@@ -56,11 +56,6 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
     }
     my $count = 0;
 
-    if($xlsfile eq 'sabcde17.xls' && !defined($rows[0]->[0])) {
-        warn "Fixing missing SABC header field in sabcde17.xls\n";
-        warn "  check this and remove the warning if fixed in XLS file\n";
-        $rows[0]->[0] = 'SABC';
-    }
     my %header_fields_index_by_name = map { $_ => $count++ } my @header_fields_index_by_column = @{shift(@rows)};
     my @prefix_fields = grep { exists($header_fields_index_by_name{$_}) } qw(SABC D/DE FG);
     foreach my $row (@rows) {
@@ -72,7 +67,8 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
         $telco  ||= '';
         $format ||= '';
 
-        next if($status !~ /^Allocated ?(\(Closed Range\)|for Migration only)?$/);
+        next if($status !~ /^Protected|Allocated ?(\(Closed Range\)|for Migration only)?$/);
+        $statuses{"$prefix"} = $status;
 
         if($prefix =~ /^[12]/)                         { push @geo_prefices, $prefix }
          elsif($prefix =~ /^(500|80)/)                 { push @free_prefices, $prefix }
@@ -97,17 +93,17 @@ foreach my $datum (@telco_length_data) {
 
     if($prefix eq '1442600') {
         warn "Correcting OFCOM's broken data for 1442 60 0\n";
-        warn "  check this and remove the warning if fixed in XLS file\n";
+        warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
         if($format eq '') { $format = '4+6' }
     }
     if($prefix eq '1634470') {
         warn "Correcting OFCOM's broken data for 1634 47 0\n";
-        warn "  check this and remove the warning if fixed in XLS file\n";
+        warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
         if($format eq '') { $format = '4+6' }
     }
     if($prefix eq '17683320') {
         warn "Correcting OFCOM's broken data for 1768 33 20\n";
-        warn "  check this and remove the warning if fixed in XLS file\n";
+        warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
         if($format eq '') { $format = '5+5' }
     }
     if($format eq '') {
@@ -132,7 +128,7 @@ foreach my $datum (@telco_length_data) {
         $format ne 'Mixed 4+5 & 4+6'
     ) {
         warn "Unknown format: $format (r: $prefix; t: $telco)\n"
-            unless($prefix =~ /^[89]/)
+            unless($prefix =~ /^[89]/ || $statuses{$prefix} eq 'Protected')
     }
 
     my $cache_key = md5_base64($telco.'_'.$format);
@@ -150,6 +146,7 @@ my $dbm = DBM::Deep->new(
     file => 'temp.db',
     data_sector_size => 32,
 );
+
 $dbm->{geo_prefices}         = { map { ($_, 1) } @geo_prefices };
 $dbm->{network_svc_prefices} = { map { ($_, 1) } @network_svc_prefices };
 $dbm->{free_prefices}        = { map { ($_, 1) } @free_prefices };
