@@ -132,7 +132,7 @@ print $testfh ') {
     ok(
         # grep is because a number might need to be checked as is_geographic *or* is_fixed_line
         (grep { $class->new(@{$args})->$_() } @{$methods}),
-        "$class->new(".join(", ", @{$args}).")->{".join(", ", @{$methods})."}() does the right thing"
+        "$class->new(".join(", ", @{$args}).")->".join(", ", @{$methods})."() does the right thing"
     );
 }';
 
