@@ -95,7 +95,7 @@ TERRITORY: foreach my $territory (@territories) {
             }
         }
     }
-    warn("$ISO_country_code: good data for to tell what's fixed/mobile\n");
+    warn("$ISO_country_code: good data to tell what's fixed/mobile\n");
     print MODULE "\$fixed_line_regexes{$ISO_country_code} = '$fixed';\n";
     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
