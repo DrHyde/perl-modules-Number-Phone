@@ -260,8 +260,8 @@ foreach my $invalid (qw(+4427593934500 +4420877129200 +4411320316000 +4411332500
 foreach my $tuple (
   [ 'Number::Phone'     => '+441954202020', '+44 1954 202020' ],
   [ 'Number::Phone::UK' => '01954202020',   '+44 1954 202020' ],
-  [ 'Number::Phone'     => '+441697384444', '+44 1697384444' ],
-  [ 'Number::Phone::UK' => '01697384444',   '+44 1697384444' ],
+  [ 'Number::Phone'     => '+441697384444', '+44 16973 84444' ],
+  [ 'Number::Phone::UK' => '01697384444',   '+44 16973 84444' ],
 ) {
   my($class, $number, $result) = @{$tuple};
   skip_if_mocked("Stubs aren't intended to be constructed directly", 1, sub {
