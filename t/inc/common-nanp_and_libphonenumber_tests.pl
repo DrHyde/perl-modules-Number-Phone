@@ -82,34 +82,46 @@ is($ca->is_mobile(), undef, "$CLASS->new('$ca_numb')->is_mobile()");
 is($ca->is_fixed_line(), undef, "$CLASS->new('$ca_numb')->is_fixed_line()");
 is($ca->is_geographic(), 1, "$CLASS->new('$ca_numb')->is_geographic()");
 
-my $jm_fixed_numb = '+18765013333';
-my $jm_fixed = $CLASS->new($jm_fixed_numb);
-isa_ok $jm_fixed, is_libphonenumber() ? 'Number::Phone::StubCountry::JM'
+my $jm_numb = '+18765013333';
+my $jm = $CLASS->new($jm_numb);
+isa_ok $jm, is_libphonenumber() ? 'Number::Phone::StubCountry::JM'
                                       : 'Number::Phone::NANP::JM';
-is($jm_fixed->country_code(), 1, "$CLASS->new('$jm_fixed_numb')->country_code()");
-is($jm_fixed->country(), 'JM', "$CLASS->new('$jm_fixed_numb')->country()");
-is($jm_fixed->areaname(), undef, "$CLASS->new('$jm_fixed_numb')->areaname()");
-is($jm_fixed->format(), '+1 876 501 3333', "$CLASS->new('$jm_fixed_numb')->format()");
-is($jm_fixed->is_mobile(), 0, "$CLASS->new('$jm_fixed_numb')->is_mobile()");
-is($jm_fixed->is_fixed_line(), 1, "$CLASS->new('$jm_fixed_numb')->is_fixed_line()");
-is($jm_fixed->is_geographic(), 1,"$CLASS->new('$jm_fixed_numb')->is_geographic()");
-is($jm_fixed->is_valid(), 1,"$CLASS->new('$jm_fixed_numb')->is_valid()");
+is($jm->country_code(), 1, "$CLASS->new('$jm_numb')->country_code()");
+is($jm->country(), 'JM', "$CLASS->new('$jm_numb')->country()");
+is($jm->areaname(), undef, "$CLASS->new('$jm_numb')->areaname()");
+is($jm->format(), '+1 876 501 3333', "$CLASS->new('$jm_numb')->format()");
+is($jm->is_geographic(), 1,"$CLASS->new('$jm_numb')->is_geographic()");
+is($jm->is_valid(), 1,"$CLASS->new('$jm_numb')->is_valid()");
 
-my $jm_mobile_numb = '+18762113333';
-my $jm_mobile = $CLASS->new($jm_mobile_numb);
-isa_ok $jm_mobile, is_libphonenumber() ? 'Number::Phone::StubCountry::JM'
-                                      : 'Number::Phone::NANP::JM';
-is($jm_mobile->country_code(), 1, "$CLASS->new('$jm_mobile_numb')->country_code()");
-is($jm_mobile->country(), 'JM', "$CLASS->new('$jm_mobile_numb')->country()");
-is($jm_mobile->areaname(), undef, "$CLASS->new('$jm_mobile_numb')->areaname()");
-is($jm_mobile->format(), '+1 876 211 3333', "$CLASS->new('$jm_mobile_numb')->format()");
-is($jm_mobile->is_mobile(), 1, "$CLASS->new('$jm_mobile_numb')->is_mobile()");
-is($jm_mobile->is_fixed_line(), 0, "$CLASS->new('$jm_mobile_numb')->is_fixed_line()");
+# TT (Trinidad and Tobago) has good fixed line/mobile regexes ...
+my $tt_fixed_numb = '+18682013333';
+my $tt_fixed = $CLASS->new($tt_fixed_numb);
+isa_ok $tt_fixed, is_libphonenumber() ? 'Number::Phone::StubCountry::TT'
+                                       : 'Number::Phone::NANP::TT';
+is($tt_fixed->country_code(), 1, "$CLASS->new('$tt_fixed_numb')->country_code()");
+is($tt_fixed->country(), 'TT', "$CLASS->new('$tt_fixed_numb')->country()");
+is($tt_fixed->areaname(), undef, "$CLASS->new('$tt_fixed_numb')->areaname()");
+is($tt_fixed->format(), '+1 868 201 3333', "$CLASS->new('$tt_fixed_numb')->format()");
+is($tt_fixed->is_mobile(), 0, "$CLASS->new('$tt_fixed_numb')->is_mobile()");
+is($tt_fixed->is_fixed_line(), 1, "$CLASS->new('$tt_fixed_numb')->is_fixed_line()");
+is($tt_fixed->is_geographic(), 1,"$CLASS->new('$tt_fixed_numb')->is_geographic()");
+is($tt_fixed->is_valid(), 1,"$CLASS->new('$tt_fixed_numb')->is_valid()");
+
+my $tt_mobile_numb = '+18682663333';
+my $tt_mobile = $CLASS->new($tt_mobile_numb);
+isa_ok $tt_mobile, is_libphonenumber() ? 'Number::Phone::StubCountry::TT'
+                                      : 'Number::Phone::NANP::TT';
+is($tt_mobile->country_code(), 1, "$CLASS->new('$tt_mobile_numb')->country_code()");
+is($tt_mobile->country(), 'TT', "$CLASS->new('$tt_mobile_numb')->country()");
+is($tt_mobile->areaname(), undef, "$CLASS->new('$tt_mobile_numb')->areaname()");
+is($tt_mobile->format(), '+1 868 266 3333', "$CLASS->new('$tt_mobile_numb')->format()");
+is($tt_mobile->is_mobile(), 1, "$CLASS->new('$tt_mobile_numb')->is_mobile()");
+is($tt_mobile->is_fixed_line(), 0, "$CLASS->new('$tt_mobile_numb')->is_fixed_line()");
 # in libphonenumber-land, fixed_line means geographic. N::P::NANP is a bit
 # smarter and knows that mobiles are geographic in the NANP.
-is($jm_mobile->is_geographic(),
+is($tt_mobile->is_geographic(),
    (is_libphonenumber() ? 0 : 1),
-   "$CLASS->new('$jm_mobile_numb')->is_geographic()");
+   "$CLASS->new('$tt_mobile_numb')->is_geographic()");
 
 note("is_drama");
 skip_if_libphonenumber("Stubs don't support is_drama", 2, sub {

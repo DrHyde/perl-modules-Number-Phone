@@ -89,12 +89,13 @@ TERRITORY: foreach my $territory (@territories) {
             foreach my $co (map { sprintf("%03d", $_ ) } 0 .. 999) {
                 my $number = "${area_code}${co}3333";
                 if($number =~ /^$fixed$/x && $number =~ /^$mobile$/x) {
-                    warn("$ISO_country_code: Overlap between fixed/mobile regexes for $number\n");
+                    warn("$ISO_country_code: Overlap between fixed/mobile regexes for $number; can't be trusted\n");
                     next TERRITORY;
                 }
             }
         }
     }
+    warn("$ISO_country_code: good data for to tell what's fixed/mobile\n");
     print MODULE "\$fixed_line_regexes{$ISO_country_code} = '$fixed';\n";
     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
