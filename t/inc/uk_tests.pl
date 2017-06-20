@@ -89,7 +89,7 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   $number = Number::Phone->new('+448450033845');
   ok($number->is_specialrate(), "special-rate numbers correctly identified");
 
-  $number = Number::Phone->new('+449088761234');
+  $number = Number::Phone->new('+449088801234');
   ok($number->is_adult() && $number->is_specialrate(), "0908 'adult' numbers correctly identified");
   $number = Number::Phone->new('+449090901234');
   ok($number->is_adult() && $number->is_specialrate(), "0909 'adult' numbers correctly identified");
