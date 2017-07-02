@@ -1,4 +1,4 @@
-2017-XX-XX      XXXXXX  Added some nominally redundant dependencies (see
+2017-07-02      3.4001  Added some nominally redundant dependencies (see
                           https://github.com/DrHyde/perl-modules-Number-Phone/pull/68);
                         UK "protected" numbers are now included;
                         Data updates
