@@ -67,7 +67,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
         $telco  ||= '';
         $format ||= '';
 
-        next if($status !~ /^Protected|Allocated ?(\(Closed Range\)|for Migration only)?$/);
+        next if($status !~ /^(Protected|Allocated ?(\(Closed Range\)|for Migration only)?)$/);
         $statuses{"$prefix"} = $status;
 
         if($prefix =~ /^[12]/)                         { push @geo_prefices, $prefix }
