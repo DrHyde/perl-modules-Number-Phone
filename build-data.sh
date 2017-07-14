@@ -13,8 +13,6 @@ fi
 
 EXITSTATUS=0
 # first get OFCOM data
-# sabc.txt now exists on its own do this is commented out for now
-# http://static.ofcom.org.uk/static/numbering/codelist.zip    \
 for i in \
     http://static.ofcom.org.uk/static/numbering/sabc.txt        \
     http://static.ofcom.org.uk/static/numbering/sabcde11_12.xls \
