@@ -98,7 +98,8 @@ TERRITORY: foreach my $territory (@territories) {
               1481 456789     |
               1624 456789     |
               1534 456789     |
-              7797 123456
+              7797 123456     |
+              7624 012345
               $
           /x) {
               warn("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data is wrong\n");
