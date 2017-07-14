@@ -75,6 +75,12 @@ $number = Number::Phone->new('+447979866975');
 ok($number->is_mobile(), "mobiles correctly identified");
 ok(defined($number->is_fixed_line()) && !$number->is_fixed_line(), "mobiles are identified as not fixed lines");
 
+skip_if_mocked("can't check country when mocking is in place", 1, sub {
+    # 74576 is an IM prefix, the rest of 7457 is UK
+    $number = Number::Phone->new('+447457500000');
+    is($number->country(), 'UK', "most of +44 7457 is recognised as UK. See weird little islands tests for the exception");
+});
+
 $number = Number::Phone->new('+447693912345');
 ok($number->is_pager(), "pagers correctly identified");
 
