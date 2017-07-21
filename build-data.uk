@@ -141,6 +141,7 @@ foreach my $datum (@telco_length_data) {
 }
 
 print "Creating DBM::Deep file ...\n";
+mkdir('share');
 unlink('share/Number-Phone-UK-Data.db');
 my $dbm = DBM::Deep->new(
     file => 'share/Number-Phone-UK-Data.db',
