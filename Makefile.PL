@@ -1,6 +1,10 @@
 use 5.006;
 use ExtUtils::MakeMaker;
 
+use File::ShareDir::Install;
+
+install_share 'share';
+
 WriteMakefile(
   NAME         => 'Number::Phone',
     META_MERGE => {
@@ -41,3 +45,6 @@ WriteMakefile(
     FILES => "*.xls sabc.txt codelist.zip cover_db"
   },
 );
+
+package MY;
+use File::ShareDir::Install qw(postamble);

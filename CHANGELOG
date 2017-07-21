@@ -1,4 +1,6 @@
 2017-XX-XX      XXXXXX  Add new US and CA area codes;
+                        UK data is now in a normal data file instead of a humungous binary
+                          module;
                         Data updates
 
 2017-07-02      3.4001  Added some nominally redundant dependencies (see
