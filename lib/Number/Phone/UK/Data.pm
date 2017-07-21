@@ -16,11 +16,9 @@ my @candidate_files = (
 );
 
 my $file = (grep { -e $_ } @candidate_files)[0];
-if($file) {
-    warn("Using file $file\n");
-} else {
+if(!$file) {
     die(
-        "Couldn't find a file amongst candidates:\n".
+        "Couldn't find a UK data file amongst:\n".
         join('', map { "  $_\n" } @candidate_files)
     );
 }
