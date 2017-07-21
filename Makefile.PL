@@ -12,23 +12,27 @@ WriteMakefile(
     },
   VERSION_FROM => 'lib/Number/Phone.pm',
   BUILD_REQUIRES => {
-    'ExtUtils::MakeMaker' => 6.52,
-    'ExtUtils::Manifest'  => 0,
-    'ExtUtils::Install'   => 0,
+    'ExtUtils::MakeMaker'     => 6.52,
+    'ExtUtils::Manifest'      => 0,
+    'ExtUtils::Install'       => 0,
+    'File::ShareDir::Install' => 0.11
   },
 
   CONFIGURE_REQUIRES => {
-    'ExtUtils::MakeMaker' => 6.52,
-    'ExtUtils::Manifest'  => 0,
-    'ExtUtils::Install'   => 0,
+    'ExtUtils::MakeMaker'     => 6.52,
+    'ExtUtils::Manifest'      => 0,
+    'ExtUtils::Install'       => 0,
+    'File::ShareDir::Install' => 0.11
   },
 
   PREREQ_PM    => {
-    'Scalar::Util'  => 0,
-    'Test::More'    => '0.96', # need done_testing (0.88) and subtests (0.95_01)
-    'Digest::MD5'   => 0,
-    'DBM::Deep'     => 2.0008,
-    'Test::utf8'    => 0,
+    'Scalar::Util'   => 0,
+    'Test::More'     => '0.96', # need done_testing (0.88) and subtests (0.95_01)
+    'Digest::MD5'    => 0,
+    'DBM::Deep'      => 2.0008,
+    'Test::utf8'     => 0,
+    'lib::abs'       => 0.93,
+    'File::ShareDir' => 1.104,
   },
   dist => {
     PREOP => "./build-data.sh"

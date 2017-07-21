@@ -5,7 +5,7 @@
 # AND libphonenumber's PUBLISHED DATA.
 
 if [ "$1" == "--force" ]; then
-  rm lib/Number/Phone/UK/Data.pm
+  rm share/Number-Phone-UK-Data.db
   rm lib/Number/Phone/NANP/Data.pm
   rm lib/Number/Phone/StubCountry/KZ.pm
   rm t/example-phone-numbers.t
@@ -39,33 +39,32 @@ done
 
 # unzip -q -o codelist.zip sabc.txt
 
-# if UK/Data.pm doesn't exist, or OFCOM's stuff is newer ...
-# codelist.zip      -nt lib/Number/Phone/UK/Data.pm -o \
-if test ! -e lib/Number/Phone/UK/Data.pm -o \
-  sabc.txt          -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde11_12.xls   -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde13.xls      -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde14.xls      -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde15.xls      -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde16.xls      -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde17.xls      -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde18.xls      -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde19.xls      -nt lib/Number/Phone/UK/Data.pm -o \
-  sabcde2.xls       -nt lib/Number/Phone/UK/Data.pm -o \
-  S3.xls            -nt lib/Number/Phone/UK/Data.pm -o \
-  S5.xls            -nt lib/Number/Phone/UK/Data.pm -o \
-  S7.xls            -nt lib/Number/Phone/UK/Data.pm -o \
-  S8.xls            -nt lib/Number/Phone/UK/Data.pm -o \
-  S9.xls            -nt lib/Number/Phone/UK/Data.pm -o \
-  build-data.uk     -nt lib/Number/Phone/UK/Data.pm;
+# if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
+if test ! -e share/Number-Phone-UK-Data.db -o \
+  sabc.txt          -nt share/Number-Phone-UK-Data.db -o \
+  sabcde11_12.xls   -nt share/Number-Phone-UK-Data.db -o \
+  sabcde13.xls      -nt share/Number-Phone-UK-Data.db -o \
+  sabcde14.xls      -nt share/Number-Phone-UK-Data.db -o \
+  sabcde15.xls      -nt share/Number-Phone-UK-Data.db -o \
+  sabcde16.xls      -nt share/Number-Phone-UK-Data.db -o \
+  sabcde17.xls      -nt share/Number-Phone-UK-Data.db -o \
+  sabcde18.xls      -nt share/Number-Phone-UK-Data.db -o \
+  sabcde19.xls      -nt share/Number-Phone-UK-Data.db -o \
+  sabcde2.xls       -nt share/Number-Phone-UK-Data.db -o \
+  S3.xls            -nt share/Number-Phone-UK-Data.db -o \
+  S5.xls            -nt share/Number-Phone-UK-Data.db -o \
+  S7.xls            -nt share/Number-Phone-UK-Data.db -o \
+  S8.xls            -nt share/Number-Phone-UK-Data.db -o \
+  S9.xls            -nt share/Number-Phone-UK-Data.db -o \
+  build-data.uk     -nt share/Number-Phone-UK-Data.db;
 then
   if [ "$TRAVIS" != "true" ]; then
     EXITSTATUS=1
   fi
-  echo rebuilding lib/Number/Phone/UK/Data.pm
+  echo rebuilding share/Number-Phone-UK-Data.db
   perl build-data.uk
 else
-  echo lib/Number/Phone/UK/Data.pm is up-to-date
+  echo share/Number-Phone-UK-Data.db is up-to-date
 fi
 
 # now get an up-to-date libphonenumber
