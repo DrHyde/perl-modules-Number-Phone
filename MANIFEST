@@ -80,6 +80,7 @@ lib/Number/Phone/Formatters.pod
 t/number-phone-country-warnings.t
 t/pod-coverage.t
 t/example-phone-numbers.t
+share/Number-Phone-UK-Data.db
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -324,4 +325,3 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
-share/Number-Phone-UK-Data.db

@@ -35,8 +35,9 @@ WriteMakefile(
     'Digest::MD5'    => 0,
     'DBM::Deep'      => 2.0008,
     'Test::utf8'     => 0,
-    'lib::abs'       => 0.93,
     'File::ShareDir' => 1.104,
+    'File::Spec'     => 0,
+    'Cwd'            => 0,
   },
   dist => {
     PREOP => "./build-data.sh"
