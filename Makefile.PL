@@ -37,6 +37,7 @@ WriteMakefile(
     'Test::utf8'     => 0,
     'File::ShareDir' => 1.104,
     'File::Spec'     => 0,
+    'File::Basename' => 0,
     'Cwd'            => 0,
   },
   dist => {
