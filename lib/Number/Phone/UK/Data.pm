@@ -9,7 +9,7 @@ use DBM::Deep;
 use File::ShareDir;
 
 # giant ball of hate because lib::abs doesn't work on Windows
-use File::Spec::Functions qw(splitpath catpath catfile);
+use File::Spec::Functions qw(catfile);
 use File::Basename qw(dirname);
 use Cwd qw(abs_path);
 
