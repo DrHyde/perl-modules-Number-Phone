@@ -3,6 +3,8 @@ use ExtUtils::MakeMaker;
 
 use File::ShareDir::Install;
 
+mkdir('share') unless(-d 'share');
+
 install_share 'share';
 
 WriteMakefile(
