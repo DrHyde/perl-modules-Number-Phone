@@ -38,7 +38,6 @@ sub db {
 	# we want to re-open the DB if we've forked, because of
 	# https://github.com/DrHyde/perl-modules-Number-Phone/issues/72
 	# Unfortunately that's annoyingly hard to test
-	if($pid != $$) { print "PID changed, re-opening DB\n"; }
 	$pid = $$;
         $db = DBM::Deep->new($file);
     }
