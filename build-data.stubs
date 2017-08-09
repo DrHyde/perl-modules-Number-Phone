@@ -154,8 +154,9 @@ use utf8;
 sub formats_for {
   my ($territory, $ccode) = @_;
 
-  return @us_formats if $territory->findvalue('generalDesc/comment()')->value
-      =~ /NANPA\s+country\s+-\s+uses\s+US\s+formatting\s+rules/;
+  return @us_formats if(
+    $ccode && $ccode ne 'US' && ''.$territory->find('@countryCode') eq '1'
+  );
 
   if ($ccode) {
       return @gb_formats if $ccode eq 'GG' || $ccode eq 'IM' || $ccode eq 'JE';
