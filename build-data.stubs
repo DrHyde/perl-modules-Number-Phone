@@ -158,9 +158,9 @@ sub formats_for {
     $ccode && $ccode ne 'US' && ''.$territory->find('@countryCode') eq '1'
   );
 
-  if ($ccode) {
-      return @gb_formats if $ccode eq 'GG' || $ccode eq 'IM' || $ccode eq 'JE';
-  }
+  return @gb_formats if(
+    $ccode && $ccode =~ /^(IM|JE|GG)$/
+  );
 
   my @number_formats = $territory->find('availableFormats/numberFormat')->get_nodelist();
 
