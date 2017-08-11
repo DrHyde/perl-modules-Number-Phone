@@ -3,6 +3,7 @@
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/72);
                         UK data is now in a normal data file instead of a humungous binary
                           module;
+                        UK data can be slurped into memory for faster access (but slow startup);
                         Data updates
 
 2017-07-02      3.4001  Added some nominally redundant dependencies (see
