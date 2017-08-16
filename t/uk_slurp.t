@@ -11,5 +11,6 @@ if(
     print STDERR "# NB: this test takes a few minutes and a big ol' chunk of memory\n";
     Number::Phone::UK::Data->slurp();
 
+    use lib '.';
     require 't/uk_data.t';
 }
