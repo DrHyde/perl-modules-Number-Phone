@@ -25,7 +25,7 @@ TERRITORY: foreach my $territory (@territories) {
   my $national_code    = ''.($IDD_country_code != 1 ? $territory->find('@nationalPrefix') : '');
   my $ISO_country_code = ''.$territory->find('@id');
   if($ISO_country_code !~ /^..$/) {
-    warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
+    # warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
     next TERRITORY;
   }
   my @example_numbers = $territory->find('*/exampleNumber')->get_nodelist();
@@ -33,7 +33,7 @@ TERRITORY: foreach my $territory (@territories) {
       my $number = $example_number->string_value();
       my $type = ($example_number->find('..')->get_nodelist())[0]->getName();
       if($type =~ /^(voicemail|noInternationalDialling|areaCodeOptional)$/) {
-          warn("skipping type $type for $ISO_country_code (+$IDD_country_code)\n");
+          # warn("skipping type $type for $ISO_country_code (+$IDD_country_code)\n");
           next NUMBER
       }
       my @test_tuples = map {
@@ -63,11 +63,11 @@ TERRITORY: foreach my $territory (@territories) {
               is_pager
           /x) {
               if($test_method =~ /is_fixed_line|is_mobile/) {
-                  warn("checking $ISO_country_code number +$IDD_country_code $number, as is_geographic *or* $test_method\n");
+                  warnonce("checking $ISO_country_code number +$IDD_country_code $number, as is_geographic *or* $test_method\n");
                   $test_method = [$test_method, 'is_geographic'];
               } else {
-                 warn("skipping $ISO_country_code number +$IDD_country_code $number, NANP::* don't fully support $test_method\n");
-                 next TUPLE;
+                 # warn("skipping $ISO_country_code number +$IDD_country_code $number, NANP::* don't fully support $test_method\n");
+                 next NUMBER;
              }
           }
 
@@ -84,11 +84,11 @@ TERRITORY: foreach my $territory (@territories) {
               $test_method = 'is_geographic';
           }
           if($IDD_country_code eq '672' && $number =~ /^1/) {
-              warn("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data is dodgy, (conflates NF and AQ)\n");
-              next TUPLE;
+              # warn("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data is dodgy, (conflates NF and AQ)\n");
+              next NUMBER;
           }
           if($test_tuple->[0] eq 'VA') {
-              warn("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data needs to be treated as IT");
+              warnonce("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data needs to be treated as IT");
               $test_tuple->[0] = 'IT';
           }
           if($IDD_country_code eq '44' && $number =~ /
@@ -102,8 +102,8 @@ TERRITORY: foreach my $territory (@territories) {
               7624 012345
               $
           /x) {
-              warn("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data is wrong\n");
-              next TUPLE;
+              # warn("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data is wrong\n");
+              next NUMBER;
           }
           my $constructor_args = [map { "'$_'" } @{$test_tuple}];
           my @classes = $IDD_country_code eq '44' ? qw(Number::Phone Number::Phone::Lib) :
@@ -136,6 +136,13 @@ print $testfh ') {
         "$class->new(".join(", ", @{$args}).")->".join(", ", @{$methods})."() does the right thing"
     );
 }';
+
+my %warnings = ();
+sub warnonce {
+    my $warning = shift;
+    return if(exists($warnings{$warning}));
+    warn($warnings{$warning} = $warning);
+}
 
 sub preamble {
     q{
