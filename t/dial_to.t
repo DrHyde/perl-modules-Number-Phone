@@ -19,8 +19,8 @@ foreach my $test (
   { from => '+44 1403 210000',  to => '+44 1403 030001',  expect => '01403030001',     desc => 'UK local call to National Dialling Only number' },
   { from => '+44 1403 210000',  to => '+44 1424 220000',  expect => '01424220000',     desc => 'UK call to another area' },
   { from => '+44 7979 866975',  to => '+44 7979 866976',  expect => '07979866976',     desc => 'UK mobile to mobile' },
-  { from => '+44 800 001 4000', to => '+44 845 505 0000', expect => '08455050000',     desc => 'UK 0800 to 0845' },
-  { from => '+44 800 001 4000', to => '+44 800 001 4001', expect => '08000014001',     desc => 'UK 0800 to 0800' },
+  { from => '+44 800 001 400', to => '+44 845 505 0000', expect => '08455050000',     desc => 'UK 0800 to 0845' },
+  { from => '+44 800 001 400', to => '+44 800 001 401', expect => '0800001401',     desc => 'UK 0800 to 0800' },
 
 
   { from => '+44 1424 220000',  to => '+44 1534 440000',  expect => '01534440000',     desc => 'mainland UK to JE' },
