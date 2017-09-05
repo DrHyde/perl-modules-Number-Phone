@@ -1,8 +1,8 @@
-2017-XX-XX      XXXXXX  Add new US and CA area codes;
-                        Re-open the UK database in children after forking
-                          (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/72);
+2017-09-05      3.4002  Add new US and CA area codes;
                         UK data is now in a normal data file instead of a humungous binary
                           module;
+                        Re-open the UK database in children after forking
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/72);
                         UK data can be slurped into memory for faster access (but slow startup);
                         Data updates
 
