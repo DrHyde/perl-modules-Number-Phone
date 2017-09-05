@@ -91,21 +91,11 @@ my %telco_and_length = ();
 foreach my $datum (@telco_length_data) {
     my($prefix, $telco, $format) = @{$datum};
 
-    if($prefix eq '1442600') {
-        warn "Correcting OFCOM's broken data for 1442 60 0\n";
-        warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
-        if($format eq '') { $format = '4+6' }
-    }
-    if($prefix eq '1634470') {
-        warn "Correcting OFCOM's broken data for 1634 47 0\n";
-        warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
-        if($format eq '') { $format = '4+6' }
-    }
-    if($prefix eq '17683320') {
-        warn "Correcting OFCOM's broken data for 1768 33 20\n";
-        warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
-        if($format eq '') { $format = '5+5' }
-    }
+    # if($prefix eq '1442600') {
+    #     warn "Correcting OFCOM's broken data for 1442 60 0\n";
+    #     warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
+    #     if($format eq '') { $format = '4+6' }
+    # }
     if($format eq '') {
         if($prefix =~ /^[37]/) { $format = '10 digit numbers' }
     }
