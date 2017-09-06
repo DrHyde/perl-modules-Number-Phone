@@ -39,8 +39,10 @@ sub test_dial_to {
   my $to   = Number::Phone->new($params{to});
 
   if(!defined($params{expect})) {
+    note("from: $params{from}\tto: $params{to}");
     ok(!defined($from->dial_to($to)), sprintf("%s -> %s = [unknown] (%s)", map { $params{$_} } qw(from to desc)));
   } else {
+    note("from: $params{from}\tto: $params{to}");
     is($from->dial_to($to), $params{expect}, sprintf("%s -> %s = %s (%s)", map { $params{$_} } qw(from to expect desc)));
   }
 }
