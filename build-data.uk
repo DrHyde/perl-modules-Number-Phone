@@ -104,7 +104,9 @@ foreach my $datum (@telco_length_data) {
     #     if($format eq '') { $format = '4+6' }
     # }
     if($format eq '') {
-        if($prefix =~ /^[37]/) { $format = '10 digit numbers' }
+        if(    $prefix =~ /^[37]/     ) { $format = '10 digit numbers' }
+         elsif($prefix =~ /^2/        ) { $format = '2+8' }
+         elsif($prefix =~ /^(1.1|11.)/) { $format = '3+7' }
     }
 
     if($format eq '(0)+10' || $format =~ /^10 digit number/i) {
