@@ -126,33 +126,46 @@ sub is_valid {
     # 07, 02x and 011x are always ten digits
     return $cache->{$number}->{is_valid} = 0 if($cleaned_number =~ /^([27]|11)/ && length($cleaned_number) != 10);
 
-    $cache->{$number}->{is_allocated} = 
-        grep { Number::Phone::UK::Data::db()->{telco_and_length}->{$_} } @prefixes;
+    my $telco_and_length_code = 
+        (
+            map  { Number::Phone::UK::Data::db()->{telco_and_length}->{$_} }
+            grep { exists(Number::Phone::UK::Data::db()->{telco_and_length}->{$_}) }
+            @prefixes
+        )[0];
 
-    if($cache->{$number}->{is_allocated}) {
-        my($telco_and_length) = map { Number::Phone::UK::Data::db()->{telco_and_length}->{$_} } grep { Number::Phone::UK::Data::db()->{telco_and_length}->{$_} } @prefixes;
-        $cache->{$number}->{operator} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length}->{telco};
-        $cache->{$number}->{format} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length}->{format};
+    $cache->{$number}->{is_allocated} = 0;
+    if(
+        # if we've got a telco, we've been allocated
+        $telco_and_length_code &&
+        Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{telco}
+    ) {
+        $cache->{$number}->{is_allocated} = 1;
+        $cache->{$number}->{operator} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{telco};
+        $cache->{$number}->{format} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{format}
+    } elsif($telco_and_length_code) {
+        # if not we might still have a format, eg for Protected numbers
+        $cache->{$number}->{format} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{format}
+    }
 
-        if($cache->{$number}->{format} =~ /\+/) {
-            my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
-            # for hateful mixed thing
-            my @subscriberlengths = ($subscriberlength =~ m{/}) ? split(/\//, $subscriberlength) : ($subscriberlength);
-            $subscriberlength =~ s/^(\d+).*/$1/; # for hateful mixed thing
-            $cache->{$number}->{areacode} = substr($cleaned_number, 0, $arealength);
-            $cache->{$number}->{subscriber} = substr($cleaned_number, $arealength);
-            $cache->{$number}->{areaname} = (
-                map {
-                    Number::Phone::UK::Data::db()->{areanames}->{$_}
-                } grep { Number::Phone::UK::Data::db()->{areanames}->{$_} } @prefixes
-            )[0];
-            if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
-                # number wrong length!
-                $cache->{$number} = { is_valid => 0 };
-                return 0;
-            }
+    if($cache->{$number}->{format} && $cache->{$number}->{format} =~ /\+/) {
+        my($arealength, $subscriberlength) = split(/\+/, $cache->{$number}->{format});
+        # for hateful mixed thing
+        my @subscriberlengths = ($subscriberlength =~ m{/}) ? split(/\//, $subscriberlength) : ($subscriberlength);
+        $subscriberlength =~ s/^(\d+).*/$1/; # for hateful mixed thing
+        $cache->{$number}->{areacode} = substr($cleaned_number, 0, $arealength);
+        $cache->{$number}->{subscriber} = substr($cleaned_number, $arealength);
+        $cache->{$number}->{areaname} = (
+            map {
+                Number::Phone::UK::Data::db()->{areanames}->{$_}
+            } grep { Number::Phone::UK::Data::db()->{areanames}->{$_} } @prefixes
+        )[0];
+        if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
+            # number wrong length!
+            $cache->{$number} = { is_valid => 0 };
+            return 0;
         }
     }
+
     return $cache->{$number}->{is_valid};
 }
 
@@ -380,13 +393,14 @@ for the UK number (0208) 771-2924 it would return +44 20 8771 2924.
 
 sub format {
     my $self = shift;
-    my $r = ${$self};
+    my $r;
+
     if($self->areacode()) { # if there's an areacode ...
         $r = '+'.country_code().' '.$self->areacode().' ';
         if(    length($self->subscriber()) == 7) { $r .= substr($self->subscriber(), 0, 3).' '.substr($self->subscriber(), 3) }
          elsif(length($self->subscriber()) == 8) { $r .= substr($self->subscriber(), 0, 4).' '.substr($self->subscriber(), 4) }
          else                                    { $r .= $self->subscriber() }
-    } elsif(!$self->is_allocated()) { # if not allocated ...
+    } elsif(!$self->is_allocated() || !$cache->{${self}}->{format}) { # if not allocated or no format
         $r = '+'.country_code().' '.substr(${$self}, 3)
     } elsif($self->subscriber()) { # if there's a subscriber ...
         $r = '+'.country_code().' '.$self->subscriber
