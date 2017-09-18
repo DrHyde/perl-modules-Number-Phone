@@ -1,7 +1,8 @@
 language: perl
 env:
-  - PERL_USE_UNSAFE_INC=0
-  - AUTOMATED_TESTING=1
+  global:
+    - PERL_USE_UNSAFE_INC=0
+    - AUTOMATED_TESTING=1
 perl:
   - "5.8"
   - "5.22"
