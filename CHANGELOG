@@ -1,3 +1,6 @@
+XXXX-XX-XX      XXXXXX  UK "protected" numbers should have false is_allocated();
+                        Data updates
+
 2017-09-05      3.4002  Add new US and CA area codes;
                         UK data is now in a normal data file instead of a humungous binary
                           module;
