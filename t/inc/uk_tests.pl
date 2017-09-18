@@ -64,6 +64,19 @@ is_deeply(
     "... and their type looks OK"
 );
 
+$number = Number::Phone->new('+44 141 999 0299');
+is($number->format(), '+44 141 999 0299', "3+7 protected number formatted OK");
+skip_if_mocked("libphonenumber doesn't do areacode/subscriber", 2, sub {
+  is($number->areacode(), '141', "3+7 protected number has correct area code");
+  is($number->subscriber(), '9990299', "3+7 protected number has correct subscriber number");
+});
+foreach my $method (qw(is_geographic is_valid)) {
+    ok($number->$method(), "$method works for a protected number");
+}
+foreach my $method (qw(is_in_use is_mobile is_pager is_ipphone is_isdn is_tollfree is_specialrate is_adult is_personal is_corporate is_government is_international is_network_service is_ipphone), is_mocked_uk() ? () : qw(is_allocated)) {
+    ok(!$number->$method(), "$method works for a protected number");
+}
+
 $number = Number::Phone->new('+448450033845');
 is($number->format(), is_mocked_uk() ? '+44 845 003 3845' : '+44 8450033845', "0+10 number formatted OK");
 skip_if_mocked("libphonenumber doesn't do areacode/subscriber", 2, sub {
@@ -214,14 +227,8 @@ skip_if_mocked("libphonenumber disagrees with me about formatting unallocated nu
 $number = Number::Phone->new('+441954202020');
 ok($number->format() eq '+44 1954 202020', "allocated numbers format OK");
 
-$number = Number::Phone->new('+441302622123');
-is($number->format(), '+44 1302 622123', "OFCOM's stupid 6+4 format for 1302 62[2459] is corrected");
-
-$number = Number::Phone->new('+441302623123');
-is($number->format(), '+44 1302 623123', "OFCOM's missing format for 1302 623 is corrected");
-
 foreach my $tuple (
-  [ 'Number::Phone'     => '+448435235305' ],
+  [ 'Number::Phone'     => '+44 843 523 5305' ],
   (is_mocked_uk() ? () : [ 'Number::Phone::UK' =>   '0843 523 5305' ]),
 ) {
   my($class, $digits) = @{$tuple};
@@ -229,7 +236,7 @@ foreach my $tuple (
   is(
       $number->format(),
       # libphonenumber can format this, N::P::UK can't because OFCOM's data is deficient
-      is_mocked_uk() ? '+44 843 523 5305' : '+448435235305',
+      is_mocked_uk() ? '+44 843 523 5305' : '+44 8435235305',
       "OFCOM's missing format for 843 doesn't break shit: $class->new($digits)->format()"
   );
   is_deeply(
