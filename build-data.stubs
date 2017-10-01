@@ -39,7 +39,8 @@ my @gb_formats = formats_for($xml->find(
 
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
-  my $national_code    = ''.$territory->find('@nationalPrefix');
+  my $national_code = ''.$territory->find('@nationalPrefixForParsing') || ''.$territory->find('@nationalPrefix');
+  my $national_prefix_transform_rule = ''.$territory->find('@nationalPrefixTransformRule');
 
   my $ISO_country_code = ''.$territory->find('@id');
   if($ISO_country_code !~ /^..$/) {
@@ -110,9 +111,15 @@ TERRITORY: foreach my $territory (@territories) {
   ";
 
   if ($national_code ne '' && $IDD_country_code ne '1') {
+    $national_code =~ s/\s+//g;
+    # Suppressing the warning below is for if the national code optionally
+    # matches part of the number that would then be in the transform rule
     print $module_fh "
       return \$self if (\$self->is_valid());
-      \$number =~ s/(^$national_code)//g;
+      {
+        no warnings 'uninitialized';
+        \$number =~ s/^(?:$national_code)/$national_prefix_transform_rule/;
+      }
       \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
       (($IDD_country_code != 1 && -e $codesfile) ? 'areanames => \\%areanames' : '')
       ."}, \$class);

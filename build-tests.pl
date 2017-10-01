@@ -22,7 +22,6 @@ my @tests = ();
 
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
-  my $national_code    = ''.($IDD_country_code != 1 ? $territory->find('@nationalPrefix') : '');
   my $ISO_country_code = ''.$territory->find('@id');
   if($ISO_country_code !~ /^..$/) {
     # warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
@@ -40,7 +39,7 @@ TERRITORY: foreach my $territory (@territories) {
           ($_->[0] eq 'GB') ? ($_, ['UK', $_->[1]]) : $_
       } (
           [$ISO_country_code, "+$IDD_country_code$number"],
-          [$ISO_country_code, "$national_code$number"],
+          [$ISO_country_code, $number],
           [                   "+$IDD_country_code$number"]
       );
       TUPLE: foreach my $test_tuple (@test_tuples) {
