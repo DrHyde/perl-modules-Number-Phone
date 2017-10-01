@@ -174,6 +174,9 @@ sub formats_for {
     $ccode && $ccode =~ /^(IM|JE|GG)$/
   );
 
+  my $national_code = ''.$territory->find('@nationalPrefix');
+  my $territory_national_rule = ''.$territory->find('@nationalPrefixFormattingRule');
+
   my @number_formats = $territory->find('availableFormats/numberFormat')->get_nodelist();
 
   my @formatters = ();
@@ -185,11 +188,16 @@ sub formats_for {
     my $formatter = ''.$number_format->find('format');
     my $formatter_intl = ''.$number_format->find('intlFormat');
 
+    my $national_rule = ''.$number_format->find('@nationalPrefixFormattingRule') || $territory_national_rule;
+    $national_rule =~ s/\$NP/$national_code/;
+    $national_rule =~ s/\$FG/\$1/;
+
     if($leading_digit_pattern) {
       ($leading_digit_pattern = $leading_digit_pattern->string_value()); # =~ s/\s//g;
     }
     push @formatters, {
       $leading_digit_pattern ? (leading_digits => $leading_digit_pattern) : (),
+      $national_rule ? (national_rule => $national_rule) : (),
       format => $formatter,
       $formatter_intl ? (intl_format => $formatter_intl) : (),
       pattern => $number_format_pattern

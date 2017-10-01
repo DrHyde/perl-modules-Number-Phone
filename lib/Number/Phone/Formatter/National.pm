@@ -1,4 +1,4 @@
-package Number::Phone::Formatter::NationallyPreferred;
+package Number::Phone::Formatter::National;
 
 use strict;
 use warnings;
@@ -11,27 +11,27 @@ sub format {
     # Only care about the ones that will have the formatters stored
     return $number unless reftype $object eq 'HASH';
 
-    $class->_format($object, 0);
+    $class->_format($object, 1);
 }
 
 1;
 
 =head1 NAME
 
-Number::Phone::Formatter::NationallyPreferred - formatter for nationally-preferred international phone number
+Number::Phone::Formatter::National - formatter for nationally-formatted phone number
 
 =head1 DESCRIPTION
 
-A formatter to output the international number in its nationally preferred format.
+A formatter to output the number in its national format.
 
 =head1 METHOD
 
 =head2 format
 
 This is the only method. It takes an E.123 international format string and a Number::Phone object,
-and outputs the nationally-preferred international phone number using any supplied formatters.
+and outputs the nationally-formatted number using any supplied formatters.
 
-  +1 212 334 0611 -> +1 212-334-0611
+  +1 212 334 0611 -> 212-334-0611
 
 =head1 AUTHOR, COPYRIGHT and LICENCE
 

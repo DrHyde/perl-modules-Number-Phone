@@ -7,6 +7,16 @@ use Number::Phone::Country qw(noexport);
 use base qw(Number::Phone);
 our $VERSION = '1.3';
 
+=head1 NAME
+
+Number::Phone::StubCountry - Base class for auto-generated country files
+
+=head1 METHODS
+
+=over 4
+
+=cut
+
 sub country_code {
     my $self = shift;
     
@@ -72,5 +82,27 @@ sub format {
   }
   return '+'.$self->country_code().' '.$number;
 }
+
+=item format_for_country
+
+Given a country code (either two-letter ISO or numeric prefix), return the
+number formatted either nationally-formatted, if the number is in the same
+country, or as a nationally-preferred international number if not.
+
+=cut
+
+sub format_for_country {
+  my $self = shift;
+  my $country_code = shift || '';
+  $country_code = Number::Phone::Country::country_code($country_code)
+    if $country_code && $country_code =~ /[a-z]/i;
+  $country_code =~ s/^\+//;
+  return $self->format_using('National') if $country_code eq $self->country_code();
+  return $self->format_using('NationallyPreferred');
+}
+
+=back
+
+=cut
 
 1;
