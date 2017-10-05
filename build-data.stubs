@@ -75,6 +75,11 @@ TERRITORY: foreach my $territory (@territories) {
           delete $validators->{mobile};
       }
   }
+  # Similarly to +1, don't pass is_mobile or is_fixed_line if could be either
+  if ($validators->{fixed_line} && $validators->{fixed_line} eq $validators->{mobile}) {
+      delete $validators->{fixed_line};
+      delete $validators->{mobile};
+  }
   print $module_fh 'my '.Data::Dumper->new([$validators], [qw(validators)])->Dump();
   my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
   if($IDD_country_code == 1) {
