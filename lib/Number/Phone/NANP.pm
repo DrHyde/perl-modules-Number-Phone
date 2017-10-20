@@ -219,7 +219,8 @@ sub is_specialrate {
         ^(\+1)?
         (
             900 |                          # NANP-global
-            246 ( 292 | 41[7-9] | 43[01] ) # BB-specific, apparently
+            242225[0-46-9] |               # BS-specific
+            246 ( 292 | 367 | 41[7-9] | 43[01] | 444 | 467 | 736 ) # BB-specific, apparently
         )
     /x) { return 1; }
      else { return 0; }
