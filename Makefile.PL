@@ -10,7 +10,7 @@ install_share 'share';
 WriteMakefile(
   NAME         => 'Number::Phone',
     META_MERGE => {
-        license => 'other',
+        license => 'open_source',
         resources => {
             repository => 'https://github.com/DrHyde/perl-modules-Number-Phone',
             bugtracker => 'https://github.com/DrHyde/perl-modules-Number-Phone/issues'
