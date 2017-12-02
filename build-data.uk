@@ -78,7 +78,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
         $statuses{"$prefix"} = $status;
 
         if($prefix =~ /^[12]/)                         { push @geo_prefices, $prefix }
-         elsif($prefix =~ /^(500|80)/)                 { push @free_prefices, $prefix }
+         elsif($prefix =~ /^80/)                       { push @free_prefices, $prefix }
          elsif($prefix =~ /^55/)                       { push @corporate_prefices, $prefix }
          elsif($prefix =~ /^56/)                       { push @ip_prefices, $prefix }
          elsif($prefix =~ /^70/)                       { push @personal_prefices, $prefix }

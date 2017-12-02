@@ -99,8 +99,9 @@ ok($number->is_pager(), "pagers correctly identified");
 
 $number = Number::Phone->new('+44800001012');
 ok($number->is_tollfree(), "toll-free numbers with significant F digit correctly identified");
-$number = Number::Phone->new('+44500123456');
-ok($number->is_tollfree(), "C&W 0500 numbers correctly identified as toll-free");
+# 0500 is Quarantined
+# $number = Number::Phone->new('+44500123456');
+# ok($number->is_tollfree(), "C&W 0500 numbers correctly identified as toll-free");
 $number = Number::Phone->new('+448000341234');
 ok($number->is_tollfree(), "generic toll-free numbers correctly identified");
 
