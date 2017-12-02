@@ -71,6 +71,14 @@ TERRITORY: foreach my $territory (@territories) {
              }
           }
 
+          if(($IDD_country_code == 45 || $IDD_country_code == 56) && $test_method =~ /
+              is_mobile |
+              is_fixed_line
+          /x) {
+              warnonce("checking $ISO_country_code number +$IDD_country_code $number, as is_geographic *or* $test_method\n");
+              $test_method = [$test_method, 'is_geographic'];
+          }
+
           if($IDD_country_code eq '44' && $number =~ /
               ^
               121 234 5678
