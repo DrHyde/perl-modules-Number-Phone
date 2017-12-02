@@ -52,6 +52,7 @@ sub _validator {
 sub areaname {
     my $self   = shift;
     my $number = $self->{number};
+    return unless $self->{areanames};
     my %map = %{$self->{areanames}};
     foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
         return $map{$self->country_code().$prefix} if exists($map{$self->country_code().$prefix});
