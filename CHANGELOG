@@ -1,4 +1,13 @@
 XXXX-XX-XX      XXXXXX  UK "protected" numbers should have false is_allocated();
+                        Bugfix for countries that don't have area names (see
+                          https://github.com/DrHyde/perl-modules-Number-Phone/issues/64);
+                        Match libphonenumber's behaviour when countries have identical
+                          validators for fixed_line and mobile (see
+                          https://github.com/DrHyde/perl-modules-Number-Phone/issues/84);
+                        Accept numbers in some more unusual national dialling formats (see
+                          https://github.com/DrHyde/perl-modules-Number-Phone/issues/77);
+                        Recognise some more special rate numbers in Barbados and Bahamas (see
+                          https://github.com/DrHyde/perl-modules-Number-Phone/pull/86);
                         Data updates
 
 2017-09-05      3.4002  Add new US and CA area codes;
