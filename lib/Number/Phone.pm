@@ -8,7 +8,7 @@ use Number::Phone::Country qw(noexport);
 use Number::Phone::StubCountry;
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '3.4002';
+our $VERSION = '3.4003';
 
 my $NOSTUBS = 0;
 sub import {
