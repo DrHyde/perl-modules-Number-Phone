@@ -24,7 +24,8 @@ guaranteed to not exist so I could test that it failed correctly.
 There is one compulsory method, C<format> that you must write. It will
 be called as a class method, with a number in E.123 international format as its
 only argument, looking something like '+CC NNN NNN NNN'. The gory details
-are at L<http://www.itu.int/rec/T-REC-E.123/en> but in summary, you'll get:
+are at L<http://www.itu.int/rec/T-REC-E.123/en> but in summary, you'll get
+a string consisting of:
 
 =over
 
@@ -37,6 +38,8 @@ are at L<http://www.itu.int/rec/T-REC-E.123/en> but in summary, you'll get:
 =item a mixture of digits and whitespace
 
 =back
+
+You should return a string.
 
 =head1 EXAMPLE
 
