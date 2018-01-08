@@ -31,7 +31,7 @@ TERRITORY: foreach my $territory (@territories) {
   NUMBER: foreach my $example_number (@example_numbers) {
       my $number = $example_number->string_value();
       my $type = ($example_number->find('..')->get_nodelist())[0]->getName();
-      if($type =~ /^(voicemail|noInternationalDialling)$/) {
+      if($type =~ /^(voicemail|noInternationalDialling|areaCodeOptional)$/) {
           # warn("skipping type $type for $ISO_country_code (+$IDD_country_code)\n");
           next NUMBER
       }
