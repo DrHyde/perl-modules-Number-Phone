@@ -14,5 +14,6 @@ END { done_testing(); }
 is(Number::Phone::Lib->new("+55 35 9 98 70 56 56")->is_mobile(), 1, "+55 35 turned into +55 35 9");
 is(Number::Phone::Lib->new("+55 35   98 70 56 56")->is_mobile(), 1, "old format still works (according to Google anyway)");
 
-isa_ok(Number::Phone::Lib->new("BR", "08522222222"), 'Number::Phone::StubCountry::BR', '0 85 NNNN valid');
-isa_ok(Number::Phone::Lib->new("BR", "0318522222222"), 'Number::Phone::StubCountry::BR', '0 31 85 NNNN valid');
+# ignore carrier select prefixes when parsing a local number
+is(Number::Phone::Lib->new("BR", "08522222222")->format(), '+55 85 2222 2222', '085 NNNN parsed ok');
+is(Number::Phone::Lib->new("BR", "0318522222222")->format(), '+55 85 2222 2222', '0 31 85 NNNN parsed ok');
