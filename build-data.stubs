@@ -183,16 +183,17 @@ sub formats_for {
     # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/7
     my $leading_digit_pattern = ($number_format->find('leadingDigits')->get_nodelist())[-1];
     my $formatter = ''.$number_format->find('format');
+    my $formatter_intl = ''.$number_format->find('intlFormat');
 
     if($leading_digit_pattern) {
       ($leading_digit_pattern = $leading_digit_pattern->string_value()); # =~ s/\s//g;
-      push @formatters, {
-        leading_digits => $leading_digit_pattern,
-        pattern        => $number_format_pattern
-      };
-    } else {
-      push @formatters, { pattern => $number_format_pattern };
     }
+    push @formatters, {
+      $leading_digit_pattern ? (leading_digits => $leading_digit_pattern) : (),
+      format => $formatter,
+      $formatter_intl ? (intl_format => $formatter_intl) : (),
+      pattern => $number_format_pattern
+    };
   }
   return @formatters;
 
