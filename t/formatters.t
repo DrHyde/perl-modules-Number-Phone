@@ -5,6 +5,7 @@ use lib 't/inc';
 use fatalwarnings;
 
 use Number::Phone;
+use Number::Phone::Lib;
 use Test::More;
 use Scalar::Util qw(blessed);
 
@@ -27,6 +28,13 @@ is(
     Number::Phone->new('+44 20 8771 2924')->format_using('E123'),
     '+44 20 8771 2924',
     "format_using('E123') works too"
+);
+
+note("format_using('NationallyPreferred')");
+is(
+    Number::Phone::Lib->new('+1 202 418 1440')->format_using('NationallyPreferred'),
+    '+1 202-418-1440',
+    "format_using('NationallyPreferred') works too"
 );
 
 note("format_using('non-existent formatter')");

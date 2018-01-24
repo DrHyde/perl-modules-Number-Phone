@@ -92,7 +92,7 @@ sub format_using {
 
     eval "use Number::Phone::Formatter::$format";
     die("Couldn't load format '$format': $@\n") if($@);
-    return "Number::Phone::Formatter::$format"->format($self->format());
+    return "Number::Phone::Formatter::$format"->format($self->format(), $self);
 
 }
 
