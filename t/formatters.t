@@ -36,6 +36,11 @@ is(
     '+1 202-418-1440',
     "format_using('NationallyPreferred') works too"
 );
+is(
+    Number::Phone->new('+1 202 418 1440')->format_using('NationallyPreferred'),
+    '+1 202 418 1440',
+    "format_using('NationallyPreferred') fails gracefully if no data is available"
+);
 
 note("format_using('non-existent formatter')");
 eval { Number::Phone->new('+44 20 8771 2924')->format_using('FishAndChips') };
