@@ -46,7 +46,9 @@ A formatter to output the international number in its nationally preferred forma
 =head2 format
 
 This is the only method. It takes an E.123 international format string and a Number::Phone object,
-and outputs the nationally-preferred international phone number using any supplied formatters.
+and outputs the nationally-preferred international phone number if data is available (generally this
+means if you're using L<Number::Phone::Lib> or a stub derived from libphoennumber). If no data is available
+then it returns the E.123 formatted data.
 
   +1 212 334 0611 -> +1 212-334-0611
 

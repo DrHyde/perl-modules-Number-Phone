@@ -23,7 +23,8 @@ guaranteed to not exist so I could test that it failed correctly.
 
 There is one compulsory method, C<format> that you must write. It will
 be called as a class method, with a number in E.123 international format as its
-only argument, looking something like '+CC NNN NNN NNN'. The gory details
+first argument, looking something like '+CC NNN NNN NNN', and a Number::Phone
+object as its second argument. The gory details of what E.123 looks like
 are at L<http://www.itu.int/rec/T-REC-E.123/en> but in summary, you'll get
 a string consisting of:
 
@@ -43,7 +44,9 @@ You should return a string.
 
 =head1 EXAMPLE
 
-See L<Number::Phone::Formatter::Raw> for an example.
+See L<Number::Phone::Formatter::Raw> for an example that uses the string
+argument, and L<Number::Phone::Formatter::NationallyPreferred> for one
+that uses the object.
 
 =head1 COPYRIGHT and LICENCE
 
