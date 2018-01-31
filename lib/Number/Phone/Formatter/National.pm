@@ -30,6 +30,10 @@ and outputs the nationally-formatted number.
 
   +1 212 334 0611 -> 212-334-0611
 
+Note that this uses data derived from libphonenumber, and if your object is
+not derived from that it will first create a temporary object. This may
+involve a small unexpected performance hit.
+
 =head1 AUTHOR, COPYRIGHT and LICENCE
 
 Copyright 2018 Matthew Somerville E<lt>F<matthew-github@dracos.co.uk>E<gt>

@@ -464,7 +464,9 @@ It is a fatal error to specify a non-existent formatter.
 
 Given a country code (either two-letter ISO or numeric prefix), return the
 number formatted either nationally-formatted, if the number is in the same
-country, or as a nationally-preferred international number if not.
+country, or as a nationally-preferred international number if not. Internally
+this uses the National and NationallyPreferredIntl formatters. Beware of the
+potential performance hit!
 
 =item country
 
