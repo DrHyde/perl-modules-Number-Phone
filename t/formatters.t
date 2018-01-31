@@ -36,11 +36,6 @@ is(
     '+1 202-418-1440',
     "format_using('NationallyPreferredIntl') works too"
 );
-is(
-    Number::Phone->new('+1 202 418 1440')->format_using('NationallyPreferredIntl'),
-    '+1 202 418 1440',
-    "format_using('NationallyPreferredIntl') fails gracefully if no data is available"
-);
 
 note("format_for_country for a country that lacks data");
 my $fullfat = Number::Phone->new('+44 20 8771 2924');
