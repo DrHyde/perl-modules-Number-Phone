@@ -75,6 +75,8 @@ t/country-test-at.t
 t/number-phone-country-multiple.t
 t/country-test-br.t
 t/formatters.t
+lib/Number/Phone/Formatter.pm
+lib/Number/Phone/Formatter/National.pm
 lib/Number/Phone/Formatter/Raw.pm
 lib/Number/Phone/Formatters.pod
 t/number-phone-country-warnings.t
