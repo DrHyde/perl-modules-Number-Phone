@@ -1,4 +1,4 @@
-package Number::Phone::Formatter::NationallyPreferred;
+package Number::Phone::Formatter::NationallyPreferredIntl;
 
 use strict;
 use warnings;
@@ -18,7 +18,7 @@ sub format {
 
 =head1 NAME
 
-Number::Phone::Formatter::NationallyPreferred - formatter for nationally-preferred international phone number
+Number::Phone::Formatter::NationallyPreferredIntl - nationally-preferred format for international phone number
 
 =head1 DESCRIPTION
 

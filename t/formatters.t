@@ -30,17 +30,22 @@ is(
     "format_using('E123') works too"
 );
 
-note("format_using('NationallyPreferred')");
+note("format_using('NationallyPreferredIntl')");
 is(
-    Number::Phone::Lib->new('+1 202 418 1440')->format_using('NationallyPreferred'),
+    Number::Phone::Lib->new('+1 202 418 1440')->format_using('NationallyPreferredIntl'),
     '+1 202-418-1440',
-    "format_using('NationallyPreferred') works too"
+    "format_using('NationallyPreferredIntl') works too"
 );
 is(
-    Number::Phone->new('+1 202 418 1440')->format_using('NationallyPreferred'),
+    Number::Phone->new('+1 202 418 1440')->format_using('NationallyPreferredIntl'),
     '+1 202 418 1440',
-    "format_using('NationallyPreferred') fails gracefully if no data is available"
+    "format_using('NationallyPreferredIntl') fails gracefully if no data is available"
 );
+
+note("format_for_country for a country that lacks data");
+my $fullfat = Number::Phone->new('+44 20 8771 2924');
+is($fullfat->format_for_country('GB'), '020 8771 2924', "format_for_country (same country) works for full-fat implementations");
+is($fullfat->format_for_country('AR'), '+44 20 8771 2924', "format_for_country (other country) works for full-fat implementations");
 
 note("format_using('non-existent formatter')");
 eval { Number::Phone->new('+44 20 8771 2924')->format_using('FishAndChips') };

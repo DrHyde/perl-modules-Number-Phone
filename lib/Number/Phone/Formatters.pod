@@ -45,7 +45,7 @@ You should return a string.
 =head1 EXAMPLE
 
 See L<Number::Phone::Formatter::Raw> for an example that uses the string
-argument, and L<Number::Phone::Formatter::NationallyPreferred> for one
+argument, and L<Number::Phone::Formatter::NationallyPreferredIntl> for one
 that uses the object.
 
 =head1 COPYRIGHT and LICENCE
