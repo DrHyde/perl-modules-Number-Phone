@@ -8,9 +8,6 @@ use Scalar::Util qw(reftype);
 sub format {
     my ($class, $number, $object) = @_;
 
-    # Only care about the ones that will have the formatters stored
-    return $number unless reftype $object eq 'HASH';
-
     $class->_format($object, 1);
 }
 
@@ -29,7 +26,7 @@ A formatter to output the number in its national format.
 =head2 format
 
 This is the only method. It takes an E.123 international format string and a Number::Phone object,
-and outputs the nationally-formatted number using any supplied formatters.
+and outputs the nationally-formatted number.
 
   +1 212 334 0611 -> 212-334-0611
 

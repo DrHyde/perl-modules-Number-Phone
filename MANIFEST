@@ -84,6 +84,7 @@ t/pod-coverage.t
 t/example-phone-numbers.t
 share/Number-Phone-UK-Data.db
 t/uk_slurp.t
+lib/Number/Phone/Formatter/NationallyPreferredIntl.pm
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -328,4 +329,3 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
-lib/Number/Phone/Formatter/NationallyPreferredIntl.pm

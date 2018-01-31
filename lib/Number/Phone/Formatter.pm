@@ -3,6 +3,8 @@ package Number::Phone::Formatter;
 use strict;
 use warnings;
 
+use Number::Phone::Lib;
+
 sub _regex_variable {
     my ($var, $qr, $subs) = @_;
     $subs =~ s/"/\\"/;
@@ -17,8 +19,16 @@ sub _maybe_add_country {
     return $number;
 }
 
+# this is used by N::P::Formatter::National(lyPreferredIntl), it wants
+# something that looks very much like a N::P::StubCountry::XX as those
+# will contain libphonenumber's formatting data. If we're instead passed
+# a full-fat object, it will first create the equivalent stub.
 sub _format {
     my ($class, $object, $national) = @_;
+
+    if(!$object->isa('Number::Phone::StubCountry')) {
+        $object = Number::Phone::Lib->new($object->format())
+    }
 
     my $number = $object->{number};
     foreach my $formatter (@{$object->{formatters}}) {
