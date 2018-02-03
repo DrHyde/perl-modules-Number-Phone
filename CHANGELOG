@@ -1,4 +1,4 @@
-2018-01-08      3.4003  UK "protected" numbers should have false is_allocated();
+2018-02-03      3.4003  UK "protected" numbers should have false is_allocated();
                         Bugfix for countries that don't have area names (see
                           https://github.com/DrHyde/perl-modules-Number-Phone/issues/64);
                         Match libphonenumber's behaviour when countries have identical
