@@ -5,15 +5,11 @@ use warnings;
 use Number::Phone::Country qw(noexport);
 
 use base qw(Number::Phone);
-our $VERSION = '1.3';
+our $VERSION = '1.4000';
 
 =head1 NAME
 
 Number::Phone::StubCountry - Base class for auto-generated country files
-
-=head1 METHODS
-
-=over 4
 
 =cut
 
@@ -82,9 +78,5 @@ sub format {
   }
   return '+'.$self->country_code().' '.$number;
 }
-
-=back
-
-=cut
 
 1;

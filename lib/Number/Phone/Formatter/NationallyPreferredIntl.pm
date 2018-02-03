@@ -5,6 +5,8 @@ use warnings;
 use parent 'Number::Phone::Formatter';
 use Scalar::Util qw(reftype);
 
+our $VERSION = '1.0';
+
 sub format {
     my ($class, $number, $object) = @_;
 

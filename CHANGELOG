@@ -8,6 +8,7 @@
                           https://github.com/DrHyde/perl-modules-Number-Phone/issues/77);
                         Recognise some more special rate numbers in Barbados and Bahamas (see
                           https://github.com/DrHyde/perl-modules-Number-Phone/pull/86);
+                        Add format_for_country method;
                         Data updates
 
 2017-09-05      3.4002  Add new US and CA area codes;

@@ -3,6 +3,8 @@ package Number::Phone::Formatter;
 use strict;
 use warnings;
 
+our $VERSION = '1.0';
+
 use Number::Phone::Lib;
 
 sub _regex_variable {
