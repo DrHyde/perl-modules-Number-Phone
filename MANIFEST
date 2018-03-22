@@ -324,6 +324,7 @@ lib/Number/Phone/StubCountry/VN.pm
 lib/Number/Phone/StubCountry/VU.pm
 lib/Number/Phone/StubCountry/WF.pm
 lib/Number/Phone/StubCountry/WS.pm
+lib/Number/Phone/StubCountry/XK.pm
 lib/Number/Phone/StubCountry/YE.pm
 lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm

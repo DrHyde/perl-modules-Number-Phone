@@ -82,15 +82,10 @@ isa_ok($no, "Number::Phone::StubCountry");
 $no = $CLASS->new('+479690448'); # invalid, should be undef. NO has no national dialling prefix
 is($no, undef, "invalid numbers in countries with no national dialing prefix return undef from constructor");
 
-my $xk = $CLASS->new('+383123');
-skip_if_libphonenumber(
-  "libphonenumber doesn't support Kosovo's +383", 1,
-  sub {
-      ok($xk->is_valid(), "+383 (XK special-case in N::P's construction os stubs) can be instantiated");
-      is($xk->country_code(), 383,   "... has right country_code()");
-      is($xk->country(),      'XK',  "... has right country()");
-      is($xk->is_mobile(),       undef, "... falls through to parent for is_*()");
-  }
-);
+my $xk = $CLASS->new('+383 43201234');
+ok($xk->is_valid(),                        "+383 (Kosovo, XK) can be instantiated");
+is($xk->country_code(), 383,               "... has right country_code()");
+is($xk->country(),      'XK',              "... has right country()");
+is($xk->format(),      '+383 43 201 234',  "... numbers format correctly");
 
 1;

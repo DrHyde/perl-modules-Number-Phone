@@ -1,3 +1,7 @@
+XXXX-XX-XX      XXXXXX  We now have some data from libphonenumber for Kosovo
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/66);
+                        Data updates
+
 2018-02-03      3.4003  UK "protected" numbers should have false is_allocated();
                         Bugfix for countries that don't have area names (see
                           https://github.com/DrHyde/perl-modules-Number-Phone/issues/64);
