@@ -31,7 +31,9 @@ sub phone2country {
 
 our %NANP_areas = (
     CA => do {
-        # from http://www.cnac.ca/co_codes/co_code_status.htm, 2017-07-14
+        # see http://www.cnac.ca/co_codes/co_code_status.htm
+        # checked on 2017-07-14
+        # next check due 2017-12-01 (semi-annually)
         my $canada = join('|', qw(
             204 226 236 249 250 289
             306 343 365 367
@@ -46,38 +48,41 @@ our %NANP_areas = (
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
-        # from http://www.nanpa.com/enas/geoAreaCodeAlphabetReport.do, 2017-07-14
+        # see http://www.nanpa.com/enas/geoAreaCodeAlphabetReport.do
+        # checked on 2017-07-14
+        # next check due 2017-12-01 (semi-annually)
         my $usa = join('|', qw(
             907 334 251 205 938 256 501 479 870 520 480 928 602 623 619 562 628 650 657 661 408 415 424 442 626 559 530 510 323 310 951 949 925 916 209 213 669 707 714 747 760 805 818 831 858 909 719 303 970 720 475 203 860 959 202 302 407 561 727 754 772 786 813 850 863 904 941 954 305 321 352 386 239 404 229 762 470 678 706 478 770 912 808 515 712 641 319 563 208 708 224 217 618 630 331 312 309 872 847 815 779 773 219 317 463 812 574 930 765 260 913 316 785 620 502 859 364 270 606 225 985 504 337 318 774 617 351 508 857 978 413 339 781 240 410 301 443 667 207 734 248 231 586 616 517 313 269 989 947 906 810 952 320 218 651 763 612 507 314 573 660 816 636 417 601 662 228 769 406 704 252 980 828 910 919 743 984 336 701 308 531 402 603 856 848 908 732 973 201 609 862 551 575 505 725 702 775 315 332 680 347 212 585 646 516 518 631 607 845 934 716 718 929 917 914 614 567 513 380 330 937 740 234 220 216 440 419 405 539 580 918 541 971 503 458 610 412 215 717 724 814 484 570 878 267 272 401 843 803 864 854 605 931 423 629 901 615 865 731 737 806 817 512 832 903 915 940 956 972 979 936 281 325 346 361 713 682 254 214 210 469 432 430 409 830 385 435 801 434 703 757 571 804 276 540 802 360 253 206 425 509 262 920 534 414 608 715 304 681 307 
         ));
         # handful of non-geographic country-specific codes ...
         $usa    = join('|', $usa,    710);
     },
-    # see http://wtng.info/wtng-cod.html#WZ1
-    # checked 2014-04-21
-    PR => '787|939',
-    DO => '809|829|849',
-    BS => '242',
-    BB => '246',
-    AI => '264',
-    AG => '268',
-    VG => '284',
-    VI => '340',
-    KY => '345',
-    BM => '441',
-    GD => '473',
-    TC => '649',
-    MS => '664',
-    MP => '670',
-    GU => '671',
-    AS => '684',
-    SX => '721',
-    LC => '758',
-    DM => '767',
-    VC => '784',
-    TT => '868',
-    KN => '869',
-    JM => '876',
+    # see https://en.wikipedia.org/wiki/North_American_Numbering_Plan#NANP_countries_and_territories
+    # checked on 2018-03-23
+    # next check due 2019-03-01 (annually)
+    AS => '684',         # American Samoa
+    AI => '264',         # Anguilla
+    AG => '268',         # Antigua and Barbude
+    BS => '242',         # Bahamas
+    BB => '246',         # Barbados
+    BM => '441',         # Bermuda
+    VG => '284',         # British Virgin Islands
+    KY => '345',         # Cayman Islands
+    DM => '767',         # Dominica
+    DO => '809|829|849', # Dominican Republic
+    GD => '473',         # Grenada
+    GU => '671',         # Guam
+    JM => '876',         # Jamaica
+    MS => '664',         # Montserrat
+    MP => '670',         # Northern Mariana Islands
+    PR => '787|939',     # Puerto Rico
+    KN => '869',         # Saint Kitts and Nevis
+    LC => '758',         # Saint Lucia
+    VC => '784',         # Saint Vincent and the Grenadines
+    SX => '721',         # Sint Maarten
+    TT => '868',         # Trinidad and Tobago
+    TC => '649',         # Turks and Caicos Islands
+    VI => '340',         # US Virgin Islands
 );
 
 # private sub, returns list of NANP areas for the given ISO country code

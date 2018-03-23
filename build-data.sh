@@ -13,6 +13,7 @@ if [ "$1" == "--force" ]; then
 fi
 
 EXITSTATUS=0
+
 # first get OFCOM data
 for i in \
     http://static.ofcom.org.uk/static/numbering/sabc.txt        \
@@ -130,6 +131,26 @@ then
 else
   echo t/example-phone-numbers.t is up-to-date
 fi
+
+# finally look for out of date files and yell about them
+echo
+for file in `grep -ri next.check.due lib build-*|grep -v build-data.sh|sed 's/:.*//'|sort|uniq`; do
+    grep next.check.due $file | perl -Mstrict -Mwarnings -e '
+        my $file = "'$file'";
+        my $today = join("-",
+                        (gmtime())[5] + 1900,
+                        sprintf("%02d", (gmtime())[4] + 1),
+                        sprintf("%02d", (gmtime())[3])
+                    );
+        while(my $line = <STDIN>) {
+            chomp($line);
+            $line =~ s/^\s+#\s+next\s+check\s+due\s+//;
+            $line =~ s/ .*$//;
+            print "Found a next check due on $line in $file\n"
+                if($line lt $today);
+        }
+    '
+done
 
 if [ $EXITSTATUS == 1 ]; then
   if test -e Makefile; then

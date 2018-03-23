@@ -126,14 +126,19 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
     
-    [ 2125288 => 'EH' ], # \ from http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
-    [ 2125289 => 'EH' ], # /
-    [ 262269  => 'YT' ], # Mayotte fixed lines
-    [ 262639  => 'YT' ], # Mayotte GSM
-    [ 35348   => 'GB' ], # Northern Ireland in Irish dialling plan
-    [ 379     => 'VA' ], # Vatican; (not in use?)
-    [ 3966982 => 'VA' ], # Vatican in Italian dialling plan
-    # http://en.wikipedia.org/wiki/Telephone_numbers_in_the_United_Kingdom#Crown_dependencies
+    # checked on 2011-07-08
+    # next check due 2017-12-01 (annually)
+    [ 2125288 => 'EH' ], # see http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
+    [ 2125289 => 'EH' ], # see http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
+    [ 262269  => 'YT' ], # ??? Mayotte fixed lines
+    [ 262639  => 'YT' ], # ??? Mayotte GSM
+    [ 35348   => 'GB' ], # ??? Northern Ireland in Irish dialling plan
+    [ 379     => 'VA' ], # ??? Vatican; (not in use?)
+    [ 3966982 => 'VA' ], # ??? Vatican in Italian dialling plan
+
+    # see http://en.wikipedia.org/wiki/Telephone_numbers_in_the_United_Kingdom#Crown_dependencies
+    # checked on 2011-07-08
+    # next check due 2017-12-01 (annually)
     [ 441481 => 'GG' ],
     [ 447781 => 'GG' ],
     [ 447839 => 'GG' ],
@@ -149,6 +154,9 @@ foreach my $tuple (
     [ 447524 => 'IM' ],
     [ 447924 => 'IM' ],
 
+    # see ???
+    # checked on 2011-07-08
+    # next check due 2017-12-01 (annually)
     [ 5999    => 'CW' ],
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
@@ -158,13 +166,15 @@ foreach my $tuple (
     [ 67213   => 'AQ' ], # Macquarie Island /
     [ 6723    => 'NF' ], # Norfolk Island
 
-    # 7* from http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
-    # checked 2011-07-08
+    # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
+    # checked on 2011-07-08
+    # next check due 2017-12-01 (annually)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 
-    # these checked on 2018-03-22
-    # http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
+    # see http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
+    # checked on 2017-03-22
+    # next check due 2017-12-01 (annually)
     [ 37744   => 'XK' ],
     [ 37745   => 'XK' ],
     [ 38128   => 'XK' ],
@@ -174,9 +184,11 @@ foreach my $tuple (
     [ 38643   => 'XK' ],
     [ 38649   => 'XK' ],
 
-    # these checked against wtng.info 2011-07-08
-    # https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
-    # https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
+    # see https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
+    #     https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
+    #     wtng.infos
+    # checked on 2011-07-08
+    # next check due 2017-12-01 (annually)
     [ 800     => 'InternationalFreephone'    ],
     [ 808     => 'SharedCostServices'        ],
     [ 870     => 'Inmarsat'                  ],
