@@ -153,6 +153,12 @@ From version 3.4000 to 3.4003 inclusive we accepted any old garbage after
 Now that that has been published, we use libphonenumber data, and validate
 against it.
 
+The prefix codes in 3.4003 and earlier were managed by hand and so got out
+of date. After that release they are mostly derived from libphonenumber.
+libphonenumber's data includes carrier selection codes when they are
+mandatory for dialling so those are now included. This sometimes means that
+some random carrier has been arbitrarily priveleged over others.
+
 =head1 COMPATIBILTY WITH libphonenumber
 
 libphonenumber is a similar project for other languages, maintained
