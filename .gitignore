@@ -4,6 +4,7 @@ Makefile
 blib/
 lib/Number/Phone/NANP/Data.pm
 share/Number-Phone-UK-Data.db
+lib/Number/Phone/Country/
 lib/Number/Phone/StubCountry/
 libphonenumber/
 pm_to_blib

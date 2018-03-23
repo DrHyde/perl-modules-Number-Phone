@@ -7,6 +7,7 @@
 if [ "$1" == "--force" ]; then
   rm share/Number-Phone-UK-Data.db
   rm lib/Number/Phone/NANP/Data.pm
+  rm lib/Number/Phone/Country/Data.pm
   rm lib/Number/Phone/StubCountry/KZ.pm
   rm t/example-phone-numbers.t
 fi
@@ -69,6 +70,20 @@ fi
 
 # now get an up-to-date libphonenumber
 (cd libphonenumber && git pull -q) || (echo Checking out libphonenumber ...; git clone https://github.com/googlei18n/libphonenumber.git)
+
+# lib/Number/Phone/Country/Data.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer ...
+if test ! -e lib/Number/Phone/Country/Data.pm -o \
+  build-data.country-mapping -nt lib/Number/Phone/Country/Data.pm -o \
+  libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/Country/Data.pm;
+then
+  if [ "$TRAVIS" != "true" ]; then
+    EXITSTATUS=1
+  fi
+  echo rebuilding lib/Number/Phone/Country/Data.pm
+  perl build-data.country-mapping
+else
+  echo lib/Number/Phone/Country/Data.pm is up-to-date
+fi
 
 # lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt or PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/NANP/Data.pm -o \

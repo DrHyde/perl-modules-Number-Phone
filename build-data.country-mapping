@@ -1,0 +1,232 @@
+#!/usr/bin/env perl
+
+# THIS SCRIPT IS NOT INTENDED FOR END USERS OR FOR PEOPLE INSTALLING
+# THE MODULES, BUT FOR THE AUTHOR'S USE WHEN UPDATING THE DATA FROM OFCOM'S
+# PUBLISHED DATA.
+
+use strict;
+use warnings;
+use Data::Dumper; local $Data::Dumper::Indent = 2;
+
+# use lib 'lib';
+# use Number::Phone::NANP::Data;
+
+$| = 1;
+
+use XML::XPath;
+my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
+my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
+
+mkdir('lib/Number/Phone/Country');
+
+my %idd_codes    = ();
+my %prefix_codes = ();
+TERRITORY: foreach my $territory (@territories) {
+    my $IDD_country_code   = ''.$territory->find('@countryCode');
+    my $national_code      = ''.$territory->find('@nationalPrefix');
+    my $international_code = ''.$territory->find('@preferredInternationalPrefix') ||
+                             ''.$territory->find('@internationalPrefix');
+    my $ISO_country_code   = ''.$territory->find('@id');
+    if($ISO_country_code !~ /^..$/) {
+        warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
+        next TERRITORY;
+    }
+
+    $international_code =~ s/~//; # ex-Soviet republics
+
+    if($international_code && $international_code !~ /^\d+$/) {
+        warn("For $ISO_country_code found idd code $international_code\n");
+        # some of these privelege a particular carrier. I don't care. I
+        # just want something that works.
+        $international_code = (grep { $_ =~ /^$international_code$/ } qw(00 000 001 002 009 0012 011 191200))[0];
+        if($international_code) {
+            warn("  fixed it to $international_code\n");
+        } else {
+            exit(1);
+        }
+    }
+    if($national_code && $national_code !~ /^\d+$/) {
+        warn("For $ISO_country_code found ndd code $national_code\n");
+        exit(1);
+    }
+
+    if(exists($idd_codes{$IDD_country_code})) {
+        $idd_codes{$IDD_country_code} = ref($idd_codes{$IDD_country_code})
+            ? [@{$idd_codes{$IDD_country_code}}, $ISO_country_code]
+            : [$idd_codes{$IDD_country_code},    $ISO_country_code];
+    } else {
+        $idd_codes{$IDD_country_code} = $ISO_country_code;
+    }
+    $prefix_codes{$ISO_country_code} = [
+        $IDD_country_code,
+        (length($international_code) ? $international_code : undef),
+        (length($national_code)      ? $national_code      : undef),
+    ];
+}
+
+open(my $module_fh, '>:encoding(UTF-8)', "lib/Number/Phone/Country/Data.pm")
+    || die("Can't write lib/Number/Phone/Country/Data.pm: $!\n");
+print $module_fh q{
+    # automatically generated file, don't edit
+
+    package Number::Phone::Country::Data;
+    $VERSION = '1.}.
+    join("",
+        (gmtime())[5] + 1900,
+        sprintf('%02d', (gmtime())[4] + 1),
+        map { sprintf('%02d', $_) } (gmtime())[3, 2, 1, 0]
+    )
+    .q{';
+        %Number::Phone::Country::idd_codes = (
+    };
+
+foreach my $idd_code (sort keys %idd_codes) {
+    next if($idd_code eq '1');
+    print $module_fh ''.$idd_code . ' => ' .
+        (
+            ref($idd_codes{$idd_code})
+                ? '['.join(', ', map { "'$_'" } @{$idd_codes{$idd_code}})."],\n"
+                : "'$idd_codes{$idd_code}',\n"
+        );
+}
+
+print $module_fh q{
+    );
+    %Number::Phone::Country::prefix_codes = (
+};
+
+foreach my $ISO_code (sort keys %prefix_codes) {
+    print $module_fh
+        "'$ISO_code' => ['".
+        $prefix_codes{$ISO_code}->[0].
+        "', ".
+        join(', ', map {
+            defined($_)
+                ? "'$_'"
+                : 'undef'
+        } $prefix_codes{$ISO_code}->[1], $prefix_codes{$ISO_code}->[2]).
+        "],\n";
+}
+print $module_fh q{
+    );
+    $Number::Phone::Country::prefix_codes{UK} = $Number::Phone::Country::prefix_codes{GB};
+};
+
+# and now for non-geo "country" codes, sub-countries, countries "borrowing"
+# from other countries, and Russia/Kazakhstan
+foreach my $tuple (
+    # for some "shared space" codes we need to ensure that the "host" country comes first.
+    # libphonenumber has them in alphabetical order which we don't want.
+    [ 212 => ['MA', 'EH'       ]],
+    [ 358 => ['FI', 'AX'       ]],
+    [ 47  => ['NO', 'BV', 'SJ' ]], # no BV in libphonenumber
+    [ 500 => ['FK', 'GS'       ]], # no GS in libphonenumber
+    [ 590 => ['GP', 'BL', 'MF' ]],
+    [ 596 => ['MQ', 'TF'       ]], # no TF in libphonenumber
+    [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
+    [ 7   => ['RU', 'KZ'       ]],
+    
+    [ 2125288 => 'EH' ], # \ from http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
+    [ 2125289 => 'EH' ], # /
+    [ 262269  => 'YT' ], # Mayotte fixed lines
+    [ 262639  => 'YT' ], # Mayotte GSM
+    [ 35348   => 'GB' ], # Northern Ireland in Irish dialling plan
+    [ 379     => 'VA' ], # Vatican; (not in use?)
+    [ 3966982 => 'VA' ], # Vatican in Italian dialling plan
+    # http://en.wikipedia.org/wiki/Telephone_numbers_in_the_United_Kingdom#Crown_dependencies
+    [ 441481 => 'GG' ],
+    [ 447781 => 'GG' ],
+    [ 447839 => 'GG' ],
+    [ 447911 => 'GG' ],
+    [ 441534 => 'JE' ],
+    [ 447509 => 'JE' ],
+    [ 447797 => 'JE' ],
+    [ 447937 => 'JE' ],
+    [ 447700 => 'JE' ],
+    [ 447829 => 'JE' ],
+    [ 441624 => 'IM' ],
+    [ 447624 => 'IM' ],
+    [ 447524 => 'IM' ],
+    [ 447924 => 'IM' ],
+
+    [ 5999    => 'CW' ],
+    [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
+    [ 6189164 => 'CX' ], # Christmas Island
+    [ 67210   => 'AQ' ], # Davis station    \
+    [ 67211   => 'AQ' ], # Mawson           | Australian Antarctic bases
+    [ 67212   => 'AQ' ], # Casey            |
+    [ 67213   => 'AQ' ], # Macquarie Island /
+    [ 6723    => 'NF' ], # Norfolk Island
+
+    # 7* from http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
+    # checked 2011-07-08
+    [ 76      => 'KZ' ],
+    [ 77      => 'KZ' ],
+
+    # these checked on 2018-03-22
+    # http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
+    [ 37744   => 'XK' ],
+    [ 37745   => 'XK' ],
+    [ 38128   => 'XK' ],
+    [ 38129   => 'XK' ],
+    [ 38138   => 'XK' ],
+    [ 38139   => 'XK' ],
+    [ 38643   => 'XK' ],
+    [ 38649   => 'XK' ],
+
+    # these checked against wtng.info 2011-07-08
+    # https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
+    # https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
+    [ 800     => 'InternationalFreephone'    ],
+    [ 808     => 'SharedCostServices'        ],
+    [ 870     => 'Inmarsat'                  ],
+    [ 871     => 'Inmarsat'                  ],
+    [ 872     => 'Inmarsat'                  ],
+    [ 873     => 'Inmarsat'                  ],
+    [ 874     => 'Inmarsat'                  ],
+    [ 878     => 'UniversalPersonalTelecoms' ],
+    [ 881     => 'GMSS',                     ], # \ Sat-phones
+    [ 8810    => 'ICO',                      ], # |
+    [ 8811    => 'ICO',                      ], # |
+    [ 8812    => 'Ellipso',                  ], # |
+    [ 8813    => 'Ellipso',                  ], # |
+    # 8814 is spare                             # |
+    # 8815 is spare                             # |
+    [ 8816    => 'Iridium',                  ], # |
+    [ 8817    => 'Iridium',                  ], # |
+    [ 8818    => 'Globalstar',               ], # |
+    [ 8819    => 'Globalstar',               ], # /
+    [ 882     => 'InternationalNetworks'     ],
+    [ 883     => 'InternationalNetworks'     ],
+    [ 883120  => 'Telenor'                   ],
+    [ 883130  => 'Mobistar'                  ],
+    [ 883140  => 'MTTGlobalNetworks'         ],
+    [ 8835100 => 'VOXBON'                    ],
+    [ 888     => 'TelecomsForDisasterRelief' ],
+    # 979 is used for testing when we fail to load a module when we
+    # know what "country" it is
+    [ 979     => 'InternationalPremiumRate'  ],
+    [ 991     => 'ITPCS'                     ],
+    # 999 deliberately NYI for testing; proposed to be like 888.
+) {
+    print $module_fh
+        '$Number::Phone::Country::idd_codes{'.
+        $tuple->[0].
+        "} = ".
+        (ref($tuple->[1])
+            ? '['.join(', ', map { "'$_'" } @{$tuple->[1]}).']'
+            : "'".$tuple->[1]."'"
+        ).
+        ";\n";
+}
+
+# countries that don't exist in libphonenumber
+# FIXME unchecked
+print $module_fh q{
+    $Number::Phone::Country::prefix_codes{VA} = ['379', '00',  undef];
+    $Number::Phone::Country::prefix_codes{BV} = ['47',  '00',  undef];
+    $Number::Phone::Country::prefix_codes{GS} = ['500', '00',  undef];
+    $Number::Phone::Country::prefix_codes{TF} = ['596', '00',  '0'  ];
+    $Number::Phone::Country::prefix_codes{AQ} = ['672', undef, undef];
+    $Number::Phone::Country::prefix_codes{PN} = ['872', undef, undef];
+};
