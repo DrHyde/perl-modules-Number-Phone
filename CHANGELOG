@@ -1,7 +1,10 @@
 XXXX-XX-XX      XXXXXX  We now have some data from libphonenumber for Kosovo
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/66);
+                        Kosovo has migrated to +383 so get rid of the special cases in +377 etc;
                         N::P::Country::Data is now mostly built from libphonenumber
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/34);
+                        Corrected the Vatican's area code within the Italian numbering plan;
+                        Added a special case for San Marino within the Italian numbering plan;
                         Data updates
 
 2018-02-03      3.4003  UK "protected" numbers should have false is_allocated();

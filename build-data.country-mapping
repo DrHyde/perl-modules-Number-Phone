@@ -126,69 +126,78 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
     
-    # checked on 2011-07-08
-    # next check due 2017-12-01 (annually)
-    [ 2125288 => 'EH' ], # see http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
-    [ 2125289 => 'EH' ], # see http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
-    [ 262269  => 'YT' ], # ??? Mayotte fixed lines
-    [ 262639  => 'YT' ], # ??? Mayotte GSM
-    [ 35348   => 'GB' ], # ??? Northern Ireland in Irish dialling plan
-    [ 379     => 'VA' ], # ??? Vatican; (not in use?)
-    [ 3966982 => 'VA' ], # ??? Vatican in Italian dialling plan
+    # checked on 2018-03-24
+    # next check due 2018-12-01 (annually)
+    [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
+    [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
+    [ 262269  => 'YT' ], # Mayotte fixed lines, see http://www.wtng.info/wtng-262-fr.html
+    [ 262639  => 'YT' ], # Mayotte GSM, see http://www.wtng.info/wtng-262-fr.html
+    [ 35348   => 'GB' ], # https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Republic_of_Ireland#Calls_to_Northern_Ireland
+    [ 379     => 'VA' ], # Vatican (not in use, missing from libphonenumber), see https://en.wikipedia.org/wiki/Telephone_numbers_in_Vatican_City
+    [ 3906698 => 'VA' ], # Vatican in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_Vatican_City
+    [ 390549  => 'SM' ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
 
-    # see http://en.wikipedia.org/wiki/Telephone_numbers_in_the_United_Kingdom#Crown_dependencies
-    # checked on 2011-07-08
-    # next check due 2017-12-01 (annually)
+    # sourced from libphonenumber
+    # checked on 2018-03-24
+    # next check due 2018-12-01 (annually)
     [ 441481 => 'GG' ],
     [ 447781 => 'GG' ],
     [ 447839 => 'GG' ],
     [ 447911 => 'GG' ],
     [ 441534 => 'JE' ],
     [ 447509 => 'JE' ],
-    [ 447797 => 'JE' ],
-    [ 447937 => 'JE' ],
     [ 447700 => 'JE' ],
+    [ 447797 => 'JE' ],
     [ 447829 => 'JE' ],
+    [ 447937 => 'JE' ],
     [ 441624 => 'IM' ],
-    [ 447624 => 'IM' ],
+    [ 447457 => 'IM' ],
     [ 447524 => 'IM' ],
+    [ 447624 => 'IM' ],
     [ 447924 => 'IM' ],
 
-    # see ???
-    # checked on 2011-07-08
-    # next check due 2017-12-01 (annually)
-    [ 5999    => 'CW' ],
+    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Cura%C3%A7ao_and_the_Caribbean_Netherlands
+    # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
+    # see http://wtng.info/ccod-6.html#CC61 (Christmas Island)
+    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
+    # checked on 2018-03-25
+    # next check due 2018-12-01 (annually)
+    [ 5999    => 'CW' ], # Curacao
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
     [ 67210   => 'AQ' ], # Davis station    \
-    [ 67211   => 'AQ' ], # Mawson           | Australian Antarctic bases
-    [ 67212   => 'AQ' ], # Casey            |
-    [ 67213   => 'AQ' ], # Macquarie Island /
+    [ 67211   => 'AQ' ], # Mawson           |
+    [ 67212   => 'AQ' ], # Casey            | Australian Antarctic bases
+    [ 67213   => 'AQ' ], # Macquarie Island |
+    [ 67214   => 'AQ' ], # Wilkins, mobiles /
     [ 6723    => 'NF' ], # Norfolk Island
 
     # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
-    # checked on 2011-07-08
-    # next check due 2017-12-01 (annually)
+    # checked on 2018-03-24
+    # next check due 2019-12-01 (bi-annually)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 
-    # see http://en.wikipedia.org/wiki/List_of_country_calling_codes#At_a_glance
-    # checked on 2017-03-22
-    # next check due 2017-12-01 (annually)
-    [ 37744   => 'XK' ],
-    [ 37745   => 'XK' ],
-    [ 38128   => 'XK' ],
-    [ 38129   => 'XK' ],
-    [ 38138   => 'XK' ],
-    [ 38139   => 'XK' ],
-    [ 38643   => 'XK' ],
-    [ 38649   => 'XK' ],
+    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Kosovo
+    # apparently it no longer uses chunks of numbers from
+    # all over the place (since some time in 2017)
+    # checked on 2018-03-25
+    # next check due 2018-12-01 (annually)
+    # delete this section if there's no evidence of use at end of 2018
+    # [ 37744   => 'XK' ],
+    # [ 37745   => 'XK' ],
+    # [ 38128   => 'XK' ],
+    # [ 38129   => 'XK' ],
+    # [ 38138   => 'XK' ],
+    # [ 38139   => 'XK' ],
+    # [ 38643   => 'XK' ],
+    # [ 38649   => 'XK' ],
 
     # see https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
     #     https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
-    #     wtng.infos
-    # checked on 2011-07-08
-    # next check due 2017-12-01 (annually)
+    #     wtng.info
+    # checked on 2018-03-25
+    # next check due 2019-12-01 (bi-annually)
     [ 800     => 'InternationalFreephone'    ],
     [ 808     => 'SharedCostServices'        ],
     [ 870     => 'Inmarsat'                  ],
@@ -200,15 +209,19 @@ foreach my $tuple (
     [ 881     => 'GMSS',                     ], # \ Sat-phones
     [ 8810    => 'ICO',                      ], # |
     [ 8811    => 'ICO',                      ], # |
-    [ 8812    => 'Ellipso',                  ], # |
-    [ 8813    => 'Ellipso',                  ], # |
+    # 8812 and 8813 assigned to Ellipso         # |
+    # but that apparently never launched        # |
     # 8814 is spare                             # |
     # 8815 is spare                             # |
     [ 8816    => 'Iridium',                  ], # |
     [ 8817    => 'Iridium',                  ], # |
     [ 8818    => 'Globalstar',               ], # |
     [ 8819    => 'Globalstar',               ], # /
-    [ 882     => 'InternationalNetworks'     ],
+    [ 882     => 'InternationalNetworks'     ], # many allocations not listed as I don't know if they're diallable, see wtng.info
+    [ 88213   => 'Telespazio'                ], # Sat-ohone
+    [ 88216   => 'Thuraya'                   ], # Sat-phone
+    [ 88220   => 'GarudaMobile'              ], # Sat-phone
+    [ 88234   => 'AQ'                        ], # Global Networks Switzerland antarctic service
     [ 883     => 'InternationalNetworks'     ],
     [ 883120  => 'Telenor'                   ],
     [ 883130  => 'Mobistar'                  ],
