@@ -10,10 +10,31 @@ use Test::More;
 
 END { done_testing(); }
 
-# Mobile Number
-is(Number::Phone::Lib->new("+55 35 9 98 70 56 56")->is_mobile(), 1, "+55 35 turned into +55 35 9");
-is(Number::Phone::Lib->new("+55 35   98 70 56 56")->is_mobile(), 1, "old format still works (according to Google anyway)");
-
-# ignore carrier select prefixes when parsing a local number
-is(Number::Phone::Lib->new("BR", "08522222222")->format(), '+55 85 2222 2222', '085 NNNN parsed ok');
-is(Number::Phone::Lib->new("BR", "0318522222222")->format(), '+55 85 2222 2222', '0 31 85 NNNN parsed ok');
+{
+    my $np = Number::Phone::Lib->new('BR', '0 85 2222 2222');
+    ok($np->is_fixed_line, '0 85 2222 2222 is a fixed line without carrier select code...');
+    ok(!$np->is_mobile, '...it is not a mobile...');
+    is($np->format, '+55 85 2222 2222', '...its international format is correct');
+    is($np->format_using('National'), '(85) 2222-2222', '...as is its national format');
+}
+{
+    my $np = Number::Phone::Lib->new('BR', '0 31 85 2222 2222');
+    ok($np->is_fixed_line, '0 31 85 2222 2222 is a fixed line with carrier select code...');
+    ok(!$np->is_mobile, '...it is not a mobile...');
+    is($np->format, '+55 85 2222 2222', '...its international format is correct');
+    is($np->format_using('National'), '(85) 2222-2222', '...as is its national format');
+}
+{
+    my $np = Number::Phone::Lib->new('BR', '35 9 98 70 56 56');
+    ok($np->is_mobile, '35 9 98 70 56 56 is a new style 9 digit mobile with area code...');
+    ok(!$np->is_fixed_line, '...it is not a fixed line...');
+    is($np->format, '+55 35 99870 5656', '...its international format is correct');
+    is($np->format_using('National'), '(35) 99870-5656', '...as is its national format');
+}
+{
+    my $np = Number::Phone::Lib->new('BR', '35 98 70 56 56');
+    ok($np->is_mobile, '35 9 98 70 56 56 is an old style 8 digit mobile with area code...');
+    ok(!$np->is_fixed_line, '...it is not a fixed line...');
+    is($np->format, '+55 35 9870 5656', '...its international format is correct');
+    is($np->format_using('National'), '(35) 9870-5656', '...as is its national format');
+}
