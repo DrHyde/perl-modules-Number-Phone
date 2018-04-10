@@ -1,4 +1,4 @@
-XXXX-XX-XX      XXXXXX  We now have some data from libphonenumber for Kosovo
+2018-04-10      3.4004  We now have some data from libphonenumber for Kosovo
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/66);
                         Kosovo has migrated to +383 so get rid of the special cases in +377 etc;
                         Bug-fix for when national prefix transforms apply
