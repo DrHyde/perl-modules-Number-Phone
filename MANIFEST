@@ -330,3 +330,6 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
+t/country-test-ar.t
+t/country-test-mx.t
+t/country-test-sm.t
