@@ -70,7 +70,7 @@ print $module_fh q{
     # automatically generated file, don't edit
 
     package Number::Phone::Country::Data;
-    $VERSION = '1.}.
+    $VERSION = '2.}.
     join("",
         (gmtime())[5] + 1900,
         sprintf('%02d', (gmtime())[4] + 1),
