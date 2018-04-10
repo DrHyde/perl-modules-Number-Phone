@@ -119,19 +119,43 @@ TERRITORY: foreach my $territory (@territories) {
     $national_code =~ s/\s+//g;
     # Suppressing the warning below is for if the national code optionally
     # matches part of the number that would then be in the transform rule
-    print $module_fh "
-      return \$self if (\$self->is_valid());
-      {
-        no warnings 'uninitialized';
-        \$number =~ s/^(?:$national_code)/$national_prefix_transform_rule/;
-      }
-      \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
+    my @code = "return \$self if (\$self->is_valid());";
+
+    if ($national_prefix_transform_rule eq '') {
+      # There is no national prefix transform rule, so just delete the national
+      # prefix, if present.
+      push @code, "  \$number =~ s/^(?:$national_code)//;";
+    }
+    else {
+      # There is a national prefix transform rule.
+      push @code,
+        "  my \$prefix = qr/^(?:$national_code)/;",
+        "  my \@matches = \$number =~ /\$prefix/;",
+        "  if (defined \$matches[-1]) {",
+        # We have a match in the last capturing group.  Assume that the
+        # transform rule can be applied.
+        "    no warnings 'uninitialized';",
+        "    \$number =~ s/\$prefix/$national_prefix_transform_rule/;",
+        "  }",
+        "  else {",
+        # We don't have a match in the last capturing group.  Assume that the
+        # transform rule cannot be applied, and instead, just delete the
+        # national prefix, if present.
+        "    \$number =~ s/\$prefix//;",
+        "  }";
+    }
+
+    push @code,
+      "  \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
       (($IDD_country_code != 1 && -e $codesfile) ? 'areanames => \\%areanames' : '')
-      ."}, \$class);
-    ";
+      ."}, \$class);";
+
+    print $module_fh join "\n", map {"    $_"} @code;
+    print $module_fh "\n";
   }
-  print $module_fh "return \$self->is_valid() ? \$self : undef;\n";
-  print $module_fh "}\n1;";
+
+  print $module_fh "      return \$self->is_valid() ? \$self : undef;\n";
+  print $module_fh "    }\n1;";
 }
 
 sub preamble {
