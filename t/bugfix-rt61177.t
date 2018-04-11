@@ -15,7 +15,7 @@ use Number::Phone::Country qw(noexport);
 
 is(Number::Phone->new("442087712924")->country_code(), 44, "known countries return objects");
 is(Number::Phone->new("+442087712924")->country_code(), 44, "known countries with a + return objects");
-is(Number::Phone->new("+447979866975")->format(), '+44 7979866975' , "format() works (sanity check cos it changes later)");
+is(Number::Phone->new("+447979866975")->format(), '+44 7979 866975' , "format() works (sanity check cos it changes later)");
 
 # let's break the UK
 $Number::Phone::Country::idd_codes{'44'} = 'MOCK';

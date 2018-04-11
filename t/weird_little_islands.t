@@ -12,19 +12,19 @@ END { done_testing(); }
 
 my $data = {
   JE => {
-    mobile     => '+44 7509000000',
+    mobile     => '+44 7509 000000',
     geographic => '+44 1534 440000',
     operator   => 'JT (Jersey) Limited',
     regulator  => 'Office of Utility Regulation, http://www.cicra.gg'
   },
   GG => {
-    mobile     => '+44 7781000000',
+    mobile     => '+44 7781 000000',
     geographic => '+44 1481 200000',
     operator   => 'Sure (Guernsey) Limited',
     regulator  => 'Office of Utility Regulation, http://www.cicra.gg'
   },
   IM => {
-    mobile      => ['+44 7624000000', '+44 7457600000'],
+    mobile      => ['+44 7624 000000', '+44 7457 600000'],
     geographic  => '+44 1624 500000',
     specialrate => '+44 8456247890',
     operator    => qr/^(Manx Telecom Trading Limited|Sure \(Isle of Man\) Limited)$/,

@@ -400,6 +400,10 @@ sub format {
         if(    length($self->subscriber()) == 7) { $r .= substr($self->subscriber(), 0, 3).' '.substr($self->subscriber(), 3) }
          elsif(length($self->subscriber()) == 8) { $r .= substr($self->subscriber(), 0, 4).' '.substr($self->subscriber(), 4) }
          else                                    { $r .= $self->subscriber() }
+    } elsif($self->subscriber && $self->subscriber =~ /^7/) { # mobiles/pagers don't have areacodes but should be formatted as if they do
+        $r = '+'.country_code().
+             ' '.substr($self->subscriber(), 0, 4).
+             ' '.substr($self->subscriber(), 4);
     } elsif(!$self->is_allocated() || !$cache->{${self}}->{format}) { # if not allocated or no format
         $r = '+'.country_code().' '.substr(${$self}, 3)
     } elsif($self->subscriber()) { # if there's a subscriber ...

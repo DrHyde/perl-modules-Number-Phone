@@ -1,3 +1,6 @@
+XXXX-XX-XX      XXXXXX  Improved formatting of UK mobile and pager numbers
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/75);
+
 2018-04-10      3.4004  We now have some data from libphonenumber for Kosovo
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/66);
                         Kosovo has migrated to +383 so get rid of the special cases in +377 etc;
