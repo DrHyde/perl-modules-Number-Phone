@@ -179,19 +179,20 @@ foreach my $tuple (
     [ 77      => 'KZ' ],
 
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Kosovo
-    # apparently it no longer uses chunks of numbers from
-    # all over the place (since some time in 2017)
-    # checked on 2018-03-25
+    # contra Wikipedia, libphonenumber-discuss message
+    # <bcac5fd3-3738-40e7-a134-f018f22c1c47@googlegroups.com> of
+    # 2018-04-13 indicates that these are still in use until at least
+    # the end of June 2018
+    # checked on 2018-04-22
     # next check due 2018-12-01 (annually)
-    # delete this section if there's no evidence of use at end of 2018
-    # [ 37744   => 'XK' ],
-    # [ 37745   => 'XK' ],
-    # [ 38128   => 'XK' ],
-    # [ 38129   => 'XK' ],
-    # [ 38138   => 'XK' ],
-    # [ 38139   => 'XK' ],
-    # [ 38643   => 'XK' ],
-    # [ 38649   => 'XK' ],
+    [ 37744   => 'XK' ],
+    [ 37745   => 'XK' ],
+    [ 38128   => 'XK' ],
+    [ 38129   => 'XK' ],
+    [ 38138   => 'XK' ],
+    [ 38139   => 'XK' ],
+    [ 38643   => 'XK' ],
+    [ 38649   => 'XK' ],
 
     # see https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
     #     https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
