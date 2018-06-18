@@ -55,7 +55,11 @@ TERRITORY: foreach my $territory (@territories) {
               $type eq 'personalNumber' ? 'is_personal' :
               die("WTF is $type\n");
 
-          if($IDD_country_code == 1 && $test_method =~ /
+          if($IDD_country_code == 1 && $number =~ /^710/) {
+              # libphonenumber doesn't know about is_government even if its
+              # data has this special case area code in it.
+              next NUMBER;
+          } elsif($IDD_country_code == 1 && $test_method =~ /
               is_ipphone |
               is_mobile |
               is_fixed_line |

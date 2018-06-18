@@ -123,6 +123,11 @@ is($tt_mobile->is_geographic(),
    (is_libphonenumber() ? 0 : 1),
    "$CLASS->new('$tt_mobile_numb')->is_geographic()");
 
+note("is_government");
+skip_if_libphonenumber("Stubs don't support is_government", 1, sub {
+    is($CLASS->new('+17106274387')->is_government(), 1, "710 is the Feds man");
+});
+
 note("is_drama");
 skip_if_libphonenumber("Stubs don't support is_drama", 2, sub {
     is($CLASS->new('+12125552368')->is_drama(), 0, "Ghostbusters isn't is_drama (last four digits too high)");

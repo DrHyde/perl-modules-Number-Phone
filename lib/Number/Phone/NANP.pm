@@ -195,6 +195,19 @@ sub is_drama {
     return 0;
 }
 
+=item is_government
+
+Area code 710 is reserved for the US Feds, but apparently only one number
+in the whole area code works.
+
+=cut
+
+sub is_government {
+    my $self = shift;
+    if(${$self} =~ /^(\+1)?710/) { return 1; }
+     else { return 0; }
+}
+
 =item is_tollfree
 
 The number is free to the caller. 800, 844, 855, 866, 877 and 888 "area codes"
@@ -209,7 +222,8 @@ sub is_tollfree {
 
 =item is_specialrate
 
-The number is charged at a higher rate than normal. The 900 "area code".
+The number is charged at a higher rate than normal. The 900 "area code"
+and some parts of 242 and 246 (Bahamas and Barbados).
 
 =cut
 
