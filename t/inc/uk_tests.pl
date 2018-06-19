@@ -65,11 +65,6 @@ is_deeply(
 );
 
 $number = Number::Phone->new('+44 141 999 0299');
-is($number->format(), '+44 141 999 0299', "3+7 protected number formatted OK");
-skip_if_mocked("libphonenumber doesn't do areacode/subscriber", 2, sub {
-  is($number->areacode(), '141', "3+7 protected number has correct area code");
-  is($number->subscriber(), '9990299', "3+7 protected number has correct subscriber number");
-});
 foreach my $method (qw(is_geographic is_valid)) {
     ok($number->$method(), "$method works for a protected number");
 }
