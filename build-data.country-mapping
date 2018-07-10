@@ -24,8 +24,9 @@ my %prefix_codes = ();
 TERRITORY: foreach my $territory (@territories) {
     my $IDD_country_code   = ''.$territory->find('@countryCode');
     my $national_code      = ''.$territory->find('@nationalPrefix');
+    my $international_rx   = ''.$territory->find('@internationalPrefix');
     my $international_code = ''.$territory->find('@preferredInternationalPrefix') ||
-                             ''.$territory->find('@internationalPrefix');
+                                $international_rx;
     my $ISO_country_code   = ''.$territory->find('@id');
     if($ISO_country_code !~ /^..$/) {
         warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
@@ -45,6 +46,20 @@ TERRITORY: foreach my $territory (@territories) {
             exit(1);
         }
     }
+
+    my $idd_rx = eval { qr/\A $international_rx /xms };
+    if ($@ || !$idd_rx) {
+        warn("For $ISO_country_code found invalid idd regex $international_rx\n$@\n");
+        exit(1);
+    }
+    elsif (length $international_code) {
+        if ($international_code !~ $idd_rx) {
+            warn("idd regex $idd_rx for $ISO_country_code does not match" .
+                "against its idd code $international_code. Exiting.\n");
+            exit(1);
+        }
+    }
+
     if($national_code && $national_code !~ /^\d+$/) {
         warn("For $ISO_country_code found ndd code $national_code\n");
         exit(1);
@@ -59,8 +74,9 @@ TERRITORY: foreach my $territory (@territories) {
     }
     $prefix_codes{$ISO_country_code} = [
         $IDD_country_code,
-        (length($international_code) ? $international_code : undef),
-        (length($national_code)      ? $national_code      : undef),
+        (length($international_code) ? $international_code   : undef),
+        (length($national_code)      ? $national_code        : undef),
+        (length($international_rx)   ? $international_rx     : undef),
     ];
 }
 
@@ -105,6 +121,11 @@ foreach my $ISO_code (sort keys %prefix_codes) {
                 ? "'$_'"
                 : 'undef'
         } $prefix_codes{$ISO_code}->[1], $prefix_codes{$ISO_code}->[2]).
+        ', ' .
+        (defined $prefix_codes{$ISO_code}->[3]
+            ? 'qr/\A ' . $prefix_codes{$ISO_code}->[3] . ' /xms'
+            : 'undef'
+        ).
         "],\n";
 }
 print $module_fh q{
@@ -249,10 +270,10 @@ foreach my $tuple (
 # countries that don't exist in libphonenumber
 # FIXME unchecked
 print $module_fh q{
-    $Number::Phone::Country::prefix_codes{VA} = ['379', '00',  undef];
-    $Number::Phone::Country::prefix_codes{BV} = ['47',  '00',  undef];
-    $Number::Phone::Country::prefix_codes{GS} = ['500', '00',  undef];
-    $Number::Phone::Country::prefix_codes{TF} = ['596', '00',  '0'  ];
-    $Number::Phone::Country::prefix_codes{AQ} = ['672', undef, undef];
-    $Number::Phone::Country::prefix_codes{PN} = ['872', undef, undef];
+    $Number::Phone::Country::prefix_codes{VA} = ['379', '00',  undef, qr/\A 00 /xms];
+    $Number::Phone::Country::prefix_codes{BV} = ['47',  '00',  undef, qr/\A 00 /xms];
+    $Number::Phone::Country::prefix_codes{GS} = ['500', '00',  undef, qr/\A 00 /xms];
+    $Number::Phone::Country::prefix_codes{TF} = ['596', '00',  '0',   qr/\A 00 /xms];
+    $Number::Phone::Country::prefix_codes{AQ} = ['672', undef, undef, undef];
+    $Number::Phone::Country::prefix_codes{PN} = ['872', undef, undef, undef];
 };

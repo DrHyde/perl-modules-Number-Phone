@@ -20,7 +20,8 @@ while (<DATA>) {
     next if /^\s*#/;
     next if /^\s*$/;
 
-    my ($country, $prefix, $idd, $ndd) = split /:/;
+    my ($country, $prefix, $idds, $ndd) = split /:/;
+    my ($idd, @other_idds) = split /;/, $idds;
 
     $idd = undef unless length $idd;
     $ndd = undef unless length $ndd;
@@ -31,6 +32,20 @@ while (<DATA>) {
     is Number::Phone::Country::idd_code($country), $idd,
        "$country idd prefix";
 
+    my $idd_re = Number::Phone::Country::idd_regex($country);
+
+    if (defined $idd) {
+        like $idd, qr/ $idd_re \z /xms,
+            "$country idd regex with preferred idd $idd";
+
+        like $_, qr/ $idd_re \z /xms,
+            "$country idd regex with other idd $_"
+            for @other_idds;
+    }
+    else {
+        is $idd_re, undef, "$country idd regex not available";
+    }
+
     is Number::Phone::Country::ndd_code($country), $ndd,
        "$country ndd prefix";
 }
@@ -38,6 +53,9 @@ while (<DATA>) {
 __END__
 # data format is:
 # ISO code:CC:IDD:NDD
+# ...where IDD is the preferred IDD (as returned by idd_code), followed by zero
+# or more alternative IDDs separated by semi-colons.  The alternative IDDs
+# lists are to test the idd regex, and are not complete.
 AD:376:00:
 AE:971:00:0
 AF:93:00:0
@@ -51,7 +69,7 @@ AQ:672::
 AR:54:00:0
 AS:1:011:1
 AT:43:00:0
-AU:61:0011:0
+AU:61:0011;0014;0015;0019:0
 AW:297:00:
 AZ:994:00:0
 BA:387:00:0
@@ -66,7 +84,7 @@ BJ:229:00:
 BM:1:011:1
 BN:673:00:
 BO:591:00:0
-BR:55:0012:0
+BR:55:0012;0014;0015;0021;0031;0041;0043:0
 BS:1:011:1
 BT:975:00:
 BV:47:00:
@@ -84,7 +102,7 @@ CK:682:00:
 CL:56:00:
 CM:237:00:
 CN:86:00:0
-CO:57:009:0
+CO:57:009;005;007:0
 CR:506:00:
 CU:53:119:0
 CV:238:0:
@@ -129,14 +147,14 @@ GT:502:00:
 GU:1:011:1
 GW:245:00:
 GY:592:001:
-HK:852:00:
+HK:852:00;001;002:
 HN:504:00:
 HR:385:00:0
 HT:509:00:
 HU:36:00:06
-ID:62:001:0
+ID:62:001;007;008;009:0
 IE:353:00:0
-IL:972:00:0
+IL:972:00;012;013;014:0
 IN:91:00:0
 IO:246:00:
 IQ:964:00:0
@@ -148,12 +166,12 @@ JO:962:00:0
 JP:81:010:0
 KE:254:000:0
 KG:996:00:0
-KH:855:001:0
+KH:855:001;007:0
 KI:686:00:
 KM:269:00:
 KN:1:011:1
 KP:850:00:0
-KR:82:001:0
+KR:82:001;002;005;009:0
 KW:965:00:
 KY:1:011:1
 KZ:7:810:8
@@ -228,7 +246,7 @@ SB:677:00:
 SC:248:00:
 SD:249:00:0
 SE:46:00:0
-SG:65:000:
+SG:65:000;001;002;008:
 SH:290:00:
 SI:386:00:0
 SJ:47:00:
@@ -257,7 +275,7 @@ TO:676:00:
 TR:90:00:0
 TT:1:011:1
 TV:688:00:
-TW:886:002:0
+TW:886:002;005;006;007;009:0
 TZ:255:000:0
 UA:380:00:0
 UG:256:000:0

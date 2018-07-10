@@ -157,6 +157,14 @@ sub idd_code {
     return $$data[1];
 }
 
+sub idd_regex {
+    my $country = uc shift;
+
+    my $data = $prefix_codes{$country} or return;
+
+    return $$data[3];
+}
+
 sub ndd_code {
     my $country = uc shift;
 
@@ -224,11 +232,55 @@ it returns 44, and for Canada it returns 1.
 
 =item idd_code($country)
 
-Returns the International Direct Dialing prefix for the given country.
-This is the prefix needed to make a call B<from a country> to another
-country.  This is followed by the country code for the country you are
-calling.  For example, when calling another country from the US, you must
-dial 011.
+Returns one, of possibly multiple, International Direct Dialing prefixes for
+the given ISO Alpha-2 country code.  Returns nothing if the country code is not
+recognised or not supported.
+
+The IDD prefix is needed to make a call B<from a country> to another country.
+For example, when calling the UK from the US, the caller must first dial the
+IDD prefix 011 to setup an international call, followed by the country calling
+code for the UK (44), followed by the UK national number.
+
+Many telephone systems allow the caller to dial a plus sign prefix
+(+) in place of the IDD, in which case the system replaces the plus sign with
+the correct IDD prefix for the caller's country.
+
+Some countries have more than one IDD code, allowing the caller to route their
+calls through specific networks.  C<idd_code> only returns one code.  See
+C<idd_regex> if you need to match a number against known IDD prefixes for a
+given country.
+
+=item idd_regex($country)
+
+Returns a regular expression that matches against known International Direct
+Dialing prefixes for the given ISO Alpha-2 country code.  Returns nothing if
+the country code is not recognised or not supported.
+
+As an example, the regular expression for Australia (AU) will match a number of
+IDD prefixes, including 0011, 0014, and 0015, making it possible to determine
+that 001516502530000 could be a US number being dialled from Australia.
+
+Be aware that some numbers will match against IDD prefixes from multiple
+countries.  Other numbers will be valid national numbers for one country, and
+valid international numbers when called for other countries.  For example,
+C<01143662111> is a valid national number for Sheffield, England.  It could
+also be a valid number in Austria:
+
+Calling from within the UK:
+
+ Area code:     0114
+ Subscriber:    366 2111
+ National:      0114 366 2111
+ International: +441143662111
+
+Calling from a country that uses the NANP (North American Numbering Plan):
+
+ IDD:           011
+ Country code:  43 (Austria)
+ Area code:     0662 (Salzburg)
+ Subscriber:    111
+ National:      0662 111
+ International: +43662111
 
 =item ndd_code($country)
 
