@@ -1,3 +1,6 @@
+XXXX-XX-XX      XXXXXX  Expose libphonenumber's IDD prefix regexes
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/pull/89)
+
 2018-06-19      3.4005  Improved formatting of UK mobile and pager numbers
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/75);
                         Reinstate Kosovo squatting on +377, +381, and +386, as the change-
