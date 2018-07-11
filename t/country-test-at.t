@@ -27,16 +27,10 @@ is(Number::Phone::Lib->new("+4351253600")->format(), "+43 512 53600", "is format
 is(Number::Phone::Lib->new("+4351253600")->areaname(), "Innsbruck", "+43512 has right area name");
 
 # Non-Geo line
-ok(!Number::Phone::Lib->new("+435050525")->is_fixed_line(), "is +4350 a fixed line");
-ok(!Number::Phone::Lib->new("+435050525")->is_tollfree(), "is +4350 tollfree");
-ok(Number::Phone::Lib->new("+435050525")->is_specialrate(), "is +4350 specialrate");
-ok(!Number::Phone::Lib->new("+435050525")->is_geographic(), "is +4350 geographic");
-
-# Non-Geo location-independant number
-ok(!Number::Phone::Lib->new("+43720000121")->is_fixed_line(), "is +43720 a fixed line");
-ok(!Number::Phone::Lib->new("+43720000121")->is_geographic(), "is +43720 geographic");
-ok(!Number::Phone::Lib->new("+43720000121")->is_ipphone(), "is +43720 IP-Phone");
-ok(Number::Phone::Lib->new("+43720000121")->is_specialrate(), "is +43720 specialrate");
+ok(!Number::Phone::Lib->new("+43810123456")->is_fixed_line(), "is +4350 a fixed line");
+ok(!Number::Phone::Lib->new("+43810123456")->is_tollfree(), "is +4350 tollfree");
+ok(Number::Phone::Lib->new("+43810123456")->is_specialrate(), "is +4350 specialrate");
+ok(!Number::Phone::Lib->new("+43810123456")->is_geographic(), "is +4350 geographic");
 
 # Non-Geo Convergence Number
 ok(!Number::Phone::Lib->new("+43780392257")->is_fixed_line(), "is +43780 a fixed line");
