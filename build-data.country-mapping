@@ -147,8 +147,8 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
     
-    # checked on 2018-03-24
-    # next check due 2018-12-01 (annually)
+    # checked on 2018-12-04
+    # next check due 2019-12-01 (annually)
     [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 262269  => 'YT' ], # Mayotte fixed lines, see http://www.wtng.info/wtng-262-fr.html
@@ -159,30 +159,31 @@ foreach my $tuple (
     [ 390549  => 'SM' ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
 
     # sourced from libphonenumber
-    # checked on 2018-03-24
-    # next check due 2018-12-01 (annually)
+    # checked on 2019-12-04
+    # next check due 2019-12-01 (annually)
     [ 441481 => 'GG' ],
     [ 447781 => 'GG' ],
     [ 447839 => 'GG' ],
     [ 447911 => 'GG' ],
-    [ 441534 => 'JE' ],
-    [ 447509 => 'JE' ],
-    [ 447700 => 'JE' ],
-    [ 447797 => 'JE' ],
-    [ 447829 => 'JE' ],
-    [ 447937 => 'JE' ],
     [ 441624 => 'IM' ],
     [ 447457 => 'IM' ],
     [ 447524 => 'IM' ],
     [ 447624 => 'IM' ],
     [ 447924 => 'IM' ],
+    [ 441534 => 'JE' ],
+    [ 447509 => 'JE' ],
+    [ 447829 => 'JE' ],
+    [ 447937 => 'JE' ],
+    [ 447700 => 'JE' ],
+    [ 447797 => 'JE' ],
 
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Cura%C3%A7ao_and_the_Caribbean_Netherlands
     # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
+    #   NB the company listed there for +61 406 went bust
     # see http://wtng.info/ccod-6.html#CC61 (Christmas Island)
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
-    # checked on 2018-03-25
-    # next check due 2018-12-01 (annually)
+    # checked on 2018-12-04
+    # next check due 2019-12-01 (annually)
     [ 5999    => 'CW' ], # Curacao
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
@@ -205,7 +206,7 @@ foreach my $tuple (
     # 2018-04-13 indicates that these are still in use until at least
     # the end of June 2018
     # checked on 2018-04-22
-    # next check due 2018-12-01 (annually)
+    # next check due 2019-12-01 (bi-annually)
     [ 37744   => 'XK' ],
     [ 37745   => 'XK' ],
     [ 38128   => 'XK' ],
@@ -270,10 +271,15 @@ foreach my $tuple (
 # countries that don't exist in libphonenumber
 # FIXME unchecked
 print $module_fh q{
-    $Number::Phone::Country::prefix_codes{VA} = ['379', '00',  undef, qr/\A 00 /xms];
-    $Number::Phone::Country::prefix_codes{BV} = ['47',  '00',  undef, qr/\A 00 /xms];
-    $Number::Phone::Country::prefix_codes{GS} = ['500', '00',  undef, qr/\A 00 /xms];
-    $Number::Phone::Country::prefix_codes{TF} = ['596', '00',  '0',   qr/\A 00 /xms];
-    $Number::Phone::Country::prefix_codes{AQ} = ['672', undef, undef, undef];
+    $Number::Phone::Country::prefix_codes{VA} = ['379', '00',   undef, qr/\A 00 /xms];
+    $Number::Phone::Country::prefix_codes{BV} = ['47',  '00',   undef, qr/\A 00 /xms];
+    $Number::Phone::Country::prefix_codes{GS} = ['500', '00',   undef, qr/\A 00 /xms];
+    $Number::Phone::Country::prefix_codes{TF} = ['596', '00',   '0',   qr/\A 00 /xms];
+    # 0011 from https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
+    #   but note that Norfolk Island is also 672 but apparently uses 00 as per libphonenumber
+    $Number::Phone::Country::prefix_codes{AQ} = ['672', '0011', undef, undef];
+    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Pitcairn_Islands
+    #   it's supposed to use +64xx (NZ) but apparently they use satphones instead.
+    #   for extra fun, +872 may be obsolete
     $Number::Phone::Country::prefix_codes{PN} = ['872', undef, undef, undef];
 };
