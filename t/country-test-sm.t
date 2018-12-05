@@ -32,6 +32,6 @@ END { done_testing(); }
     is($np->format_using('National'), '66 66 12 12', '...as is its national format');
 }
 {
-    my $np = Number::Phone::Lib->new('MX', '0549 66661212');
+    my $np = Number::Phone::Lib->new('SM', '0549 66661212');
     ok(!defined $np, '0549 66661212 is a mobile with the 0549 prefix, which is not valid');
 }
