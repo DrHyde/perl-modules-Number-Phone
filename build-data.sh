@@ -6,6 +6,7 @@
 
 if [ "$1" == "--force" ]; then
   rm share/Number-Phone-UK-Data.db
+  rm share/Number-Phone-NANP-Data.db
   rm lib/Number/Phone/NANP/Data.pm
   rm lib/Number/Phone/Country/Data.pm
   rm lib/Number/Phone/StubCountry/KZ.pm
@@ -39,7 +40,8 @@ do
     fi
     curl -z `basename $i` -R -O -s $i;
 done
-unzip -qu COCodeStatus_ALL.zip
+rm COCodeStatus_ALL.csv
+unzip -q COCodeStatus_ALL.zip
 
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
@@ -91,16 +93,18 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   build-data.nanp -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm -o \
-  COCodeStatus_ALL.zip -nt lib/Number/Phone/NANP/Data.pm -o \
-  COCodeStatus_ALL.csv -nt lib/Number/Phone/NANP/Data.pm;
+  ! -e share/Number-Phone-NANP-Data.db -o \
+  COCodeStatus_ALL.zip -nt share/Number-Phone-NANP-Data.db -o \
+  COCodeStatus_ALL.csv -nt share/Number-Phone-NANP-Data.db;
 then
   if [ "$TRAVIS" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/NANP/Data.pm
+  echo   and share/Number-Phone-NANP-Data.db
   perl build-data.nanp
 else
-  echo lib/Number/Phone/NANP/Data.pm is up-to-date
+  echo lib/Number/Phone/NANP/Data.pm and share/Number-Phone-NANP-Data.db are up-to-date
 fi
 
 # lib/Number/Phone/StubCountry/KZ.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer,

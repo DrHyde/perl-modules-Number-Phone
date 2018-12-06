@@ -2,6 +2,11 @@ package Number::Phone;
 
 use strict;
 
+use File::ShareDir;
+use File::Spec::Functions qw(catfile);
+use File::Basename qw(dirname);
+use Cwd qw(abs_path);
+
 use Scalar::Util 'blessed';
 
 use Number::Phone::Country qw(noexport);
@@ -19,6 +24,31 @@ sub import {
   }
 }
 
+sub _find_data_file {
+    my $wanted = shift;
+
+    # giant ball of hate because lib::abs doesn't work on Windows
+    my $this_file = __FILE__;
+    my $this_dir  = dirname($this_file);
+    
+    my @candidate_files = (
+         # if this is $devdir/lib ...
+         catfile($this_dir, qw(.. .. lib .. share), $wanted),
+         # if this is $devdir/blib/lib ...
+         catfile($this_dir, qw(.. .. .. blib lib .. .. share), $wanted),
+         # if this has been installed
+         catfile(File::ShareDir::dist_dir('Number-Phone'), $wanted),
+    );
+    my $file = (grep { -e $_ } @candidate_files)[0];
+
+    if(!$file) {
+        die(
+            "Couldn't find a UK data file amongst:\n".
+            join('', map { "  $_\n" } @candidate_files)
+        );
+    }
+    return $file;
+}
 
 my @is_methods = qw(
     is_valid is_allocated is_in_use

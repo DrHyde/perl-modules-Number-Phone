@@ -78,13 +78,20 @@ For a very limited number of countries operator data is available.
 
 =cut
 
+my $file = Number::Phone::_find_data_file('Number-Phone-NANP-Data.db');
+open(my $datafh, '< :raw :bytes', $file) || die("Can't read $file: $!");
 sub operator {
     (my $number = ${+shift}) =~ s/\D//g;
     my $co = substr($number, 1, 6);
-    if(exists($Number::Phone::NANP::Data::operators{$co})) {
-        return $Number::Phone::NANP::Data::operators{$co}
-    }
-    return undef;
+    seek($datafh, 4* ($co - 1), 0);
+    read($datafh, my $pointer, 4);
+    $pointer = unpack('N', $pointer);
+    return undef unless($pointer);
+    seek($datafh, $pointer, 0);
+    read($datafh, my $chars, 1);
+    $chars = unpack('C', $chars);
+    read($datafh, my $op, $chars);
+    return $op
 }
 
 =item is_valid

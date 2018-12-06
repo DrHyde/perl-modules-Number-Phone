@@ -83,6 +83,7 @@ t/number-phone-country-warnings.t
 t/pod-coverage.t
 t/example-phone-numbers.t
 share/Number-Phone-UK-Data.db
+share/Number-Phone-NANP-Data.db
 t/uk_slurp.t
 lib/Number/Phone/Formatter/NationallyPreferredIntl.pm
 t/country-test-ar.t
