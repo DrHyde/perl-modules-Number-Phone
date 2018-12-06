@@ -123,6 +123,12 @@ is($tt_mobile->is_geographic(),
    (is_libphonenumber() ? 0 : 1),
    "$CLASS->new('$tt_mobile_numb')->is_geographic()");
 
+note("operator");
+skip_if_libphonenumber("Stubs don't support operator", 1, sub {
+    is($CLASS->new('+14163922489')->operator(), 'Bell Canada', "+1 416 392 is Bell Canada");
+    is($CLASS->new('+12024566213')->operator(), undef,         "+1 202 456's operator is unknown");
+});
+
 note("is_government");
 skip_if_libphonenumber("Stubs don't support is_government", 1, sub {
     is($CLASS->new('+17106274387')->is_government(), 1, "710 is the Feds man");

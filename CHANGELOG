@@ -1,3 +1,6 @@
+XXXXXXXXXX      XXXXXX  Added operator data for Canada;
+                        Data updates
+
 2018-12-05      3.4006  Expose libphonenumber's IDD prefix regexes
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/pull/89);
                         New NANP area codes for Jamaica and Canada;

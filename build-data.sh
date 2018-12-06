@@ -14,7 +14,7 @@ fi
 
 EXITSTATUS=0
 
-# first get OFCOM data
+# first get OFCOM data and Canadian operator data
 for i in \
     http://static.ofcom.org.uk/static/numbering/sabc.txt        \
     http://static.ofcom.org.uk/static/numbering/sabcde11_12.xls \
@@ -30,7 +30,8 @@ for i in \
     http://static.ofcom.org.uk/static/numbering/S5.xls          \
     http://static.ofcom.org.uk/static/numbering/S7.xls          \
     http://static.ofcom.org.uk/static/numbering/S8.xls          \
-    http://static.ofcom.org.uk/static/numbering/S9.xls;
+    http://static.ofcom.org.uk/static/numbering/S9.xls          \
+    http://www.cnac.ca/data/COCodeStatus_ALL.zip;
 do
     # make sure that there's a file that curl -z can look at
     if test ! -e `basename $i`; then
@@ -38,8 +39,7 @@ do
     fi
     curl -z `basename $i` -R -O -s $i;
 done
-
-# unzip -q -o codelist.zip sabc.txt
+unzip -qu COCodeStatus_ALL.zip
 
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
@@ -90,7 +90,9 @@ fi
 if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   build-data.nanp -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o \
-  libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm;
+  libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm -o \
+  COCodeStatus_ALL.zip -nt lib/Number/Phone/NANP/Data.pm -o \
+  COCodeStatus_ALL.csv -nt lib/Number/Phone/NANP/Data.pm;
 then
   if [ "$TRAVIS" != "true" ]; then
     EXITSTATUS=1

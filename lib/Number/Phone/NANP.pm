@@ -9,7 +9,7 @@ use Number::Phone::NANP::Data;
 
 use Number::Phone::Country qw(noexport);
 
-our $VERSION = '1.6000';
+our $VERSION = '1.7000';
 
 my $cache = {};
 
@@ -71,6 +71,21 @@ The following methods from Number::Phone are overridden:
 
 The constructor, you should never have to call this yourself. To create an
 object the canonical incantation is C<Number::Phone->new('+1 ...')>.
+
+=item operator
+
+For a very limited number of countries operator data is available.
+
+=cut
+
+sub operator {
+    (my $number = ${+shift}) =~ s/\D//g;
+    my $co = substr($number, 1, 6);
+    if(exists($Number::Phone::NANP::Data::operators{$co})) {
+        return $Number::Phone::NANP::Data::operators{$co}
+    }
+    return undef;
+}
 
 =item is_valid
 
