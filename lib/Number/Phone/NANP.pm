@@ -74,7 +74,7 @@ object the canonical incantation is C<Number::Phone->new('+1 ...')>.
 
 =item operator
 
-For a very limited number of countries operator data is available.
+For some countries operator data is available.
 
 =cut
 
@@ -83,6 +83,7 @@ open(my $datafh, '< :raw :bytes', $file) || die("Can't read $file: $!");
 sub operator {
     (my $number = ${+shift}) =~ s/\D//g;
     my $co = substr($number, 1, 6);
+    $co -= 200000; # area codes below 200 are invalid
     seek($datafh, 4* ($co - 1), 0);
     read($datafh, my $pointer, 4);
     $pointer = unpack('N', $pointer);

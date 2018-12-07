@@ -7,6 +7,7 @@
 use strict;
 use warnings;
 use XML::XPath;
+use Spreadsheet::XLSX;
 use Text::CSV_XS;
 use Data::Dumper;local $Data::Dumper::Indent = 1;
 
@@ -103,6 +104,7 @@ TERRITORY: foreach my $territory (@territories) {
     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
 
+warn("Extracting Canadian operators\n");
 open(my $operators, '<', 'COCodeStatus_ALL.csv') ||
     die("Couldn't open COCodeStatus_ALL.csv: $!\n");
 $csv->getline($operators); # header line
@@ -110,24 +112,49 @@ $csv->getline($operators); # date stamp?
 mkdir('share');
 unlink('share/Number-Phone-NANP-Data.db');
 open(my $randomfh, "> :raw :bytes", 'share/Number-Phone-NANP-Data.db') || die($!);
-my %seen_operators = ();
-my $next_operator_offset = 4 * 999999;
 while(my $row = $csv->getline($operators)) {
     last unless($row->[0]);
     next unless($row->[2]);
     my($co, $op) = (join('', $row->[0], $row->[1]), $row->[2]);
+    _write_operator_data($co, $op);
+}
+warn("Extracting US operators\n");
+foreach my $file (map { "${_}Codes.xlsx" } qw(Est Cen Wst)) {
+    warn("$file\n");
+    my $excel = Spreadsheet::XLSX->new($file);
+    SHEET: foreach my $sheet (@{$excel->{Worksheet}}) {
+        next SHEET unless($sheet->{Name} =~ /^..$/);
+        warn("  ".$sheet->{Name}."\n");
+        ROW: foreach my $row ($sheet->{MinRow} + 3 .. $sheet->{MaxRow}) {
+            my($co, $use, $op) = map {
+                $sheet->{Cells}->[$row]->[$_]->{Val}
+            } ($sheet->{MinCol}, $sheet->{MinCol} + 1, $sheet->{MinCol} + 3);
+            next ROW if(!$op || $use ne 'AS'); # Assigned
+            $co =~ s/\D//g;
+            if(!$op) { warn("CO $co has no operator\n"); next ROW }
+            _write_operator_data($co, $op);
+        }
+    }
+}
+
+my %seen_operators;
+my $next_operator_offset;
+sub _write_operator_data {
+    my($co, $op) = @_;
+    $co -= 200000; # area codes 000 to 199 are invalid
+    $next_operator_offset ||= 4 * 799999;
     seek($randomfh, 4 * ($co - 1), 0);
     if(exists($seen_operators{$op})) {
         print $randomfh pack('N', $seen_operators{$op});
-        next;
+    } else {
+        print $randomfh pack('N', $next_operator_offset);
+        seek($randomfh, $next_operator_offset, 0);
+        die("Operator '$op' is longer than 255 bytes\n")
+            if(length($op) > 255);
+        print $randomfh pack('CA*', length($op), $op);
+        $seen_operators{$op} = $next_operator_offset;
+        $next_operator_offset += length($op) + 1;
     }
-    print $randomfh pack('N', $next_operator_offset);
-    seek($randomfh, $next_operator_offset, 0);
-    die("Operator '$op' is longer than 255 bytes\n")
-        if(length($op) > 255);
-    print $randomfh pack('CA*', length($op), $op);
-    $seen_operators{$op} = $next_operator_offset;
-    $next_operator_offset += length($op) + 1;
 }
 
 close(MODULE);

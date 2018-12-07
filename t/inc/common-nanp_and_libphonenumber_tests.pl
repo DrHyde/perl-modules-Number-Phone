@@ -124,9 +124,11 @@ is($tt_mobile->is_geographic(),
    "$CLASS->new('$tt_mobile_numb')->is_geographic()");
 
 note("operator");
-skip_if_libphonenumber("Stubs don't support operator", 1, sub {
-    is($CLASS->new('+14163922489')->operator(), 'Bell Canada', "+1 416 392 is Bell Canada");
-    is($CLASS->new('+12024566213')->operator(), undef,         "+1 202 456's operator is unknown");
+skip_if_libphonenumber("Stubs don't support operator", 4, sub {
+    is($CLASS->new('+14163922489')->operator(), 'Bell Canada', "Canada");
+    is($CLASS->new('+13407745666')->operator(), 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE', "US Virgin Islands");
+    is($CLASS->new('+12024566213')->operator(), 'VERIZON WASHINGTON, DC INC.', "USA");
+    is($CLASS->new('+16714727679')->operator(),'TELEGUAM HOLDINGS, LLC', "Guam");
 });
 
 note("is_government");
