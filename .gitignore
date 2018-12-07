@@ -3,7 +3,7 @@ MYMETA.yml
 Makefile
 blib/
 lib/Number/Phone/NANP/Data.pm
-share/Number-Phone-UK-Data.db
+share/
 lib/Number/Phone/Country/
 lib/Number/Phone/StubCountry/
 libphonenumber/
