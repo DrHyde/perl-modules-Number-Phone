@@ -111,6 +111,19 @@ $csv->getline($operators); # header line
 $csv->getline($operators); # date stamp?
 mkdir('share');
 unlink('share/Number-Phone-NANP-Data.db');
+
+# file format:
+# first a list of 32-bit pointers, one for each 10,000 number
+# block NPA-NXX-xxxx, starting at 200-000. So the address of
+# the pointer is 4 * (NPA - 200000).
+#
+# pointers point at various structures identified by their leading
+# byte, with the NULL pointer meaning "no data":
+#
+# 0: length byte then string
+# 1: block of 10 pointers, one for each thousand number block in
+#    an NPA-NXX-X
+
 open(my $randomfh, "> :raw :bytes", 'share/Number-Phone-NANP-Data.db') || die($!);
 while(my $row = $csv->getline($operators)) {
     last unless($row->[0]);
@@ -138,22 +151,22 @@ foreach my $file (map { "${_}Codes.xlsx" } qw(Est Cen Wst)) {
 }
 
 my %seen_operators;
-my $next_operator_offset;
+my $next_data_offset;
 sub _write_operator_data {
     my($co, $op) = @_;
     $co -= 200000; # area codes 000 to 199 are invalid
-    $next_operator_offset ||= 4 * 799999;
-    seek($randomfh, 4 * ($co - 1), 0);
+    $next_data_offset ||= 5 * 799999;
+    seek($randomfh, 4 * $co, 0);
     if(exists($seen_operators{$op})) {
         print $randomfh pack('N', $seen_operators{$op});
     } else {
-        print $randomfh pack('N', $next_operator_offset);
-        seek($randomfh, $next_operator_offset, 0);
+        print $randomfh pack('N', $next_data_offset);
+        seek($randomfh, $next_data_offset, 0);
         die("Operator '$op' is longer than 255 bytes\n")
             if(length($op) > 255);
-        print $randomfh pack('CA*', length($op), $op);
-        $seen_operators{$op} = $next_operator_offset;
-        $next_operator_offset += length($op) + 1;
+        print $randomfh pack('CCA*', 0, length($op), $op);
+        $seen_operators{$op} = $next_data_offset;
+        $next_data_offset += length($op) + 2;
     }
 }
 

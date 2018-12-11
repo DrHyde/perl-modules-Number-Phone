@@ -79,20 +79,59 @@ For some countries operator data is available.
 =cut
 
 my $file = Number::Phone::_find_data_file('Number-Phone-NANP-Data.db');
+# FIXME re-open on fork!
 open(my $datafh, '< :raw :bytes', $file) || die("Can't read $file: $!");
+
 sub operator {
-    (my $number = ${+shift}) =~ s/\D//g;
-    my $co = substr($number, 1, 6);
-    $co -= 200000; # area codes below 200 are invalid
-    seek($datafh, 4* ($co - 1), 0);
-    read($datafh, my $pointer, 4);
-    $pointer = unpack('N', $pointer);
+    my $self = shift;
+
+    (my $number = ${$self}) =~ s/\D//g;
+    my $ten_thousands = substr($number, 1, 6);
+
+    $ten_thousands -= 200000; # area codes below 200 are invalid
+    return $self->_get_data_starting_from_pointer_at_offset(4 * $ten_thousands);
+}
+
+sub _get_data_starting_from_pointer_at_offset {
+    my($self, $offset) = @_;
+
+    my $pointer = $self->_get_pointer_at_offset($offset);
     return undef unless($pointer);
-    seek($datafh, $pointer, 0);
+
+    my $block_type = $self->_get_block_type_at_offset($pointer);
+    $pointer += 1;
+
+    if($block_type == 0) {
+        return $self->_get_string_at_offset($pointer);
+    } else {
+        die("Don't know how to parse a block of type $block_type\n")
+    }
+}
+
+sub _get_block_type_at_offset {
+    my($self, $offset) = @_;
+
+    seek($datafh, $offset, 0);
+    read($datafh, my $block_type, 1);
+    return ord($block_type);
+}
+
+sub _get_string_at_offset {
+    my($self, $offset) = @_;
+
+    seek($datafh, $offset, 0);
     read($datafh, my $chars, 1);
     $chars = unpack('C', $chars);
-    read($datafh, my $op, $chars);
-    return $op
+    read($datafh, my $string, $chars);
+    return $string;
+}
+
+sub _get_pointer_at_offset {
+    my($self, $offset) = @_;
+
+    seek($datafh, $offset, 0);
+    read($datafh, my $pointer, 4);
+    return unpack('N', $pointer);
 }
 
 =item is_valid
