@@ -7,7 +7,6 @@
 use strict;
 use warnings;
 use XML::XPath;
-use Spreadsheet::XLSX;
 use Text::CSV_XS;
 use Data::Dumper;local $Data::Dumper::Indent = 1;
 
@@ -104,14 +103,6 @@ TERRITORY: foreach my $territory (@territories) {
     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
 
-warn("Extracting Canadian operators\n");
-open(my $operators, '<', 'COCodeStatus_ALL.csv') ||
-    die("Couldn't open COCodeStatus_ALL.csv: $!\n");
-$csv->getline($operators); # header line
-$csv->getline($operators); # date stamp?
-mkdir('share');
-unlink('share/Number-Phone-NANP-Data.db');
-
 # file format:
 # first a list of 32-bit pointers, one for each 10,000 number
 # block NPA-NXX-xxxx, starting at 200-000. So the address of
@@ -123,40 +114,57 @@ unlink('share/Number-Phone-NANP-Data.db');
 # 0: length byte then string
 # 1: block of 10 pointers, one for each thousand number block in
 #    an NPA-NXX-X
+my %seen_operators = ();
+my $next_data_offset = 5 * 799999;
 
+mkdir('share');
+unlink('share/Number-Phone-NANP-Data.db');
 open(my $randomfh, "> :raw :bytes", 'share/Number-Phone-NANP-Data.db') || die($!);
-while(my $row = $csv->getline($operators)) {
+
+warn("Extracting Canadian operators\n");
+open(my $CA_operators, '<', 'COCodeStatus_ALL.csv') ||
+    die("Couldn't open COCodeStatus_ALL.csv: $!\n");
+$csv->getline($CA_operators); # header line
+$csv->getline($CA_operators); # date stamp?
+while(my $row = $csv->getline($CA_operators)) {
     last unless($row->[0]);
     next unless($row->[2]);
     my($co, $op) = (join('', $row->[0], $row->[1]), $row->[2]);
     _write_operator_data($co, $op);
 }
+
 warn("Extracting US operators\n");
-foreach my $file (map { "${_}Codes.xlsx" } qw(Est Cen Wst)) {
-    warn("$file\n");
-    my $excel = Spreadsheet::XLSX->new($file);
-    SHEET: foreach my $sheet (@{$excel->{Worksheet}}) {
-        next SHEET unless($sheet->{Name} =~ /^..$/);
-        warn("  ".$sheet->{Name}."\n");
-        ROW: foreach my $row ($sheet->{MinRow} + 3 .. $sheet->{MaxRow}) {
-            my($co, $use, $op) = map {
-                $sheet->{Cells}->[$row]->[$_]->{Val}
-            } ($sheet->{MinCol}, $sheet->{MinCol} + 1, $sheet->{MinCol} + 3);
-            next ROW if(!$op || $use ne 'AS'); # Assigned
-            $co =~ s/\D//g;
-            if(!$op) { warn("CO $co has no operator\n"); next ROW }
-            _write_operator_data($co, $op);
-        }
+open(my $US_operators, '<', 'AllBlocksAugmentedReport.txt') ||
+    die("Couldn't open AllBlocksAugmentedReport.txt: $!\n");
+$csv->getline($US_operators); # header line
+my %US = ();
+while(my $row = $csv->getline($US_operators)) {
+    my($npa, $nxx, $thousands, $status, $op) = map { $row->[$_] } (2, 3, 4, 5, 12);
+    next unless($status eq 'AS');
+    $US{"$npa$nxx"} ||= [];
+    push @{$US{"$npa$nxx"}}, { thousands => $thousands, op => $op }
+}
+
+foreach my $npanxx (keys %US) {
+    my $data = $US{$npanxx};
+    if(
+        $#{$data} == 9 && # got 10 assigned blocks
+        scalar(keys(%{{
+            map { $data->[$_]->{op} => 1 } (0 .. 9)
+        }})) == 1 # but only one operator
+    ) {
+        # print "$npanxx is a ten-thousands block\n";
+        _write_operator_data($npanxx, $data->[0]->{op});
+    } else {
+        # if we get here the block is sub-divided
+        _write_multiple_operators($npanxx, $data);
     }
 }
 
-my %seen_operators;
-my $next_data_offset;
 sub _write_operator_data {
     my($co, $op) = @_;
-    $co -= 200000; # area codes 000 to 199 are invalid
-    $next_data_offset ||= 5 * 799999;
-    seek($randomfh, 4 * $co, 0);
+    # area codes 000 to 199 are invalid
+    seek($randomfh, 4 * ($co - 200000), 0);
     if(exists($seen_operators{$op})) {
         print $randomfh pack('N', $seen_operators{$op});
     } else {
@@ -167,6 +175,41 @@ sub _write_operator_data {
         print $randomfh pack('CCA*', 0, length($op), $op);
         $seen_operators{$op} = $next_data_offset;
         $next_data_offset += length($op) + 2;
+    }
+}
+
+sub _write_multiple_operators {
+    my($co, $data) = @_;
+    seek($randomfh, 4 * ($co - 200000), 0);
+    print $randomfh pack('N', $next_data_offset);
+    seek($randomfh, $next_data_offset, 0);
+    print $randomfh pack('C', 1); # block-type marker
+    $next_data_offset++;
+    # the array might have less than 10 entries, eg
+    # [
+    #   { thousands => 3, op => "blah",      pointer => ... },
+    #   { thousands => 7, op => "otherblah", pointer => ... },
+    #   { thousands => 9, op => "blah",      pointer => ... },
+    # ]
+    # but the array of pointers in the file is always ten entries
+    my $start_of_pointers = $next_data_offset;
+    $next_data_offset += 40;
+
+    foreach my $index (0 .. $#{$data}) {
+        my($thousands_digit, $op) = map { $data->[$index]->{$_} } qw(thousands op);
+
+        seek($randomfh, $start_of_pointers + 4 * $thousands_digit, 0);
+        if(exists($seen_operators{$op})) {
+            print $randomfh pack('N', $seen_operators{$op});
+        } else {
+            print $randomfh pack('N', $next_data_offset);
+            seek($randomfh, $next_data_offset, 0);
+            die("Operator '$op' is longer than 255 bytes\n")
+                if(length($op) > 255);
+            print $randomfh pack('CCA*', 0, length($op), $op);
+            $seen_operators{$op} = $next_data_offset;
+            $next_data_offset += length($op) + 2;
+        }
     }
 }
 

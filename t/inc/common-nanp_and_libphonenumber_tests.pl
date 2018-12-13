@@ -125,9 +125,29 @@ is($tt_mobile->is_geographic(),
 
 note("operator");
 skip_if_libphonenumber("Stubs don't support operator", 4, sub {
-    is($CLASS->new('+14163922489')->operator(), 'Bell Canada', "Canada");
+    # Canadian numbers are all allocated from ten-thousand blocks
+    is($CLASS->new('+1 416 392 2489')->operator(), 'Bell Canada', "Canada");
+    is($CLASS->new('+1 202 200 0000')->operator(), 'SPRINT SPECTRUM L.P.', 'USA, ten-thousand block allocation');
+    foreach my $tuple (
+        [ '+1 512 373 0000', 'SPRINT SPECTRUM L.P.' ],
+        [ '+1 512 373 1000', undef ],
+        [ '+1 512 373 2000', 'SPRINT SPECTRUM L.P.', ],
+        [ '+1 512 373 3000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL', ],
+        [ '+1 512 373 4000', undef ],
+        [ '+1 512 373 5000', 'SPRINT SPECTRUM L.P.' ],
+        [ '+1 512 373 6000', 'SPRINT SPECTRUM L.P.' ],
+        [ '+1 512 373 7000', undef ],
+        [ '+1 512 373 8000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL' ],
+        [ '+1 512 373 9000', 'SPRINT SPECTRUM L.P.' ]
+    ) {
+        is(
+            $CLASS->new($tuple->[0])->operator(),
+            $tuple->[1],
+            'USA, thousand block, '.$tuple->[0].', '.
+                (defined($tuple->[1]) ? 'allocated' : 'unallocated')
+        );
+    }
     is($CLASS->new('+13407745666')->operator(), 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE', "US Virgin Islands");
-    is($CLASS->new('+12024566213')->operator(), 'VERIZON WASHINGTON, DC INC.', "USA");
     is($CLASS->new('+16714727679')->operator(),'TELEGUAM HOLDINGS, LLC', "Guam");
 });
 

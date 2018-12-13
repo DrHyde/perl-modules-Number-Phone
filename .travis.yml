@@ -20,7 +20,6 @@ matrix:
         - cpanm --quiet --notest Digest::MD5
         - cpanm --quiet --notest File::Find::Rule
         - cpanm --quiet --notest Spreadsheet::ParseExcel
-        - cpanm --quiet --notest Spreadsheet::XLSX
         - cpanm --quiet --notest Text::CSV_XS
         - ./build-data.sh
         # repetition ends here
@@ -32,7 +31,6 @@ before_install:
   - cpanm --quiet --notest Digest::MD5
   - cpanm --quiet --notest File::Find::Rule
   - cpanm --quiet --notest Spreadsheet::ParseExcel
-  - cpanm --quiet --notest Spreadsheet::XLSX
   - cpanm --quiet --notest Text::CSV_XS
   - ./build-data.sh
 sudo: false

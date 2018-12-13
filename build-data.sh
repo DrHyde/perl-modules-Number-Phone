@@ -21,24 +21,22 @@ EXITSTATUS=0
 #     https://www.nationalnanpa.com/reports/reports_cocodes.html
 #     http://cnac.ca/co_codes/co_code_status.htm
 for i in \
-    http://static.ofcom.org.uk/static/numbering/sabc.txt        \
-    http://static.ofcom.org.uk/static/numbering/sabcde11_12.xls \
-    http://static.ofcom.org.uk/static/numbering/sabcde13.xls    \
-    http://static.ofcom.org.uk/static/numbering/sabcde14.xls    \
-    http://static.ofcom.org.uk/static/numbering/sabcde15.xls    \
-    http://static.ofcom.org.uk/static/numbering/sabcde16.xls    \
-    http://static.ofcom.org.uk/static/numbering/sabcde17.xls    \
-    http://static.ofcom.org.uk/static/numbering/sabcde18.xls    \
-    http://static.ofcom.org.uk/static/numbering/sabcde19.xls    \
-    http://static.ofcom.org.uk/static/numbering/sabcde2.xls     \
-    http://static.ofcom.org.uk/static/numbering/S3.xls          \
-    http://static.ofcom.org.uk/static/numbering/S5.xls          \
-    http://static.ofcom.org.uk/static/numbering/S7.xls          \
-    http://static.ofcom.org.uk/static/numbering/S8.xls          \
-    http://static.ofcom.org.uk/static/numbering/S9.xls          \
-    https://www.nationalnanpa.com/nanp1/CenCodes.zip            \
-    https://www.nationalnanpa.com/nanp1/EstCodes.zip            \
-    https://www.nationalnanpa.com/nanp1/WstCodes.zip            \
+    http://static.ofcom.org.uk/static/numbering/sabc.txt                        \
+    http://static.ofcom.org.uk/static/numbering/sabcde11_12.xls                 \
+    http://static.ofcom.org.uk/static/numbering/sabcde13.xls                    \
+    http://static.ofcom.org.uk/static/numbering/sabcde14.xls                    \
+    http://static.ofcom.org.uk/static/numbering/sabcde15.xls                    \
+    http://static.ofcom.org.uk/static/numbering/sabcde16.xls                    \
+    http://static.ofcom.org.uk/static/numbering/sabcde17.xls                    \
+    http://static.ofcom.org.uk/static/numbering/sabcde18.xls                    \
+    http://static.ofcom.org.uk/static/numbering/sabcde19.xls                    \
+    http://static.ofcom.org.uk/static/numbering/sabcde2.xls                     \
+    http://static.ofcom.org.uk/static/numbering/S3.xls                          \
+    http://static.ofcom.org.uk/static/numbering/S5.xls                          \
+    http://static.ofcom.org.uk/static/numbering/S7.xls                          \
+    http://static.ofcom.org.uk/static/numbering/S8.xls                          \
+    http://static.ofcom.org.uk/static/numbering/S9.xls                          \
+    https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip \
     http://www.cnac.ca/data/COCodeStatus_ALL.zip;
 do
     # make sure that there's a file that curl -z can look at
@@ -47,11 +45,9 @@ do
     fi
     curl -z `basename $i` -R -O -s $i;
 done
-rm COCodeStatus_ALL.csv ???Codes.xlsx
+rm COCodeStatus_ALL.csv ???Codes.xlsx AllBlocksAugmentedReport.txt
 unzip -q COCodeStatus_ALL.zip
-unzip -q CenCodes.zip
-unzip -q EstCodes.zip
-unzip -q WstCodes.zip
+unzip -q AllBlocksAugmentedReport.zip
 
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
@@ -104,13 +100,9 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm -o \
   ! -e share/Number-Phone-NANP-Data.db -o \
-  EstCodes.zip -nt share/Number-Phone-NANP-Data.db -o \
-  CenCodes.zip -nt share/Number-Phone-NANP-Data.db -o \
-  WstCodes.zip -nt share/Number-Phone-NANP-Data.db -o \
+  AllBlocksAugmentedReport.zip -nt share/Number-Phone-NANP-Data.db -o \
   COCodeStatus_ALL.zip -nt share/Number-Phone-NANP-Data.db -o \
-  EstCodes.xlsx -nt share/Number-Phone-NANP-Data.db -o \
-  CenCodes.xlsx -nt share/Number-Phone-NANP-Data.db -o \
-  WstCodes.xlsx -nt share/Number-Phone-NANP-Data.db -o \
+  AllBlocksAugmentedReport.txt -nt share/Number-Phone-NANP-Data.db -o \
   COCodeStatus_ALL.csv -nt share/Number-Phone-NANP-Data.db;
 then
   if [ "$TRAVIS" != "true" ]; then

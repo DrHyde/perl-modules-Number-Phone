@@ -46,7 +46,7 @@ WriteMakefile(
     PREOP => "./build-data.sh"
   },
   realclean => {
-    FILES => "*.xls sabc.txt COCodeStatus_ALL.* CenCodes.* EstCodes.* WstCodes.* cover_db"
+    FILES => "*.xls sabc.txt COCodeStatus_ALL.* AllBlocksAugmentedReport.* cover_db"
   },
 );
 

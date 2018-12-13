@@ -102,9 +102,15 @@ sub _get_data_starting_from_pointer_at_offset {
     $pointer += 1;
 
     if($block_type == 0) {
+        # $pointer points at a string
         return $self->_get_string_at_offset($pointer);
+    } elsif($block_type == 1) {
+        # $pointer points at a block of pointers
+        (my $number = ${$self}) =~ s/\D//g;
+        my $thousands = substr($number, 7, 1); # the seventh digit
+        return $self->_get_data_starting_from_pointer_at_offset($pointer + 4 * $thousands);
     } else {
-        die("Don't know how to parse a block of type $block_type\n")
+        die("Don't know how to handle a block of type $block_type at ".($pointer - 1)."\n");
     }
 }
 
