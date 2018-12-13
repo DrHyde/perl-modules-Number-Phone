@@ -82,6 +82,7 @@ my $file = Number::Phone::_find_data_file('Number-Phone-NANP-Data.db');
 # FIXME re-open on fork!
 open(my $datafh, '< :raw :bytes', $file) || die("Can't read $file: $!");
 
+my $WORDLENGTH = 4;
 sub operator {
     my $self = shift;
 
@@ -89,7 +90,7 @@ sub operator {
     my $ten_thousands = substr($number, 1, 6);
 
     $ten_thousands -= 200000; # area codes below 200 are invalid
-    return $self->_get_data_starting_from_pointer_at_offset(4 * $ten_thousands);
+    return $self->_get_data_starting_from_pointer_at_offset($WORDLENGTH * $ten_thousands);
 }
 
 sub _get_data_starting_from_pointer_at_offset {
@@ -108,7 +109,7 @@ sub _get_data_starting_from_pointer_at_offset {
         # $pointer points at a block of pointers
         (my $number = ${$self}) =~ s/\D//g;
         my $thousands = substr($number, 7, 1); # the seventh digit
-        return $self->_get_data_starting_from_pointer_at_offset($pointer + 4 * $thousands);
+        return $self->_get_data_starting_from_pointer_at_offset($pointer + $WORDLENGTH * $thousands);
     } else {
         die("Don't know how to handle a block of type $block_type at ".($pointer - 1)."\n");
     }
@@ -136,7 +137,7 @@ sub _get_pointer_at_offset {
     my($self, $offset) = @_;
 
     seek($datafh, $offset, 0);
-    read($datafh, my $pointer, 4);
+    read($datafh, my $pointer, $WORDLENGTH);
     return unpack('N', $pointer);
 }
 

@@ -103,10 +103,11 @@ TERRITORY: foreach my $territory (@territories) {
     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
 
+my $WORDLENGTH = 4;
 # file format:
-# first a list of 32-bit pointers, one for each 10,000 number
+# first a list of $WORDLENGTH byte pointers, one for each 10,000 number
 # block NPA-NXX-xxxx, starting at 200-000. So the address of
-# the pointer is 4 * (NPA - 200000).
+# the pointer is $WORDLENGTH * (NPANXX - 200000).
 #
 # pointers point at various structures identified by their leading
 # byte, with the NULL pointer meaning "no data":
@@ -115,7 +116,7 @@ TERRITORY: foreach my $territory (@territories) {
 # 1: block of 10 pointers, one for each thousand number block in
 #    an NPA-NXX-X
 my %seen_operators = ();
-my $next_data_offset = 5 * 799999;
+my $next_data_offset = $WORDLENGTH * 800000;
 
 mkdir('share');
 unlink('share/Number-Phone-NANP-Data.db');
@@ -164,7 +165,7 @@ foreach my $npanxx (keys %US) {
 sub _write_operator_data {
     my($co, $op) = @_;
     # area codes 000 to 199 are invalid
-    seek($randomfh, 4 * ($co - 200000), 0);
+    seek($randomfh, $WORDLENGTH * ($co - 200000), 0);
     if(exists($seen_operators{$op})) {
         print $randomfh pack('N', $seen_operators{$op});
     } else {
@@ -180,7 +181,7 @@ sub _write_operator_data {
 
 sub _write_multiple_operators {
     my($co, $data) = @_;
-    seek($randomfh, 4 * ($co - 200000), 0);
+    seek($randomfh, $WORDLENGTH * ($co - 200000), 0);
     print $randomfh pack('N', $next_data_offset);
     seek($randomfh, $next_data_offset, 0);
     print $randomfh pack('C', 1); # block-type marker
@@ -193,12 +194,12 @@ sub _write_multiple_operators {
     # ]
     # but the array of pointers in the file is always ten entries
     my $start_of_pointers = $next_data_offset;
-    $next_data_offset += 40;
+    $next_data_offset += $WORDLENGTH * 10;
 
     foreach my $index (0 .. $#{$data}) {
         my($thousands_digit, $op) = map { $data->[$index]->{$_} } qw(thousands op);
 
-        seek($randomfh, $start_of_pointers + 4 * $thousands_digit, 0);
+        seek($randomfh, $start_of_pointers + $WORDLENGTH * $thousands_digit, 0);
         if(exists($seen_operators{$op})) {
             print $randomfh pack('N', $seen_operators{$op});
         } else {
