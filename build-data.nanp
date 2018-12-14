@@ -6,6 +6,7 @@
 
 use strict;
 use warnings;
+use LWP::Curl;
 use XML::XPath;
 use Text::CSV_XS;
 use Data::Dumper;local $Data::Dumper::Indent = 1;
@@ -149,17 +150,68 @@ while(my $row = $csv->getline($US_operators)) {
 foreach my $npanxx (keys %US) {
     my $data = $US{$npanxx};
     if(
+        # FIXME factor this out and use for the Carribean nations too
         $#{$data} == 9 && # got 10 assigned blocks
         scalar(keys(%{{
             map { $data->[$_]->{op} => 1 } (0 .. 9)
         }})) == 1 # but only one operator
     ) {
-        # print "$npanxx is a ten-thousands block\n";
         _write_operator_data($npanxx, $data->[0]->{op});
     } else {
         # if we get here the block is sub-divided
         _write_multiple_operators($npanxx, $data);
     }
+}
+
+warn("Extracting non-US/CA operators\n");
+foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
+    warn("  ... $NPA\n");
+    my $data = _get_xml_data($NPA);
+    my $xml = XML::XPath->new(xml => $data);
+    my @prefixes = $xml->find('/root/prefixdata')->get_nodelist();
+    my %ops = ();
+    PREFIX: foreach my $prefix (@prefixes) {
+        my $nxx = $prefix->find('nxx')->string_value();
+        if(exists($ops{$NPA.$nxx})) {
+            if(ref($ops{$NPA.$nxx})) {
+                # already got thousands blocks
+                next PREFIX;
+            }
+            warn("    looks like $NPA $nxx has thousands-block allocations\n");
+            my @subprefixes = $xml->find("/root/prefixdata[npa = $NPA and nxx = $nxx and x != 'A']")->get_nodelist();
+            $ops{$NPA.$nxx} = [];
+            foreach my $prefix (@subprefixes) {
+                my $x = $prefix->find('x')->string_value();
+                (my $op = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
+                push @{$ops{$NPA.$nxx}}, { thousands => $x, op => $op };
+            }
+            next PREFIX;
+        }
+        ($ops{$NPA.$nxx} = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
+    }
+    foreach my $co (keys %ops) {
+        if(!ref($ops{$co})) {
+            _write_operator_data($co, $ops{$co});
+        } else {
+            _write_multiple_operators($co, $ops{$co});
+        }
+    }
+}
+
+sub _get_xml_data {
+    my $NPA = shift;
+    my $data;
+    if(!-e "$NPA.xml" || -M "$NPA.xml" > 14) {
+        $data = LWP::Curl->new()->get("https://localcallingguide.com/xmlprefix.php?npa=$NPA&blocks=1");
+        open(my $fh, '>', "$NPA.xml") || die("Can't write $NPA.xml: $!\n");
+        print $fh $data;
+        close($fh);
+    } else {
+        open(my $fh, '<', "$NPA.xml") || die("Can't read $NPA.xml: $!\n");
+        $data = join('', <$fh>);
+        close($fh);
+    }
+    return $data;
 }
 
 sub _write_operator_data {

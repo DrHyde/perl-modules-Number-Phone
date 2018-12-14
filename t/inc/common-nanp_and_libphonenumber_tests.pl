@@ -149,6 +149,26 @@ skip_if_libphonenumber("Stubs don't support operator", 4, sub {
     }
     is($CLASS->new('+13407745666')->operator(), 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE', "US Virgin Islands");
     is($CLASS->new('+16714727679')->operator(),'TELEGUAM HOLDINGS, LLC', "Guam");
+    foreach my $tuple (
+        [ '+1 242 331 0000', undef ],
+        [ '+1 242 331 1000', undef ],
+        [ '+1 242 331 2000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
+        [ '+1 242 331 3000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
+        [ '+1 242 331 4000', undef ],
+        [ '+1 242 331 5000', undef ],
+        [ '+1 242 331 6000', undef ],
+        [ '+1 242 331 7000', undef ],
+        [ '+1 242 331 8000', undef ],
+        [ '+1 242 331 9000', undef ]
+    ) {
+        is(
+            $CLASS->new($tuple->[0])->operator(),
+            $tuple->[1],
+            'Bahamas, thousand block, '.$tuple->[0].', '.
+                (defined($tuple->[1]) ? 'allocated' : 'unallocated')
+        );
+    }
+
 });
 
 note("is_government");
