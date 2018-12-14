@@ -124,51 +124,48 @@ is($tt_mobile->is_geographic(),
    "$CLASS->new('$tt_mobile_numb')->is_geographic()");
 
 note("operator");
-skip_if_libphonenumber("Stubs don't support operator", 4, sub {
-    # Canadian numbers are all allocated from ten-thousand blocks
+skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     is($CLASS->new('+1 416 392 2489')->operator(), 'Bell Canada', "Canada");
-    is($CLASS->new('+1 202 200 0000')->operator(), 'SPRINT SPECTRUM L.P.', 'USA, ten-thousand block allocation');
-    foreach my $tuple (
-        [ '+1 512 373 0000', 'SPRINT SPECTRUM L.P.' ],
-        [ '+1 512 373 1000', undef ],
-        [ '+1 512 373 2000', 'SPRINT SPECTRUM L.P.', ],
-        [ '+1 512 373 3000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL', ],
-        [ '+1 512 373 4000', undef ],
-        [ '+1 512 373 5000', 'SPRINT SPECTRUM L.P.' ],
-        [ '+1 512 373 6000', 'SPRINT SPECTRUM L.P.' ],
-        [ '+1 512 373 7000', undef ],
-        [ '+1 512 373 8000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL' ],
-        [ '+1 512 373 9000', 'SPRINT SPECTRUM L.P.' ]
-    ) {
-        is(
-            $CLASS->new($tuple->[0])->operator(),
-            $tuple->[1],
-            'USA, thousand block, '.$tuple->[0].', '.
-                (defined($tuple->[1]) ? 'allocated' : 'unallocated')
-        );
-    }
-    is($CLASS->new('+13407745666')->operator(), 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE', "US Virgin Islands");
-    is($CLASS->new('+16714727679')->operator(),'TELEGUAM HOLDINGS, LLC', "Guam");
-    foreach my $tuple (
-        [ '+1 242 331 0000', undef ],
-        [ '+1 242 331 1000', undef ],
-        [ '+1 242 331 2000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
-        [ '+1 242 331 3000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
-        [ '+1 242 331 4000', undef ],
-        [ '+1 242 331 5000', undef ],
-        [ '+1 242 331 6000', undef ],
-        [ '+1 242 331 7000', undef ],
-        [ '+1 242 331 8000', undef ],
-        [ '+1 242 331 9000', undef ]
-    ) {
-        is(
-            $CLASS->new($tuple->[0])->operator(),
-            $tuple->[1],
-            'Bahamas, thousand block, '.$tuple->[0].', '.
-                (defined($tuple->[1]) ? 'allocated' : 'unallocated')
-        );
-    }
 
+    is($CLASS->new('+1 340 774 5666')->operator(), 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE', "US Virgin Islands");
+    is($CLASS->new('+1 671 472 7679')->operator(), 'TELEGUAM HOLDINGS, LLC', "Guam");
+
+    # checked on 2018-12-14
+    # next check due 2019-12-01 (annually)
+    is($CLASS->new('+1 630 847 0000')->operator(), 'YMAX COMMUNICATIONS CORP. - IL', 'USA, thousands blocks all for same operator, so consolidated into one to save space in database');
+    # checked on 2018-12-14
+    # next check due 2019-12-01 (annually)
+    is($CLASS->new('+1 242 367 0000')->operator(), 'BAHAMAS TELECOMMUNICATIONS CORP.', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
+
+    foreach my $number(
+        [ 'Bahamas', '+1 242 331 0000', undef ],
+        [ 'Bahamas', '+1 242 331 1000', undef ],
+        [ 'Bahamas', '+1 242 331 2000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
+        [ 'Bahamas', '+1 242 331 3000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
+        [ 'Bahamas', '+1 242 331 4000', undef ],
+        [ 'Bahamas', '+1 242 331 5000', undef ],
+        [ 'Bahamas', '+1 242 331 6000', undef ],
+        [ 'Bahamas', '+1 242 331 7000', undef ],
+        [ 'Bahamas', '+1 242 331 8000', undef ],
+        [ 'Bahamas', '+1 242 331 9000', undef ],
+        [ 'USA',     '+1 512 373 0000', 'SPRINT SPECTRUM L.P.' ],
+        [ 'USA',     '+1 512 373 1000', undef ],
+        [ 'USA',     '+1 512 373 2000', 'SPRINT SPECTRUM L.P.', ],
+        [ 'USA',     '+1 512 373 3000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL', ],
+        [ 'USA',     '+1 512 373 4000', undef ],
+        [ 'USA',     '+1 512 373 5000', 'SPRINT SPECTRUM L.P.' ],
+        [ 'USA',     '+1 512 373 6000', 'SPRINT SPECTRUM L.P.' ],
+        [ 'USA',     '+1 512 373 7000', undef ],
+        [ 'USA',     '+1 512 373 8000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL' ],
+        [ 'USA',     '+1 512 373 9000', 'SPRINT SPECTRUM L.P.' ]
+    ) {
+        is(
+            $CLASS->new($number->[1])->operator(),
+            $number->[2],
+            $number->[0].', thousand block, '.$number->[1].', '.
+                (defined($number->[2]) ? 'allocated' : 'unallocated')
+        );
+    }
 });
 
 note("is_government");

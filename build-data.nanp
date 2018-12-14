@@ -23,8 +23,13 @@ open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Ph
 print MODULE "# automatically generated file, don't edit\n\n";
 print MODULE q{
 
-  # Copyright 2011 David Cantrell, derived from data from libphonenumber
-  # http://code.google.com/p/libphonenumber/
+  # Copyright 2011 David Cantrell
+  #
+  # Uses data from:
+  #   libphonenumber      http://code.google.com/p/libphonenumber/
+  #   CNAC                http://www.cnac.ca/
+  #   NANPA               https://www.nationalpooling.com/
+  #   Local Calling Guide https://localcallingguide.com/
   #
   # Licensed under the Apache License, Version 2.0 (the "License");
   # you may not use this file except in compliance with the License.
@@ -104,24 +109,35 @@ TERRITORY: foreach my $territory (@territories) {
     print MODULE "\$mobile_regexes{$ISO_country_code} = '$mobile';\n";
 }
 
-my $WORDLENGTH = 4;
-# file format:
-# first a list of $WORDLENGTH byte pointers, one for each 10,000 number
-# block NPA-NXX-xxxx, starting at 200-000. So the address of
-# the pointer is $WORDLENGTH * (NPANXX - 200000).
-#
-# pointers point at various structures identified by their leading
-# byte, with the NULL pointer meaning "no data":
-#
-# 0: length byte then string
-# 1: block of 10 pointers, one for each thousand number block in
-#    an NPA-NXX-X
-my %seen_operators = ();
-my $next_data_offset = $WORDLENGTH * 800000;
-
 mkdir('share');
 unlink('share/Number-Phone-NANP-Data.db');
 open(my $randomfh, "> :raw :bytes", 'share/Number-Phone-NANP-Data.db') || die($!);
+
+# file format:
+# The first 6 bytes of the file are: N A N P O P
+# These are followed by a 16-bit file format version number
+print $randomfh "NANPOP", chr(0), chr(0);
+
+# In version 0 of the format, the next byte is the word length. The word length
+# is *not specified* otherwise.
+my $WORDLENGTH = 4;
+print $randomfh chr($WORDLENGTH);
+
+# The remainder of the file is a list of $WORDLENGTH byte pointers, one for
+# each 10,000 number block NPA-NXX-xxxx, starting at 200-000. So the address of
+# the pointer is $WORDLENGTH * (NPANXX - 200000).  Note that the D digit can't
+# be 0 or 1, so the pointers really start at byte $WORDLENGTH * 200.
+# 
+# After the pointer array comes the data that they point at. Those structures
+# can be of various types identified by their leading byte, with the NULL
+# pointer meaning "no data":
+#
+# 0: length byte then string
+# 1: block of 10 pointers, one for each thousand number block in
+#    an NPA-NXX-X. Currently these only point at strings, ie type 0.
+
+my %seen_operators = ();
+my $next_data_offset = $WORDLENGTH * 800000;
 
 warn("Extracting Canadian operators\n");
 open(my $CA_operators, '<', 'COCodeStatus_ALL.csv') ||
@@ -146,21 +162,9 @@ while(my $row = $csv->getline($US_operators)) {
     $US{"$npa$nxx"} ||= [];
     push @{$US{"$npa$nxx"}}, { thousands => $thousands, op => $op }
 }
-
 foreach my $npanxx (keys %US) {
     my $data = $US{$npanxx};
-    if(
-        # FIXME factor this out and use for the Carribean nations too
-        $#{$data} == 9 && # got 10 assigned blocks
-        scalar(keys(%{{
-            map { $data->[$_]->{op} => 1 } (0 .. 9)
-        }})) == 1 # but only one operator
-    ) {
-        _write_operator_data($npanxx, $data->[0]->{op});
-    } else {
-        # if we get here the block is sub-divided
-        _write_multiple_operators($npanxx, $data);
-    }
+    _write_multiple_operators($npanxx, $data);
 }
 
 warn("Extracting non-US/CA operators\n");
@@ -177,7 +181,6 @@ foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
                 # already got thousands blocks
                 next PREFIX;
             }
-            warn("    looks like $NPA $nxx has thousands-block allocations\n");
             my @subprefixes = $xml->find("/root/prefixdata[npa = $NPA and nxx = $nxx and x != 'A']")->get_nodelist();
             $ops{$NPA.$nxx} = [];
             foreach my $prefix (@subprefixes) {
@@ -233,6 +236,17 @@ sub _write_operator_data {
 
 sub _write_multiple_operators {
     my($co, $data) = @_;
+
+    # first see if we can consolidate all ten of the
+    # thousand blocks into one ten-thousand block
+    if(
+        $#{$data} == 9 && # got 10 assigned blocks
+        scalar(keys(%{{
+            map { $data->[$_]->{op} => 1 } (0 .. 9)
+        }})) == 1 # but only one operator
+    ) {
+        return _write_operator_data($co, $data->[0]->{op}); }
+
     seek($randomfh, $WORDLENGTH * ($co - 200000), 0);
     print $randomfh pack('N', $next_data_offset);
     seek($randomfh, $next_data_offset, 0);
