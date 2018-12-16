@@ -172,25 +172,23 @@ foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
     warn("  ... $NPA\n");
     my $data = _get_xml_data($NPA);
     my $xml = XML::XPath->new(xml => $data);
-    my @prefixes = $xml->find('/root/prefixdata')->get_nodelist();
     my %ops = ();
-    PREFIX: foreach my $prefix (@prefixes) {
+
+    my @ten_thousand_prefixes = $xml->find("/root/prefixdata[x = 'A']")->get_nodelist();
+    foreach my $prefix (@ten_thousand_prefixes) {
         my $nxx = $prefix->find('nxx')->string_value();
-        if(exists($ops{$NPA.$nxx})) {
-            if(ref($ops{$NPA.$nxx})) {
-                # already got thousands blocks
-                next PREFIX;
-            }
-            my @subprefixes = $xml->find("/root/prefixdata[npa = $NPA and nxx = $nxx and x != 'A']")->get_nodelist();
-            $ops{$NPA.$nxx} = [];
-            foreach my $prefix (@subprefixes) {
-                my $x = $prefix->find('x')->string_value();
-                (my $op = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
-                push @{$ops{$NPA.$nxx}}, { thousands => $x, op => $op };
-            }
-            next PREFIX;
-        }
         ($ops{$NPA.$nxx} = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
+    }
+
+    my @thousand_prefixes = $xml->find("/root/prefixdata[x != 'A']")->get_nodelist();
+    foreach my $prefix (@thousand_prefixes) {
+        my $nxx = $prefix->find('nxx')->string_value();
+        if(!exists($ops{$NPA.$nxx}) || !ref($ops{$NPA.$nxx})) {
+            $ops{$NPA.$nxx} = [];
+        }
+        my $x = $prefix->find('x')->string_value();
+        (my $op = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
+        push @{$ops{$NPA.$nxx}}, { thousands => $x, op => $op };
     }
     foreach my $co (keys %ops) {
         if(!ref($ops{$co})) {
