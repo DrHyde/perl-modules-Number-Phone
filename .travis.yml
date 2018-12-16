@@ -21,7 +21,7 @@ matrix:
         - cpanm --quiet --notest File::Find::Rule
         - cpanm --quiet --notest Spreadsheet::ParseExcel
         - cpanm --quiet --notest Text::CSV_XS
-        - cpanm --quiet --notest LWP::Curl
+        - cpanm --quiet --notest LWP::Protocol::https
         - ./build-data.sh
         # repetition ends here
       script: "perl Makefile.PL && make && cover -ignore blib/lib/Number/Phone/UK/Data.pm -test -report coveralls"
@@ -33,6 +33,6 @@ before_install:
   - cpanm --quiet --notest File::Find::Rule
   - cpanm --quiet --notest Spreadsheet::ParseExcel
   - cpanm --quiet --notest Text::CSV_XS
-  - cpanm --quiet --notest LWP::Curl
+  - cpanm --quiet --notest LWP::Protocol::https
   - ./build-data.sh
 sudo: false

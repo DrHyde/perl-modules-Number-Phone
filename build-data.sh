@@ -43,9 +43,16 @@ do
     if test ! -e `basename $i`; then
         touch -t 198001010101 `basename $i`
     fi
+    echo Fetching $i
     curl -z `basename $i` -R -O -s $i;
+    if [ "$?" == "0" ]; then
+        echo "  ... OK"
+      else
+        echo "  ...failed"
+        exit 1;
+    fi
 done
-rm COCodeStatus_ALL.csv ???Codes.xlsx AllBlocksAugmentedReport.txt
+rm COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
 unzip -q COCodeStatus_ALL.zip
 unzip -q AllBlocksAugmentedReport.zip
 

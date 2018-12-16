@@ -6,7 +6,7 @@
 
 use strict;
 use warnings;
-use LWP::Curl;
+use LWP::UserAgent;
 use XML::XPath;
 use Text::CSV_XS;
 use Data::Dumper;local $Data::Dumper::Indent = 1;
@@ -203,17 +203,32 @@ foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
 
 sub _get_xml_data {
     my $NPA = shift;
-    my $data;
     if(!-e "$NPA.xml" || -M "$NPA.xml" > 14) {
-        $data = LWP::Curl->new()->get("https://localcallingguide.com/xmlprefix.php?npa=$NPA&blocks=1");
+        my $data;
+        my $ua = LWP::UserAgent->new(
+            ssl_opts => { verify_hostname => 0 },
+            agent    => 'Number::Phone-builder/1.0 (david@cantrell.org.uk)'.
+                        ($ENV{TRAVIS}    ? ' (Travis build)' :
+                         $ENV{BUILD_TAG} ? ' (Jenkins build)' :
+                         ''
+                        ),
+        );
+        my $res = $ua->get("https://localcallingguide.com/xmlprefix.php?npa=$NPA&blocks=1");
+        if($res->is_success()) {
+            $data = $res->content();
+        } else {
+            die("Can't talk to localcallingguide.com: ".$res->status_line()."\n".$res->decoded_content()."\n");
+        }
         open(my $fh, '>', "$NPA.xml") || die("Can't write $NPA.xml: $!\n");
         print $fh $data;
         close($fh);
-    } else {
-        open(my $fh, '<', "$NPA.xml") || die("Can't read $NPA.xml: $!\n");
-        $data = join('', <$fh>);
-        close($fh);
     }
+    # writing the file above and then re-reading it instead of just returning the data,
+    # and also making sure to read it from the file into a different variable, is
+    # because Unicode is fucking witchcraft
+    open(my $fh, '<', "$NPA.xml") || die("Can't read $NPA.xml: $!\n");
+    my $data = join('', <$fh>);
+    close($fh);
     return $data;
 }
 
