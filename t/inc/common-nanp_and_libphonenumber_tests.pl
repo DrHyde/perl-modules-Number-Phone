@@ -136,7 +136,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         ['+1 284 229 0000' => 'CABLE & WIRELESS - TORTOLA'],
         ['+1 340 774 5666' => 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE'],
         ['+1 345 222 0000' => 'CABLE & WIRELESS - CAYMAN ISLANDS'],
-        ['+1 441 222 0000' => 'BERMUDA TELEPHONE COMPANY'],
+        ['+1 441 222 0000' => 'Bermuda Cablevision Ltd'],
         ['+1 473 230 0000' => 'COLUMBUS COMMUNICATIONS (GRENADA) LIMITED'],
         ['+1 649 231 0000' => 'CABLE & WIRELESS - TURKS & CAICOS'],
         # No data yet.
@@ -146,7 +146,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         ['+1 664 349 0000' => 'CABLE & WIRELESS - MONTSERRAT'],
         ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORP.'],
         ['+1 671 472 7679' => 'TELEGUAM HOLDINGS, LLC'],
-        ['+1 684 248 0000' => 'AMERICAN SAMOA TELECOMMUNICATIONS AUTHORITY ASTCA'],
+        ['+1 684 248 0000' => 'AST TELECOM, LLC - AS'],
         ['+1 721 510 0000' => 'UTS RADCOMM'],
         ['+1 758 234 0000' => 'CABLE & WIRELESS - ST. LUCIA, LTD'],
         ['+1 767 221 0000' => 'DIGICEL (GRENADA) LIMITED'],
@@ -162,7 +162,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     ) {
         my($number, $op) = @{$tuple};
         push @codes_seen, substr($number, 3, 3);
-        is($CLASS->new($number)->operator(), $op);
+        is($CLASS->new($number)->operator(), $op, "$number has the right operator");
     }
     is_deeply(
         \@codes_seen,
