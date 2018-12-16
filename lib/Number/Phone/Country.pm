@@ -153,7 +153,7 @@ sub _NANP_area_codes {
 # private sub, returns list of NANP areas that *aren't* in the US or Canada
 sub _non_US_CA_area_codes {
     # uncoverable subroutine - only used in build scripts
-    return split('\|', join('|',
+    return sort split('\|', join('|',
         @NANP_areas{grep { $_ !~ /^(US|CA)$/ } keys %NANP_areas}
     ));
 
