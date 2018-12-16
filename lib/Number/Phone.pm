@@ -187,7 +187,7 @@ The prefix codes in 3.4003 and earlier were managed by hand and so got out
 of date. After that release they are mostly derived from libphonenumber.
 libphonenumber's data includes carrier selection codes when they are
 mandatory for dialling so those are now included. This sometimes means that
-some random carrier has been arbitrarily priveleged over others.
+some random carrier has been arbitrarily privileged over others.
 
 =head1 COMPATIBILTY WITH libphonenumber
 
