@@ -1,0 +1,23 @@
+cache:
+  - C:\strawberry
+
+install:
+  - if not exist "C:\strawberry" choco install strawberryperl -y
+  - set PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - cpanm --quiet --notest XML::XPath
+  - cpanm --quiet --notest DBM::Deep
+  - cpanm --quiet --notest Digest::MD5
+  - cpanm --quiet --notest File::Find::Rule
+  - cpanm --quiet --notest Spreadsheet::ParseExcel
+  - cpanm --quiet --notest Text::CSV_XS
+  - cpanm --quiet --notest LWP::Protocol::https
+  - cpanm --quiet --installdeps --with-develop --notest .
+  - ./build-data.sh
+
+build_script:
+  - perl Makefile.PL
+  - gmake
+
+test_script:
+  - gmake test
