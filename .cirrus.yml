@@ -5,6 +5,7 @@ freebsd_tests_task:
   test_script:
     - pkg install -y perl5
     - echo|cpan App::cpanminus
+    - cpanm --quiet --notest File::ShareDir::Install
     - cpanm --quiet --notest XML::XPath
     - cpanm --quiet --notest DBM::Deep
     - cpanm --quiet --notest Digest::MD5
