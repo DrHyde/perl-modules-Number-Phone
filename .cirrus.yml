@@ -12,7 +12,7 @@ freebsd_tests_task:
     - cpanm --quiet --notest Spreadsheet::ParseExcel
     - cpanm --quiet --notest Text::CSV_XS
     - cpanm --quiet --notest LWP::Protocol::https
-    - cpanm --installdeps .
+    - cpanm --verbose --installdeps .
     - ./build-data.sh
     - perl Makefile.PL
     - make
