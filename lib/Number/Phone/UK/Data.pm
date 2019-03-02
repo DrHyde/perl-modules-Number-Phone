@@ -5,7 +5,7 @@ use strict;
 
 use Number::Phone;
 
-our $VERSION = "2.0";
+our $VERSION = "2.0001";
 
 use DBM::Deep;
 use File::ShareDir;

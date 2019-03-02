@@ -1,4 +1,4 @@
-XXXXXXXXXX      XXXXXX  Added operator data for Canada, USA, and some (all?) US territories;;
+XXXXXXXXXX      3.5000  Added operator data for almost all of the NANP;
                         Data updates
 
 2018-12-05      3.4006  Expose libphonenumber's IDD prefix regexes
