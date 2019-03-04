@@ -127,6 +127,9 @@ note("operator");
 skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     is($CLASS->new('+1 416 392 2489')->operator(), 'Bell Canada', "Canada");
 
+    is($CLASS->new('+1 216 208 0000')->operator(), 'ONVOY, LLC - OH',
+        "Unicode en-dash in some US data converted to hyphen");
+
     my @codes_seen = ();
     foreach my $tuple (
         ['+1 242 225 0000' => 'BAHAMAS TELECOMMUNICATIONS CORP.'],
@@ -167,7 +170,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     is_deeply(
         \@codes_seen,
         [grep { $_ != 658 } Number::Phone::Country::_non_US_CA_area_codes()],
-        "Oh good, the database contains data all the non-US/CA area codes"
+        "Oh good, the database contains data for all the non-US/CA area codes (except 658, for which no data are yet available)"
     );
 
     # checked on 2018-12-14 that these are consolidated ten-thousand blocks

@@ -158,6 +158,7 @@ $csv->getline($US_operators); # header line
 my %US = ();
 while(my $row = $csv->getline($US_operators)) {
     my($npa, $nxx, $thousands, $status, $op) = map { $row->[$_] } (2, 3, 4, 5, 12);
+    $op = _clean_up_op($op);
     next unless($status eq 'AS');
     $US{"$npa$nxx"} ||= [];
     push @{$US{"$npa$nxx"}}, { thousands => $thousands, op => $op }
@@ -177,7 +178,7 @@ foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
     my @ten_thousand_prefixes = $xml->find("/root/prefixdata[x = 'A']")->get_nodelist();
     foreach my $prefix (@ten_thousand_prefixes) {
         my $nxx = $prefix->find('nxx')->string_value();
-        ($ops{$NPA.$nxx} = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
+        $ops{$NPA.$nxx} = _op_from_prefix($prefix);
     }
 
     my @thousand_prefixes = $xml->find("/root/prefixdata[x != 'A']")->get_nodelist();
@@ -187,7 +188,7 @@ foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
             $ops{$NPA.$nxx} = [];
         }
         my $x = $prefix->find('x')->string_value();
-        (my $op = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
+        my $op = _op_from_prefix($prefix);
         push @{$ops{$NPA.$nxx}}, { thousands => $x, op => $op };
     }
     foreach my $co (keys %ops) {
@@ -197,6 +198,23 @@ foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
             _write_multiple_operators($co, $ops{$co});
         }
     }
+}
+
+sub _op_from_prefix {
+    my $prefix = shift;
+    (my $op = $prefix->find('company-name')->string_value()) =~ s/\s+$//;
+    return _clean_up_op($op);
+}
+
+sub _clean_up_op {
+    my $op = shift;
+    if($op =~ /([^\x00-\x7f])/) {
+        $op =~ s/\x{2013}/-/g; # en-dash
+    }
+    if($op =~ /([^\x00-\x7f])/) {
+        die "Couldn't clean up $1 in $op\n";
+    }
+    return $op;
 }
 
 sub _get_xml_data {
@@ -286,6 +304,7 @@ sub _write_multiple_operators {
             seek($randomfh, $next_data_offset, 0);
             die("Operator '$op' is longer than 255 bytes\n")
                 if(length($op) > 255);
+
             print $randomfh pack('CCA*', 0, length($op), $op);
             $seen_operators{$op} = $next_data_offset;
             $next_data_offset += length($op) + 2;
