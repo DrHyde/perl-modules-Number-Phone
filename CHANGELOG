@@ -1,5 +1,6 @@
 XXXX-XX-XX      XXXXXX  Corrected international dialling data for Antarctic research
                           stations;
+                        Cleaned up Unicode-spoor in some US operators' names;
                         Data updates
 
 2019-03-03      3.5000  Added operator data for almost all of the NANP;
