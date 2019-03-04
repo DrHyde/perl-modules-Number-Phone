@@ -22,14 +22,8 @@ Number::Phone, but will support many use-cases and should "fail
 gracefully" if you try to use unsupported features.
 
 Number::Phone::NANP implements functionality common to all NANP countries.
-There is a subclass of this for each such country.  The only significant
-difference between this and libphonenumber is that libphonenumber
-erroneously reports that 800 numbers and other non-geographic numbers are
-in the US.
 
-Please note that the build-data.* files are not intended for your use.
-I use them to re-build the database of UK number allocations.  If you
-choose to use them, on your own head be it!
+Please note that the build-data.* files are not intended for normal users to use. They are used by developers to re-build some of the internal databases inside the distribution. They have lots of extra dependencies that aren't needed once you've built the distribution.
 
 The data used in these modules have come from all sorts of places.  Most
 of them disclaim any responsibility for errors in the data.  I disclaim
@@ -37,17 +31,21 @@ all responsibility for errors too, even if my code makes your PBX turn
 purple.
 
 Data sources used include:
-  http://wtng.info/ - treat this with caution, it seems to be no
-    longer maintained
-  various telcos and regulatory bodies linked from the above:
-  http://www.itu.int/itu-t/inr/nnp/
-  http://www.ofcom.org.uk/ - for UK data
-  http://www.areacode-info.com/ - for US data
-  http://www.cnac.ca/ - for Canadian data
+  WTNG:
+    http://wtng.info/ - treat this with caution, it seems to be no
+      longer maintained
+
+  various telcos and regulatory bodies:
+    http://www.itu.int/itu-t/inr/nnp/
+    http://www.ofcom.org.uk/ - for UK data
+    http://www.cnac.ca/ - for Canadian data
+    https://www.nationalpooling.com - for US data
+
+  Local Calling Guide
+    https://localcallingguide.com/
+
   Google's libphonenumber:
-  http://code.google.com/p/libphonenumber/
-    whose data are used for NANP area code names and for "stub"
-    modules.
+    http://code.google.com/p/libphonenumber/
 
 You can find the most recent version of the source code on Github at:
   https://github.com/DrHyde/perl-modules-Number-Phone
