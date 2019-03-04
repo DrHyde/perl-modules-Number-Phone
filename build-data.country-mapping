@@ -275,11 +275,8 @@ print $module_fh q{
     $Number::Phone::Country::prefix_codes{BV} = ['47',  '00',   undef, qr/\A 00 /xms];
     $Number::Phone::Country::prefix_codes{GS} = ['500', '00',   undef, qr/\A 00 /xms];
     $Number::Phone::Country::prefix_codes{TF} = ['596', '00',   '0',   qr/\A 00 /xms];
+
     # 0011 from https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
     #   but note that Norfolk Island is also 672 but apparently uses 00 as per libphonenumber
-    $Number::Phone::Country::prefix_codes{AQ} = ['672', '0011', undef, undef];
-    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Pitcairn_Islands
-    #   it's supposed to use +64xx (NZ) but apparently they use satphones instead.
-    #   for extra fun, +872 may be obsolete
-    $Number::Phone::Country::prefix_codes{PN} = ['872', undef, undef, undef];
+    $Number::Phone::Country::prefix_codes{AQ} = ['672', '0011', undef, qr/\A 0011 /xms];
 };
