@@ -4,6 +4,7 @@ freebsd_instance:
 freebsd_tests_task:
   test_script:
     - pkg install -y perl5
+    - pkg install -y bash
     - echo|cpan App::cpanminus
     - cpanm --quiet --notest File::ShareDir::Install
     - cpanm --quiet --notest XML::XPath
@@ -13,7 +14,7 @@ freebsd_tests_task:
     - cpanm --quiet --notest Spreadsheet::ParseExcel
     - cpanm --quiet --notest Text::CSV_XS
     - cpanm --quiet --notest LWP::Protocol::https
-    - cpanm --verbose --installdeps .
+    - cpanm --installdeps .
     - ./build-data.sh
     - perl Makefile.PL
     - make
