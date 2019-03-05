@@ -5,6 +5,7 @@ freebsd_tests_task:
   test_script:
     - pkg install -y perl5
     - pkg install -y bash
+    - pkg install -y git
     - echo|cpan App::cpanminus
     - cpanm --quiet --notest File::ShareDir::Install
     - cpanm --quiet --notest XML::XPath
