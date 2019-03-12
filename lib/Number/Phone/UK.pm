@@ -45,7 +45,7 @@ countries. There are two ways to avoid this slowness.
 First, if you don't need all the functionality you can use L<Number::Phone::Lib>.
 
 Second, if you can accept slow startup - eg when your server starts - then you can call
-C<Number::Phone::UK::Data->slurp()> from your code, which will pull the entire database
+C<< Number::Phone::UK::Data->slurp() >> from your code, which will pull the entire database
 into memory. This will take a few minutes, and on a 64-bit machine will consume of the
 order of 200MB of memory.
 
@@ -63,7 +63,7 @@ The following methods from Number::Phone are overridden:
 =item new
 
 The constructor, you should never have to call this yourself. To create an
-object the canonical incantation is C<Number::Phone->new('+44 ...')>.
+object the canonical incantation is C<< Number::Phone->new('+44 ...') >>.
 
 =item is_valid
 
