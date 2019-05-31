@@ -635,6 +635,10 @@ The constructor returns undef if it can not figure out what country
 you're talking about, or an object based on Google's libphonenumber
 data if there's no complete country-specific module available.
 
+It is generally assumed that numbers are complete and unambiguous - ie you
+can't pass just the local part to the constructor if the number has an area
+code. Any subclass's constructor which contravenes this should document it.
+
 =back
 
 =head1 SUBCLASSING
