@@ -156,7 +156,7 @@ fi
 
 # finally look for out of date files and yell about them
 echo
-for file in `grep -ri next.check.due lib build-*|grep -v build-data.sh|sed 's/:.*//'|sort|uniq`; do
+for file in `grep -ri next.check.due lib build-* t|grep -v build-data.sh|sed 's/:.*//'|sort|uniq`; do
     grep next.check.due $file | perl -Mstrict -Mwarnings -e '
         my $file = "'$file'";
         my $today = join("-",
