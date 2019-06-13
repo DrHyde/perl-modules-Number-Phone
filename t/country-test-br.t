@@ -31,10 +31,3 @@ END { done_testing(); }
     is($np->format, '+55 35 99870 5656', '...its international format is correct');
     is($np->format_using('National'), '(35) 99870-5656', '...as is its national format');
 }
-{
-    my $np = Number::Phone::Lib->new('BR', '35 98 70 56 56');
-    ok($np->is_mobile, '35 9 98 70 56 56 is an old style 8 digit mobile with area code...');
-    ok(!$np->is_fixed_line, '...it is not a fixed line...');
-    is($np->format, '+55 35 9870 5656', '...its international format is correct');
-    is($np->format_using('National'), '(35) 9870-5656', '...as is its national format');
-}
