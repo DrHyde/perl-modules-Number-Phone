@@ -95,7 +95,8 @@ is($de->areaname('de'), $munchen, "got area name correctly in German by asking f
 is($de->areaname('ja'), undef,     "... but if we ask for it in Japanese we get nothing");
 {
     local $ENV{LANGUAGE}='sv:de';
-    is($de->areaname(), $munchen, "got area name correctly in German from the locale");
+    is($de->areaname(), $munchen,     "got area name correctly in German from the locale");
+    is($de->areaname('en'), "Munich", "got area name correctly in English by asking for it, over-riding a locale");
     is($jp->areaname(), 'Yamatotakada, Nara', "... and we fall back to English correctly");
     local $ENV{LANGUAGE}='en';
     is($de->areaname(), "Munich", "got area name correctly in English from the locale");
