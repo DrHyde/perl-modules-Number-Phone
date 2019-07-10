@@ -7,6 +7,7 @@
 use strict;
 use warnings;
 use Data::Dumper;
+use File::Find::Rule;
 
 $Data::Dumper::Indent = 2;
 $Data::Dumper::Sortkeys = 1;
@@ -85,36 +86,43 @@ TERRITORY: foreach my $territory (@territories) {
       delete $validators->{mobile};
   }
   print $module_fh 'my '.Data::Dumper->new([$validators], [qw(validators)])->Dump();
-  my $codesfile = "libphonenumber/resources/geocoding/en/$IDD_country_code.txt";
-  if($IDD_country_code == 1) {
-    print $module_fh "use Number::Phone::NANP::Data;\nsub areaname {\n";
-    if($ISO_country_code !~ /^(US|CA|JM)$/) {
-        # we have explicit tests for US and CA areaname, and use JM to
-        # check it DTRT when there's no data
-        print $module_fh "# uncoverable subroutine - no data for most NANP countries
-                          # uncoverable statement\n";
+
+  my $got_area_names = 0;
+  CODEFILE: foreach my $codesfile (File::Find::Rule->file()->name("$IDD_country_code.txt")->in("libphonenumber/resources/geocoding")) {
+    $codesfile =~ /\/(..)\/$IDD_country_code.txt$/;
+    my $language = $1 || next CODEFILE;
+
+    if($IDD_country_code == 1) {
+      print $module_fh "use Number::Phone::NANP::Data;\nsub areaname {\n";
+      if($ISO_country_code !~ /^(US|CA|JM)$/) {
+          # we have explicit tests for US and CA areaname, and use JM to
+          # check it DTRT when there's no data
+          print $module_fh "# uncoverable subroutine - no data for most NANP countries
+                            # uncoverable statement\n";
+      }
+      print $module_fh "Number::Phone::NANP::Data::_areaname('1'.shift()->{number}); }\n";
+    } elsif(-e $codesfile) {
+      open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
+      my @lines = <$geocoding>;
+      print $module_fh "my %areanames = ();\n" unless($got_area_names);
+      $got_area_names = 1;
+      foreach my $line (@lines) {
+        chomp($line);
+        next if($line =~ /^(#.*|\s+)?$/);
+        my($prefix, $area) = split(/\|/, $line);
+        $area = quotemeta($area);
+        print $module_fh "\$areanames{$language}->{$prefix} = \"$area\";\n";
+      }
     }
-    print $module_fh "Number::Phone::NANP::Data::_areaname('1'.shift()->{number}); }\n";
-  } elsif(-e $codesfile) {
-    open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
-    my @lines = <$geocoding>;
-    print $module_fh "my %areanames = (\n";
-    foreach my $line (@lines) {
-      chomp($line);
-      next if($line =~ /^(#.*|\s+)?$/);
-      my($prefix, $area) = split(/\|/, $line);
-      $area = quotemeta($area);
-      print $module_fh "  $prefix => \"$area\",\n";
-    }
-    print $module_fh ');';
   }
+
   print $module_fh "
     sub new {
       my \$class = shift;
       my \$number = shift;
       \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
       my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
-      (($IDD_country_code != 1 && -e $codesfile) ? 'areanames => \\%areanames' : '')
+      (($IDD_country_code != 1 && $got_area_names) ? 'areanames => \\%areanames' : '')
       ."}, \$class);
   ";
 
@@ -150,7 +158,7 @@ TERRITORY: foreach my $territory (@territories) {
 
     push @code,
       "  \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
-      (($IDD_country_code != 1 && -e $codesfile) ? 'areanames => \\%areanames' : '')
+      (($IDD_country_code != 1 && $got_area_names) ? 'areanames => \\%areanames' : '')
       ."}, \$class);";
 
     print $module_fh join "\n", map {"    $_"} @code;
