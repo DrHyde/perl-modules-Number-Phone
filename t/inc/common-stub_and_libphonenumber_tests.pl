@@ -2,6 +2,18 @@ use strict;
 use warnings;
 
 use vars qw($CLASS);
+use utf8;
+use charnames qw(:full);
+
+# turn off the user's locale settings
+local %ENV;
+undef $ENV{REQUEST_METHOD};
+undef $ENV{LANGUAGE};
+undef $ENV{LC_ALL};
+undef $ENV{LC_MESSAGES};
+undef $ENV{LANG};
+undef $ENV{HTTP_ACCEPT_LANGUAGE};
+$ENV{IGNORE_WIN32_LOCALE} = 1;
 
 {
   no warnings 'redefine';
@@ -56,7 +68,7 @@ $ru = $CLASS->new('+7(812)315-98-83'); # national dialling prefix is 8, but
 is($ru->format(), '+7 812 315 98 83', '+7 8 numbers work');
 
 # good news comrade (courtesy of translate.google)
-ok($CLASS->new('+79607001122')->is_mobile(), "Хороший товарищ новость! is_mobile works for Russia!");
+ok($CLASS->new('+79607001122')->is_mobile(), "is_mobile works for Russia");
 
 my $jp = $CLASS->new('+81 744 54 4343');
 isa_ok($jp, 'Number::Phone::StubCountry::JP', "stub loaded when N::P::CC exists but isn't a proper subclass");
@@ -75,6 +87,20 @@ is($de->format(), "+49 33082 50565", "formatted Menz Kr Oberhavel number correct
 $de = $CLASS->new('+493022730027'); # Bundestag
 is($de->format(), "+49 30 22730027", "formatted Berlin number correctly");
 is($de->areaname(), "Berlin", "got area name correctly");
+
+my $munchen = "M\N{LATIN SMALL LETTER U WITH DIAERESIS}nchen";
+$de = $CLASS->new('+498921620'); # Bavarian govt in Munich
+is($de->areaname(),     "Munich", "got Munich area name correctly in English by default when there's no locale set");
+is($de->areaname('en'), "Munich", "got area name correctly in English by asking for it");
+is($de->areaname('de'), $munchen, "got area name correctly in German by asking for it");
+is($de->areaname('ja'), undef,     "... but if we ask for it in Japanese we get nothing");
+{
+    local $ENV{LANGUAGE}='sv:de';
+    is($de->areaname(), $munchen, "got area name correctly in German from the locale");
+    is($jp->areaname(), 'Yamatotakada, Nara', "... and we fall back to English correctly");
+    local $ENV{LANGUAGE}='en';
+    is($de->areaname(), "Munich", "got area name correctly in English from the locale");
+}
 
 my $no = $CLASS->new('+4779023450'); # Some Norway islands
 isa_ok($no, "Number::Phone::StubCountry");

@@ -1,4 +1,5 @@
-XXXX-XX-XX      XXXXXX  Data updates
+XXXX-XX-XX      3.6000  Data updates;
+                        areaname() sensitive to your locale
 
 2019-06-11      3.5001  Corrected international dialling data for Antarctic
                           research stations;

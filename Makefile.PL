@@ -32,15 +32,17 @@ WriteMakefile(
   },
 
   PREREQ_PM    => {
-    'Scalar::Util'   => 1.48,
-    'Test::More'     => '0.96', # need done_testing (0.88) and subtests (0.95_01)
-    'Digest::MD5'    => 0,
-    'DBM::Deep'      => 2.0008,
-    'Test::utf8'     => 0,
-    'File::ShareDir' => 1.104,
-    'File::Spec'     => 0,
-    'File::Basename' => 0,
-    'Cwd'            => 0,
+    'Scalar::Util'           => 1.48,
+    'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
+    'Digest::MD5'            => 0,
+    'DBM::Deep'              => 2.0008,
+    'Test::utf8'             => 0,
+    'File::ShareDir'         => 1.104,
+    'File::Spec'             => 0,
+    'File::Basename'         => 0,
+    'Cwd'                    => 0,
+    'I18N::LangTags::Detect' => 0,
+    'I18N::LangTags'         => 0,
   },
   dist => {
     PREOP => "./build-data.sh"
