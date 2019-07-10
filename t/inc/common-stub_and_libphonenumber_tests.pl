@@ -67,7 +67,6 @@ $ru = $CLASS->new('+7(812)315-98-83'); # national dialling prefix is 8, but
                                        # this is a valid number
 is($ru->format(), '+7 812 315 98 83', '+7 8 numbers work');
 
-# good news comrade (courtesy of translate.google)
 ok($CLASS->new('+79607001122')->is_mobile(), "is_mobile works for Russia");
 
 my $jp = $CLASS->new('+81 744 54 4343');
