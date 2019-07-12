@@ -13,7 +13,7 @@ use Number::Phone::Country qw(noexport);
 use Number::Phone::StubCountry;
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '3.5001';
+our $VERSION = '3.6000';
 
 my $NOSTUBS = 0;
 sub import {
@@ -188,6 +188,14 @@ of date. After that release they are mostly derived from libphonenumber.
 libphonenumber's data includes carrier selection codes when they are
 mandatory for dialling so those are now included. This sometimes means that
 some random carrier has been arbitrarily privileged over others.
+
+As of version 3.6000 the C<areaname> method is documented as taking an optional
+language code. As far as I can tell providing this new parameter to the method
+as provided by all the subclasses on the CPAN won't do any harm.
+
+As of version 3.6000 the C<areaname> method pays attention to your locale
+settings and so you might start getting locale-appropriate versions of
+areanames instead of what you used to get.
 
 =head1 COMPATIBILTY WITH libphonenumber
 
@@ -419,6 +427,13 @@ Return the name for the area code - if applicable.  If not applicable,
 the superclass definition returns undef.  For instance, for a number
 beginning +44 20 it would return
 'London'.  Note that this may return data in non-ASCII character sets.
+
+This may take an optional language code such as 'de' or 'en'. If
+you provide that then you will get back whatever the place name is
+in that language, if the data is available. If you don't provide
+it then it will first look at your locale settings and try to find
+a name in an appropriate language, and if nothing is found fall
+back to English.
 
 =item location
 

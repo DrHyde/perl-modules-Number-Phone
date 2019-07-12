@@ -4,6 +4,9 @@ use strict;
 use warnings;
 use Number::Phone::Country qw(noexport);
 
+use I18N::LangTags::Detect;
+use I18N::LangTags;
+
 use base qw(Number::Phone);
 our $VERSION = '1.4000';
 
@@ -56,12 +59,23 @@ sub _validator {
 }
 
 sub areaname {
-    my $self   = shift;
+    my $self      = shift;
+    my @languages = @_;
+    if(!@languages) { # nothing specifically asked for? use the locale
+        @languages = I18N::LangTags::implicate_supers(I18N::LangTags::Detect::detect());
+        if(!grep { $_ eq 'en' } @languages) {
+            # and fall back to English
+            push @languages, 'en'
+        }
+    }
     my $number = $self->{number};
     return unless $self->{areanames};
-    my %map = %{$self->{areanames}};
-    foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
-        return $map{$self->country_code().$prefix} if exists($map{$self->country_code().$prefix});
+    LANGUAGE: foreach my $language (@languages) {
+        next LANGUAGE unless(exists($self->{areanames}->{$language}));
+        my %map = %{$self->{areanames}->{$language}};
+        foreach my $prefix (map { substr($number, 0, $_) } reverse(1..length($number))) {
+            return $map{$self->country_code().$prefix} if exists($map{$self->country_code().$prefix});
+        }
     }
     return undef;
 }
