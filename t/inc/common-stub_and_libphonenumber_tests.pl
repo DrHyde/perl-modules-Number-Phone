@@ -7,12 +7,10 @@ use charnames qw(:full);
 
 # turn off the user's locale settings
 local %ENV;
-undef $ENV{REQUEST_METHOD};
-undef $ENV{LANGUAGE};
-undef $ENV{LC_ALL};
-undef $ENV{LC_MESSAGES};
-undef $ENV{LANG};
-undef $ENV{HTTP_ACCEPT_LANGUAGE};
+delete @ENV{qw(
+    LANGUAGE LC_ALL LC_MESSAGES LANG
+    REQUEST_METHOD HTTP_ACCEPT_LANGUAGE
+)};
 $ENV{IGNORE_WIN32_LOCALE} = 1;
 
 {
