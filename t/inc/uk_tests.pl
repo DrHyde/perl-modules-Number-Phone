@@ -311,7 +311,9 @@ foreach my $dn (@drama_numbers) {
              ok($phone->is_drama(), "$area drama number $num is_drama");
          });
          my $method = "is_$type";
-         ok($phone->$method(), "$area drama number $num $method");
+         skip_if_mocked("Stubs don't always support is_* for is_drama", 1, sub {
+             ok($phone->$method(), "$area drama number $num $method");
+         });
          if($area eq 'Mobile') {
              is($phone->country(), 'UK', "$num is UK-wide is_drama, not Jersey");
          }
