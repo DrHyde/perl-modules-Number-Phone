@@ -78,6 +78,8 @@ sub _get_class {
   my $number = shift;
   foreach my $prefix (_prefixes($number)) {
     if(exists(Number::Phone::UK::Data::db()->{subclass}->{$prefix})) {
+      return $class if(Number::Phone::UK::Data::db()->{subclass}->{$prefix} eq '');
+
       my $subclass = join('::', $class, Number::Phone::UK::Data::db()->{subclass}->{$prefix});
       eval "use $subclass";
       return $subclass;
@@ -206,9 +208,7 @@ sub is_drama {
     );
 
     foreach my $d (@drama_numbers) {
-        
         return 1 if ($num =~ $d);
-    
     }
 
     return 0;

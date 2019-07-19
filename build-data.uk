@@ -92,6 +92,11 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
     }
 }
 
+# special numbers allocated for use in drama that don't appear
+# in the spreadsheets
+push @free_prefices, '8081570';
+push @special_prefices, '9098790', '3069990'; 
+
 print "Building telco/length data ...\n";
 my %telco_format_cache = ();
 my %telco_and_length = ();
@@ -160,7 +165,13 @@ $dbm->{ip_prefices}          = { map { ($_, 1) } @ip_prefices };
 $dbm->{areanames}            = { map { s/( National Dialling)//ig; $_; } %areanames };
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
-$dbm->{subclass} = { # taken from libphonenumber
+$dbm->{subclass} = {
+  # special case, UK-wide mobile range for use in drama,
+  # conflicts with 7700 being Jersey below
+  '7700900' => '',
+  # taken from libphonenumber
+  # checked on 2018-09-01
+  # next check due 2019-09-01 (annually)
   (map { $_ => 'GG' } (
       1481, 7781, 7839, 7911
   )),

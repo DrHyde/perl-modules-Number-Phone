@@ -12,9 +12,9 @@ END { done_testing(); }
 
 my $data = {
   JE => {
-    mobile     => '+44 7509 000000',
+    mobile     => '+44 7700 300000', # used specifically because there's a special case for 7700 900
     geographic => '+44 1534 440000',
-    operator   => 'JT (Jersey) Limited',
+    operator   => qr/^(JT|Sure) \(Jersey\) Limited$/,
     regulator  => 'Office of Utility Regulation, http://www.cicra.gg'
   },
   GG => {
