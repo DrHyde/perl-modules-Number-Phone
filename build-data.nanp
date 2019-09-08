@@ -214,6 +214,8 @@ sub _clean_up_op {
     if($op =~ /([^\x00-\x7f])/) {
         die "Couldn't clean up $1 in $op\n";
     }
+    # leading/trailing space
+    $op =~ s/^\s+|\s+$//g;
     return $op;
 }
 
@@ -276,7 +278,8 @@ sub _write_multiple_operators {
             map { $data->[$_]->{op} => 1 } (0 .. 9)
         }})) == 1 # but only one operator
     ) {
-        return _write_operator_data($co, $data->[0]->{op}); }
+        return _write_operator_data($co, $data->[0]->{op});
+    }
 
     seek($randomfh, $WORDLENGTH * ($co - 200000), 0);
     print $randomfh pack('N', $next_data_offset);
