@@ -87,7 +87,6 @@ share/Number-Phone-NANP-Data.db
 t/uk_slurp.t
 lib/Number/Phone/Formatter/NationallyPreferredIntl.pm
 t/country-test-ar.t
-t/country-test-mx.t
 t/country-test-sm.t
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
