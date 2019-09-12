@@ -3,8 +3,7 @@
                           to is_mobile, is_tollfree etc, and the mobile range
                           is correctly identified as being UK-wide and not Jersey
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/67);
-                        Areaname() sensitive to your locale;
-                        Data updates
+                        Areaname() sensitive to your locale
 
 2019-06-11      3.5001  Corrected international dialling data for Antarctic
                           research stations;
