@@ -8,7 +8,7 @@ use I18N::LangTags::Detect;
 use I18N::LangTags;
 
 use base qw(Number::Phone);
-our $VERSION = '1.4000';
+our $VERSION = '1.5000';
 
 =head1 NAME
 
