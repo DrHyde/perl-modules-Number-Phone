@@ -1,3 +1,7 @@
+xxxx-xx-xx      xxxxxx  Inmarsat +871 to +874 have been de-commissioned;
+                        Added some US overlay codes (not all are in use yet);
+                        Data updates
+
 2019-09-12      3.6000  Data updates;
                         UK is_drama() numbers now all respond appropriately
                           to is_mobile, is_tollfree etc, and the mobile range

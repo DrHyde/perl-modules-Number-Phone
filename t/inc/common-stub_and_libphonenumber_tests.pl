@@ -36,14 +36,14 @@ is($inmarsat870->is_mobile(), undef, "$CLASS->new('+870123456')->is_mobile()");
 is($inmarsat870->is_geographic(), undef, "$CLASS->new('+870123456')->is_geographic()");
 is($inmarsat870->is_fixed_line(), undef, "$CLASS->new('+870123456')->is_fixed_line()");
 
-my $inmarsat871 = $CLASS->new("+8719744591");
-is($inmarsat871->country_code(), '871', 'Inmarsat number has right country_code');
-is($inmarsat871->country(), 'Inmarsat', "$CLASS->new('+8719744591')->country()");
-is($inmarsat871->format(), '+871 9744591', "$CLASS->new('+8719744591')->format()");
-is($inmarsat871->is_valid(), undef, "$CLASS->new('+8719744591')->is_valid()");
-is($inmarsat871->is_mobile(), undef, "$CLASS->new('+8719744591')->is_mobile()");
-is($inmarsat871->is_geographic(), undef, "$CLASS->new('+8719744591')->is_geographic()");
-is($inmarsat871->is_fixed_line(), undef, "$CLASS->new('+8719744591')->is_fixed_line()");
+# my $inmarsat871 = $CLASS->new("+8719744591");
+# is($inmarsat871->country_code(), '871', 'Inmarsat number has right country_code');
+# is($inmarsat871->country(), 'Inmarsat', "$CLASS->new('+8719744591')->country()");
+# is($inmarsat871->format(), '+871 9744591', "$CLASS->new('+8719744591')->format()");
+# is($inmarsat871->is_valid(), undef, "$CLASS->new('+8719744591')->is_valid()");
+# is($inmarsat871->is_mobile(), undef, "$CLASS->new('+8719744591')->is_mobile()");
+# is($inmarsat871->is_geographic(), undef, "$CLASS->new('+8719744591')->is_geographic()");
+# is($inmarsat871->is_fixed_line(), undef, "$CLASS->new('+8719744591')->is_fixed_line()");
 
 my $international883 = $CLASS->new("+88300000000");
 isa_ok($international883, "Number::Phone::StubCountry");
