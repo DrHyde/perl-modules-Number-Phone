@@ -1,4 +1,5 @@
 language: perl
+dist: trusty
 env:
   global:
     - PERL_USE_UNSAFE_INC=0
