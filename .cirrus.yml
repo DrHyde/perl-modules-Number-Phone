@@ -1,7 +1,7 @@
-freebsd_instance:
-  image: freebsd-12-0-release-amd64
-
-freebsd_tests_task:
+task:
+  name: FreeBSD
+  freebsd_instance:
+    image: freebsd-12-0-release-amd64
   test_script:
     - pkg install -y perl5
     - pkg install -y bash
@@ -17,6 +17,26 @@ freebsd_tests_task:
     - cpanm --quiet --notest LWP::Protocol::https
     - cpanm --installdeps .
     - ./build-data.sh
+    - perl Makefile.PL
+    - make
+    - make test
+
+task:
+  name: MacOS
+  osx_instance:
+    image: catalina-xcode-11.3.1
+  test_script:
+    - echo|cpan App::cpanminus
+    - export PERL5LIB=/Users/anka/perl5/lib/perl5
+    - /Users/anka/perl5/bin/cpanm --quiet --notest File::ShareDir::Install
+    - /Users/anka/perl5/bin/cpanm --quiet --notest XML::XPath
+    - /Users/anka/perl5/bin/cpanm --quiet --notest DBM::Deep
+    - /Users/anka/perl5/bin/cpanm --quiet --notest Digest::MD5
+    - /Users/anka/perl5/bin/cpanm --quiet --notest File::Find::Rule
+    - /Users/anka/perl5/bin/cpanm --quiet --notest Spreadsheet::ParseExcel
+    - /Users/anka/perl5/bin/cpanm --quiet --notest Text::CSV_XS
+    - /Users/anka/perl5/bin/cpanm --quiet --notest LWP::Protocol::https
+    - /Users/anka/perl5/bin/cpanm --installdeps .
     - perl Makefile.PL
     - make
     - make test
