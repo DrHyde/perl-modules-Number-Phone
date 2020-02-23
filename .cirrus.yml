@@ -37,6 +37,7 @@ task:
     - /Users/anka/perl5/bin/cpanm --quiet --notest Text::CSV_XS
     - /Users/anka/perl5/bin/cpanm --quiet --notest LWP::Protocol::https
     - /Users/anka/perl5/bin/cpanm --installdeps .
+    - ./build-data.sh
     - perl Makefile.PL
     - make
     - make test
