@@ -217,6 +217,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
 note("is_government");
 skip_if_libphonenumber("Stubs don't support is_government", 1, sub {
     is($CLASS->new('+17106274387')->is_government(), 1, "710 is the Feds man");
+    is($CLASS->new('+15135737912')->is_government(), 0, "We're not supposed to know that Macy's is a front for the Feds");
 });
 
 note("is_drama");
