@@ -5,33 +5,26 @@ use Config;
 
 use Test::More;
 
-my $perl = $Config{perlpath};
-my $incpath = (grep { -f "$_/Number/Phone/UK/Data.pm" } @INC)[0];
+use Number::Phone::NANP;
+use Number::Phone::UK::Data;
+
+use Parallel::ForkManager;
+my $forker = Parallel::ForkManager->new(1);
+my $returned_from_child;
+$forker->run_on_finish(sub { $returned_from_child = ${$_[-1]}; });
 
 # this gets an operator to force a seek() on the filehandle
 # so we can compare it to what should be a shiny new fh
-my $nanp_results = `
-    $perl -I$incpath -MNumber::Phone::NANP -e '
-        Number::Phone->new("+1 242 225 0000")->operator();
-        print tell(Number::Phone::NANP::_datafh)."\n";
-        if(!fork()) {
-            print tell(Number::Phone::NANP::_datafh)."\n";
-        }
-    '
-`;
-my @results = split(/\s+/, $nanp_results);
-isnt($results[0], $results[1], "forking gets us a new NANP operators db");
+Number::Phone->new("+1 242 225 0000")->operator();
+my $original_tell = tell(Number::Phone::NANP::_datafh);
+$forker->start() || $forker->finish(0, \tell(Number::Phone::NANP::_datafh));
+$forker->wait_all_children();
+isnt($original_tell, $returned_from_child, "forking gets us a new NANP operators db");
 
-my $uk_results = `
-    $perl -I$incpath -MNumber::Phone::UK::Data -e '
-        print Number::Phone::UK::Data::db."\n";
-        if(!fork()) {
-            print Number::Phone::UK::Data::db."\n";
-        }
-    '
-`;
-@results = split(/\s+/, $uk_results);
-isnt($results[0], $results[1], "forking gets us a new UK db");
+my $original_ukdb = ''.Number::Phone::UK::Data::db;
+$forker->start() || $forker->finish(0, \(''.Number::Phone::UK::Data::db));
+$forker->wait_all_children();
+isnt($original_ukdb, $returned_from_child, "forking gets us a new UK db");
 
 SKIP: {
     if(
@@ -40,18 +33,11 @@ SKIP: {
         skip "slurping is too slow so skipping under Devel::Cover and for normal installs, set AUTOMATED_TESTING to run this", 1;
     } 
     diag("NB: this test takes a few minutes and lots of memory");
-    my $uk_slurp_results = `
-        $perl -I$incpath -MNumber::Phone::UK::Data -e '
-            Number::Phone::UK::Data->slurp();
-            print Number::Phone::UK::Data::db."\n";
-            if(!fork()) {
-                print Number::Phone::UK::Data::db."\n";
-            }
-        '
-    `;
-    @results = split(/\s+/, $uk_slurp_results);
-    is($results[0], $results[1], "forking doesn't get a new UK db if we slurped");
-
+    Number::Phone::UK::Data::slurp();
+    my $original_slurped_ukdb = ''.Number::Phone::UK::Data::db;
+    $forker->start() || $forker->finish(0, \(''.Number::Phone::UK::Data::db));
+    $forker->wait_all_children();
+    is($original_slurped_ukdb, $returned_from_child, "forking doesn't get us a new UK db if we slurped");
 }
 
 done_testing();

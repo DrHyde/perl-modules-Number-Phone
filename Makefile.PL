@@ -21,7 +21,8 @@ WriteMakefile(
     'ExtUtils::MakeMaker'     => 6.52,
     'ExtUtils::Manifest'      => 0,
     'ExtUtils::Install'       => 0,
-    'File::ShareDir::Install' => 0.11
+    'File::ShareDir::Install' => 0.11,
+    'Parallel::ForkManager'   => '0.7.6' # return data from child processes
   },
 
   CONFIGURE_REQUIRES => {
