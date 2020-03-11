@@ -30,7 +30,7 @@ SKIP: {
     if(
         $ENV{CI} || !$ENV{AUTOMATED_TESTING}
     ) {
-        skip "slurping is too slow so skipping under Devel::Cover and for normal installs, set AUTOMATED_TESTING to run this", 1;
+        skip "slurping is too slow so skipping under CI and for normal installs, set AUTOMATED_TESTING to run this", 1;
     } 
     diag("NB: this test takes a few minutes and lots of memory");
     Number::Phone::UK::Data::slurp();
