@@ -37,9 +37,7 @@ sub _slurp {
     my $db = shift;
     if(!ref($db)) {
         return $db
-    } elsif($db->isa('ARRAY')) {
-        return [ map { _slurp($_) } @{$db} ]
-    } elsif($db->isa('HASH')) {
+    } else {
         return { map {
             $_ => _slurp($db->{$_})
         } keys(%{$db}) };
