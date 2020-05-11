@@ -88,6 +88,8 @@ t/uk_slurp.t
 lib/Number/Phone/Formatter/NationallyPreferredIntl.pm
 t/country-test-ar.t
 t/country-test-sm.t
+t/fork.t
+t/country-test-my.t
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -333,4 +335,3 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
-t/fork.t

@@ -13,7 +13,7 @@ use Number::Phone::Country qw(noexport);
 use Number::Phone::StubCountry;
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '3.6003';
+our $VERSION = '3.6004';
 
 my $NOSTUBS = 0;
 sub import {
@@ -678,8 +678,17 @@ going like Number::Phone::NANP::XX.
 
 =head1 UPDATES
 
-Starting in March 2015 I intend to release updates approximately every
-three months, including new data from libphonenumber and OFCOM.
+I release updates approximately every three months, including new data.
+
+I will also do intercalary releases to fix *serious* bugs in the code
+and when *large* data updates (eg when a country's numbering scheme changes)
+are brought to my attention.
+
+I will not normally do a release just because a country has added some
+new number range. If this irks you then I would welcome a discussion on
+how you can best write a patch, with tests, that will reliably incorporate
+updated data from libphonenumber. Much of the needed code already exists
+in the repository but it is not fit for end-user consumption.
 
 =head1 BUGS/FEEDBACK
 
