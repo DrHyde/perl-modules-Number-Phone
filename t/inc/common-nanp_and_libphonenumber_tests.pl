@@ -143,8 +143,8 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         ['+1 473 230 0000' => 'COLUMBUS COMMUNICATIONS (GRENADA) LIMITED'],
         ['+1 649 231 0000' => 'CABLE & WIRELESS - TURKS & CAICOS'],
         # No data yet.
-        # checked on 2019-12-11
-        # next check due 2020-06-01 (semi-annually) until there's data
+        # checked on 2020-06-06
+        # next check due 2020-12-01 (semi-annually) until there's data
         # at https://localcallingguide.com/xmlprefix.php?npa=658&blocks=1
         # ['+1 658 ??? 0000' => '???'],
         ['+1 664 349 0000' => 'CABLE & WIRELESS - MONTSERRAT'],
