@@ -179,8 +179,8 @@ $dbm->{subclass} = {
   # conflicts with 7700 being Jersey below
   '7700900' => '',
   # taken from libphonenumber
-  # checked on 2019-09-08
-  # next check due 2020-09-01 (annually)
+  # checked on 2020-09-04
+  # next check due 2021-09-01 (annually)
   (map { $_ => 'GG' } (
       1481, 7781, 7839, 7911
   )),
