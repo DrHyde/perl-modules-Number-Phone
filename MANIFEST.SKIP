@@ -1,6 +1,7 @@
 .DS_Store
 ^libphonenumber
 ^\.git
+^\.envrc
 ^build-
 S3.xls
 S5.xls
