@@ -1,3 +1,6 @@
+XXXX-XX-XX      XXXXXX  Windows doesn't properly support fork() so skip the tests for it;
+                        Data updates
+
 2020-09-04      3.6006  Data updates
 
 2020-06-06      3.6005  Data updates
