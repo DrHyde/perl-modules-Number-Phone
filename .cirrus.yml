@@ -1,7 +1,7 @@
 task:
   name: FreeBSD
   freebsd_instance:
-    image: freebsd-12-1-release-amd64
+    image_family: freebsd-13-0-snap
   test_script:
     - pkg install -y perl5
     - pkg install -y bash
