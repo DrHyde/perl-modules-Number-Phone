@@ -41,6 +41,7 @@ matrix:
       env: AUTOMATED_TESTING=1 PERL_USE_UNSAFE_INC=0
       dist: xenial
       before_install:
+        - eval $(curl https://travis-perl.github.io/init) --auto
         - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
         - ./build-data.sh
     - perl: "5.20"
