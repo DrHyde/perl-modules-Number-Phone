@@ -1,42 +1,54 @@
 language: perl
-dist: trusty
-env:
-  global:
-    - PERL_USE_UNSAFE_INC=0
-    - AUTOMATED_TESTING=1
-perl:
-  - "5.8"
-  - "5.22"
-  - "5.24"
-  - "5.26"
-  - "5.28"
-  - "5.30"
 matrix:
   include:
+    - perl: 5.8
+      env: AUTOMATED_TESTING=1
+      dist: trusty
+      before_install: 
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
+        - ./build-data.sh
+    - perl: 5.16
+      env: AUTOMATED_TESTING=1
+      dist: trusty
+      before_install:
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
+        - ./build-data.sh
+    - perl: 5.22
+      env: AUTOMATED_TESTING=1
+      dist: trusty
+      before_install:
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
+        - ./build-data.sh
+    - perl: 5.26
+      env: AUTOMATED_TESTING=1 PERL_USE_UNSAFE_INC=0
+      dist: trusty
+      before_install:
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
+        - ./build-data.sh
+    - perl: 5.28
+      env: AUTOMATED_TESTING=1 PERL_USE_UNSAFE_INC=0
+      dist: trusty
+      before_install:
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
+        - ./build-data.sh
+    - perl: 5.30
+      env: AUTOMATED_TESTING=1 PERL_USE_UNSAFE_INC=0
+      dist: trusty
+      before_install:
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
+        - ./build-data.sh
+    - perl: 5.32
+      env: AUTOMATED_TESTING=1 PERL_USE_UNSAFE_INC=0
+      dist: xenial
+      before_install:
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
+        - ./build-data.sh
     - perl: "5.20"
+      env: AUTOMATED_TESTING=1
+      dist: trusty
       before_install:
         - cpanm --quiet --notest Devel::Cover::Report::Coveralls
-        # eeuuww, repetition from the global 'before_install'
-        - cpanm --quiet --notest File::ShareDir::Install
-        - cpanm --quiet --notest XML::XPath
-        - cpanm --quiet --notest DBM::Deep
-        - cpanm --quiet --notest Digest::MD5
-        - cpanm --quiet --notest File::Find::Rule
-        - cpanm --quiet --notest Spreadsheet::ParseExcel
-        - cpanm --quiet --notest Text::CSV_XS
-        - cpanm --quiet --notest LWP::Protocol::https
+        - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::ParseExcel Text::CSV_XS LWP::Protocol::https
         - ./build-data.sh
-        # repetition ends here
       script: "perl Makefile.PL && make && cover -ignore blib/lib/Number/Phone/UK/Data.pm -test -report coveralls"
-        # -ignore blib/lib/Number/Phone/StubCountry/??.pm -ignore blib/lib/Number/Phone/NANP/??.pm
-before_install:
-  - cpanm --quiet --notest File::ShareDir::Install
-  - cpanm --quiet --notest XML::XPath
-  - cpanm --quiet --notest DBM::Deep
-  - cpanm --quiet --notest Digest::MD5
-  - cpanm --quiet --notest File::Find::Rule
-  - cpanm --quiet --notest Spreadsheet::ParseExcel
-  - cpanm --quiet --notest Text::CSV_XS
-  - cpanm --quiet --notest LWP::Protocol::https
-  - ./build-data.sh
 sudo: false
