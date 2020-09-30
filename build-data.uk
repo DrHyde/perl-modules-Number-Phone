@@ -7,7 +7,7 @@ use DBM::Deep;
 use Digest::MD5 'md5_base64';
 use Data::Dumper;
 use File::Find::Rule;
-use Spreadsheet::ParseExcel;
+use Spreadsheet::XLSX;
 use Text::CSV_XS;
 
 my $csv = Text::CSV_XS->new({
@@ -27,17 +27,14 @@ while(my $row = $csv->getline($sabc)) {
     }
 }
 
-foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
+foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('.')) {
     print "Working on $xlsfile\n";
-    my $parser   = Spreadsheet::ParseExcel->new();
-    my $workbook = $parser->parse($xlsfile);
-    if(!defined($workbook)) {
-        die("Error parsing $xlsfile: ".$parser->error()."\n");
-    }
-    if(scalar($workbook->worksheets()) != 1) {
-        die("$xlsfile doesn't contain just one worksheet\n");
-    }
-    my $worksheet = ($workbook->worksheets())[0];
+    my $parser   = Spreadsheet::XLSX->new($xlsfile);
+
+    # use Data::Dumper; local $Data::Dumper::Indent = 1;
+    # die(Dumper($parser));
+
+    my $worksheet = $parser->{Worksheet}->[0];
     my ( $row_min, $row_max ) = $worksheet->row_range();
     my ( $col_min, $col_max ) = $worksheet->col_range();
 
@@ -65,6 +62,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
             exists($header_fields_index_by_name{'Number Length'})         ? 'Number Length' :
             exists($header_fields_index_by_name{'NumberLengthNonGeo'})    ? 'NumberLengthNonGeo' :
             exists($header_fields_index_by_name{'Non Geo Number Length'}) ? 'Non Geo Number Length' :
+            exists($header_fields_index_by_name{'Geographic Number Length'}) ? 'Geographic Number Length' :
             die("Can't find a format field in $xlsfile\n");
         my $telco_field = 
             exists($header_fields_index_by_name{'Communications Provider'}) ? 'Communications Provider' :
@@ -95,7 +93,9 @@ foreach my $xlsfile (File::Find::Rule->name('*.xls')->in('.')) {
          elsif($prefix =~ /^7([12345789]|624[013-9])/) { push @mobile_prefices, $prefix }
          elsif($prefix =~ /^76/)                       { push @pager_prefices, $prefix }
          elsif($prefix =~ /^(3|8[47]|9)/)              { push @special_prefices, $prefix }
-         elsif($prefix =~ /^82[09]/)                   { push @network_svc_prefices, $prefix } # internet for schools
+         ## previously allocated for "internet for schools" and "inbound routing codes" some time
+         ## before 30 Sep 2020. This classification may be obsolete for the UK now
+         # elsif($prefix =~ /^82[09]/)                   { push @network_svc_prefices, $prefix } # internet for schools
         if($prefix =~ /^9(8|0[89])/) { push @adult_prefices, $prefix }
         push @telco_length_data, [$prefix, $telco, $format];
     }
@@ -129,7 +129,7 @@ foreach my $datum (@telco_length_data) {
         $format = '0+9';
     } elsif($format =~ /^7 digit number/i) {
         $format = '0+7';
-    } elsif($format eq 'Mixed 4+5 & 4+6') {
+    } elsif($format =~ /^Mixed 4\+5 &(amp;)? 4\+6$/) {
         $format = '4+5/6';
     } elsif(
         $format ne '2+8' &&
@@ -138,7 +138,7 @@ foreach my $datum (@telco_length_data) {
         $format ne '4+5' &&
         $format ne '5+5' &&
         $format ne '5+4' &&
-        $format ne 'Mixed 4+5 & 4+6'
+        $format !~ /^Mixed 4\+5 &(amp;)? 4\+6$/
     ) {
         warn "Unknown format: $format (r: $prefix; t: $telco)\n"
             unless($prefix =~ /^[89]/ || $statuses{$prefix} eq 'Protected')

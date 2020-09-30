@@ -47,7 +47,7 @@ WriteMakefile(
     'I18N::LangTags'         => 0,
   },
   dist => {
-    PREOP => "./build-data.sh"
+    PREOP => "./build-data.sh --previoustag"
   },
   realclean => {
     FILES => "*.xls sabc.txt COCodeStatus_ALL.* AllBlocksAugmentedReport.* cover_db"

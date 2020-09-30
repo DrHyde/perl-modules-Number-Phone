@@ -112,11 +112,8 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   $number = Number::Phone->new('+445588301234');
   ok($number->is_corporate(), "corporate numbers correctly identified");
 
-  $number = Number::Phone->new('+448200803456');
-  ok($number->is_network_service(), "network service numbers correctly identified");
-
   $number = Number::Phone->new('+448450033845');
-  is($number->operator(), 'GCI Network Solutions Limited', "operators correctly identified");
+  is($number->operator(), 'GCI Network Solutions Ltd', "operators correctly identified");
 
   $number = Number::Phone->new('+442087712924');
   subtest "geo numbers have correct location" => sub {
@@ -207,7 +204,7 @@ skip_if_mocked("libphonenumber disagrees with me about formatting mobile numbers
 $number = Number::Phone->new('+447500000000');
 ok($number->is_mobile(), "075 mobiles correctly identified");
 skip_if_mocked("libphonenumber doesn't do operators", 1, sub {
-  is($number->operator(), 'Vodafone Uk Ltd', "075 mobiles have right operator");
+  is($number->operator(), 'Vodafone Limited', "075 mobiles have right operator");
 });
 skip_if_mocked("libphonenumber disagrees with me about formatting mobile numbers", 1, sub {
   is($number->format(), '+44 7500 000000', "075 mobiles are formatted OK");

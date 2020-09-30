@@ -12,7 +12,7 @@ task:
     - cpanm --quiet --notest DBM::Deep
     - cpanm --quiet --notest Digest::MD5
     - cpanm --quiet --notest File::Find::Rule
-    - cpanm --quiet --notest Spreadsheet::ParseExcel
+    - cpanm --quiet --notest Spreadsheet::XLSX
     - cpanm --quiet --notest Text::CSV_XS
     - cpanm --quiet --notest LWP::Protocol::https
     - cpanm --installdeps .
@@ -33,7 +33,7 @@ task:
     - /Users/anka/perl5/bin/cpanm --quiet --notest DBM::Deep
     - /Users/anka/perl5/bin/cpanm --quiet --notest Digest::MD5
     - /Users/anka/perl5/bin/cpanm --quiet --notest File::Find::Rule
-    - /Users/anka/perl5/bin/cpanm --quiet --notest Spreadsheet::ParseExcel
+    - /Users/anka/perl5/bin/cpanm --quiet --notest Spreadsheet::XLSX
     - /Users/anka/perl5/bin/cpanm --quiet --notest Text::CSV_XS
     - /Users/anka/perl5/bin/cpanm --quiet --notest LWP::Protocol::https
     - /Users/anka/perl5/bin/cpanm --installdeps .

@@ -15,7 +15,8 @@ foreach my $test (
   # copes with OFCOM's shenanigans in 01202
   # see http://consumers.ofcom.org.uk/dial-the-code/
   { from => '+44 1424 220000',  to => '+44 1424 220001',  expect => '01424220001',     desc => 'UK local call' },
-  { from => '+44 1424 220000',  to => '+44 1424 990001',  expect => undef,             desc => 'UK call to reserved (ie unused) number' },
+  # 01420 000000 is "Free for National Dialing Only"
+  { from => '+44 1424 220000',  to => '+44 1420 000000',  expect => undef,             desc => 'UK call to reserved (ie unused) number' },
   { from => '+44 1403 210000',  to => '+44 1403 030001',  expect => '01403030001',     desc => 'UK local call to National Dialling Only number' },
   { from => '+44 1403 210000',  to => '+44 1424 220000',  expect => '01424220000',     desc => 'UK call to another area' },
   { from => '+44 7979 866975',  to => '+44 7979 866976',  expect => '07979866976',     desc => 'UK mobile to mobile' },
