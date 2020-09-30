@@ -1,6 +1,8 @@
 XXXX-XX-XX      XXXXXX  Windows doesn't properly support fork() so skip the tests for it;
                         Use data from a tagged release of libphonenumber instead of whatever
                           is in master, so builds are more reproducible;
+                        Expose that in libphonenumber_tag method;
+                        Expose OFCOM update date/time in N::P::UK->data_source method;
                         Data updates
 
 2020-09-04      3.6006  Data updates

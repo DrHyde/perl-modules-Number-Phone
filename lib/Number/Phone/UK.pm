@@ -7,7 +7,7 @@ use Number::Phone::UK::Data;
 
 use base 'Number::Phone';
 
-our $VERSION = '1.69';
+our $VERSION = '1.70';
 
 my $cache = {};
 
@@ -64,6 +64,14 @@ The following methods from Number::Phone are overridden:
 
 The constructor, you should never have to call this yourself. To create an
 object the canonical incantation is C<< Number::Phone->new('+44 ...') >>.
+
+=item data_source
+
+Returns a string telling where and when the data that drives this class was last updated, looking something like:
+
+    "OFCOM at Wed Sep 30 10:37:39 2020"
+
+The current value of this is also documented in L<Number::Phone::Data>.
 
 =item is_valid
 

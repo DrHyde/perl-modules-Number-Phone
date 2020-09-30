@@ -10,6 +10,7 @@ use Cwd qw(abs_path);
 use Scalar::Util 'blessed';
 
 use Number::Phone::Country qw(noexport);
+use Number::Phone::Data;
 use Number::Phone::StubCountry;
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
@@ -62,7 +63,7 @@ foreach my $method (
     @is_methods, qw(
         country_code regulator areacode areaname
         subscriber operator operator_ported translates_to
-        format location
+        format location data_source
     )
 ) {
     no strict 'refs';
@@ -541,6 +542,28 @@ own country code), then this method may return an object representing the
 target number.  Otherwise it returns undef.
 
 The superclass implementation returns undef.
+
+=back
+
+=head2 DATA SOURCES
+
+=over
+
+=item data_source
+
+Class method, return some hopefully useful text about the source of the data
+(if any) that drives a country-specific module. The implementation in the base
+class returns undef as the base class itself has no data source.
+
+=item libphonenumber_tag
+
+Class method which you should not over-ride, implemented in the base class.
+Returns the version of libphonenumber whose metadata was used for this release
+of Number::Phone. NB that this is derived from their most recent git tag, so
+may occasionally be a little ahead of the most recent libphonenumber release as
+the tag gets created before their release is built.
+
+The current version of this is also documented in L<Number::Phone::Data>.
 
 =back
 

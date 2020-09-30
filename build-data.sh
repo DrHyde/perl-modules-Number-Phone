@@ -50,12 +50,13 @@ if [ "$FORCE" == "1" ]; then
     rm share/Number-Phone-UK-Data.db
     rm share/Number-Phone-NANP-Data.db
     rm lib/Number/Phone/NANP/Data.pm
+    rm lib/Number/Phone/Data.pm
     rm lib/Number/Phone/Country/Data.pm
     rm lib/Number/Phone/StubCountry/KZ.pm
     rm t/example-phone-numbers.t
 fi
 
-# switch to our desired tag, and cache it
+# switch to our desired tag, and cache it for a future --previoustag build
 (cd libphonenumber; git checkout -q $TAG)
 echo $TAG > .libphonenumber-tag
 
@@ -101,7 +102,7 @@ unzip -q COCodeStatus_ALL.zip
 unzip -q AllBlocksAugmentedReport.zip
 
 # stash the Unix epoch of the OFCOM data
-perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1) > .ofcom-epoch
+OFCOMDATETIME=$(perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1))
 
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
@@ -195,6 +196,31 @@ then
   perl build-tests.pl
 else
   echo t/example-phone-numbers.t is up-to-date
+fi
+
+# update Number::Phone::Data with OFCOM update date/time and libphonenumber tag
+OLD_N_P_DATE_MD5=$(md5 lib/Number/Phone/Data.pm 2>/dev/null)
+(
+    echo \# automatically generated file, don\'t edit
+    echo package Number::Phone::Data\;
+    echo \*Number::Phone::libphonenumber_tag = sub { \"$TAG\" }\;
+    echo \*Number::Phone::UK::data_source = sub { \"OFCOM at \".gmtime\($OFCOMDATETIME\) }\;
+    echo 1\;
+    echo
+    echo =head1 NAME
+    echo
+    echo Number::Phone::Data
+    echo
+    echo =head1 DATA SOURCES
+    echo
+    echo UK data derived from OFCOM at $(perl -e "print ''.gmtime($OFCOMDATETIME)")
+    echo
+    echo Most other data derived from libphonenumber $TAG
+    echo
+    echo =cut
+)>lib/Number/Phone/Data.pm
+if [ "$OLD_N_P_DATE_MD5" != "$(md5 lib/Number/Phone/Data.pm)" ]; then
+    EXITSTATUS=1
 fi
 
 # finally look for out of date files and yell about them
