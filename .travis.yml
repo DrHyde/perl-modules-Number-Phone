@@ -41,7 +41,7 @@ matrix:
       env: AUTOMATED_TESTING=1 PERL_USE_UNSAFE_INC=0
       dist: xenial
       before_install:
-        - perlbrew install --switch perl-5.32.0
+        - perlbrew install -j 8 --notest --switch perl-5.32.0
         - cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
         - ./build-data.sh
     - perl: "5.20"
