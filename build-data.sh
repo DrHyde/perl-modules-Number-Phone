@@ -219,7 +219,7 @@ OLD_N_P_DATE_MD5=$(md5 lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo =cut
 )>lib/Number/Phone/Data.pm
-if [ "$OLD_N_P_DATE_MD5" != "$(md5 lib/Number/Phone/Data.pm)" ]; then
+if [ "$OLD_N_P_DATE_MD5" != "$(md5 lib/Number/Phone/Data.pm)" ] && [ "$CI" == "" ]; then
     EXITSTATUS=1
 fi
 
