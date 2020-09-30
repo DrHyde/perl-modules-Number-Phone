@@ -100,9 +100,8 @@ rm COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
 unzip -q COCodeStatus_ALL.zip
 unzip -q AllBlocksAugmentedReport.zip
 
-# stash the date/time on which we retrieved OFCOM data
-#   is this invocation of stat a Mac (well, BSD)-ism?
-stat -f %Sm $(ls -rt sabc.txt *.xlsx|tail -1) > .ofcom-datetime
+# stash the Unix epoch of the OFCOM data
+perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1) > .ofcom-epoch
 
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \

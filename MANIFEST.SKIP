@@ -2,7 +2,7 @@
 ^libphonenumber
 ^\.git
 .envrc
-.ofcom-datetime
+.ofcom-epoch
 .libphonenumber-tag
 ^build-
 S3.xls
