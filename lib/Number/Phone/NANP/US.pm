@@ -4,7 +4,7 @@ use strict;
 
 use base 'Number::Phone::NANP';
 
-our $VERSION = 1.1;
+our $VERSION = 1.1001;
 
 my $cache = {};
 
@@ -33,9 +33,17 @@ will load it automatically when needed.
     
 =head1 METHODS
 
-The following methods from Number::Phone are overridden:
+The following methods from Number::Phone::NANP are overridden:
 
 =over 4
+
+=item data_source
+
+Returns a string telling where and when the data for US operators was last updated, looking something like:
+
+    "National Pooling Administrator at Wed Sep 30 10:37:39 2020 UTC"
+
+The current value of this is also documented in L<Number::Phone::Data>.
 
 =item regulator
 

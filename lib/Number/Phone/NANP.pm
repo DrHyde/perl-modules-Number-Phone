@@ -9,7 +9,7 @@ use Number::Phone::NANP::Data;
 
 use Number::Phone::Country qw(noexport);
 
-our $VERSION = '1.7000';
+our $VERSION = '1.7001';
 
 my $cache = {};
 
@@ -75,6 +75,14 @@ object the canonical incantation is C<Number::Phone->new('+1 ...')>.
 =item operator
 
 For some countries operator data is available.
+
+=item data_source
+
+Returns a string telling where and when the data for operators was last updated, looking something like:
+
+    "localcallingguide.com at Wed Sep 30 10:37:39 2020 UTC"
+
+The current value of this is also documented in L<Number::Phone::Data>.
 
 =cut
 

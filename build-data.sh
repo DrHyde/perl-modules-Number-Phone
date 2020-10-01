@@ -103,6 +103,8 @@ unzip -q AllBlocksAugmentedReport.zip
 
 # stash the Unix epoch of the OFCOM data
 OFCOMDATETIME=$(perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1))
+CADATETIME=$(perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
+USDATETIME=$(perl -e 'print +(stat(shift))[9]' AllBlocksAugmentedReport.txt)
 
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
@@ -166,6 +168,8 @@ then
 else
   echo lib/Number/Phone/NANP/Data.pm and share/Number-Phone-NANP-Data.db are up-to-date
 fi
+# this must be after build-data.nanp has fetched them
+NANPDATETIME=$(perl -e 'print +(stat(shift))[9]' $(ls -rt [0-9][0-9][0-9].xml|tail -1))
 
 # lib/Number/Phone/StubCountry/KZ.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer,
 # or if lib/Number/Phone/NANP/Data.pm is newer ...
@@ -198,13 +202,16 @@ else
   echo t/example-phone-numbers.t is up-to-date
 fi
 
-# update Number::Phone::Data with OFCOM update date/time and libphonenumber tag
+# update Number::Phone::Data with update date/times and libphonenumber tag
 OLD_N_P_DATE_MD5=$(md5 lib/Number/Phone/Data.pm 2>/dev/null)
 (
     echo \# automatically generated file, don\'t edit
     echo package Number::Phone::Data\;
     echo \*Number::Phone::libphonenumber_tag = sub { \"$TAG\" }\;
-    echo \*Number::Phone::UK::data_source = sub { \"OFCOM at \".gmtime\($OFCOMDATETIME\) }\;
+    echo \*Number::Phone::UK::data_source = sub { \"OFCOM at \".gmtime\($OFCOMDATETIME\).\" UTC\" }\;
+    echo \*Number::Phone::NANP::CA::data_source = sub { \"CNAC at \".gmtime\($CADATETIME\).\" UTC\" }\;
+    echo \*Number::Phone::NANP::US::data_source = sub { \"National Pooling Administrator at \".gmtime\($USDATETIME\).\" UTC\" }\;
+    echo \*Number::Phone::NANP::data_source = sub { \"localcallingguide.com at \".gmtime\($NANPDATETIME\).\" UTC\" }\;
     echo 1\;
     echo
     echo =head1 NAME
@@ -213,7 +220,13 @@ OLD_N_P_DATE_MD5=$(md5 lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo =head1 DATA SOURCES
     echo
-    echo UK data derived from OFCOM at $(perl -e "print ''.gmtime($OFCOMDATETIME)")
+    echo Canadian operator data derived from CNAC at $(perl -e "print ''.gmtime($CADATETIME)") UTC
+    echo
+    echo US operator data derived from National Pooling Administrator at $(perl -e "print ''.gmtime($USDATETIME)") UTC
+    echo
+    echo Other NANP operator data derived from localcallingguide.com at $(perl -e "print ''.gmtime($NANPDATETIME)") UTC
+    echo
+    echo UK data derived from OFCOM at $(perl -e "print ''.gmtime($OFCOMDATETIME)") UTC
     echo
     echo Most other data derived from libphonenumber $TAG
     echo
