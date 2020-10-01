@@ -50,7 +50,7 @@ WriteMakefile(
     PREOP => "./build-data.sh --previoustag"
   },
   realclean => {
-    FILES => "*.xls sabc.txt COCodeStatus_ALL.* AllBlocksAugmentedReport.* cover_db"
+    FILES => "*.xlsx sabc.txt COCodeStatus_ALL.* AllBlocksAugmentedReport.* cover_db"
   },
 );
 
