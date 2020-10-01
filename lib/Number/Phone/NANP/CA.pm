@@ -46,6 +46,7 @@ Returns a string telling where and when the data for CA operators was last updat
     "CNAC at Wed Sep 30 10:37:39 2020 UTC"
 
 The current value of this is also documented in L<Number::Phone::Data>.
+
 =item regulator
 
 Returns information about the national telecomms regulator.
