@@ -28,17 +28,19 @@ That script will need several extra dependencies that aren't listed in `Makefile
 
 # Structure
 
-Number::Phone is a base class for parsing and dealing with phone numbers.
+Number::Phone is a base class for parsing and dealing with phone numbers, and the entry point for using all the other modules.
 
-Number::Phone::UK inherits methods from it, over-riding some with UK-specific implementations.  The intention is that other people will write other country-specific classes exposing the same API. There are [several](https://metacpan.org/release/Number-Phone-FR) [examples](https://metacpan.org/release/Number-Phone-RO) on the CPAN.
+Number::Phone::UK inherits methods from it, over-riding some with UK-specific implementations. The intention is that other people will write other country-specific classes exposing the same API. There are [several](https://metacpan.org/release/Number-Phone-FR) [examples](https://metacpan.org/release/Number-Phone-RO) on the CPAN.
 
 Number::Phone::NANP implements functionality common to all NANP countries (those with international dialling code +1), and Number::Phone::NANP::XX implement some minor details for each individual country in that region.
 
-Number::Phone::StubCountry::* are automatically generated from Google's libphonenumber project's data.  They do not support all the features of Number::Phone, but will support many use-cases and should "fail gracefully" if you try to use unsupported features.
+Number::Phone::StubCountry::* are automatically generated from Google's libphonenumber project's data. They do not support all the features of Number::Phone, but will support many use-cases and should "fail gracefully" if you try to use unsupported features. They will be used if a more fully-featured module is not available. For example if you want Number::Phone to work with a French number it would use Number::Phone::StubCountry::FR unless the third-party Number::Phone::FR is installed.
 
 Number::Phone::Country is a useful module which is used by the NANP modules. It was originally written by T. J. Mather but is now maintained by me.
 
-Finally, there are a few Data.pm files at various places in the hierarchy. They either contain data or contain code for accessing data stored in other files.
+There are a few Data.pm files at various places in the hierarchy. They either contain data or contain code for accessing data stored in other files.
+
+Finally, Number::Phone::Lib will *only* use N::P::StubCountry::* modules, it won't use any more capable third-party modules. This may be preferred for speed or memory usage, and is a bit more compatible with libphonenumber's view of things.
 
 You should not edit any file that exists but which git doesn't know about, there's a lot of auto-generated stuff here.
 
