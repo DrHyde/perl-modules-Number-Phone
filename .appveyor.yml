@@ -4,7 +4,7 @@ cache:
 install:
   - if not exist "C:\strawberry" choco install strawberryperl -y
   - set PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
-  - choco install msys2-installer
+  - choco install msys2
   - cd %APPVEYOR_BUILD_FOLDER%
   - cpanm --quiet --notest File::ShareDir::Install
   - cpanm --quiet --notest XML::XPath
