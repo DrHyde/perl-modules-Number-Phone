@@ -24,7 +24,7 @@ task:
 task:
   name: MacOS
   osx_instance:
-    image: catalina-xcode-11.3.1
+    image: catalina-xcode-12.0
   test_script:
     - echo|cpan App::cpanminus
     - export PERL5LIB=/Users/anka/perl5/lib/perl5
