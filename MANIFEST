@@ -46,7 +46,7 @@ Makefile.PL
 MANIFEST
 MANIFEST.SKIP
 NOTES
-README
+README.md
 t/superclass_and_uk_different_method_invocations.t
 t/uk_data.t
 t/weird_little_islands.t
