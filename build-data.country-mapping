@@ -39,7 +39,7 @@ TERRITORY: foreach my $territory (@territories) {
         warn("For $ISO_country_code found idd code $international_code\n");
         # some of these privelege a particular carrier. I don't care. I
         # just want something that works.
-        $international_code = (grep { $_ =~ /^$international_code$/ } qw(00 000 001 002 009 0012 011 191200))[0];
+        $international_code = (grep { $_ =~ /^$international_code$/ } qw(00 000 001 002 008 009 0012 011 191200))[0];
         if($international_code) {
             warn("  fixed it to $international_code\n");
         } else {
