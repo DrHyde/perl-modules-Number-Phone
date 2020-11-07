@@ -125,7 +125,7 @@ if test ! -e share/Number-Phone-UK-Data.db -o \
   S9.xlsx            -nt share/Number-Phone-UK-Data.db -o \
   build-data.uk     -nt share/Number-Phone-UK-Data.db;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ]; then
+  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding share/Number-Phone-UK-Data.db
@@ -139,7 +139,7 @@ if test ! -e lib/Number/Phone/Country/Data.pm -o \
   build-data.country-mapping -nt lib/Number/Phone/Country/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/Country/Data.pm;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ]; then
+  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/Country/Data.pm
@@ -159,7 +159,7 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   AllBlocksAugmentedReport.txt -nt share/Number-Phone-NANP-Data.db -o \
   COCodeStatus_ALL.csv -nt share/Number-Phone-NANP-Data.db;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ]; then
+  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/NANP/Data.pm
@@ -179,7 +179,7 @@ if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   lib/Number/Phone/NANP/Data.pm -nt lib/Number/Phone/StubCountry/KZ.pm;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ]; then
+  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
@@ -193,7 +193,7 @@ if test ! -e t/example-phone-numbers.t -o \
   build-tests.pl -nt t/example-phone-numbers.t -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt t/example-phone-numbers.t;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ]; then
+  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding t/example-phone-numbers.t
