@@ -89,12 +89,26 @@ do
         touch -t 198001010101 `basename $i`
     fi
     echo Fetching $i
-    curl -z `basename $i` -R -O -s $i;
+    curl -z `basename $i` -R -O -s -S $i;
     if [ "$?" == "0" ]; then
         echo "  ... OK"
       else
-        echo "  ...failed"
-        exit 1;
+        echo "  ... failed, retry"
+        sleep 15
+        curl -z `basename $i` -R -O -s -S $i;
+        if [ "$?" == "0" ]; then
+            echo "  ... OK"
+          else
+            echo "  ... failed, retry again"
+            sleep 15
+            curl -z `basename $i` -R -O -s -S $i;
+            if [ "$?" == "0" ]; then
+                echo "  ... OK"
+              else
+                echo " ... failed three times, argh"
+                exit 1;
+            fi
+        fi
     fi
 done
 rm COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
@@ -125,7 +139,7 @@ if test ! -e share/Number-Phone-UK-Data.db -o \
   S9.xlsx            -nt share/Number-Phone-UK-Data.db -o \
   build-data.uk     -nt share/Number-Phone-UK-Data.db;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding share/Number-Phone-UK-Data.db
@@ -139,7 +153,7 @@ if test ! -e lib/Number/Phone/Country/Data.pm -o \
   build-data.country-mapping -nt lib/Number/Phone/Country/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/Country/Data.pm;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/Country/Data.pm
@@ -159,7 +173,7 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   AllBlocksAugmentedReport.txt -nt share/Number-Phone-NANP-Data.db -o \
   COCodeStatus_ALL.csv -nt share/Number-Phone-NANP-Data.db;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/NANP/Data.pm
@@ -179,7 +193,7 @@ if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   lib/Number/Phone/NANP/Data.pm -nt lib/Number/Phone/StubCountry/KZ.pm;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
@@ -193,7 +207,7 @@ if test ! -e t/example-phone-numbers.t -o \
   build-tests.pl -nt t/example-phone-numbers.t -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt t/example-phone-numbers.t;
 then
-  if [ "$TRAVIS" != "true" ] && [ "$CIRRUS_CI" != "true" ] && [ "$APPVEYOR" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding t/example-phone-numbers.t
@@ -203,7 +217,7 @@ else
 fi
 
 # update Number::Phone::Data with update date/times and libphonenumber tag
-OLD_N_P_DATE_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
+OLD_N_P_DATA_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
 (
     echo \# automatically generated file, don\'t edit
     echo package Number::Phone::Data\;
@@ -232,7 +246,7 @@ OLD_N_P_DATE_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo =cut
 )>lib/Number/Phone/Data.pm
-if [ "$OLD_N_P_DATE_MD5" != "$(md5sum lib/Number/Phone/Data.pm)" ] && [ "$CI" == "" ]; then
+if [ "$OLD_N_P_DATA_MD5" != "$(md5sum lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
 fi
 
