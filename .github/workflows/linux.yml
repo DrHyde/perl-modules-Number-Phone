@@ -1,0 +1,35 @@
+on: [push, pull_request]
+name: Linux
+
+jobs:
+
+  build:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        perl: [ '5.32', '5.30', '5.26', '5.22', '5.16', '5.8' ]
+    name: Perl ${{ matrix.perl }}
+    steps:
+      - name: check out code
+        uses: actions/checkout@v2
+
+      - name: switch to perl ${{ matrix.perl }}
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl }}
+
+      - name: run tests
+        env:
+          PERL_USE_UNSAFE_INC: 0
+          AUTOMATED_TESTING: 1
+        run: |
+            perl -v
+            cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage || cat /home/runner/.cpanm/work/*/build.log
+            rm -rf /home/runner/.cpanm/work/*
+            cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https || cat /home/runner/.cpanm/work/*/build.log
+            perl -Mparent -e0 || cpanm parent
+            rm -rf /home/runner/.cpanm/work/*
+            cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
+            ./build-data.sh
+            perl Makefile.PL
+            make test TEST_VERBOSE=1
