@@ -2,9 +2,9 @@
 
 use strict;
 
-use Test::More;
-
-END { done_testing(); }
+# plan here, don't use done_testing, as the tests will only
+# get run if warnings are caught
+use Test::More tests => 2;
 
 BEGIN { $SIG{__WARN__} = sub {
     is(
@@ -25,4 +25,3 @@ BEGIN { $SIG{__WARN__} = sub {
 } } 
 
 use Number::Phone::Country qw(noexport wibble);
-

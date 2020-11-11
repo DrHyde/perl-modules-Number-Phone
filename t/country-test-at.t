@@ -8,8 +8,6 @@ use fatalwarnings;
 use Number::Phone::Lib; # need to force it to use stubs in case N::P::AT exists
 use Test::More;
 
-END { done_testing(); }
-
 # Mobile Number
 ok(Number::Phone::Lib->new("+43677111111111")->is_mobile(), "is +43677 mobile");
 
@@ -102,3 +100,4 @@ ok(!Number::Phone::Lib->new("+43939609900")->is_geographic(), "is +43939 geograp
 ok(!Number::Phone::Lib->new("+43939609900")->is_tollfree(), "is +43939 tollfree");
 ok(Number::Phone::Lib->new("+43939609900")->is_specialrate(), "is +43939 specialrate");
 
+done_testing();

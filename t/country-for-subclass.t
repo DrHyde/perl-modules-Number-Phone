@@ -2,8 +2,6 @@ use strict;
 use warnings;
 use Test::More;
 
-END { done_testing(); }
-
 use lib 't/inc';
 use fatalwarnings;
 
@@ -26,3 +24,4 @@ is $num->can('country'), \&Number::Phone::country, 'UK does not override ->count
 # The real aim of this test file
 is($num->country, 'UK', 'A subclass of UK, but still UK');
 
+done_testing();

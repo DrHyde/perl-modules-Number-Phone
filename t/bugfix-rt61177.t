@@ -8,8 +8,6 @@ use lib 't/lib'; # for mocking of the UK
 
 use Test::More;
 
-END { done_testing(); }
-
 use Number::Phone;
 use Number::Phone::Country qw(noexport);
 
@@ -28,3 +26,5 @@ foreach my $prefix ('', '+') {
   is($object->country_code(), '44', "->country_code works");
   is($object->format(), '+44 7979 866975', "->format works");
 }
+
+done_testing();

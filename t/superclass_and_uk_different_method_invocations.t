@@ -8,8 +8,6 @@ use fatalwarnings;
 use Number::Phone::UK;
 use Test::More;
 
-END { done_testing(); }
-
 my $mobile = '+447979866975';
 my $pager  = '+447679866975';
 ok(1 == Number::Phone::UK->new($mobile)->is_mobile(), "true N::P::CC->new('+CC12345')->is_method()");
@@ -61,3 +59,5 @@ is_deeply(
     [qw(is_valid is_allocated is_mobile)],
     "list N::P::CC->new('12345')->type()"
 );
+
+done_testing();

@@ -8,8 +8,6 @@ use fatalwarnings;
 use Number::Phone::Lib; # need to force it to use stubs in case N::P::BR exists
 use Test::More;
 
-END { done_testing(); }
-
 {
     my $np = Number::Phone::Lib->new('BR', '0 85 2222 2222');
     ok($np->is_fixed_line, '0 85 2222 2222 is a fixed line without carrier select code...');
@@ -31,3 +29,5 @@ END { done_testing(); }
     is($np->format, '+55 35 99870 5656', '...its international format is correct');
     is($np->format_using('National'), '(35) 99870-5656', '...as is its national format');
 }
+
+done_testing();

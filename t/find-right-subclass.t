@@ -3,8 +3,6 @@
 use Test::More;
 use Scalar::Util qw(blessed);
 
-END { done_testing(); }
-
 use Number::Phone;
 
 use lib 't/inc';
@@ -30,3 +28,5 @@ ok(
 );
 
 # FIXME - Kazakhstan/Russia weirdness
+
+done_testing();

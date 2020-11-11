@@ -8,8 +8,6 @@ use fatalwarnings;
 use Number::Phone::Lib;
 use Test::More;
 
-END { done_testing(); }
-
 {
     my $np = Number::Phone::Lib->new('AR', '3715 65 4320');
     ok($np->is_fixed_line, '3715 65 4320 is a fixed line without national prefix...');
@@ -38,3 +36,5 @@ END { done_testing(); }
     is($np->format, '+54 9 3715 65 4320', '...its international format is correct');
     is($np->format_using('National'), '03715 15-65-4320', '...as is its national format');
 }
+
+done_testing();

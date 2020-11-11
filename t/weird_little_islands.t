@@ -8,8 +8,6 @@ use fatalwarnings;
 use Number::Phone::UK;
 use Test::More;
 
-END { done_testing(); }
-
 my $data = {
   JE => {
     mobile     => '+44 7700 300000', # used specifically because there's a special case for 7700 900
@@ -59,3 +57,5 @@ foreach my $cc (keys %{$data}) {
       }
   }
 }
+
+done_testing();

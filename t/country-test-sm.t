@@ -8,8 +8,6 @@ use fatalwarnings;
 use Number::Phone::Lib;
 use Test::More;
 
-END { done_testing(); }
-
 {
     my $np = Number::Phone::Lib->new('SM', '912345');
     ok($np->is_fixed_line, '912345 is a fixed line without the 0549 prefix...');
@@ -35,3 +33,5 @@ END { done_testing(); }
     my $np = Number::Phone::Lib->new('SM', '0549 66661212');
     ok(!defined $np, '0549 66661212 is a mobile with the 0549 prefix, which is not valid');
 }
+
+done_testing();

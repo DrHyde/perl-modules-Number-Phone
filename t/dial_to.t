@@ -8,8 +8,6 @@ use fatalwarnings;
 use Number::Phone;
 use Test::More;
 
-END { done_testing(); }
-
 foreach my $test (
   # including the area code in dialstring works for local calls in the UK, and
   # copes with OFCOM's shenanigans in 01202
@@ -47,3 +45,5 @@ sub test_dial_to {
     is($from->dial_to($to), $params{expect}, sprintf("%s -> %s = %s (%s)", map { $params{$_} } qw(from to expect desc)));
   }
 }
+
+done_testing();

@@ -10,8 +10,6 @@ use fatalwarnings;
 
 use Test::More;
 
-END { done_testing(); }
-
 use Number::Phone::Country qw(noexport);
 
 while (<DATA>) {
@@ -49,6 +47,8 @@ while (<DATA>) {
     is Number::Phone::Country::ndd_code($country), $ndd,
        "$country ndd prefix";
 }
+
+done_testing();
 
 __END__
 # data format is:

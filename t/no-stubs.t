@@ -11,8 +11,6 @@ use Number::Phone qw(nostubs);
 
 use Test::More;
 
-END { done_testing(); }
-
 use Number::Phone::Country qw(noexport);
 
 is(Number::Phone->new("+442087712924")->country_code(), 44, "known countries return objects");
@@ -23,3 +21,5 @@ $Number::Phone::Country::prefix_codes{'MOCK'} = ['44',   '00',  undef];
 
 eval { Number::Phone->new('+442087712924') };
 ok($@, "nostubs works");
+
+done_testing();

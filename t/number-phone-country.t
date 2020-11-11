@@ -1,7 +1,6 @@
 #!/usr/bin/perl -w
 
 use Test::More;
-END { done_testing }
 
 use lib 't/inc';
 use fatalwarnings;
@@ -333,3 +332,5 @@ is(phone2country('+994123'), 'AZ', '+994 is AZ');
 is(phone2country('+995123'), 'GE', '+995 is GE');
 is(phone2country('+996123'), 'KG', '+996 is KG');
 is(phone2country('+998123'), 'UZ', '+998 is UZ');
+
+done_testing;

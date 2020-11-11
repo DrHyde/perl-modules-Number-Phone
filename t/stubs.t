@@ -9,8 +9,6 @@ our $CLASS = 'Number::Phone';
 eval "use $CLASS";
 use Test::More;
 
-END { done_testing(); }
-
 use Number::Phone::Country::Data;
 
 # picking NL as our random victim because https://github.com/DrHyde/perl-modules-Number-Phone/issues/22
@@ -58,3 +56,5 @@ require 'common-stub_and_libphonenumber_tests.pl';
 }
 
 require 'uk_tests.pl';
+
+done_testing();

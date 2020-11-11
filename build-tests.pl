@@ -147,7 +147,10 @@ print $testfh ') {
         (grep { $class->new(@{$args})->$_() } @{$methods}),
         "$class->new(".join(", ", @{$args}).")->".join(", ", @{$methods})."() does the right thing"
     );
-}';
+
+}
+done_testing();
+';
 
 my %warnings = ();
 sub warnonce {
@@ -178,7 +181,6 @@ sub preamble {
         use strict;
         use warnings;
         use Test::More;
-        END { done_testing }
 
         use Number::Phone;
         use Number::Phone::Lib;

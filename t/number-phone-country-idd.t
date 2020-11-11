@@ -7,8 +7,6 @@ use fatalwarnings;
 
 use Test::More;
 
-END { done_testing(); }
-
 use Number::Phone::Country qw(noexport);
 
 country_and_idd('+44 20 12345678', 'GB', '44', "phone2country_and_idd works for GB");
@@ -24,3 +22,5 @@ sub country_and_idd {
     };
     return;
 }
+
+done_testing();
