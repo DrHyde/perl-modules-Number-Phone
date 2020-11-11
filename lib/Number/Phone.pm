@@ -666,8 +666,10 @@ the phone number is passed to its constructor unchanged.
 If only one parameter is passed, then we try to figure out which is the right
 country subclass to use by pre-pending a + sign to the number if
 there isn't one, and looking the country up using
-Number::Phone::Country.  That gives us a two letter country code that
-is used to try to load the right module.
+Number::Phone::Country. That gives us a two letter country code that
+is used to try to load the right module. We then pass the number through to
+that module's constructor and return whatever it says (which may be undef
+if you pass in an invalid number - see SUBCLASSING below).
 
 The constructor returns undef if it can not figure out what country
 you're talking about, or an object based on Google's libphonenumber
