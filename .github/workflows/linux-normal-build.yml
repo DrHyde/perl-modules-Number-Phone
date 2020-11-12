@@ -1,0 +1,35 @@
+on: [push, pull_request]
+name: Linux (normal build and install)
+
+jobs:
+
+  build:
+    runs-on: 'ubuntu-latest'
+    name: Perl 5.32 normal build and install
+    steps:
+      - name: check out code
+        uses: actions/checkout@v2
+
+      - name: switch to perl 5.32
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.32
+
+      - name: run tests
+        env:
+          PERL_USE_UNSAFE_INC: 0
+          AUTOMATED_TESTING: 1
+        run: |
+            perl -v
+            perl -MData::Dumper -e 'eval "use Number::Phone"; if(!$@) { print "Number::Phone is already installed, argh\\n".Dumper(\\%INC); exit(1) } else { print "Number::Phone not yet installed, hurrah\\n"; exit(0) }'
+            cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage || cat /home/runner/.cpanm/work/*/build.log
+            rm -rf /home/runner/.cpanm/work/*
+            cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https || cat /home/runner/.cpanm/work/*/build.log
+            perl -Mparent -e0 || cpanm parent
+            rm -rf /home/runner/.cpanm/work/*
+            cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
+            ./build-data.sh
+            perl Makefile.PL
+            make test
+            make install
+            perl -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->operator() =~ /vodafone/i) { print "N::P::UK built/installed correctly\\n"; exit(0) } else { print "N::P::UK build/install failed\\n"; exit(1) }'
