@@ -1,11 +1,11 @@
 on: [push, pull_request]
-name: Linux (normal build and install)
+name: Linux (build --without_uk and install)
 
 jobs:
 
   build:
     runs-on: 'ubuntu-latest'
-    name: Perl 5.32 normal build and install
+    name: Perl 5.32 build --without_uk and install
     steps:
       - name: check out code
         uses: actions/checkout@v2
