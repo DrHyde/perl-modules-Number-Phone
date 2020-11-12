@@ -29,7 +29,7 @@ jobs:
             rm -rf /home/runner/.cpanm/work/*
             cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
             ./build-data.sh
-            perl Makefile.PL
+            perl Makefile.PL --without_uk
             make test
             make install
-            perl -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->operator() =~ /vodafone/i) { print "N::P::UK built/installed correctly\n".Dumper(\%INC); exit(0) } else { print "N::P::UK build/install failed\n"; exit(1) }'
+            perl -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->isa("Number::Phone::StubCountry::GB")) { print "N::P built/installed correctly without N::P::UK\n".Dumper(\%INC); exit(0) } else { print "N::P build/install failed\n"; exit(1) }'
