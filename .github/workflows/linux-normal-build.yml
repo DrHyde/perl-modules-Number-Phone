@@ -32,4 +32,4 @@ jobs:
             perl Makefile.PL
             make test
             make install
-            perl -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->operator() =~ /vodafone/i) { print "N::P::UK built/installed correctly\n".Dumper(\%INC); exit(0) } else { print "N::P::UK build/install failed\n"; exit(1) }'
+            perl -MData::Dumper -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->operator() =~ /vodafone/i) { print "N::P::UK built/installed correctly\n".Dumper(\%INC); exit(0) } else { print "N::P::UK build/install failed\n"; exit(1) }'
