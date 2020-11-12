@@ -252,34 +252,37 @@ sub new {
     if ($number =~ /^\+1/) {
         $country = "NANP";
     } elsif ($country =~ /^(?:GB|GG|JE|IM)$/) {
+        # for hysterical raisins
         $country = 'UK';
     }
     eval "use Number::Phone::$country";
     if($@ || !"Number::Phone::$country"->isa('Number::Phone')) {
+        # undo the above transformation, it's GB in stub-land
+        $country = 'GB' if($country eq 'UK');
         return $class->_make_stub_object($number, $country)
     }
     return "Number::Phone::$country"->new($number);
 }
 
 sub _make_stub_object {
- my ($class, $number, $country_name) = @_;
-  die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
-  my $stub_class = "Number::Phone::StubCountry::$country_name";
-  eval "use $stub_class";
-  # die("Can't find $stub_class: $@\n") if($@);
-  if($@) {
-      my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
-      # an instance of this class is the ultimate fallback
-      (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
-      if($local_number eq '') { return undef; }
-      return bless({
-          country_code => $country_idd,
-          country      => $country_name,
-          is_valid     => undef,
-          number       => $local_number,
-      }, 'Number::Phone::StubCountry');
-  }
-  $stub_class->new($number);
+    my ($class, $number, $country_name) = @_;
+    die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
+    my $stub_class = "Number::Phone::StubCountry::$country_name";
+    eval "use $stub_class";
+    # die("Can't find $stub_class: $@\n") if($@);
+    if($@) {
+        my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
+        # an instance of this class is the ultimate fallback
+        (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
+        if($local_number eq '') { return undef; }
+        return bless({
+            country_code => $country_idd,
+            country      => $country_name,
+            is_valid     => undef,
+            number       => $local_number,
+        }, 'Number::Phone::StubCountry');
+    }
+    $stub_class->new($number);
 }
 
 =head1 METHODS

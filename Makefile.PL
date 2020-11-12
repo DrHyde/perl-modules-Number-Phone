@@ -1,7 +1,15 @@
 use 5.006;
+use strict;
+use warnings;
 use ExtUtils::MakeMaker;
-
 use File::ShareDir::Install;
+
+our $without_uk = 0;
+while(@ARGV) {
+    if(shift() eq '--without_uk') {
+        $without_uk++;
+    }
+}
 
 mkdir('share') unless(-d 'share');
 
@@ -52,7 +60,37 @@ WriteMakefile(
   realclean => {
     FILES => "*.xlsx sabc.txt COCodeStatus_ALL.* AllBlocksAugmentedReport.* cover_db"
   },
+  PM => do {
+    open(my $manifest, 'MANIFEST') || die("No MANIFEST!?!?\n");
+    +{
+      map { $_ => "blib/$_" }
+      grep {
+        /^lib.*\.pm$/ && (
+          !$without_uk ||
+          $_ !~ /UK/
+        )
+      }
+      map { chomp; $_ } <$manifest>
+    }
+  },
 );
 
 package MY;
-use File::ShareDir::Install qw(postamble);
+use File::ShareDir::Install;
+sub postamble {
+    my $self = shift;
+    my @ret = File::ShareDir::Install::postamble( $self );
+    my $ret = join "\n", @ret;
+    if($main::without_uk) {
+        $ret =~ s{
+            \\
+            \s+
+            'share/Number-Phone-UK-Data.db'
+            \s+
+            '[^']+'
+        }{}x
+    }
+    return $ret;
+}
+
+
