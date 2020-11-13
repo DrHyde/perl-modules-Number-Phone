@@ -132,8 +132,8 @@ sub is_valid {
     # quickly check length
     return $cache->{$number}->{is_valid} = 0 if(length($cleaned_number) < 7 || length($cleaned_number) > 10);
 
-    # 04 is invalid, only 05[56] are valid
-    return $cache->{$number}->{is_valid} = 0 if($cleaned_number =~ /^(4|5[01234789])/);
+    # 04 and 06 are invalid, only 05[56] are valid
+    return $cache->{$number}->{is_valid} = 0 if($cleaned_number =~ /^(4|5[01234789]|6)/);
 
     # slightly more rigourous length check for some unallocated geographic numbers
     # 07, 02x and 011x are always ten digits

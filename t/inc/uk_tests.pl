@@ -162,12 +162,6 @@ is_deeply(
 $number = Number::Phone->new('+445602041914');
 ok($number->is_ipphone(), "VoIP correctly identified");
 
-$number = Number::Phone->new('+444000000000');
-is($number, undef, "Invalid +44 4 number identified");
-
-$number = Number::Phone->new('+445025259012');
-is($number, undef, "Invalid +44 5 number identified");
-
 $number = Number::Phone->new('+443031231234');
 skip_if_mocked("libphonenumber doesn't do operators", 1, sub {
   ok($number->operator() eq 'BT', "03 numbers have right operator");
@@ -267,6 +261,11 @@ foreach my $invalid (qw(+4427593934500 +4420877129200 +4411320316000 +4411332500
                   #        Protected       Normal         Normal         Protected
     $number = Number::Phone->new($invalid);
     ok(!defined($number), "$invalid is invalid (too long)");
+}
+foreach my $invalid (qw(+444000000000 +445025259012 +446000000000)) {
+    $number = Number::Phone->new($invalid);
+    (my $range = $invalid) =~ s/^(\+44....).*/$1/;
+    is($number, undef, "Invalid number identified, $range is not in a valid range");
 }
 
 foreach my $tuple (
