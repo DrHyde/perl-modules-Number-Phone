@@ -17,6 +17,7 @@ jobs:
 
       - name: run tests
         env:
+          BUILD_TEST: 1
           PERL_USE_UNSAFE_INC: 0
           AUTOMATED_TESTING: 1
         run: |
