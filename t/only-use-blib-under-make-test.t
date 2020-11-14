@@ -27,7 +27,6 @@ if(!$ENV{BUILD_TEST}) {
 foreach my $module (modules_from_manifest()) {
     note("Loading $module\n");
     eval "use $module";
-    fail($@) if($@);
 }
 
 foreach my $loaded_file (sort grep { $_ =~ m{Number/Phone} } values(%INC)) {
