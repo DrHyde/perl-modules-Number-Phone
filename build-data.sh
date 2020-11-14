@@ -93,19 +93,21 @@ do
     if [ "$?" == "0" ]; then
         echo "  ... OK"
       else
-        echo "  ... failed, retry"
+        echo "  ... failed with $?, retry"
         sleep 15
-        curl -z `basename $i` -R -O -s -S $i;
+        rm `basename $i`
+        curl -R -O -s -S $i;
         if [ "$?" == "0" ]; then
             echo "  ... OK"
           else
-            echo "  ... failed, retry again"
+            echo "  ... failed with $?, retry again"
             sleep 15
-            curl -z `basename $i` -R -O -s -S $i;
+            rm `basename $i`
+            curl -R -O -s -S $i;
             if [ "$?" == "0" ]; then
                 echo "  ... OK"
               else
-                echo " ... failed three times, argh"
+                echo " ... failed three times, this time with $?, argh"
                 exit 1;
             fi
         fi
