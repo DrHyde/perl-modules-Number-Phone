@@ -7,6 +7,7 @@ use nptestutils;
 use lib 't/lib'; # for mocking of the UK
 
 use Test::More;
+plan skip_all => 'not relevant if building --without_uk' if(building_without_uk());
 
 use Number::Phone;
 use Number::Phone::Country qw(noexport);

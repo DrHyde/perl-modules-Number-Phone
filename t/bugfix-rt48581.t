@@ -6,6 +6,7 @@ use lib 't/inc';
 use nptestutils;
 
 use Test::More;
+plan skip_all => 'not relevant if building --without_uk' if(building_without_uk());
 
 use Number::Phone;
 
