@@ -1,9 +1,10 @@
 use strict;
 use warnings;
-use Test::More;
-
 use lib 't/inc';
 use nptestutils;
+
+use Test::More;
+BEGIN { plan skip_all => 'not relevant if building --without_uk' if(building_without_uk()); }
 
 use Number::Phone;
 
