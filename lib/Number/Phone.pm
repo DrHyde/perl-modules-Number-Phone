@@ -257,6 +257,10 @@ sub new {
     }
     eval "use Number::Phone::$country";
     if($@ || !"Number::Phone::$country"->isa('Number::Phone')) {
+        if($@ =~ /--without_uk/) {
+            # a test unexpectedly tried to load Number::Phone::UK, argh!
+            die $@
+        }
         # undo the above transformation, it's GB in stub-land
         $country = 'GB' if($country eq 'UK');
         return $class->_make_stub_object($number, $country)

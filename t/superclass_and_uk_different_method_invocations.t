@@ -3,7 +3,7 @@
 use strict;
 
 use lib 't/inc';
-use fatalwarnings;
+use nptestutils;
 
 use Number::Phone::UK;
 use Test::More;

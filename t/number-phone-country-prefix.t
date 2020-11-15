@@ -6,7 +6,7 @@
 use strict;
 
 use lib 't/inc';
-use fatalwarnings;
+use nptestutils;
 
 use Test::More;
 

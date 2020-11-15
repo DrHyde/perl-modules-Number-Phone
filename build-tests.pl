@@ -180,6 +180,9 @@ sub preamble {
         
         use strict;
         use warnings;
+        use lib 't/inc';
+        use nptestutils;
+
         use Test::More;
 
         use Number::Phone;

@@ -2,7 +2,7 @@
 
 use strict;
 use lib 't/inc';
-use fatalwarnings;
+use nptestutils;
 
 use lib 't/lib'; # for mocking of the UK
 

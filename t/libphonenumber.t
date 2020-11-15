@@ -3,7 +3,7 @@
 use strict;
 
 use lib 't/inc';
-use fatalwarnings;
+use nptestutils;
 
 our $CLASS = 'Number::Phone::Lib';
 eval "use $CLASS";

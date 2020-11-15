@@ -66,7 +66,7 @@ t/bugfix_N-P-New-CC-number.t
 t/bugfix-rt61177.t
 t/inc/common-nanp_and_libphonenumber_tests.pl
 t/inc/common-stub_and_libphonenumber_tests.pl
-t/inc/fatalwarnings.pm
+t/inc/nptestutils.pm
 t/inc/uk_tests.pl
 t/lib/Number/Phone/JP.pm
 t/lib/Number/Phone/StubCountry/MOCK.pm
