@@ -1,12 +1,12 @@
-#!/usr/bin/perl -w
+use strict;
+use warnings;
+use lib 't/inc';
+use nptestutils;
 
 use Test::More;
 use Scalar::Util qw(blessed);
 
 use Number::Phone;
-
-use lib 't/inc';
-use nptestutils;
 
 my $number = Number::Phone->new("+441234567890");
 ok(blessed($number) && $number->isa('Number::Phone::UK'),

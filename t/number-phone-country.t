@@ -1,9 +1,9 @@
-#!/usr/bin/perl -w
-
-use Test::More;
-
+use strict;
+use warnings;
 use lib 't/inc';
 use nptestutils;
+
+use Test::More;
 
 use Number::Phone::Country qw(noexport);
 
