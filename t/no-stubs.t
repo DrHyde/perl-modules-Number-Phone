@@ -8,6 +8,7 @@ use lib 't/lib';
 use Number::Phone qw(nostubs);
 
 use Test::More;
+plan skip_all => 'not relevant if building --without_uk' if(building_without_uk());
 
 use Number::Phone::Country qw(noexport);
 
