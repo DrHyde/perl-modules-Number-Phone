@@ -9,7 +9,6 @@ use Devel::CheckOS qw(os_is);
 use Test::More;
 
 use Number::Phone::NANP;
-use Number::Phone::UK::Data;
 
 use Parallel::ForkManager;
 
@@ -29,23 +28,31 @@ SKIP: {
     $forker->wait_all_children();
     isnt($original_tell, $returned_from_child, "forking gets us a new NANP operators db");
     
-    my $original_ukdb = ''.Number::Phone::UK::Data::db;
-    $forker->start() || $forker->finish(0, \(''.Number::Phone::UK::Data::db));
-    $forker->wait_all_children();
-    isnt($original_ukdb, $returned_from_child, "forking gets us a new UK db");
-    
     SKIP: {
-        if(
-            $ENV{CI} || !$ENV{AUTOMATED_TESTING}
-        ) {
-            skip "slurping is too slow so skipping under CI and for normal installs, set AUTOMATED_TESTING to run this", 1;
-        } 
-        diag("NB: this test takes a few minutes and lots of memory");
-        Number::Phone::UK::Data::slurp();
-        my $original_slurped_ukdb = ''.Number::Phone::UK::Data::db;
-        $forker->start() || $forker->finish(0, \(''.Number::Phone::UK::Data::db));
+        skip "built --without_uk so not testing that full-fat implementation today", 2
+            if(building_without_uk());
+
+        eval 'use Number::Phone::UK::Data';
+        die($@) if($@);
+
+        my $original_ukdb = ''.Number::Phone::UK::Data::db();
+        $forker->start() || $forker->finish(0, \(''.Number::Phone::UK::Data::db()));
         $forker->wait_all_children();
-        is($original_slurped_ukdb, $returned_from_child, "forking doesn't get us a new UK db if we slurped");
+        isnt($original_ukdb, $returned_from_child, "forking gets us a new UK db");
+        
+        SKIP: {
+            if(
+                $ENV{CI} || !$ENV{AUTOMATED_TESTING}
+            ) {
+                skip "slurping is too slow so skipping under CI and for normal installs, set AUTOMATED_TESTING to run this", 1;
+            } 
+            diag("NB: this test takes a few minutes and lots of memory");
+            Number::Phone::UK::Data::slurp();
+            my $original_slurped_ukdb = ''.Number::Phone::UK::Data::db();
+            $forker->start() || $forker->finish(0, \(''.Number::Phone::UK::Data::db()));
+            $forker->wait_all_children();
+            is($original_slurped_ukdb, $returned_from_child, "forking doesn't get us a new UK db if we slurped");
+        }
     }
 }
 
