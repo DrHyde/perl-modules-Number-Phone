@@ -1,3 +1,5 @@
+XXXX-XX-XX      XXXXXX  Bugfixes in dial_to for stubs and unallocated UK numbers
+
 XXXX-XX-XX      XXXXXX  Windows doesn't properly support fork() so skip the tests for it;
                         Correctly identify UK 04 and 05[01234789] number as invalid,
                           instead of valid but unallocated (fix arising from

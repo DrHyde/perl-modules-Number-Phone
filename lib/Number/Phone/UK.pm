@@ -427,8 +427,8 @@ sub format {
 
 Within the UK numbering plan you can *always* dial 0xxxx xxxxxx
 for intra-country calls. In most places the leading 0$areacode is
-optional but in some it is required (see
-L<http://consumers.ofcom.org.uk/dial-the-code/>) and over time this
+optional but in some it is required (see eg
+L<https://www.ofcom.org.uk/__data/assets/pdf_file/0017/19160/aberdeen_local_dialling_release.pdf>) and over time this
 will apply to more areas.
 
 =cut
@@ -437,6 +437,7 @@ sub intra_country_dial_to {
   my $from = shift;
   my $to   = shift;
 
+  die if(!$to->is_allocated());
   return '0'.($to->areacode() ? $to->areacode() : '').$to->subscriber();
 }
 

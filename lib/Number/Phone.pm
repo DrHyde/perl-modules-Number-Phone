@@ -88,17 +88,20 @@ sub dial_to {
 
   if($from->country_code() != $to->country_code()) {
     return Number::Phone::Country::idd_code($from->country()).
-           $to->country_code().
-           ($to->areacode() ? $to->areacode() : '').
-           $to->subscriber();
+        $to->country_code().
+        ($to->isa('Number::Phone::StubCountry')
+          ? $to->raw_number()
+          : (
+              ($to->areacode() ? $to->areacode() : '').
+              $to->subscriber()
+            )
+        );
   }
-
-  # if we get here it's a domestic call
 
   # do we know how to do this?
   my $intra_country_dial_to = eval '$from->intra_country_dial_to($to)';
   return undef if($@); # no
-  return $intra_country_dial_to if($intra_country_dial_to); # yes, and here's how
+  return $intra_country_dial_to if(defined($intra_country_dial_to)); # yes, and here's how
 
   # if we get here, then we can use the default implementation ...
 
@@ -615,8 +618,8 @@ follows:
 =item international call
 
 Append together the source country's international dialling prefix
-(usually 00), then the destination country's code code, area code,
-and subscriber number.
+(usually 00), then the destination country's country code, area code
+(if the country has such a thing), and subscriber number.
 
 =item domestic call, different area code
 
