@@ -8,6 +8,7 @@ XXXX-XX-XX      XXXXXX  Windows doesn't properly support fork() so skip the test
                         Expose that tag in libphonenumber_tag method;
                         Expose OFCOM, CNAC, NPA and localcallingguide.com data update
                           date/time in N::P::{UK,NANP::CA,NANP::US,NANP}->data_source;
+                        Stub classes shrunk by de-duping areanames;
                         Data updates
 
 2020-09-04      3.6006  Data updates

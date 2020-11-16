@@ -88,6 +88,7 @@ TERRITORY: foreach my $territory (@territories) {
   print $module_fh 'my '.Data::Dumper->new([$validators], [qw(validators)])->Dump();
 
   my $got_area_names = 0;
+  my %areanames = ();
   CODEFILE: foreach my $codesfile (File::Find::Rule->file()->name("$IDD_country_code.txt")->in("libphonenumber/resources/geocoding")) {
     $codesfile =~ /\/(..)\/$IDD_country_code.txt$/;
     my $language = $1 || next CODEFILE;
@@ -103,17 +104,32 @@ TERRITORY: foreach my $territory (@territories) {
       print $module_fh "Number::Phone::NANP::Data::_areaname('1'.shift()->{number}); }\n";
     } elsif(-e $codesfile) {
       open(my $geocoding, '<:encoding(UTF-8)', $codesfile) || die("Can't read $codesfile\n");
-      my @lines = <$geocoding>;
       print $module_fh "my %areanames = ();\n" unless($got_area_names);
       $got_area_names = 1;
+      my @lines = <$geocoding>;
       foreach my $line (@lines) {
         chomp($line);
         next if($line =~ /^(#.*|\s+)?$/);
         my($prefix, $area) = split(/\|/, $line);
-        $area = quotemeta($area);
-        print $module_fh "\$areanames{$language}->{$prefix} = \"$area\";\n";
+        $areanames{$language}->{$prefix} = $area;
       }
     }
+  }
+  # now de-dupe. We always fall back to English if no data is available, so
+  # if eg $areanames{fr}->{33105} is the same as $areanames{en}->{33105}
+  # delete it from the fr data
+  foreach my $language (grep { $_ ne 'en' } keys %areanames) {
+      foreach my $prefix (keys %{$areanames{'en'}}) {
+          if(exists($areanames{$language}->{$prefix}) && $areanames{$language}->{$prefix} eq $areanames{en}->{$prefix}) {
+              delete $areanames{$language}->{$prefix};
+          }
+      }
+  }
+
+  foreach my $language (keys %areanames) {
+      print $module_fh "\$areanames{$language} = {";
+      print $module_fh join("\n", map { "\"$_\", \"".quotemeta($areanames{$language}->{$_})."\"," } keys %{$areanames{$language}});
+      print $module_fh "};\n";
   }
 
   print $module_fh "
