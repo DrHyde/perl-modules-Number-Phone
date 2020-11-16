@@ -8,9 +8,16 @@ use Scalar::Util qw(blessed);
 
 use Number::Phone;
 
-my $number = Number::Phone->new("+441234567890");
-ok(blessed($number) && $number->isa('Number::Phone::UK'),
-    "N::P->new() works without specifically loading a country module");
+my $number;
+
+SKIP: {
+    skip("built --without_uk so not testing that full-fat implementation today", 1)
+        if(building_without_uk());
+
+    $number = Number::Phone->new("+441234567890");
+    ok(blessed($number) && $number->isa('Number::Phone::UK'),
+        "N::P->new() works without specifically loading a country module");
+}
 
 $number = Number::Phone->new("+12265550199");
 ok(blessed($number) && $number->isa('Number::Phone::NANP::CA'),
@@ -27,6 +34,12 @@ ok(
     "A country code not recognised by N::P::Country returns false"
 );
 
-# FIXME - Kazakhstan/Russia weirdness
+$number = Number::Phone->new("+7 7172 74 32 43");
+ok(blessed($number) && $number->isa('Number::Phone::StubCountry::KZ'),
+    "KZ numbers correctly recognised in their corner of +7");
+
+$number = Number::Phone->new("+7 495 606 36 02");
+ok(blessed($number) && $number->isa('Number::Phone::StubCountry::RU'),
+    "... the rest is Mother Russia");
 
 done_testing();
