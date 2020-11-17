@@ -2,7 +2,19 @@
 
 # Description
 
-This is a large suite of perl modules for parsing and dealing with phone numbers.
+This is a large suite of perl modules for parsing and dealing with phone
+numbers. For most countries it provides functionality broadly similar to
+Google's libphonenumber.
+
+For some NANP countries (mostly north America and the Caribbean; all those
+countries in the +1 country code) some extra information is available, in
+particular numbers in ranges like such as +1 800 are not just assumed to be
+US numbers like what libphonenumber does, and information may be available
+on which telco a number is assigned to.
+
+For the UK (and its nearby dependencies) even more is available, including
+an approximate location for many geographic numbers, and detection of
+fake numbers assigned for use in drama.
 
 # Installation as a user
 
@@ -13,6 +25,22 @@ If you just want to use the code, then install from the CPAN in the usual fashio
 or
 
     cpan Number::Phone
+
+If you are short on disk space then you might want to consider installing
+it without the extra information for the UK. You will still get support for
+everything libphonenumber can do, but will save about 100MB of disk space.
+Installation like this is a bit more involved:
+
+    cpanm --look Number::Phone
+
+that will download and unpack the most recent version, and open a shell in
+the directory into which it was unpacked. Then:
+
+    cpanm --installdeps .
+    perl Makefile.PL --without_uk
+    make test
+    make install
+    exit
 
 # Installation as a developer
 
@@ -25,6 +53,8 @@ That script will need several extra dependencies that aren't listed in `Makefile
     perl Makefile.PL
     make
     make test
+
+Note that you may get test failures if real-world data has changed in such a way as to contradict existing tests.
 
 # Structure
 
@@ -51,5 +81,5 @@ The build script uses data from [OFCOM](http://www.ofcom.org.uk/), [CNAC](http:/
 There is also data derived manually from all of the above, and from [the ITU](http://www.itu.int/itu-t/inr/nnp/), [World Telephone Numbering Guide](http://wtng.info/) (treat this with caution, it seems to be no longer maintained), and [Wikipedia](https://en.wikipedia.org/).
 
 Most of those disclaim any responsibility for errors in the data.  I disclaim
-all responsibility for errors too, even if my code makes your PBX turn
-purple.
+all responsibility for errors too, even if my code makes your PBX melt into
+a puddle of purple goo.
