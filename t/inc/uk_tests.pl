@@ -282,8 +282,9 @@ foreach my $tuple (
   });
 }
 
-note("is_drama");
-my @drama_numbers = (
+skip_if_mocked("Stubs don't support is_drama", 51, sub {
+    note("is_drama");
+    foreach my $dn (
         ['Leeds',            'geographic',  '+44 113 496 0553', '+44 113 496 0494'],
         ['Sheffield',        'geographic',  '+44 114 496 0445'],
         ['Nottingham',       'geographic',  '+44 115 496 0881'],
@@ -294,7 +295,7 @@ my @drama_numbers = (
         ['Edinburgh',        'geographic',  '+44 131 496 0107'],
         ['Glasgow',          'geographic',  '+44 141 496 0297'],
         ['Liverpool',        'geographic',  '+44 151 496 0787'],
-        ['Mahchester',       'geographic',  '+44 161 496 0508'],
+        ['Manchester',       'geographic',  '+44 161 496 0508'],
         ['London',           'geographic',  '+44 20 7946 0364', '+44 20 7946 0885'],
         ['Tyneside',         'geographic',  '+44 191 498 0228'],
         ['Cardiff',          'geographic',  '+44 29 2018 0678'],
@@ -304,31 +305,23 @@ my @drama_numbers = (
         ['Freephone',        'tollfree',    '+44 8081 570576', '+44 8081 570044'],
         ['Premium Rate',     'specialrate', '+44 909 879 0845'],
         ['UK-Wide',          'specialrate', '+44 3069 990965'],
-);
-foreach my $dn (@drama_numbers) {
-     my $area = shift @{$dn};
-     my $type = shift @{$dn};
-     foreach my $num (@{$dn}) {
-         my $phone = Number::Phone->new($num);
-         skip_if_mocked("Stubs don't support is_drama", 1, sub {
+    ) {
+         my $area   = shift(@{$dn});
+         my $method = 'is_'.shift(@{$dn});
+         foreach my $num (@{$dn}) {
+             my $phone = Number::Phone->new($num);
              ok($phone->is_drama(), "$area drama number $num is_drama");
-         });
-         my $method = "is_$type";
-         skip_if_mocked("Stubs don't always support is_* for is_drama", 1, sub {
              ok($phone->$method(), "$area drama number $num $method");
-         });
-         if($area eq 'Mobile') {
-             is($phone->country(), 'UK', "$num is UK-wide is_drama, not Jersey");
+             if($area eq 'Mobile') {
+                 is($phone->country(), 'UK', "$num is UK-wide is_drama, not Jersey");
+             }
          }
-     }
-}
-foreach my $number (qw(+447979866975 +442087712924)) {
-     skip_if_mocked("Stubs don't support is_drama", 1, sub {
+    }
+    foreach my $number (qw(+447979866975 +442087712924)) {
          ok(defined(Number::Phone->new($number)->is_drama()) &&
             !Number::Phone->new($number)->is_drama(),
             "normal number $number is not is_drama");
-     });
-}
-
+    }
+});
 
 1;
