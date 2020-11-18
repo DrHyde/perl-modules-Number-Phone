@@ -1,9 +1,7 @@
-#!/usr/bin/perl -w
-
 use strict;
-
+use warnings;
 use lib 't/inc';
-use fatalwarnings;
+use nptestutils;
 
 use Test::More;
 

@@ -1,9 +1,7 @@
-#!/usr/bin/perl -w
-
 use strict;
-
+use warnings;
 use lib 't/inc';
-use fatalwarnings;
+use nptestutils;
 
 use Number::Phone::Lib; # need to force it to use stubs in case N::P::BR exists
 use Test::More;

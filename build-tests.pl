@@ -142,12 +142,18 @@ foreach my $test (@tests) {
 }
 print $testfh ') {
     my($class, $args, $methods) = map { $test->{$_} } qw(class args methods);
-    ok(
-        # grep is because a number might need to be checked as is_geographic *or* is_fixed_line
-        (grep { $class->new(@{$args})->$_() } @{$methods}),
-        "$class->new(".join(", ", @{$args}).")->".join(", ", @{$methods})."() does the right thing"
-    );
-
+    SKIP: {
+        skip("built --without_uk so not testing that full-fat implementation today", 1)
+            if(
+                $class eq "Number::Phone" && building_without_uk() &&
+                ($args->[-1] =~ /^\+44/ || $args->[0]  =~ /^(GB|UK|GG|JE|IM)$/)
+            );
+        ok(
+            # grep is because a number might need to be checked as is_geographic *or* is_fixed_line
+            (grep { $class->new(@{$args})->$_() } @{$methods}),
+            "$class->new(".join(", ", @{$args}).")->".join(", ", @{$methods})."() does the right thing"
+        );
+    }
 }
 done_testing();
 ';
@@ -180,6 +186,9 @@ sub preamble {
         
         use strict;
         use warnings;
+        use lib 't/inc';
+        use nptestutils;
+
         use Test::More;
 
         use Number::Phone;

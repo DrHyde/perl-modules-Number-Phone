@@ -24,12 +24,9 @@ jobs:
           AUTOMATED_TESTING: 1
         run: |
             perl -v
-            cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage || cat /home/runner/.cpanm/work/*/build.log
-            rm -rf /home/runner/.cpanm/work/*
-            cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https || cat /home/runner/.cpanm/work/*/build.log
-            perl -Mparent -e0 || cpanm parent
-            rm -rf /home/runner/.cpanm/work/*
-            cpanm --installdeps . || cat /home/runner/.cpanm/work/*/build.log
+            cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+            cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+            cpanm --quiet --notest --installdeps .
             ./build-data.sh
             perl Makefile.PL
             make test TEST_VERBOSE=1

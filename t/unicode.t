@@ -1,5 +1,7 @@
 use strict;
 use warnings;
+use lib 't/inc';
+use nptestutils;
 
 use Test::More;
 

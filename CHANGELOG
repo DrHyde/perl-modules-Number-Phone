@@ -1,3 +1,7 @@
+XXXX-XX-XX      XXXXXX  Bugfixes in dial_to for stubs and unallocated UK numbers;
+                        Option to build --without_uk and save disk space
+                          (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/95);
+
 XXXX-XX-XX      XXXXXX  Windows doesn't properly support fork() so skip the tests for it;
                         Correctly identify UK 04, 05[01234789], and 06 numbers as invalid,
                           instead of valid but unallocated (fix arising from

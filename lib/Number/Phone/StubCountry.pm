@@ -31,6 +31,11 @@ sub country {
     return $1;
 }
 
+sub raw_number {
+    my $self = shift;
+    $self->{number};
+}
+
 sub is_valid {
   my $self = shift;
   if(exists($self->{is_valid})) {
@@ -55,7 +60,7 @@ sub _validator {
   my($self, $validator) = @_;
   $validator = $self->{validators}->{$validator};
   return undef unless($validator);
-  return $self->{number} =~ /^($validator)$/x ? 1 : 0;
+  return $self->raw_number() =~ /^($validator)$/x ? 1 : 0;
 }
 
 sub areaname {
@@ -68,7 +73,7 @@ sub areaname {
             push @languages, 'en'
         }
     }
-    my $number = $self->{number};
+    my $number = $self->raw_number();
     return unless $self->{areanames};
     LANGUAGE: foreach my $language (@languages) {
         next LANGUAGE unless(exists($self->{areanames}->{$language}));
@@ -82,7 +87,7 @@ sub areaname {
 
 sub format {
   my $self = shift;
-  my $number = $self->{number};
+  my $number = $self->raw_number();
   foreach my $formatter (@{$self->{formatters}}) {
     my($leading_digits, $pattern) = map { $formatter->{$_} } qw(leading_digits pattern);
     if((!$leading_digits || $number =~ /^($leading_digits)/x) && $number =~ /^$pattern$/x) {

@@ -1,13 +1,12 @@
-#!/usr/bin/perl -w
-
 use strict;
-
+use warnings;
 use lib 't/inc';
-use fatalwarnings;
+use nptestutils;
 
 use Number::Phone;
 
 use Test::More;
+plan skip_all => 'not relevant if building --without_uk' if(building_without_uk());
 
 ok(Number::Phone->new('UK', '07970866975'), "N::P->new('CC', '012345')");
 ok(Number::Phone->new('UK', '7970866975'), "N::P->new('CC', '12345')");

@@ -66,7 +66,7 @@ t/bugfix_N-P-New-CC-number.t
 t/bugfix-rt61177.t
 t/inc/common-nanp_and_libphonenumber_tests.pl
 t/inc/common-stub_and_libphonenumber_tests.pl
-t/inc/fatalwarnings.pm
+t/inc/nptestutils.pm
 t/inc/uk_tests.pl
 t/lib/Number/Phone/JP.pm
 t/lib/Number/Phone/StubCountry/MOCK.pm
@@ -92,6 +92,9 @@ t/fork.t
 t/country-test-my.t
 lib/Number/Phone/Data.pm
 t/source_data.t
+buildtools/Number/Phone/BuildTools.pm
+t/manifest-contains-all-modules.t
+t/only-use-blib-under-make-test.t
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm

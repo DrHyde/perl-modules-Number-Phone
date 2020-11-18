@@ -88,17 +88,20 @@ sub dial_to {
 
   if($from->country_code() != $to->country_code()) {
     return Number::Phone::Country::idd_code($from->country()).
-           $to->country_code().
-           ($to->areacode() ? $to->areacode() : '').
-           $to->subscriber();
+        $to->country_code().
+        ($to->isa('Number::Phone::StubCountry')
+          ? $to->raw_number()
+          : (
+              ($to->areacode() ? $to->areacode() : '').
+              $to->subscriber()
+            )
+        );
   }
-
-  # if we get here it's a domestic call
 
   # do we know how to do this?
   my $intra_country_dial_to = eval '$from->intra_country_dial_to($to)';
   return undef if($@); # no
-  return $intra_country_dial_to if($intra_country_dial_to); # yes, and here's how
+  return $intra_country_dial_to if(defined($intra_country_dial_to)); # yes, and here's how
 
   # if we get here, then we can use the default implementation ...
 
@@ -252,34 +255,41 @@ sub new {
     if ($number =~ /^\+1/) {
         $country = "NANP";
     } elsif ($country =~ /^(?:GB|GG|JE|IM)$/) {
+        # for hysterical raisins
         $country = 'UK';
     }
     eval "use Number::Phone::$country";
     if($@ || !"Number::Phone::$country"->isa('Number::Phone')) {
+        if($@ =~ /--without_uk/) {
+            # a test unexpectedly tried to load Number::Phone::UK, argh!
+            die $@
+        }
+        # undo the above transformation, it's GB in stub-land
+        $country = 'GB' if($country eq 'UK');
         return $class->_make_stub_object($number, $country)
     }
     return "Number::Phone::$country"->new($number);
 }
 
 sub _make_stub_object {
- my ($class, $number, $country_name) = @_;
-  die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
-  my $stub_class = "Number::Phone::StubCountry::$country_name";
-  eval "use $stub_class";
-  # die("Can't find $stub_class: $@\n") if($@);
-  if($@) {
-      my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
-      # an instance of this class is the ultimate fallback
-      (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
-      if($local_number eq '') { return undef; }
-      return bless({
-          country_code => $country_idd,
-          country      => $country_name,
-          is_valid     => undef,
-          number       => $local_number,
-      }, 'Number::Phone::StubCountry');
-  }
-  $stub_class->new($number);
+    my ($class, $number, $country_name) = @_;
+    die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
+    my $stub_class = "Number::Phone::StubCountry::$country_name";
+    eval "use $stub_class";
+    # die("Can't find $stub_class: $@\n") if($@);
+    if($@) {
+        my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
+        # an instance of this class is the ultimate fallback
+        (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
+        if($local_number eq '') { return undef; }
+        return bless({
+            country_code => $country_idd,
+            country      => $country_name,
+            is_valid     => undef,
+            number       => $local_number,
+        }, 'Number::Phone::StubCountry');
+    }
+    $stub_class->new($number);
 }
 
 =head1 METHODS
@@ -608,8 +618,8 @@ follows:
 =item international call
 
 Append together the source country's international dialling prefix
-(usually 00), then the destination country's code code, area code,
-and subscriber number.
+(usually 00), then the destination country's country code, area code
+(if the country has such a thing), and subscriber number.
 
 =item domestic call, different area code
 

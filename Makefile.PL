@@ -1,7 +1,21 @@
 use 5.006;
+use strict;
+use warnings;
 use ExtUtils::MakeMaker;
-
 use File::ShareDir::Install;
+
+BEGIN {
+    unshift @INC, 'buildtools';
+    require Number::Phone::BuildTools;
+    Number::Phone::BuildTools->import();
+    shift @INC;
+}
+
+while(@ARGV) {
+    if(shift() eq '--without_uk') {
+        $Number::Phone::BuildTools::without_uk++;
+    }
+}
 
 mkdir('share') unless(-d 'share');
 
@@ -33,18 +47,20 @@ WriteMakefile(
   },
 
   PREREQ_PM    => {
-    'Scalar::Util'           => 1.48,
-    'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
-    'Digest::MD5'            => 0,
+    'Cwd'                    => 0,
     'DBM::Deep'              => 2.0008,
     'Devel::CheckOS'         => '1.83',
-    'Test::utf8'             => 0,
+    'Digest::MD5'            => 0,
+    'File::Basename'         => 0,
+    'File::Find::Rule'       => 0,
     'File::ShareDir'         => 1.104,
     'File::Spec'             => 0,
-    'File::Basename'         => 0,
-    'Cwd'                    => 0,
-    'I18N::LangTags::Detect' => 0,
     'I18N::LangTags'         => 0,
+    'I18N::LangTags::Detect' => 0,
+    'Scalar::Util'           => 1.48,
+    'Test::Differences'      => 0.62,
+    'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
+    'Test::utf8'             => 0,
   },
   dist => {
     PREOP => "./build-data.sh --previoustag"
@@ -52,7 +68,25 @@ WriteMakefile(
   realclean => {
     FILES => "*.xlsx sabc.txt COCodeStatus_ALL.* AllBlocksAugmentedReport.* cover_db"
   },
+  PM => PM_from_manifest()
 );
 
 package MY;
-use File::ShareDir::Install qw(postamble);
+use File::ShareDir::Install;
+sub postamble {
+    my $self = shift;
+    my @ret = File::ShareDir::Install::postamble( $self );
+    my $ret = join "\n", @ret;
+    if($Number::Phone::BuildTools::without_uk) {
+        $ret =~ s{
+            \\
+            \s+
+            'share/Number-Phone-UK-Data.db'
+            \s+
+            '[^']+'
+        }{}x
+    }
+    return $ret;
+}
+
+
