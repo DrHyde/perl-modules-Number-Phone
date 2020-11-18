@@ -19,7 +19,6 @@ jobs:
         env:
           BUILD_TEST: 1
           PERL_USE_UNSAFE_INC: 0
-          AUTOMATED_TESTING: 1
         run: |
             perl -v
             perl -MData::Dumper -e 'eval "use Number::Phone"; if(!$@) { print "Number::Phone is already installed, argh\n".Dumper(\%INC); exit(1) } else { print "Number::Phone not yet installed, hurrah\n"; exit(0) }'

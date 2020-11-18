@@ -7,10 +7,8 @@ use nptestutils;
 
 use Test::More;
 
-if(
-    $ENV{CI} || !$ENV{AUTOMATED_TESTING}
-) {
-    eval 'use Test::More skip_all => "slurping is too slow so skipping under CI and for normal installs, set AUTOMATED_TESTING to run this"';
+if(!$ENV{AUTOMATED_TESTING}) {
+    plan skip_all => "slurping is too slow so skipping, set AUTOMATED_TESTING to run this";
 } else {
     eval 'use Number::Phone::UK::Data';
     diag("NB: this test takes a few minutes and lots of memory");
