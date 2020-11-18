@@ -1,18 +1,17 @@
 XXXX-XX-XX      XXXXXX  Bugfixes in dial_to for stubs and unallocated UK numbers;
+                        Windows doesn't properly support fork() so skip the tests for it;
+                        Minor documentation clarification re constructor;
+                        Stub classes shrunk by de-duping areanames;
                         Option to build --without_uk and save disk space
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/95);
-
-XXXX-XX-XX      XXXXXX  Windows doesn't properly support fork() so skip the tests for it;
                         Correctly identify UK 04, 05[01234789], and 06 numbers as invalid,
                           instead of valid but unallocated (fix arising from
                           https://github.com/DrHyde/perl-modules-Number-Phone/issues/98);
-                        Minor documentation clarification re constructor;
                         Use data from a tagged release of libphonenumber instead of whatever
-                          is in master, so builds are more reproducible;
-                        Expose that tag in libphonenumber_tag method;
+                          is in master, so builds are more reproducible, and expose that
+                          tag in libphonenumber_tag method;
                         Expose OFCOM, CNAC, NPA and localcallingguide.com data update
                           date/time in N::P::{UK,NANP::CA,NANP::US,NANP}->data_source;
-                        Stub classes shrunk by de-duping areanames;
                         Data updates
 
 2020-09-04      3.6006  Data updates
