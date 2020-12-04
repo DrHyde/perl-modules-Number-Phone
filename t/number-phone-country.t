@@ -177,8 +177,8 @@ is(phone2country('+374123'), 'AM', '+374 is AM');
 is(phone2country('+375123'), 'BY', '+375 is BY');
 is(phone2country('+376123'), 'AD', '+376 is AD');
 is(phone2country('+377123'), 'MC', '+377 is MC');
-is(phone2country('+37744123'), 'XK', '+377 44 is XK');
-is(phone2country('+37745123'), 'XK', '+377 45 is XK');
+is(phone2country('+37744123'), 'MC', '+377 44 is MC'); # previously used by XK
+is(phone2country('+37745123'), 'MC', '+377 45 is MC'); # previously used by XK
 is(phone2country('+378123'), 'SM', '+378 is SM');
 is(phone2country('+379123'), 'VA', '+379 is VA');
 is(phone2country('+380123'), 'UA', '+380 is UA');
@@ -191,8 +191,8 @@ is(phone2country('+382123'), 'ME', '+382 is ME');
 is(phone2country('+383123'), 'XK', '+383 is XK');
 is(phone2country('+385123'), 'HR', '+385 is HR');
 is(phone2country('+386123'), 'SI', '+386 is SI');
-is(phone2country('+38643123'), 'XK', '+386 43 is XK');
-is(phone2country('+38649123'), 'XK', '+386 44 is XK');
+is(phone2country('+38643123'), 'SI', '+386 43 is SI'); # previously used by XK
+is(phone2country('+38649123'), 'SI', '+386 44 is SI'); # previously used by XK
 is(phone2country('+387123'), 'BA', '+387 is BA');
 is(phone2country('+389123'), 'MK', '+389 is MK');
 is(phone2country('+39123') , 'IT', '+39 is IT');

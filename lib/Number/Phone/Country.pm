@@ -5,7 +5,7 @@ use Number::Phone::Country::Data;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
-$VERSION = 1.96;
+$VERSION = 1.97;
 my $use_uk = 0;
 
 sub import {
@@ -32,22 +32,22 @@ sub phone2country {
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
-        # checked on 2020-06-06
-        # next check due 2020-12-01 (semi-annually)
+        # checked on 2020-12-04
+        # next check due 2021-06-01 (semi-annually)
         my $canada = join('|', qw(
             204 226 236 249 250 289
             306 343 354 365 367 368
             403 416 418 428 431 437 438 450 474
             506 514 519 548 579 581 587
             604 613 639 647 672
-            705 709 778 780 782
+            705 709 742 778 780 782
             807 819 825 867 873 879
             902 905
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_600
         # checked on 2020-06-06
-        # next check due 2020-12-01 (semi-annually)
+        # next check due 2021-12-01 (semi-annually)
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
@@ -55,8 +55,8 @@ our %NANP_areas = (
         # and https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#United_States
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
-        # checked on 2020-06-06
-        # next check due 2020-12-01 (semi-annually)
+        # checked on 2020-12-04
+        # next check due 2021-06-01 (semi-annually)
         my $usa = join('|', qw(
             205 251 256 334 659 938
             907
@@ -66,7 +66,7 @@ our %NANP_areas = (
             303 719 720 970
             203 475 860 959
             302
-            202
+            202 771
             239 305 321 352 386 407 448 561 656 689 727 754 772 786 813 850 863 904 941 954
             229 404 470 478 678 706 762 770 912
             808
@@ -80,10 +80,10 @@ our %NANP_areas = (
             207
             227 240 301 410 443 667
             339 351 413 508 617 774 781 857 978
-            231 248 269 313 517 586 616 734 810 906 947 989
+            231 248 269 313 517 586 616 679 734 810 906 947 989
             218 320 507 612 651 763 952
             228 601 662 769
-            314 417 573 636 660 816
+            314 417 557 573 636 660 816 975
             406
             308 402 531
             702 725 775
@@ -93,18 +93,18 @@ our %NANP_areas = (
             212 315 332 347 516 518 585 607 631 646 680 716 718 838 845 914 917 929 934
             252 336 704 743 828 910 919 980 984
             701
-            216 220 234 326 330 380 419 440 513 567 614 740 937
+            216 220 234 283 326 330 380 419 440 513 567 614 740 937
             405 539 572 580 918
             458 503 541 971
-            215 223 267 272 412 445 484 570 610 717 724 814 878
+            215 223 267 272 412 445 484 570 582 610 717 724 814 878
             401
             803 839 843 854 864
             605
             423 615 629 731 865 901 931
-            210 214 254 281 325 346 361 409 430 432 469 512 682 713 726 737 806 817 830 832 903 915 936 940 956 972 979
+            210 214 254 281 325 346 361 409 430 432 469 512 682 713 726 737 806 817 830 832 903 915 936 940 945 956 972 979
             385 435 801
             802
-            276 434 540 571 703 757 804 948
+            276 434 540 571 703 757 804 826 948
             206 253 360 425 509 564
             304 681
             262 274 414 534 608 715 920
@@ -117,8 +117,8 @@ our %NANP_areas = (
         $usa    = join('|', $usa, 710);
     },
     # see https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Countries_and_territories
-    # checked on 2020-06-06
-    # next check due 2020-12-01 (semi-annually)
+    # checked on 2020-12-04
+    # next check due 2021-12-01 (annually)
     AS => '684',         # American Samoa
     AI => '264',         # Anguilla
     AG => '268',         # Antigua and Barbude

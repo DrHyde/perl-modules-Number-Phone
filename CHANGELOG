@@ -1,7 +1,8 @@
-XXXX-XX-XX      XXXXXX  Bugfixes in dial_to for stubs and unallocated UK numbers;
+2020-12-04      3.7000  Bugfixes in dial_to for stubs and unallocated UK numbers;
                         Windows doesn't properly support fork() so skip the tests for it;
                         Minor documentation clarification re constructor;
                         Stub classes shrunk by de-duping areanames;
+                        Kosovo appears to have fully switched to using its own country code;
                         Option to build --without_uk and save disk space
                           (see https://github.com/DrHyde/perl-modules-Number-Phone/issues/95);
                         Correctly identify UK 04, 05[01234789], and 06 numbers as invalid,
