@@ -28,7 +28,10 @@ EXITSTATUS=0
         git checkout -q master
         git pull -q
     )
-    (cd data-files || (echo Checking out data-files ...; git clone git@github.com:DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
+
+    if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+        (cd data-files || (echo Checking out data-files ...; git clone git@github.com:DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
+    fi
     (cd data-files || mkdir data-files) # for CI envs that can't yet check that repo out
     (
         cd data-files
