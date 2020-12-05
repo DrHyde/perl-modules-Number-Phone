@@ -23,13 +23,18 @@ EXITSTATUS=0
 # now get an up-to-date libphonenumber and data-files
 (
     (cd libphonenumber || (echo Checking out libphonenumber ...; git clone https://github.com/googlei18n/libphonenumber.git))
-    cd libphonenumber
-    git checkout -q master
-    git pull -q
-    # (cd data-files || (echo Checking out data-files ...; git clone https://github.com/...))
-    # cd data-files
-    # git checkout -q master
-    # git pull -q
+    (
+        cd libphonenumber
+        git checkout -q master
+        git pull -q
+    )
+    (cd data-files || (echo Checking out data-files ...; git clone git@github.com:DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
+    (cd data-files || mkdir data-files) # for CI envs that can't yet check that repo out
+    (
+        cd data-files
+        git checkout -q master
+        git pull -q
+    )
 )
 
 while [ "$#" != "0" ] ; do
