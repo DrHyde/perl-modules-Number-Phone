@@ -296,8 +296,10 @@ fi
 
 (
     cd data-files
-    git commit -q $(grep -vf .gitignore <(ls)) -m "data files as at $(date)"
-    git push -q
+    if test -e .gitignore; then
+        git commit -q $(grep -vf .gitignore <(ls)) -m "data files as at $(date)"
+        git push -q
+    fi
 )
 
 exit $EXITSTATUS
