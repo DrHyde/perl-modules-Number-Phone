@@ -66,7 +66,7 @@ WriteMakefile(
     PREOP => "./build-data.sh --previoustag"
   },
   realclean => {
-    FILES => "*.xlsx sabc.txt COCodeStatus_ALL.* AllBlocksAugmentedReport.* cover_db"
+    FILES => "cover_db"
   },
   PM => PM_from_manifest()
 );

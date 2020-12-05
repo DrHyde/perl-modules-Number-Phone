@@ -140,8 +140,8 @@ my %seen_operators = ();
 my $next_data_offset = $WORDLENGTH * 800000;
 
 warn("Extracting Canadian operators\n");
-open(my $CA_operators, '<', 'COCodeStatus_ALL.csv') ||
-    die("Couldn't open COCodeStatus_ALL.csv: $!\n");
+open(my $CA_operators, '<', 'data-files/COCodeStatus_ALL.csv') ||
+    die("Couldn't open data-files/COCodeStatus_ALL.csv: $!\n");
 $csv->getline($CA_operators); # header line
 $csv->getline($CA_operators); # date stamp?
 while(my $row = $csv->getline($CA_operators)) {
@@ -152,8 +152,8 @@ while(my $row = $csv->getline($CA_operators)) {
 }
 
 warn("Extracting US operators\n");
-open(my $US_operators, '<', 'AllBlocksAugmentedReport.txt') ||
-    die("Couldn't open AllBlocksAugmentedReport.txt: $!\n");
+open(my $US_operators, '<', 'data-files/AllBlocksAugmentedReport.txt') ||
+    die("Couldn't open data-files/AllBlocksAugmentedReport.txt: $!\n");
 $csv->getline($US_operators); # header line
 my %US = ();
 while(my $row = $csv->getline($US_operators)) {
@@ -237,14 +237,14 @@ sub _get_xml_data {
         } else {
             die("Can't talk to localcallingguide.com: ".$res->status_line()."\n".$res->decoded_content()."\n");
         }
-        open(my $fh, '>', "$NPA.xml") || die("Can't write $NPA.xml: $!\n");
+        open(my $fh, '>', "data-files/$NPA.xml") || die("Can't write data-files/$NPA.xml: $!\n");
         print $fh $data;
         close($fh);
     }
     # writing the file above and then re-reading it instead of just returning the data,
     # and also making sure to read it from the file into a different variable, is
     # because Unicode is fucking witchcraft
-    open(my $fh, '<', "$NPA.xml") || die("Can't read $NPA.xml: $!\n");
+    open(my $fh, '<', "data-files/$NPA.xml") || die("Can't read data-files/$NPA.xml: $!\n");
     my $data = join('', <$fh>);
     close($fh);
     return $data;

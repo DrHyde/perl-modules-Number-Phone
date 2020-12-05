@@ -20,12 +20,16 @@ TAG=unset
 FORCE=0
 EXITSTATUS=0
 
-# now get an up-to-date libphonenumber
+# now get an up-to-date libphonenumber and data-files
 (
     (cd libphonenumber || (echo Checking out libphonenumber ...; git clone https://github.com/googlei18n/libphonenumber.git))
     cd libphonenumber
     git checkout -q master
     git pull -q
+    # (cd data-files || (echo Checking out data-files ...; git clone https://github.com/...))
+    # cd data-files
+    # git checkout -q master
+    # git pull -q
 )
 
 while [ "$#" != "0" ] ; do
@@ -65,81 +69,84 @@ echo $TAG > .libphonenumber-tag
 #     https://www.nationalnanpa.com/reports/reports_cocodes_assign.html
 #     https://www.nationalnanpa.com/reports/reports_cocodes.html
 #     http://cnac.ca/co_codes/co_code_status.htm
-for i in \
-    http://static.ofcom.org.uk/static/numbering/sabc.txt                        \
-    http://static.ofcom.org.uk/static/numbering/sabcde11_12.xlsx                 \
-    http://static.ofcom.org.uk/static/numbering/sabcde13.xlsx                    \
-    http://static.ofcom.org.uk/static/numbering/sabcde14.xlsx                    \
-    http://static.ofcom.org.uk/static/numbering/sabcde15.xlsx                    \
-    http://static.ofcom.org.uk/static/numbering/sabcde16.xlsx                    \
-    http://static.ofcom.org.uk/static/numbering/sabcde17.xlsx                    \
-    http://static.ofcom.org.uk/static/numbering/sabcde18.xlsx                    \
-    http://static.ofcom.org.uk/static/numbering/sabcde19.xlsx                    \
-    http://static.ofcom.org.uk/static/numbering/sabcde2.xlsx                     \
-    http://static.ofcom.org.uk/static/numbering/S3.xlsx                          \
-    http://static.ofcom.org.uk/static/numbering/S5.xlsx                          \
-    http://static.ofcom.org.uk/static/numbering/S7.xlsx                          \
-    http://static.ofcom.org.uk/static/numbering/S8.xlsx                          \
-    http://static.ofcom.org.uk/static/numbering/S9.xlsx                          \
-    https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip  \
-    http://www.cnac.ca/data/COCodeStatus_ALL.zip;
-do
-    # make sure that there's a file that curl -z can look at
-    if test ! -e `basename $i`; then
-        touch -t 198001010101 `basename $i`
-    fi
-    echo Fetching $i
-    curl -z `basename $i` -R -O -s -S $i;
-    if [ "$?" == "0" ]; then
-        echo "  ... OK"
-      else
-        echo "  ... failed with $?, retry"
-        sleep 15
-        rm `basename $i`
-        curl -R -O -s -S $i;
+(
+    cd data-files
+    for i in \
+        http://static.ofcom.org.uk/static/numbering/sabc.txt                        \
+        http://static.ofcom.org.uk/static/numbering/sabcde11_12.xlsx                 \
+        http://static.ofcom.org.uk/static/numbering/sabcde13.xlsx                    \
+        http://static.ofcom.org.uk/static/numbering/sabcde14.xlsx                    \
+        http://static.ofcom.org.uk/static/numbering/sabcde15.xlsx                    \
+        http://static.ofcom.org.uk/static/numbering/sabcde16.xlsx                    \
+        http://static.ofcom.org.uk/static/numbering/sabcde17.xlsx                    \
+        http://static.ofcom.org.uk/static/numbering/sabcde18.xlsx                    \
+        http://static.ofcom.org.uk/static/numbering/sabcde19.xlsx                    \
+        http://static.ofcom.org.uk/static/numbering/sabcde2.xlsx                     \
+        http://static.ofcom.org.uk/static/numbering/S3.xlsx                          \
+        http://static.ofcom.org.uk/static/numbering/S5.xlsx                          \
+        http://static.ofcom.org.uk/static/numbering/S7.xlsx                          \
+        http://static.ofcom.org.uk/static/numbering/S8.xlsx                          \
+        http://static.ofcom.org.uk/static/numbering/S9.xlsx                          \
+        https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip  \
+        http://www.cnac.ca/data/COCodeStatus_ALL.zip;
+    do
+        # make sure that there's a file that curl -z can look at
+        if test ! -e `basename $i`; then
+            touch -t 198001010101 `basename $i`
+        fi
+        echo Fetching $i
+        curl -z `basename $i` -R -O -s -S $i;
         if [ "$?" == "0" ]; then
             echo "  ... OK"
           else
-            echo "  ... failed with $?, retry again"
+            echo "  ... failed with $?, retry"
             sleep 15
             rm `basename $i`
             curl -R -O -s -S $i;
             if [ "$?" == "0" ]; then
                 echo "  ... OK"
               else
-                echo " ... failed three times, this time with $?, argh"
-                exit 1;
+                echo "  ... failed with $?, retry again"
+                sleep 15
+                rm `basename $i`
+                curl -R -O -s -S $i;
+                if [ "$?" == "0" ]; then
+                    echo "  ... OK"
+                  else
+                    echo " ... failed three times, this time with $?, argh"
+                    exit 1;
+                fi
             fi
         fi
-    fi
-done
-rm COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
-unzip -q COCodeStatus_ALL.zip
-unzip -q AllBlocksAugmentedReport.zip
+    done
+    rm COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
+    unzip -q COCodeStatus_ALL.zip
+    unzip -q AllBlocksAugmentedReport.zip
+)
 
 # stash the Unix epoch of the OFCOM data
-OFCOMDATETIME=$(perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1))
-CADATETIME=$(perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
-USDATETIME=$(perl -e 'print +(stat(shift))[9]' AllBlocksAugmentedReport.txt)
+OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1))
+CADATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
+USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' AllBlocksAugmentedReport.txt)
 
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
-  sabc.txt          -nt share/Number-Phone-UK-Data.db -o \
-  sabcde11_12.xlsx   -nt share/Number-Phone-UK-Data.db -o \
-  sabcde13.xlsx      -nt share/Number-Phone-UK-Data.db -o \
-  sabcde14.xlsx      -nt share/Number-Phone-UK-Data.db -o \
-  sabcde15.xlsx      -nt share/Number-Phone-UK-Data.db -o \
-  sabcde16.xlsx      -nt share/Number-Phone-UK-Data.db -o \
-  sabcde17.xlsx      -nt share/Number-Phone-UK-Data.db -o \
-  sabcde18.xlsx      -nt share/Number-Phone-UK-Data.db -o \
-  sabcde19.xlsx      -nt share/Number-Phone-UK-Data.db -o \
-  sabcde2.xlsx       -nt share/Number-Phone-UK-Data.db -o \
-  S3.xlsx            -nt share/Number-Phone-UK-Data.db -o \
-  S5.xlsx            -nt share/Number-Phone-UK-Data.db -o \
-  S7.xlsx            -nt share/Number-Phone-UK-Data.db -o \
-  S8.xlsx            -nt share/Number-Phone-UK-Data.db -o \
-  S9.xlsx            -nt share/Number-Phone-UK-Data.db -o \
-  build-data.uk     -nt share/Number-Phone-UK-Data.db;
+  data-files/sabc.txt         -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde11_12.xlsx -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde13.xlsx    -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde14.xlsx    -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde15.xlsx    -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde16.xlsx    -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde17.xlsx    -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde18.xlsx    -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde19.xlsx    -nt share/Number-Phone-UK-Data.db -o \
+  data-files/sabcde2.xlsx     -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S3.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S5.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S7.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S8.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S9.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  build-data.uk               -nt share/Number-Phone-UK-Data.db;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
@@ -152,7 +159,7 @@ fi
 
 # lib/Number/Phone/Country/Data.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/Country/Data.pm -o \
-  build-data.country-mapping -nt lib/Number/Phone/Country/Data.pm -o \
+  build-data.country-mapping                       -nt lib/Number/Phone/Country/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/Country/Data.pm;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
@@ -166,14 +173,14 @@ fi
 
 # lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt or PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/NANP/Data.pm -o \
-  build-data.nanp -nt lib/Number/Phone/NANP/Data.pm -o \
-  libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/NANP/Data.pm -o \
-  libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm -o \
   ! -e share/Number-Phone-NANP-Data.db -o \
-  AllBlocksAugmentedReport.zip -nt share/Number-Phone-NANP-Data.db -o \
-  COCodeStatus_ALL.zip -nt share/Number-Phone-NANP-Data.db -o \
-  AllBlocksAugmentedReport.txt -nt share/Number-Phone-NANP-Data.db -o \
-  COCodeStatus_ALL.csv -nt share/Number-Phone-NANP-Data.db;
+  build-data.nanp                                  -nt lib/Number/Phone/NANP/Data.pm -o \
+  libphonenumber/resources/geocoding/en/1.txt      -nt lib/Number/Phone/NANP/Data.pm -o \
+  libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm -o \
+  data-files/AllBlocksAugmentedReport.zip          -nt share/Number-Phone-NANP-Data.db -o \
+  data-files/AllBlocksAugmentedReport.txt          -nt share/Number-Phone-NANP-Data.db -o \
+  data-files/COCodeStatus_ALL.zip                  -nt share/Number-Phone-NANP-Data.db -o \
+  data-files/COCodeStatus_ALL.csv                  -nt share/Number-Phone-NANP-Data.db;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
@@ -185,15 +192,15 @@ else
   echo lib/Number/Phone/NANP/Data.pm and share/Number-Phone-NANP-Data.db are up-to-date
 fi
 # this must be after build-data.nanp has fetched them
-NANPDATETIME=$(perl -e 'print +(stat(shift))[9]' $(ls -rt [0-9][0-9][0-9].xml|tail -1))
+NANPDATETIME=$(perl -e 'print +(stat(shift))[9]' $(ls -rt data-files/[0-9][0-9][0-9].xml|tail -1))
 
 # lib/Number/Phone/StubCountry/KZ.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer,
 # or if lib/Number/Phone/NANP/Data.pm is newer ...
 if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
-  build-data.stubs -nt lib/Number/Phone/StubCountry/KZ.pm -o \
-  libphonenumber/resources/geocoding/en/1.txt -nt lib/Number/Phone/StubCountry/KZ.pm -o \
+  build-data.stubs                                 -nt lib/Number/Phone/StubCountry/KZ.pm -o \
+  libphonenumber/resources/geocoding/en/1.txt      -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
-  lib/Number/Phone/NANP/Data.pm -nt lib/Number/Phone/StubCountry/KZ.pm;
+  lib/Number/Phone/NANP/Data.pm                    -nt lib/Number/Phone/StubCountry/KZ.pm;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
@@ -206,7 +213,7 @@ fi
 
 # t/example-phone-numbers.t doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer
 if test ! -e t/example-phone-numbers.t -o \
-  build-tests.pl -nt t/example-phone-numbers.t -o \
+  build-tests.pl                                   -nt t/example-phone-numbers.t -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt t/example-phone-numbers.t;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
@@ -278,5 +285,11 @@ if [ $EXITSTATUS == 1 ]; then
     `grep "^PERL " Makefile|awk '{print $3}'|sed 's/"//g'` Makefile.PL
   fi
 fi
+
+(
+    cd data-files
+    git commit -q $(grep -vf .gitignore <(ls)) -m "data files as at $(date)"
+    git push -q
+)
 
 exit $EXITSTATUS

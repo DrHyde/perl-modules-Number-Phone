@@ -16,7 +16,7 @@ my $csv = Text::CSV_XS->new({
 
 my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = my %statuses = ();
 
-open(my $sabc, '<', 'sabc.txt') || die("Couldn't open sabc.txt: $!\n");
+open(my $sabc, '<', 'data-files/sabc.txt') || die("Couldn't open sabc.txt: $!\n");
 print "Working on sabc.txt\n";
 while(my $row = $csv->getline($sabc)) {
     next if($#{$row} == 0 && $row->[0] =~ m{^\d\d/\d\d/\d{4} \d\d:\d\d:\d\d$});
@@ -27,7 +27,7 @@ while(my $row = $csv->getline($sabc)) {
     }
 }
 
-foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('.')) {
+foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
     print "Working on $xlsfile\n";
     my $parser   = Spreadsheet::XLSX->new($xlsfile);
 

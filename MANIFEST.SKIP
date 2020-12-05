@@ -5,6 +5,7 @@
 .ofcom-epoch
 .libphonenumber-tag
 ^build-
+^data-files
 S3.xls
 S5.xls
 S7.xls
