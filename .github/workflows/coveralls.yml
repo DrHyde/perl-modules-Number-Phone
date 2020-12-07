@@ -1,0 +1,19 @@
+on: [push, pull_request]
+name: Generate Coveralls report
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.32
+      - name: Run with coverage checking
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cpanm --installdeps .
+          cpanm Devel::Cover::Report::Coveralls
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+          ./build-data.sh
+          cover -ignore_re ^buildtools/ -test -report Coveralls
