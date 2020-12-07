@@ -12,8 +12,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
           cpanm --installdeps .
           cpanm Devel::Cover::Report::Coveralls
-          cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
           ./build-data.sh
           cover -ignore_re ^buildtools/ -test -report Coveralls
