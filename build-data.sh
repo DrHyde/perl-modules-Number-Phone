@@ -5,18 +5,20 @@
 # AND libphonenumber's PUBLISHED DATA.
 #
 # args:
-#   --force       force a complete rebuild
-#   --tag $tag    build using a particular libphonenumber git tag
-#                   implies --force
-#                   use latest in their repo if not specified
-#   --previoustag build using whatever --tag was used last time
+#   --force
+#       force a complete rebuild
+#   --libphonenumbertag $tag
+#       build using a particular libphonenumber git tag. Implies --force.
+#       Use latest in their repo if not specified
+#   --previouslibphonenumbertag
+#       build using whatever --libphonenumbertag was used last time
 #
-# Generally you will develop using --force and/or --tag, but then
-# when a dist is built it will be freshened with --previoustag to
+# Generally you will develop using --force and/or --libphonenumbertag, but then
+# when a dist is built it will be freshened with --previouslibphonenumbertag to
 # make sure you get what you expect, even if the libphonenumber gang
 # have created a new tag just before you build the dist
 
-TAG=unset
+LIBPHONENUMBERTAG=unset
 FORCE=0
 EXITSTATUS=0
 
@@ -41,12 +43,12 @@ EXITSTATUS=0
 )
 
 while [ "$#" != "0" ] ; do
-    if [ "$1" == "--tag" ]; then
+    if [ "$1" == "--libphonenumbertag" ]; then
         shift
-        TAG=$1
+        LIBPHONENUMBERTAG=$1
         FORCE=1
-    elif [ "$1" == "--previoustag" ]; then
-        TAG=$(cat .libphonenumber-tag)
+    elif [ "$1" == "--previouslibphonenumbertag" ]; then
+        LIBPHONENUMBERTAG=$(cat .libphonenumber-tag)
     elif [ "$1" == "--force" ]; then
         FORCE=1
     fi
@@ -54,8 +56,8 @@ while [ "$#" != "0" ] ; do
     shift
 done
 
-if [ "$TAG" == "unset" ]; then
-    TAG=$(cd libphonenumber; git tag --sort=creatordate|tail -1)
+if [ "$LIBPHONENUMBERTAG" == "unset" ]; then
+    LIBPHONENUMBERTAG=$(cd libphonenumber; git tag --sort=creatordate|tail -1)
 fi
 
 if [ "$FORCE" == "1" ]; then
@@ -68,9 +70,9 @@ if [ "$FORCE" == "1" ]; then
     rm t/example-phone-numbers.t
 fi
 
-# switch to our desired tag, and cache it for a future --previoustag build
-(cd libphonenumber; git checkout -q $TAG)
-echo $TAG > .libphonenumber-tag
+# switch to our desired tag, and cache it for a future --previouslibphonenumbertag build
+(cd libphonenumber; git checkout -q $LIBPHONENUMBERTAG)
+echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 
 # first get OFCOM data and NANP operator data
 # NANP data was found at:
@@ -238,7 +240,7 @@ OLD_N_P_DATA_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
 (
     echo \# automatically generated file, don\'t edit
     echo package Number::Phone::Data\;
-    echo \*Number::Phone::libphonenumber_tag = sub { \"$TAG\" }\;
+    echo \*Number::Phone::libphonenumber_tag = sub { \"$LIBPHONENUMBERTAG\" }\;
     echo \*Number::Phone::UK::data_source = sub { \"OFCOM at \".gmtime\($OFCOMDATETIME\).\" UTC\" }\;
     echo \*Number::Phone::NANP::CA::data_source = sub { \"CNAC at \".gmtime\($CADATETIME\).\" UTC\" }\;
     echo \*Number::Phone::NANP::US::data_source = sub { \"National Pooling Administrator at \".gmtime\($USDATETIME\).\" UTC\" }\;
@@ -259,7 +261,7 @@ OLD_N_P_DATA_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo UK data derived from OFCOM at $(perl -e "print ''.gmtime($OFCOMDATETIME)") UTC
     echo
-    echo Most other data derived from libphonenumber $TAG
+    echo Most other data derived from libphonenumber $LIBPHONENUMBERTAG
     echo
     echo =cut
 )>lib/Number/Phone/Data.pm
@@ -299,6 +301,7 @@ fi
     if test -e .gitignore; then
         git commit -q $(grep -vf .gitignore <(ls)) -m "data files as at $(date)"
         git push -q
+        git gc -q
     fi
 )
 

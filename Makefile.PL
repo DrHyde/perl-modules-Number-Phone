@@ -63,7 +63,7 @@ WriteMakefile(
     'Test::utf8'             => 0,
   },
   dist => {
-    PREOP => "./build-data.sh --previoustag"
+    PREOP => "./build-data.sh --previouslibphonenumbertag"
   },
   realclean => {
     FILES => "cover_db"
