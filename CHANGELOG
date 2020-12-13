@@ -1,3 +1,5 @@
+XXXX-XX-XX      XXXXXX  Switch to Data::CompactReadonly for UK database
+
 2020-12-04      3.7000  Bugfixes in dial_to for stubs and unallocated UK numbers;
                         Windows doesn't properly support fork() so skip the tests for it;
                         Minor documentation clarification re constructor;

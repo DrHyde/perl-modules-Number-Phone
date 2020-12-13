@@ -49,7 +49,7 @@ C<< Number::Phone::UK::Data->slurp() >> from your code, which will pull the enti
 into memory. This will take a few minutes, and on a 64-bit machine will consume of the
 order of 200MB of memory.
 
-The database uses L<DBM::Deep>. This apparently has some problems if you connect to it,
+The database uses L<Data::CompactReadonly>. This may have some problems if you connect to it,
 C<fork()>, and then try to access the database from multiple processes. We attempt to
 work around this by re-connecting to the database after forking. This is, of course,
 not a problem if you C<slurp()> the database before forking.

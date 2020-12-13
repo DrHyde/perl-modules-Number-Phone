@@ -9,7 +9,7 @@ task:
     - echo|cpan App::cpanminus
     - cpanm --quiet --notest File::ShareDir::Install
     - cpanm --quiet --notest XML::XPath
-    - cpanm --quiet --notest DBM::Deep
+    - cpanm --quiet --notest Data::CompactReadonly
     - cpanm --quiet --notest Digest::MD5
     - cpanm --quiet --notest File::Find::Rule
     - cpanm --quiet --notest Spreadsheet::XLSX
@@ -30,7 +30,7 @@ task:
     - export PERL5LIB=/Users/anka/perl5/lib/perl5
     - /Users/anka/perl5/bin/cpanm --quiet --notest File::ShareDir::Install
     - /Users/anka/perl5/bin/cpanm --quiet --notest XML::XPath
-    - /Users/anka/perl5/bin/cpanm --quiet --notest DBM::Deep
+    - /Users/anka/perl5/bin/cpanm --quiet --notest Data::CompactReadonly
     - /Users/anka/perl5/bin/cpanm --quiet --notest Digest::MD5
     - /Users/anka/perl5/bin/cpanm --quiet --notest File::Find::Rule
     - /Users/anka/perl5/bin/cpanm --quiet --notest Spreadsheet::XLSX

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use DBM::Deep;
+use Data::CompactReadonly;
 use Digest::MD5 'md5_base64';
 use Data::Dumper;
 use File::Find::Rule;
@@ -153,47 +153,47 @@ foreach my $datum (@telco_length_data) {
     $telco_and_length{$prefix} = $cache_key;
 }
 
-print "Creating DBM::Deep file ...\n";
+print "Creating Data::CompactReadonly file ...\n";
 mkdir('share');
 unlink('share/Number-Phone-UK-Data.db');
-my $dbm = DBM::Deep->new(
-    file => 'share/Number-Phone-UK-Data.db',
-    data_sector_size => 32,
+Data::CompactReadonly->create(
+    'share/Number-Phone-UK-Data.db',
+    {
+        geo_prefices         => { map { ($_, 1) } @geo_prefices },
+        network_svc_prefices => { map { ($_, 1) } @network_svc_prefices },
+        free_prefices        => { map { ($_, 1) } @free_prefices },
+        corporate_prefices   => { map { ($_, 1) } @corporate_prefices },
+        personal_prefices    => { map { ($_, 1) } @personal_prefices },
+        pager_prefices       => { map { ($_, 1) } @pager_prefices },
+        mobile_prefices      => { map { ($_, 1) } @mobile_prefices },
+        special_prefices     => { map { ($_, 1) } @special_prefices },
+        adult_prefices       => { map { ($_, 1) } @adult_prefices },
+        ip_prefices          => { map { ($_, 1) } @ip_prefices },
+        areanames            => { map { s/( National Dialling)//ig; $_; } %areanames },
+        telco_format         => \%telco_format_cache,
+        telco_and_length     => \%telco_and_length,
+        subclass             => {
+            # special case, UK-wide mobile range for use in drama,
+            # conflicts with 7700 being Jersey below
+            '7700900' => '',
+            # taken from libphonenumber
+            # checked on 2020-09-04
+            # next check due 2021-09-01 (annually)
+            (map { $_ => 'GG' } (
+                1481, 7781, 7839, 7911
+            )),
+            (map { $_ => 'JE' } (
+                1534, 7509, 7829, 7937, 7700, 7797
+            )),
+            (map { $_ => 'IM' } (
+                1624,
+                74576, 7524, 7624, 7924,
+                808162,
+                8440406, 8440906,
+                845624, 870624,
+                872299,
+                900624, 901624, 906624, 907624,
+            )),
+        }
+    }
 );
-
-$dbm->{geo_prefices}         = { map { ($_, 1) } @geo_prefices };
-$dbm->{network_svc_prefices} = { map { ($_, 1) } @network_svc_prefices };
-$dbm->{free_prefices}        = { map { ($_, 1) } @free_prefices };
-$dbm->{corporate_prefices}   = { map { ($_, 1) } @corporate_prefices };
-$dbm->{personal_prefices}    = { map { ($_, 1) } @personal_prefices };
-$dbm->{pager_prefices}       = { map { ($_, 1) } @pager_prefices };
-$dbm->{mobile_prefices}      = { map { ($_, 1) } @mobile_prefices };
-$dbm->{special_prefices}     = { map { ($_, 1) } @special_prefices };
-$dbm->{adult_prefices}       = { map { ($_, 1) } @adult_prefices };
-$dbm->{ip_prefices}          = { map { ($_, 1) } @ip_prefices };
-$dbm->{areanames}            = { map { s/( National Dialling)//ig; $_; } %areanames };
-$dbm->{telco_format} = \%telco_format_cache;
-$dbm->{telco_and_length} = \%telco_and_length;
-$dbm->{subclass} = {
-  # special case, UK-wide mobile range for use in drama,
-  # conflicts with 7700 being Jersey below
-  '7700900' => '',
-  # taken from libphonenumber
-  # checked on 2020-09-04
-  # next check due 2021-09-01 (annually)
-  (map { $_ => 'GG' } (
-      1481, 7781, 7839, 7911
-  )),
-  (map { $_ => 'JE' } (
-      1534, 7509, 7829, 7937, 7700, 7797
-  )),
-  (map { $_ => 'IM' } (
-      1624,
-      74576, 7524, 7624, 7924,
-      808162,
-      8440406, 8440906,
-      845624, 870624,
-      872299,
-      900624, 901624, 906624, 907624,
-  )),
-};

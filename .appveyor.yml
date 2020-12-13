@@ -8,7 +8,7 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%
   - cpanm --quiet --notest File::ShareDir::Install
   - cpanm --quiet --notest XML::XPath
-  - cpanm --quiet --notest DBM::Deep
+  - cpanm --quiet --notest Data::CompactReadonly
   - cpanm --quiet --notest Digest::MD5
   - cpanm --quiet --notest File::Find::Rule
   - cpanm --quiet --notest Spreadsheet::XLSX

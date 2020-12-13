@@ -48,7 +48,7 @@ WriteMakefile(
 
   PREREQ_PM    => {
     'Cwd'                    => 0,
-    'DBM::Deep'              => 2.0008,
+    'Data::CompactReadonly'  => '0.0.3',
     'Devel::CheckOS'         => '1.83',
     'Digest::MD5'            => 0,
     'File::Basename'         => 0,

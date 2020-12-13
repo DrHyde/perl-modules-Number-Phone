@@ -23,7 +23,7 @@ jobs:
             perl -v
             perl -MData::Dumper -e 'eval "use Number::Phone"; if(!$@) { print "Number::Phone is already installed, argh\n".Dumper(\%INC); exit(1) } else { print "Number::Phone not yet installed, hurrah\n"; exit(0) }'
             cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
-            cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+            cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
             cpanm --quiet --notest --installdeps .
             ./build-data.sh
             perl Makefile.PL
