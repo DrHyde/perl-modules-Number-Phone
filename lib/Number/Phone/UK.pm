@@ -170,7 +170,9 @@ sub is_valid {
         $cache->{$number}->{areaname} = (
             map {
                 Number::Phone::UK::Data::db()->{areanames}->{$_}
-            } grep { Number::Phone::UK::Data::db()->{areanames}->{$_} } @prefixes
+            } grep {
+                exists(Number::Phone::UK::Data::db()->{areanames}->{$_})
+            } @prefixes
         )[0];
         if(!grep { length($cache->{$number}->{subscriber}) == $_ } @subscriberlengths) {
             # number wrong length!
@@ -235,19 +237,21 @@ foreach my $is (qw(
         if(!exists($cache->{${$self}}->{"is_$is"})) {
           $cache->{${$self}}->{"is_$is"} = 
             grep {
-              Number::Phone::UK::Data::db()->{
-                { geographic      => 'geo_prefices',
-                  network_service => 'network_svc_prefices',
-                  tollfree        => 'free_prefices',
-                  corporate       => 'corporate_prefices',
-                  personal        => 'personal_prefices',
-                  pager           => 'pager_prefices',
-                  mobile          => 'mobile_prefices',
-                  specialrate     => 'special_prefices',
-                  adult           => 'adult_prefices',
-                  ipphone         => 'ip_prefices'
-                }->{$is}
-              }->{$_}
+              exists(
+                Number::Phone::UK::Data::db()->{
+                  { geographic      => 'geo_prefices',
+                    network_service => 'network_svc_prefices',
+                    tollfree        => 'free_prefices',
+                    corporate       => 'corporate_prefices',
+                    personal        => 'personal_prefices',
+                    pager           => 'pager_prefices',
+                    mobile          => 'mobile_prefices',
+                    specialrate     => 'special_prefices',
+                    adult           => 'adult_prefices',
+                    ipphone         => 'ip_prefices'
+                  }->{$is}
+                }->{$_}
+              );
             } _prefixes(_clean_number(${$self}));
         }
         $cache->{${$self}}->{"is_$is"};
