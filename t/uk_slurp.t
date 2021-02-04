@@ -11,6 +11,7 @@ if(!$ENV{AUTOMATED_TESTING}) {
     plan skip_all => "slurping is too slow so skipping, set AUTOMATED_TESTING to run this";
 } else {
     eval 'use Number::Phone::UK::Data';
+    die($@) if($@);
     diag("NB: this test takes a few minutes and lots of memory");
 
     my $time = time();
