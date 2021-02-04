@@ -26,7 +26,7 @@ my $data = {
     mobile      => ['+44 7624 000000', '+44 7457 600000'],
     geographic  => '+44 1624 710000',
     specialrate => '+44 8456247890',
-    operator    => qr/^(MANX TELECOM TRADING LIMITED|Sure \(Isle of Man\) Ltd)$/,
+    operator    => qr/^(MANX TELECOM TRADING LIMITED|Sure \(Isle of Man\) Limited)$/,
     regulator   => 'Isle of Man Communications Commission, http://www.gov.im/government/boards/telecommunications.xml'
   },
 };
