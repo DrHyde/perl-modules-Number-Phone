@@ -27,16 +27,16 @@ task:
     image: catalina-xcode-12.0
   test_script:
     - echo|cpan App::cpanminus
-    - export PERL5LIB=/Users/anka/perl5/lib/perl5
-    - /Users/anka/perl5/bin/cpanm --quiet --notest File::ShareDir::Install
-    - /Users/anka/perl5/bin/cpanm --quiet --notest XML::XPath
-    - /Users/anka/perl5/bin/cpanm --quiet --notest DBM::Deep
-    - /Users/anka/perl5/bin/cpanm --quiet --notest Digest::MD5
-    - /Users/anka/perl5/bin/cpanm --quiet --notest File::Find::Rule
-    - /Users/anka/perl5/bin/cpanm --quiet --notest Spreadsheet::XLSX
-    - /Users/anka/perl5/bin/cpanm --quiet --notest Text::CSV_XS
-    - /Users/anka/perl5/bin/cpanm --quiet --notest LWP::Protocol::https
-    - /Users/anka/perl5/bin/cpanm --installdeps .
+    - export PERL5LIB=/Users/admin/perl5/lib/perl5
+    - /Users/admin/perl5/bin/cpanm --quiet --notest File::ShareDir::Install
+    - /Users/admin/perl5/bin/cpanm --quiet --notest XML::XPath
+    - /Users/admin/perl5/bin/cpanm --quiet --notest DBM::Deep
+    - /Users/admin/perl5/bin/cpanm --quiet --notest Digest::MD5
+    - /Users/admin/perl5/bin/cpanm --quiet --notest File::Find::Rule
+    - /Users/admin/perl5/bin/cpanm --quiet --notest Spreadsheet::XLSX
+    - /Users/admin/perl5/bin/cpanm --quiet --notest Text::CSV_XS
+    - /Users/admin/perl5/bin/cpanm --quiet --notest LWP::Protocol::https
+    - /Users/admin/perl5/bin/cpanm --installdeps .
     - ./build-data.sh
     - perl Makefile.PL
     - make
