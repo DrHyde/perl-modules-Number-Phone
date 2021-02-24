@@ -98,7 +98,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
         http://static.ofcom.org.uk/static/numbering/S8.xlsx                          \
         http://static.ofcom.org.uk/static/numbering/S9.xlsx                          \
         https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip  \
-        http://www.cnac.ca/data/COCodeStatus_ALL.zip;
+        https://cnac.ca/data/COCodeStatus_ALL.zip;
     do
         # make sure that there's a file that curl -z can look at
         if test ! -e `basename $i`; then
