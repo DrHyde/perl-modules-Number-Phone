@@ -6,7 +6,6 @@
 
 use strict;
 use warnings;
-use Data::Dumper; local $Data::Dumper::Indent = 2;
 use XML::XPath;
 
 $| = 1;
