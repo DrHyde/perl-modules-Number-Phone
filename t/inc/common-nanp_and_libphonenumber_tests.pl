@@ -127,7 +127,7 @@ note("operator");
 skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     is($CLASS->new('+1 416 392 2489')->operator(), 'Bell Canada', "Canada");
 
-    is($CLASS->new('+1 216 208 0000')->operator(), 'ONVOY, LLC - OH',
+    is($CLASS->new('+1 216 208 0000')->operator(), 'ONVOY LLC - OH',
         "Unicode en-dash in some US data converted to hyphen");
 
     my @codes_seen = ();
