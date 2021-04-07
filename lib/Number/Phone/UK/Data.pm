@@ -22,7 +22,7 @@ sub db {
         # we want to re-open the DB if we've forked, because of
         # https://github.com/DrHyde/perl-modules-Number-Phone/issues/72
         $pid = $$;
-        $db = Data::CompactReadonly->read($file, tie => 1);
+        $db = Data::CompactReadonly->read($file, tie => 1, fast_collections => 1);
     }
     return $db
 }
