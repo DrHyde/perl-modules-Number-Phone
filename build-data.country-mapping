@@ -6,7 +6,6 @@
 
 use strict;
 use warnings;
-use Data::Dumper; local $Data::Dumper::Indent = 2;
 
 # use lib 'lib';
 # use Number::Phone::NANP::Data;

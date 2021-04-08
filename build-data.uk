@@ -5,7 +5,6 @@ use warnings;
 
 use Data::CompactReadonly;
 use Digest::MD5 'md5_base64';
-use Data::Dumper;
 use File::Find::Rule;
 use Spreadsheet::XLSX;
 use Text::CSV_XS;
@@ -30,9 +29,6 @@ while(my $row = $csv->getline($sabc)) {
 foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
     print "Working on $xlsfile\n";
     my $parser   = Spreadsheet::XLSX->new($xlsfile);
-
-    # use Data::Dumper; local $Data::Dumper::Indent = 1;
-    # die(Dumper($parser));
 
     my $worksheet = $parser->{Worksheet}->[0];
     my ( $row_min, $row_max ) = $worksheet->row_range();

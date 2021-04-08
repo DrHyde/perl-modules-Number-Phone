@@ -49,6 +49,7 @@ WriteMakefile(
   PREREQ_PM    => {
     'Cwd'                    => 0,
     'Data::CompactReadonly'  => '0.0.3',
+    'Data::Dumper::Concise'  => 0,
     'Devel::CheckOS'         => '1.83',
     'Digest::MD5'            => 0,
     'File::Basename'         => 0,
@@ -61,6 +62,7 @@ WriteMakefile(
     'Test::Differences'      => 0.62,
     'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
     'Test::utf8'             => 0,
+    'Test::Warnings'         => 0,
   },
   dist => {
     PREOP => "./build-data.sh --previouslibphonenumbertag"

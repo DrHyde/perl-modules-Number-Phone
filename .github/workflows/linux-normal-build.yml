@@ -23,10 +23,10 @@ jobs:
             perl -v
             perl -MData::Dumper -e 'eval "use Number::Phone"; if(!$@) { print "Number::Phone is already installed, argh\n".Dumper(\%INC); exit(1) } else { print "Number::Phone not yet installed, hurrah\n"; exit(0) }'
             cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
-            cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+            cpanm --quiet --notest Data::Dumper::Concise File::ShareDir::Install XML::XPath Data::CompactReadonly Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
             cpanm --quiet --notest --installdeps .
             ./build-data.sh
             perl Makefile.PL
             make test TEST_VERBOSE=1
             make install
-            perl -MData::Dumper -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->operator() =~ /vodafone/i) { print "N::P::UK built/installed correctly\n".Dumper(\%INC); exit(0) } else { print "N::P::UK build/install failed\n"; exit(1) }'
+            perl -MData::Dumper::Concise -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->operator() =~ /vodafone/i) { print "N::P::UK built/installed correctly\n".Dumper(\%INC); exit(0) } else { print "N::P::UK build/install failed\n"; exit(1) }'
