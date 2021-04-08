@@ -25,6 +25,10 @@ sub import {
   }
 }
 
+if(~0 == 4294967295) {
+    warn("Your perl only supports 32 bit ints; Number::Phone will require 64 bit ints from some time after 2023-06-01");
+}
+
 sub _find_data_file {
     my $wanted = shift;
 
@@ -200,6 +204,8 @@ as provided by all the subclasses on the CPAN won't do any harm.
 As of version 3.6000 the C<areaname> method pays attention to your locale
 settings and so you might start getting locale-appropriate versions of
 areanames instead of what you used to get.
+
+64 bit ints will be required some time after 2023-06-01.
 
 =head1 COMPATIBILTY WITH libphonenumber
 
