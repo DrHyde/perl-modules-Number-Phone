@@ -77,7 +77,13 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
         $telco  ||= '';
         $format ||= '';
 
-        next if($status !~ /^(Protected|Allocated ?(\(Closed Range\)|for Migration only)?)$/);
+        # checked on 2021-06-01
+        # next check due 2022-06-01 (annually)
+        next if(
+            $prefix !~ /^11[46]496$/ && # These drama prefixex have status 'Quarantined'
+                                        # unlike other drama prefixes which are 'Protected'
+            $status !~ /^(Protected|Allocated ?(\(Closed Range\)|for Migration only)?)$/
+        );
         $statuses{"$prefix"} = $status;
 
         if($prefix =~ /^[12]/)                         { push @geo_prefices, $prefix }
