@@ -1,6 +1,9 @@
-XXXX-XX-XX      XXXXXX  Data updates;
-                        Add deprecation warning for platforms with 32 bit int (support will
-                          go away some time after 2023-06-01 with no further warning)
+3.7003    2021-06-02
+
+- Data updates;
+
+- Add deprecation warning for platforms with 32 bit int (support will
+  go away some time after 2023-06-01 with no further warning)
 
 2021-03-09      3.7002  Data updates
 
