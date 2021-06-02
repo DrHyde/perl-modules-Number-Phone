@@ -6,6 +6,8 @@ use Exporter qw(import);
 our @EXPORT = qw(building_without_uk);
 
 $SIG{__WARN__} = sub {
+    my $warning = join('', @_);
+    return if($warning =~ /Your perl only supports 32 bit ints/);
     die("warning made fatal: ".join('', @_)."\n")
 };
 
