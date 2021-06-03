@@ -61,7 +61,6 @@ WriteMakefile(
     'Scalar::Util'           => 1.48,
     'Test::Differences'      => 0.62,
     'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
-    'Test::utf8'             => 0,
     'Test::Warnings'         => 0,
   },
   dist => {
