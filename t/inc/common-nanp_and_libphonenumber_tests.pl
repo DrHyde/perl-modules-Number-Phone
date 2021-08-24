@@ -148,7 +148,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         # at https://localcallingguide.com/xmlprefix.php?npa=658&blocks=1
         # ['+1 658 ??? 0000' => '???'],
         ['+1 664 349 0000' => 'CABLE & WIRELESS - MONTSERRAT'],
-        ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORP.'],
+        ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORPORATION'],
         ['+1 671 472 7679' => 'TELEGUAM HOLDINGS, LLC'],
         ['+1 684 248 0000' => 'AST TELECOM, LLC - AS'],
         ['+1 721 547 0000' => 'ST. MAARTEN TELEPHONE COMPANY, NV'],
@@ -194,16 +194,16 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         [ 'Bahamas', '+1 242 331 7000', undef ],
         [ 'Bahamas', '+1 242 331 8000', undef ],
         [ 'Bahamas', '+1 242 331 9000', undef ],
-        [ 'USA',     '+1 512 373 0000', 'SPRINT SPECTRUM L.P.' ],
+        [ 'USA',     '+1 512 373 0000', 'SPRINT SPECTRUM, L.P.' ],
         [ 'USA',     '+1 512 373 1000', undef ],
-        [ 'USA',     '+1 512 373 2000', 'SPRINT SPECTRUM L.P.', ],
+        [ 'USA',     '+1 512 373 2000', 'SPRINT SPECTRUM, L.P.', ],
         [ 'USA',     '+1 512 373 3000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL', ],
         [ 'USA',     '+1 512 373 4000', undef ],
-        [ 'USA',     '+1 512 373 5000', 'SPRINT SPECTRUM L.P.' ],
-        [ 'USA',     '+1 512 373 6000', 'SPRINT SPECTRUM L.P.' ],
+        [ 'USA',     '+1 512 373 5000', 'SPRINT SPECTRUM, L.P.' ],
+        [ 'USA',     '+1 512 373 6000', 'SPRINT SPECTRUM, L.P.' ],
         [ 'USA',     '+1 512 373 7000', undef ],
         [ 'USA',     '+1 512 373 8000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL' ],
-        [ 'USA',     '+1 512 373 9000', 'SPRINT SPECTRUM L.P.' ]
+        [ 'USA',     '+1 512 373 9000', 'SPRINT SPECTRUM, L.P.' ]
     ) {
         is(
             $CLASS->new($number->[1])->operator(),
