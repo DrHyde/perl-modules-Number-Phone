@@ -233,25 +233,34 @@ want to do this for compatibility or performance. Number::Phone::UK is quite slo
 sub _new_args {
     my $class = shift;
     my($country, $number) = @_;
+    die("Number::Phone->new(): too many params\n") if(exists($_[2]));
+
+    my $original_country;
 
     if(!defined($number)) { # one arg
-      $number = $country;
+        $number = $country;
     } elsif($country =~ /[a-z]/i) { # eg 'UK', '12345'
-      $number = '+'.
-                Number::Phone::Country::country_code($country).
-		$number
-        unless(index($number, '+'.Number::Phone::Country::country_code($country)) == 0);
+        $original_country = uc($country);
+        $number = '+'.
+                  Number::Phone::Country::country_code($country).
+                  $number
+          unless(index($number, '+'.Number::Phone::Country::country_code($country)) == 0);
     } else { # (+)NNN
-      $number = join('', grep { defined } ($country, $number));
+        $number = join('', grep { defined } ($country, $number));
     }
 
-    die("Number::Phone->new(): too many params\n")
-        if(exists($_[2]));
     $number =~ s/[^+0-9]//g;
-
     $number = "+$number" unless($number =~ /^\+/);
+
     $country = Number::Phone::Country::phone2country($number) or return;
-    return $country, $number;
+
+    # That Mussolini bloke has a lot to answer for. Never mind his
+    # poor taste in friends, this is HIS FAULT. Stupid little short-arse.
+    if($country eq 'VA' && $original_country eq 'IT') {
+        $original_country = 'VA';
+    }
+
+    return ($original_country || $country), $number;
 }
 
 sub new {
@@ -295,6 +304,7 @@ sub _make_stub_object {
             number       => $local_number,
         }, 'Number::Phone::StubCountry');
     }
+
     $stub_class->new($number);
 }
 
