@@ -32,7 +32,7 @@ WriteMakefile(
     },
   VERSION_FROM => 'lib/Number/Phone.pm',
   BUILD_REQUIRES => {
-    'ExtUtils::MakeMaker'     => 6.52,
+    'ExtUtils::MakeMaker'     => 6.64, # TEST_REQUIRES (CONFIGURE_REQUIRES is in 6.52; BUILD_REQUIRES in 6.56)
     'ExtUtils::Manifest'      => 0,
     'ExtUtils::Install'       => 0,
     'File::ShareDir::Install' => 0.11,
@@ -40,12 +40,11 @@ WriteMakefile(
   },
 
   CONFIGURE_REQUIRES => {
-    'ExtUtils::MakeMaker'     => 6.52,
+    'ExtUtils::MakeMaker'     => 6.64,
     'ExtUtils::Manifest'      => 0,
     'ExtUtils::Install'       => 0,
     'File::ShareDir::Install' => 0.11
   },
-
   PREREQ_PM    => {
     'Cwd'                    => 0,
     'DBM::Deep'              => 2.0008,
@@ -59,6 +58,8 @@ WriteMakefile(
     'I18N::LangTags'         => 0,
     'I18N::LangTags::Detect' => 0,
     'Scalar::Util'           => 1.48,
+  },
+  TEST_REQUIRES => {
     'Test::Differences'      => 0.62,
     'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
     'Test::Warnings'         => 0,
