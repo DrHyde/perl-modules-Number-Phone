@@ -4,7 +4,7 @@ use strict;
 
 use base 'Number::Phone::UK';
 
-our $VERSION = 1.0;
+our $VERSION = 1.1;
 
 =head1 NAME
 
@@ -39,7 +39,7 @@ Returns information about the national telecomms regulator.
 
 =cut
 
-sub regulator { return 'Office of Utility Regulation, http://www.cicra.gg'; }
+sub regulator { return 'Guernsey Competition & Regulatory Authority, https://www.gcra.gg/' }
 
 =back
 

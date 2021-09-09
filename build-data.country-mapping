@@ -158,24 +158,51 @@ foreach my $tuple (
     [ 390549  => 'SM' ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
 
     # sourced from libphonenumber
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
-    [ 441481 => 'GG' ],
-    [ 447781 => 'GG' ],
-    [ 447839 => 'GG' ],
-    [ 447911 => 'GG' ],
-    [ 441624 => 'IM' ],
-    [ 447457 => 'IM' ],
-    [ 4474576 => 'IM' ],
-    [ 447524 => 'IM' ],
-    [ 447624 => 'IM' ],
-    [ 447924 => 'IM' ],
-    [ 441534 => 'JE' ],
-    [ 447509 => 'JE' ],
-    [ 447829 => 'JE' ],
-    [ 447937 => 'JE' ],
-    [ 447700 => 'JE' ],
-    [ 447797 => 'JE' ],
+    # checked on 2021-09-02
+    # next check due 2022-09-01 (annually)
+    (
+        map {
+            [ '44'.$_ => 'GG' ]
+        } (
+            1481, 7781, 7839, 79111, 79117
+        )
+    ),
+    (
+        map {
+            [ '44'.$_ => 'IM' ]
+        } (
+          1624,
+          74576,
+          7524,
+          76240,
+          76241,
+          76242,
+          76243,
+          76244,
+          762450,
+          762456,
+          76246,
+          76248,
+          76249,
+          7924,
+          808162,
+          8440406, 8440906,
+          845624, 870624,
+          872299,
+          900624, 901624, 906624, 907624,
+      )
+    ),
+    (
+        map {
+            [ '44'.$_ => 'JE' ]
+        } (
+          1534, 7509, 7829, 7937,
+          77003,
+          77007,
+          77008,
+          7797,
+        )
+    ),
 
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Cura%C3%A7ao_and_the_Caribbean_Netherlands
     # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications

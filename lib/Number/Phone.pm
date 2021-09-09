@@ -14,7 +14,7 @@ use Number::Phone::Data;
 use Number::Phone::StubCountry;
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '3.7003';
+our $VERSION = '3.8000';
 
 my $NOSTUBS = 0;
 sub import {
@@ -207,6 +207,11 @@ areanames instead of what you used to get.
 
 64 bit ints will be required some time after 2023-06-01.
 
+3.8000 is a bit stricter about numbers and countries not matching in the
+constructor. This may affect users who specify places like Guernsey but
+provide numbers from Jersey or the Isle of Man, all three of which are separate
+jurisdictions squatting on random places all over the UK's number plan.
+
 =head1 COMPATIBILTY WITH libphonenumber
 
 libphonenumber is a similar project for other languages, maintained
@@ -254,10 +259,14 @@ sub _new_args {
 
     $country = Number::Phone::Country::phone2country($number) or return;
 
-    # That Mussolini bloke has a lot to answer for. Never mind his
-    # poor taste in friends, this is HIS FAULT. Stupid little short-arse.
-    if($country eq 'VA' && $original_country eq 'IT') {
-        $original_country = 'VA';
+    # special cases where you can legitimately ask for a containing country (eg
+    # GB) and get back a sub-country (eg GG, which squats upon parts of the GB
+    # number plan)
+    if(
+        ($country eq 'VA'           && $original_country eq 'IT') ||
+        ($country =~ /^(IM|GG|JE)$/ && $original_country eq 'GB')
+    ) {
+        $original_country = $country;
     }
 
     return ($original_country || $country), $number;
@@ -269,9 +278,11 @@ sub new {
     return undef unless($country);
     if ($number =~ /^\+1/) {
         $country = "NANP";
-    } elsif ($country =~ /^(?:GB|GG|JE|IM)$/) {
+    } elsif($country eq 'GB') {
         # for hysterical raisins
         $country = 'UK';
+    } elsif($country =~ /^(GG|JE|IM)$/) {
+        $country = "UK::$country";
     }
     eval "use Number::Phone::$country";
     if($@ || !"Number::Phone::$country"->isa('Number::Phone')) {
@@ -702,8 +713,28 @@ you're talking about, or an object based on Google's libphonenumber
 data if there's no complete country-specific module available.
 
 It is generally assumed that numbers are complete and unambiguous - ie you
-can't pass just the local part to the constructor if the number has an area
-code. Any subclass's constructor which contravenes this should document it.
+can't normally pass just the local part to the constructor if the number has an
+area code. Any subclass's constructor which contravenes this should document
+it.
+
+If you call it with two parameters, then the two must match. ie, if you
+do this:
+
+    Number::Phone->new("FR", "+441424220001")
+
+you will get C<undef> back because whiel the number is valid, it ain't French.
+This usually applies to the case where a single country's number plan contains
+other jurisdictions, such as the case of Guernsey, Jersey and the Isle of Man
+squatting on the United Kingdom's number plan. For example, this fails, because
+the number is from Guernsey, not Jersey:
+
+    Number::Phone->new('JE', '01481256789')
+
+For backward compatibility and convenience, however, if you ask for an object
+representing a number in the "host" country but pass a number for the
+"sub-country" then you'll get back a valid object representing the sub-country:
+
+    my $gg_number = Number::Phone->new('GB', '01481256789')
 
 =back
 

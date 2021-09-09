@@ -7,7 +7,7 @@ use Number::Phone::UK::Data;
 
 use base 'Number::Phone';
 
-our $VERSION = '1.70';
+our $VERSION = '1.71';
 
 my $cache = {};
 
@@ -30,7 +30,9 @@ sub new {
     $number = '+44'._clean_number($number);
     if(is_valid($number)) {
         $number =~ s/^0/+44/;
-        return bless(\$number, $class->_get_class(_clean_number($number)));
+        my $target_class = $class->_get_class(_clean_number($number));
+        return undef if($class ne $target_class);
+        return bless(\$number, $target_class);
     } else { return undef; }
 }
 
@@ -88,7 +90,8 @@ sub _get_class {
     if(exists(Number::Phone::UK::Data::db()->{subclass}->{$prefix})) {
       return $class if(Number::Phone::UK::Data::db()->{subclass}->{$prefix} eq '');
 
-      my $subclass = join('::', $class, Number::Phone::UK::Data::db()->{subclass}->{$prefix});
+      my $desired_subclass = Number::Phone::UK::Data::db()->{subclass}->{$prefix};
+      my $subclass = "Number::Phone::UK::$desired_subclass";
       eval "use $subclass";
       return $subclass;
     }

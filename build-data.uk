@@ -179,7 +179,8 @@ $dbm->{telco_and_length} = \%telco_and_length;
 $dbm->{subclass} = {
   # taken from libphonenumber
   # checked on 2021-09-02
-  # next check due 2022-10-01 (annually)
+  # next check due 2022-09-01 (annually)
+  # NB for all of these also check build-data.country-mapping
   (map { $_ => 'GG' } (
       1481, 7781, 7839, 79111, 79117
   )),

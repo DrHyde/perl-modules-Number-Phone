@@ -1,7 +1,20 @@
-XXXXXX    XXXXXXXXXX
+3.8000    XXXXXXXXXX
 
 - Bugfix for numbers in local format which may be ambiguous for UK Crown Dependencies
   when using Number::Phone::Lib
+
+- Bugfix for when you ask for an object representing a number in one country
+  but provide a number for a different country. This mostly affects countries
+  that contain other jurisdictions squatting on parts of their number plan,
+  such as the Vatican in the Italian plan, and the Crown Dependencies in the UK
+  plan. It is now an error to ask for an object representing a number in a
+  'sub-country' which isn't valid in that sub-country (eg asking for a Jersey
+  object but passing a Guernsey number); but if you ask for an object representing
+  the 'super-country' but pass a 'sub-country' number you'll still get an object
+  representing the sub-country. ie, say "gimme a GB object for this 'ere Guernsey number"
+  and you'll get a Guernsey object.
+
+- Data updates
 
 3.7003    2021-06-02
 
