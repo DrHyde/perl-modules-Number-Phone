@@ -1,8 +1,15 @@
 use strict;
 use warnings;
 
+use lib 't/inc';
+use nptestutils;
+# *these* tests want to fall back to using stubs instead of dying
+BEGIN { shift @INC }
+# don't want to pick up a module from a previous installation!
+use if building_without_uk, qw(Devel::Hide Number::Phone::UK);
+
+use Data::Dumper::Concise;
 use Test::More;
-use Test::Differences;
 
 use Number::Phone;
 use Number::Phone::Lib;
@@ -14,7 +21,8 @@ foreach my $CC (qw(GB GG IM JE)) {
 }
 
 foreach my $class (qw(Number::Phone Number::Phone::Lib)) {
-    ok(!defined($class->new('+44402609')), "$class: +44 XXXXXX is invalid, even if XXXXXX is a valid local number in a crown dependency (we ignore nationalPrefixTransformRule in their stubs)");
+    my $object = $class->new('+44402609');
+    ok(!defined($object), "$class: +44 XXXXXX is invalid, even if XXXXXX is a valid local number in a crown dependency (we ignore nationalPrefixTransformRule in their stubs)");
 }
 
 foreach my $tuple (
@@ -27,10 +35,10 @@ foreach my $tuple (
         my $object = Number::Phone::Lib->new($country, $number);
         if($country eq 'GB') {
             ok($object->isa("Number::Phone::StubCountry::$actual_country"),
-                "Number::Phone::Lib->new('GB', '$number') returns a Number::Phone::StubCountry::$actual_country");
+                "Number::Phone::Lib->new('GB', '$number') returns a Number::Phone::StubCountry::$actual_country") || diag($object);
         } elsif($country eq $actual_country) {
             ok($object->isa("Number::Phone::StubCountry::$actual_country"),
-                "Number::Phone::Lib->new('$country', '$number') returns a Number::Phone::StubCountry::$actual_country");
+                "Number::Phone::Lib->new('$country', '$number') returns a Number::Phone::StubCountry::$actual_country") || diag($object);
         } else {
             ok(!defined($object),
                 "Number::Phone::Lib->new('$country', '$number') fails because $number is actually $actual_country");
@@ -38,11 +46,21 @@ foreach my $tuple (
 
         $object = Number::Phone->new($country, $number);
         if($country eq 'GB') {
-            ok($object->isa("Number::Phone::UK::$actual_country"),
-                "Number::Phone->new('GB', '$number') returns a Number::Phone::UK::$actual_country");
+            if(building_without_uk) {
+                ok($object->isa("Number::Phone::StubCountry::$actual_country"),
+                    "Number::Phone->new('GB', '$number') returns a Number::Phone::StubCountry::$actual_country when building --without_uk") || diag($object);
+            } else {
+                ok($object->isa("Number::Phone::UK::$actual_country"),
+                    "Number::Phone->new('GB', '$number') returns a Number::Phone::UK::$actual_country") || diag($object);
+            }
         } elsif($country eq $actual_country) {
-            ok($object->isa("Number::Phone::UK::$actual_country"),
-                "Number::Phone->new('$country', '$number') returns a Number::Phone::UK::$actual_country");
+            if(building_without_uk) {
+                ok($object->isa("Number::Phone::StubCountry::$actual_country"),
+                    "Number::Phone->new('$country', '$number') returns a Number::Phone::StubCountry::$actual_country when building --without_uk") || diag($object);
+            } else {
+                ok($object->isa("Number::Phone::UK::$actual_country"),
+                    "Number::Phone->new('$country', '$number') returns a Number::Phone::UK::$actual_country") || diag($object);
+            }
         } else {
             ok(!defined($object),
                 "Number::Phone->new('$country', '$number') fails because $number is actually $actual_country") || diag($object);

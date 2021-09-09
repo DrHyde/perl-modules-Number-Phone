@@ -290,8 +290,9 @@ sub new {
             # a test unexpectedly tried to load Number::Phone::UK, argh!
             die $@
         }
-        # undo the above transformation, it's GB in stub-land
-        $country = 'GB' if($country eq 'UK');
+        # undo the above transformations, for stub-land
+        if($country eq 'UK') { $country = 'GB' }
+        if($country =~ /^UK::(..)/) { $country = $1 }
         return $class->_make_stub_object($number, $country)
     }
     return "Number::Phone::$country"->new($number);
