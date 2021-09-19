@@ -1,4 +1,4 @@
-3.8000    XXXXXXXXXX
+3.8000    2021-09-19
 
 - Bugfix for numbers in local format which may be ambiguous for UK Crown Dependencies
   when using Number::Phone::Lib
