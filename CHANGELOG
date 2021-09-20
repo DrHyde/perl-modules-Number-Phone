@@ -1,3 +1,8 @@
+XXXXXX    XXXXXXXXXX
+
+- Tweak build to use more compatible options to tar(1) so some really old tars
+  can read the archive correctly
+
 3.8000    2021-09-19
 
 - Bugfix for numbers in local format which may be ambiguous for UK Crown Dependencies
