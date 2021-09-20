@@ -14,7 +14,7 @@ use Number::Phone::Data;
 use Number::Phone::StubCountry;
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '3.8000';
+our $VERSION = '3.8001';
 
 my $NOSTUBS = 0;
 sub import {
@@ -48,7 +48,7 @@ sub _find_data_file {
 
     if(!$file) {
         die(
-            "Couldn't find a UK data file amongst:\n".
+            "Couldn't find data file '$wanted' amongst:\n".
             join('', map { "  $_\n" } @candidate_files)
         );
     }
