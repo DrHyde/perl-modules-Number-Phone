@@ -1,4 +1,4 @@
-XXXXXX    XXXXXXXXXX
+3.8001    2021-09-21
 
 - Tweak build to use more compatible options to tar(1) so some really old tars
   can read the archive correctly
