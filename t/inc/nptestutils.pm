@@ -2,6 +2,8 @@ package nptestutils;
 
 use strict;
 use warnings;
+
+use Carp;
 use Exporter qw(import);
 our @EXPORT = qw(building_without_uk);
 
@@ -12,7 +14,7 @@ $SIG{__WARN__} = sub {
         $warning =~ /^Devel::Hide/ ||
         $warning =~ /^Can't locate.*\(hidden\)/
     );
-    die("warning made fatal: ".join('', @_)."\n")
+    confess("warning made fatal: ".join('', @_)."\n")
 };
 
 unshift @INC, sub {
