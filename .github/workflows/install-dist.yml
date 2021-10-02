@@ -53,9 +53,12 @@ jobs:
             sudo pkg_add go git gmake &&
             git clone https://github.com/cli/cli.git gh-cli &&
             (cd gh-cli && sudo gmake install) &&
+            rm -rf gh-cli &&
             sudo pkg_delete gmake &&
             cpan App::cpanminus &&
             echo '${{ secrets.GITHUB_TOKEN }}'|gh auth login --with-token &&
+            pwd &&
+            df -h &&
             gh run download -n dist-for-installation-test &&
             /home/runner/perl5/bin/cpanm --notest --installdeps *.tar.gz &&
             /home/runner/perl5/bin/cpanm -v *.tar.gz
