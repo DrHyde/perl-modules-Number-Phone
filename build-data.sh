@@ -236,7 +236,7 @@ else
 fi
 
 # update Number::Phone::Data with update date/times and libphonenumber tag
-OLD_N_P_DATA_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
+OLD_N_P_DATA_MD5=$(md5 lib/Number/Phone/Data.pm 2>/dev/null)
 (
     echo \# automatically generated file, don\'t edit
     echo package Number::Phone::Data\;
@@ -265,7 +265,7 @@ OLD_N_P_DATA_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo =cut
 )>lib/Number/Phone/Data.pm
-if [ "$OLD_N_P_DATA_MD5" != "$(md5sum lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+if [ "$OLD_N_P_DATA_MD5" != "$(md5 lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
 fi
 
