@@ -60,10 +60,8 @@ jobs:
             echo '${{ secrets.GITHUB_TOKEN }}'|gh auth login --with-token &&
             gh run download -n dist-for-installation-test &&
             mkdir dist-for-test &&
-            tar -C dist-for-test -xzvf *.tar.gz &&
-            find dist-for-test -type d -print &&
+            tar -C dist-for-test -xzf *.tar.gz &&
             cd dist-for-test/* &&
-            pwd &&
-            (/home/runner/perl5/bin/cpanm --quiet --notest --installdeps . || cat /home/runner/.cpanm/work/*/build.log) &&
+            /home/runner/perl5/bin/cpanm --quiet --notest --installdeps . &&
             /home/runner/perl5/bin/cpanm -v .
 
