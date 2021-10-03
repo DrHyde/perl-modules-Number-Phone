@@ -36,6 +36,27 @@ jobs:
       - name: Install on Linux
         run: |
           cpanm *.tar.gz
+  install-openbsd-cleaner:
+    runs-on: macos-10.15
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist-for-installation-test
+      - name: Install on OpenBSD
+        uses: cross-platform-actions/action@v0.2.0
+        with:
+          operating_system: openbsd
+          version: 6.9
+          shell: bash
+          run: |
+            ls &&
+            mkdir dist-for-test &&
+            tar -C dist-for-test -xzf *.tar.gz &&
+            cd dist-for-test/* &&
+            /home/runner/perl5/bin/cpanm --quiet --notest --installdeps . &&
+            /home/runner/perl5/bin/cpanm -v .
   install-openbsd:
     runs-on: macos-10.15
     needs: build
