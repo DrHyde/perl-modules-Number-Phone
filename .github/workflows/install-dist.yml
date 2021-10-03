@@ -55,6 +55,8 @@ jobs:
             mkdir dist-for-test &&
             tar -C dist-for-test -xzf *.tar.gz &&
             cd dist-for-test/* &&
+            ls &&
+            cpan App::cpanminus &&
             /home/runner/perl5/bin/cpanm --quiet --notest --installdeps . &&
             /home/runner/perl5/bin/cpanm -v .
   install-openbsd:
