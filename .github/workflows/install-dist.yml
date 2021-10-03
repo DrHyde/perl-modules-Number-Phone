@@ -61,6 +61,9 @@ jobs:
             pwd &&
             df -h &&
             gh run download -n dist-for-installation-test &&
-            /home/runner/perl5/bin/cpanm --quiet --notest --installdeps *.tar.gz &&
-            /home/runner/perl5/bin/cpanm -v *.tar.gz
+            tar xzvf -C dist-for-test *.tar.gz &&
+            find dist-for-test -type d -print &&
+            cd dist-for-test &&
+            /home/runner/perl5/bin/cpanm --quiet --notest --installdeps .
+            /home/runner/perl5/bin/cpanm -v .
 
