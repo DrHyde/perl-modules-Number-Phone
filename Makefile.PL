@@ -69,7 +69,7 @@ WriteMakefile(
   },
   dist => {
     PREOP    => "./build-data.sh --previouslibphonenumbertag",
-    # TARFLAGS => "--format ustar -c -v -f",
+    TARFLAGS => "--format ustar -c -v -f",
   },
   realclean => {
     FILES => "cover_db"
