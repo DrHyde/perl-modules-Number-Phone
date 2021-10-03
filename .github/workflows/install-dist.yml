@@ -65,6 +65,6 @@ jobs:
             tar -C dist-for-test -xzvf *.tar.gz &&
             find dist-for-test -type d -print &&
             cd dist-for-test &&
-            /home/runner/perl5/bin/cpanm --quiet --notest --installdeps .
+            (/home/runner/perl5/bin/cpanm --quiet --notest --installdeps . || cat /home/runner/.cpanm/work/*/build.log) &&
             /home/runner/perl5/bin/cpanm -v .
 
