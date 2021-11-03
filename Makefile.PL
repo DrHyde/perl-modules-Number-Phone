@@ -11,8 +11,8 @@ BEGIN {
     shift @INC;
 }
 
-while(@ARGV) {
-    if(shift() eq '--without_uk') {
+foreach my $arg (@ARGV) {
+    if($arg eq '--without_uk') {
         $Number::Phone::BuildTools::without_uk++;
     }
 }
