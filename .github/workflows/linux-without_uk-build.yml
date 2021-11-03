@@ -26,7 +26,7 @@ jobs:
             cpanm --quiet --notest Data::Dumper::Concise File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
             cpanm --quiet --notest --installdeps .
             ./build-data.sh
-            perl Makefile.PL --without_uk
+            perl Makefile.PL --without_uk INSTALL_BASE=$HOME/test_install
             make test TEST_VERBOSE=1
             make install
-            perl -MData::Dumper::Concise -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->isa("Number::Phone::StubCountry::GB")) { print "N::P built/installed correctly without N::P::UK\n".Dumper(\%INC); exit(0) } else { print "N::P build/install failed\n"; exit(1) }'
+            perl -I$HOME/test_install/lib/perl5 -MData::Dumper::Concise -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->isa("Number::Phone::StubCountry::GB")) { print "N::P built/installed correctly without N::P::UK\n".Dumper(\%INC); exit(0) } else { print "N::P build/install failed\n"; exit(1) }'
