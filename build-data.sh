@@ -22,6 +22,9 @@ LIBPHONENUMBERTAG=unset
 FORCE=0
 EXITSTATUS=0
 
+# some machines have one of 'em, some have t'other
+MD5=$(which md5 || which md5sum)
+
 # now get an up-to-date libphonenumber and data-files
 (
     (cd libphonenumber || (echo Checking out libphonenumber ...; git clone https://github.com/googlei18n/libphonenumber.git))
@@ -236,7 +239,7 @@ else
 fi
 
 # update Number::Phone::Data with update date/times and libphonenumber tag
-OLD_N_P_DATA_MD5=$(md5 lib/Number/Phone/Data.pm 2>/dev/null)
+OLD_N_P_DATA_MD5=$($MD5 lib/Number/Phone/Data.pm 2>/dev/null)
 (
     echo \# automatically generated file, don\'t edit
     echo package Number::Phone::Data\;
@@ -265,7 +268,7 @@ OLD_N_P_DATA_MD5=$(md5 lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo =cut
 )>lib/Number/Phone/Data.pm
-if [ "$OLD_N_P_DATA_MD5" != "$(md5 lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+if [ "$OLD_N_P_DATA_MD5" != "$($MD5 lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
 fi
 
