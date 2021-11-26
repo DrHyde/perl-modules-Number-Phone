@@ -22,7 +22,8 @@ sub db {
         # we want to re-open the DB if we've forked, because of
         # https://github.com/DrHyde/perl-modules-Number-Phone/issues/72
         $pid = $$;
-        $db = DBM::Deep->new($file);
+        open(my $ro_fh, '<:bytes', $file) || die(__PACKAGE__.": can't open $file: $!\n");
+        $db = DBM::Deep->new(fh => $ro_fh);
     }
     return $db
 }
