@@ -3,6 +3,9 @@ X.XXXX    XXXX-XX-XX
 - Fix Makefile.PL to not consume arguments that my code doesn't know about but
   which are relevant to EU::MM (https://github.com/DrHyde/perl-modules-Number-Phone/pull/106)
 
+- Explicitly open databases read-only so it works on a RO filesystem
+  (https://github.com/DrHyde/perl-modules-Number-Phone/issues/107)
+
 3.8001    2021-09-21
 
 - Tweak build to use more compatible options to tar(1) so some really old tars
