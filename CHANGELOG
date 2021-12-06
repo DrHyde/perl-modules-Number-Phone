@@ -1,10 +1,12 @@
-X.XXXX    XXXX-XX-XX
+3.8002    2021-12-06
 
 - Fix Makefile.PL to not consume arguments that my code doesn't know about but
   which are relevant to EU::MM (https://github.com/DrHyde/perl-modules-Number-Phone/pull/106)
 
 - Explicitly open databases read-only so it works on a RO filesystem
   (https://github.com/DrHyde/perl-modules-Number-Phone/issues/107)
+
+- Data updates
 
 3.8001    2021-09-21
 
