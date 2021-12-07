@@ -51,8 +51,9 @@ our %NANP_areas = (
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
-        # see https://www.allareacodes.com/area_code_listings_by_state.htm
-        # and https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#United_States
+        # see https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#United_States
+        #   and https://www.allareacodes.com/area_code_listings_by_state.htm
+        #   but the latter doesn't contain some overlays that are about to come into service
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
         # checked on 2021-12-06
