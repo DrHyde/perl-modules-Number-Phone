@@ -146,8 +146,8 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
     
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-06
+    # next check due 2022-12-01 (annually)
     [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 262269  => 'YT' ], # Mayotte fixed lines, see http://www.wtng.info/wtng-262-fr.html
@@ -208,10 +208,11 @@ foreach my $tuple (
     # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
     #   NB the company listed there for +61 406 went bust
     # see http://wtng.info/ccod-6.html#CC61 (Christmas Island)
+    #   2G mobile only, no data: https://parksaustralia.gov.au/christmas/plan/phone-web/
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Norfolk_Island
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-0r64
+    # next check due 2022-12-01 (annually)
     [ 5999    => 'CW' ], # Curacao
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
@@ -223,8 +224,9 @@ foreach my $tuple (
     [ 6723    => 'NF' ], # Norfolk Island
 
     # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
-    # checked on 2020-12-04
-    # next check due 2022-12-01 (bi-annually)
+    # NB planned change to +997
+    # checked on 2021-12-06
+    # next check due 2022-12-01 (annually)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 

@@ -32,22 +32,22 @@ sub phone2country {
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
-        # checked on 2021-06-02
-        # next check due 2021-12-01 (semi-annually)
+        # checked on 2021-12-06
+        # next check due 2022-06-01 (semi-annually)
         my $canada = join('|', qw(
-            204 226 236 249 250 289
+            204 226 236 249 250 263 289
             306 343 354 365 367 368
-            403 416 418 428 431 437 438 450 474
+            403 416 418 428 431 437 438 450 468 474
             506 514 519 548 579 581 587
-            604 613 639 647 672
-            705 709 742 778 780 782
+            604 613 639 647 672 683
+            705 709 742 753 778 780 782
             807 819 825 867 873 879
             902 905
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_600
-        # checked on 2020-06-06
-        # next check due 2021-12-01 (semi-annually)
+        # checked on 2021-12-06
+        # next check due 2022-06-01 (semi-annually)
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
@@ -55,8 +55,8 @@ our %NANP_areas = (
         # and https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#United_States
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
-        # checked on 2021-06-02
-        # next check due 2021-12-01 (semi-annually)
+        # checked on 2021-12-06
+        # next check due 2022-06-01 (semi-annually)
         my $usa = join('|', qw(
             205 251 256 334 659 938
             907
@@ -112,13 +112,13 @@ our %NANP_areas = (
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_710
-        # checked on 2019-12-11
-        # next check due 2021-12-01 (bi-annually)
+        # checked on 2021-12-06
+        # next check due 2023-12-01 (bi-annually)
         $usa    = join('|', $usa, 710);
     },
     # see https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Countries_and_territories
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-06
+    # next check due 2022-12-01 (annually)
     AS => '684',         # American Samoa
     AI => '264',         # Anguilla
     AG => '268',         # Antigua and Barbude
