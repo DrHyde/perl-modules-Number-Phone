@@ -248,8 +248,8 @@ foreach my $tuple (
     # see https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
     #     https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
     #     wtng.info
-    # checked on 2019-12-11
-    # next check due 2021-12-01 (bi-annually)
+    # checked on 2022-03-04
+    # next check due 2024-12-01 (bi-annually)
     [ 800     => 'InternationalFreephone'    ],
     [ 808     => 'SharedCostServices'        ],
     [ 870     => 'Inmarsat'                  ],
@@ -262,8 +262,8 @@ foreach my $tuple (
     [ 881     => 'GMSS',                     ], # \ Sat-phones
     [ 8810    => 'ICO',                      ], # |
     [ 8811    => 'ICO',                      ], # |
-    # 8812 and 8813 assigned to Ellipso         # |
-    # but that apparently never launched        # |
+    # 8812 is vacant (Ellipso never launched)   # |
+    # 8813 is vacant (Ellipso never launched)   # |
     # 8814 is spare                             # |
     # 8815 is spare                             # |
     [ 8816    => 'Iridium',                  ], # |
@@ -271,14 +271,15 @@ foreach my $tuple (
     [ 8818    => 'Globalstar',               ], # |
     [ 8819    => 'Globalstar',               ], # /
     [ 882     => 'InternationalNetworks'     ], # many allocations not listed as I don't know if they're diallable, see wtng.info
-    [ 88213   => 'Telespazio'                ], # Sat-ohone
+    [ 88213   => 'Telespazio'                ], # Sat-phone
     [ 88216   => 'Thuraya'                   ], # Sat-phone
     [ 88220   => 'GarudaMobile'              ], # Sat-phone
+    [ 88234   => 'AQ'                        ], # Antarctica, via Global Networks Switzerland, http://wtng.info/wtng-spe.html#Networks
     [ 883     => 'InternationalNetworks'     ],
     [ 883120  => 'Telenor'                   ],
     [ 883130  => 'Mobistar'                  ],
     [ 883140  => 'MTTGlobalNetworks'         ],
-    [ 8835100 => 'VOXBON'                    ],
+    # 8835100 => 'VOXBON' # decommissioned, https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
     [ 888     => 'TelecomsForDisasterRelief' ],
     # 979 is used for testing when we fail to load a module when we
     # know what "country" it is
