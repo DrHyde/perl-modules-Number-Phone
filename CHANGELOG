@@ -1,3 +1,8 @@
+3.8003    2022-03-05
+
+- New Canadian area codes
+- +882 34 recognised as Antarctica, via Global Networks Switzerland
+
 3.8002    2021-12-06
 
 - Fix Makefile.PL to not consume arguments that my code doesn't know about but

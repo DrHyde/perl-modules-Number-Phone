@@ -14,7 +14,7 @@ use Number::Phone::Data;
 use Number::Phone::StubCountry;
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '3.8002';
+our $VERSION = '3.8003';
 
 my $NOSTUBS = 0;
 sub import {
