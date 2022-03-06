@@ -4,6 +4,8 @@ use utf8;
 use lib 't/inc';
 use nptestutils;
 
+use Devel::Hide qw(Number::Phone::DE Number::Phone::JP);
+
 # So we can see any diagnostics from is() without moaning about wide chars;
 # we may still get such moans from machines with ISO-8859 terminals if the
 # tests fail there. Must be before Test::More is loaded
