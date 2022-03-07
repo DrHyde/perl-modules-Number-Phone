@@ -78,29 +78,32 @@ fi
 echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 
 # first get OFCOM data and NANP operator data
+# OFCOM data was found at:
+#   https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbering-data
+#   (prev at http://static.ofcom.org.uk/static/numbering/)
 # NANP data was found at:
-#     https://www.nationalnanpa.com/reports/reports_cocodes_assign.html
-#     https://www.nationalnanpa.com/reports/reports_cocodes.html
-#     http://cnac.ca/co_codes/co_code_status.htm
+#   https://www.nationalnanpa.com/reports/reports_cocodes_assign.html
+#   https://www.nationalnanpa.com/reports/reports_cocodes.html
+#   http://cnac.ca/co_codes/co_code_status.htm
 (
     cd data-files
     for i in \
-        http://static.ofcom.org.uk/static/numbering/sabc.txt                        \
-        http://static.ofcom.org.uk/static/numbering/sabcde11_12.xlsx                 \
-        http://static.ofcom.org.uk/static/numbering/sabcde13.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde14.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde15.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde16.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde17.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde18.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde19.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde2.xlsx                     \
-        http://static.ofcom.org.uk/static/numbering/S3.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S5.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S7.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S8.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S9.xlsx                          \
-        https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip  \
+        http://static.ofcom.org.uk/static/numbering/sabc.txt                          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0029/227747/sabcde11_12.xlsx \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0031/227749/sabcde13.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0024/227751/sabcde14.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0026/227753/sabcde15.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0028/227755/sabcde16.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0030/227757/sabcde17.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0032/227759/sabcde18.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0025/227761/sabcde19.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0027/227745/sabcde2.xlsx     \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0024/227733/S3.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0026/227735/S5.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0028/227737/S7.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0030/227739/S8.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0023/227741/S9.xlsx          \
+        https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip   \
         https://cnac.ca/data/COCodeStatus_ALL.zip;
     do
         # make sure that there's a file that curl -z can look at

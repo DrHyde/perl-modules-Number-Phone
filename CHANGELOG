@@ -3,6 +3,8 @@ XXXXXX    XXXXXXXXXX
 - Fix test failure that only occurred if Number::Phone::JP was installed
   (it doesn't have exactly the data we expect from ...::StubCountry::JP)
 
+- Data updates from OFCOM
+
 3.8003    2022-03-05
 
 - New Canadian area codes
