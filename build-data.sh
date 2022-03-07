@@ -88,7 +88,6 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 (
     cd data-files
     for i in \
-        http://static.ofcom.org.uk/static/numbering/sabc.txt                          \
         https://www.ofcom.org.uk/__data/assets/excel_doc/0029/227747/sabcde11_12.xlsx \
         https://www.ofcom.org.uk/__data/assets/excel_doc/0031/227749/sabcde13.xlsx    \
         https://www.ofcom.org.uk/__data/assets/excel_doc/0024/227751/sabcde14.xlsx    \
@@ -110,12 +109,12 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
         if test ! -e `basename $i`; then
             touch -t 198001010101 `basename $i`
         fi
-        echo Fetching $i
+        echo -n Fetching $i ...
         curl -z `basename $i` -R -O -s -S $i;
         if [ "$?" == "0" ]; then
-            echo "  ... OK"
+            echo " OK"
           else
-            echo "  ... failed with $?, retry"
+            echo " failed with $?, retry"
             sleep 15
             rm `basename $i`
             curl -R -O -s -S $i;
@@ -141,13 +140,25 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 )
 
 # stash the Unix epoch of the OFCOM data
-OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1))
+OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt *.xlsx|tail -1))
 CADATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
 USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' AllBlocksAugmentedReport.txt)
 
-# if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
+# whine/quit if any of those are older than three months
+CURRENTDATETIME=$(date +%s)
+THREEMONTHS=7776000
+if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $THREEMONTHS -o \
+     $(( $CURRENTDATETIME - $CADATETIME    )) -gt $THREEMONTHS -o \
+     $(( $CURRENTDATETIME - $USDATETIME    )) -gt $THREEMONTHS    \
+   ]; then
+    echo Data files are ANCIENT, check that the URLs are correct
+    exit 1
+fi
+
+# if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff or
+# libphonenumber's list of area codes is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
-  data-files/sabc.txt         -nt share/Number-Phone-UK-Data.db -o \
+  libphonenumber/resources/geocoding/en/44.txt -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde11_12.xlsx -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde13.xlsx    -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde14.xlsx    -nt share/Number-Phone-UK-Data.db -o \

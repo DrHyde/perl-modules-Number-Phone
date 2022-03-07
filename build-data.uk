@@ -7,23 +7,16 @@ use DBM::Deep;
 use Digest::MD5 'md5_base64';
 use File::Find::Rule;
 use Spreadsheet::XLSX;
-use Text::CSV_XS;
-
-my $csv = Text::CSV_XS->new({
-    binary => 1
-});
 
 my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = my %statuses = ();
 
-open(my $sabc, '<', 'data-files/sabc.txt') || die("Couldn't open sabc.txt: $!\n");
-print "Working on sabc.txt\n";
-while(my $row = $csv->getline($sabc)) {
-    next if($#{$row} == 0 && $row->[0] =~ m{^\d\d/\d\d/\d{4} \d\d:\d\d:\d\d$});
-    my @fields = @{$row};
-    next if($fields[3] =~ /(unassigned|not to be used|expansion$)/i || $fields[2] eq 'Not Designated');
-    if($fields[2] eq 'Designated' && $fields[3] !~ /^Geographic - unassigned/) {
-        $areanames{$fields[0]} = $fields[3];
-    }
+open(my $area_codes, '<', 'libphonenumber/resources/geocoding/en/44.txt') || die("Couldn't open libphonenumber/resources/geocoding/en/44.txt: $!\n");
+print "Working on libphonenumber/resources/geocoding/en/44.txt\n";
+while(my $line = <$area_codes>) {
+    chomp($line) if($line);
+    next if(!$line || $line =~ /^#/);
+    my @row = split(/\|/, $line);
+    $areanames{$row[0] =~ s/^44//r} = $row[1];
 }
 
 foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
@@ -173,7 +166,7 @@ $dbm->{mobile_prefices}      = { map { ($_, 1) } @mobile_prefices };
 $dbm->{special_prefices}     = { map { ($_, 1) } @special_prefices };
 $dbm->{adult_prefices}       = { map { ($_, 1) } @adult_prefices };
 $dbm->{ip_prefices}          = { map { ($_, 1) } @ip_prefices };
-$dbm->{areanames}            = { map { s/( National Dialling)//ig; $_; } %areanames };
+$dbm->{areanames}            = \%areanames;
 $dbm->{telco_format} = \%telco_format_cache;
 $dbm->{telco_and_length} = \%telco_and_length;
 $dbm->{subclass} = {
