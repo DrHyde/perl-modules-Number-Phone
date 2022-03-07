@@ -16,7 +16,8 @@ while(my $line = <$area_codes>) {
     chomp($line) if($line);
     next if(!$line || $line =~ /^#/);
     my @row = split(/\|/, $line);
-    $areanames{$row[0] =~ s/^44//r} = $row[1];
+    $row[0] =~ s/^44//;
+    $areanames{$row[0]} = $row[1];
 }
 
 foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
