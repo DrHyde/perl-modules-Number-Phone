@@ -1,4 +1,4 @@
-XXXXXX    XXXXXXXXXX
+3.8004    2022-03-07
 
 - Fix test failure that only occurred if Number::Phone::JP was installed
   (it doesn't have exactly the data we expect from ...::StubCountry::JP)
