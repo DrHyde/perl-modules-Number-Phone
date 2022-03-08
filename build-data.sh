@@ -34,7 +34,7 @@ MD5=$(which md5 || which md5sum)
         git pull -q
     )
 
-    if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+    if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
         (cd data-files || (echo Checking out data-files ...; git clone git@github.com:DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
     fi
     (cd data-files || mkdir data-files) # for CI envs that can't yet check that repo out
@@ -175,7 +175,7 @@ if test ! -e share/Number-Phone-UK-Data.db -o \
   data-files/S9.xlsx          -nt share/Number-Phone-UK-Data.db -o \
   build-data.uk               -nt share/Number-Phone-UK-Data.db;
 then
-  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding share/Number-Phone-UK-Data.db
@@ -189,7 +189,7 @@ if test ! -e lib/Number/Phone/Country/Data.pm -o \
   build-data.country-mapping                       -nt lib/Number/Phone/Country/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/Country/Data.pm;
 then
-  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/Country/Data.pm
@@ -209,7 +209,7 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   data-files/COCodeStatus_ALL.zip                  -nt share/Number-Phone-NANP-Data.db -o \
   data-files/COCodeStatus_ALL.csv                  -nt share/Number-Phone-NANP-Data.db;
 then
-  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/NANP/Data.pm
@@ -229,7 +229,7 @@ if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   lib/Number/Phone/NANP/Data.pm                    -nt lib/Number/Phone/StubCountry/KZ.pm;
 then
-  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
@@ -243,7 +243,7 @@ if test ! -e t/example-phone-numbers.t -o \
   build-tests.pl                                   -nt t/example-phone-numbers.t -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt t/example-phone-numbers.t;
 then
-  if [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+  if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
   fi
   echo rebuilding t/example-phone-numbers.t
@@ -282,7 +282,7 @@ OLD_N_P_DATA_MD5=$($MD5 lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo =cut
 )>lib/Number/Phone/Data.pm
-if [ "$OLD_N_P_DATA_MD5" != "$($MD5 lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+if [ "$OLD_N_P_DATA_MD5" != "$($MD5 lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
 fi
 
