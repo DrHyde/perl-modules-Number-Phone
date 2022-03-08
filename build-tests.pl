@@ -147,6 +147,9 @@ print $testfh ') {
                 $class eq "Number::Phone" && building_without_uk() &&
                 ($args->[-1] =~ /^\+44/ || $args->[0]  =~ /^(GB|UK|GG|JE|IM)$/)
             );
+        my $object = $class->new(@{$args});
+        my $obj_class = $object ? blessed($object) : "[undef]";
+        ok(defined($object), "$class->new(".join(", ", @{$args}).") returns an object: $obj_class") && 
         ok(
             # grep is because a number might need to be checked as is_geographic *or* is_fixed_line
             (grep { $class->new(@{$args})->$_() } @{$methods}),
@@ -188,6 +191,7 @@ sub preamble {
         use lib 't/inc';
         use nptestutils;
 
+        use Scalar::Util qw(blessed);
         use Test::More;
 
         use Number::Phone;

@@ -7,23 +7,17 @@ use Data::CompactReadonly;
 use Digest::MD5 'md5_base64';
 use File::Find::Rule;
 use Spreadsheet::XLSX;
-use Text::CSV_XS;
-
-my $csv = Text::CSV_XS->new({
-    binary => 1
-});
 
 my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = my %statuses = ();
 
-open(my $sabc, '<', 'data-files/sabc.txt') || die("Couldn't open sabc.txt: $!\n");
-print "Working on sabc.txt\n";
-while(my $row = $csv->getline($sabc)) {
-    next if($#{$row} == 0 && $row->[0] =~ m{^\d\d/\d\d/\d{4} \d\d:\d\d:\d\d$});
-    my @fields = @{$row};
-    next if($fields[3] =~ /(unassigned|not to be used|expansion$)/i || $fields[2] eq 'Not Designated');
-    if($fields[2] eq 'Designated' && $fields[3] !~ /^Geographic - unassigned/) {
-        $areanames{$fields[0]} = $fields[3];
-    }
+open(my $area_codes, '<', 'libphonenumber/resources/geocoding/en/44.txt') || die("Couldn't open libphonenumber/resources/geocoding/en/44.txt: $!\n");
+print "Working on libphonenumber/resources/geocoding/en/44.txt\n";
+while(my $line = <$area_codes>) {
+    chomp($line) if($line);
+    next if(!$line || $line =~ /^#/);
+    my @row = split(/\|/, $line);
+    $row[0] =~ s/^44//;
+    $areanames{$row[0]} = $row[1];
 }
 
 foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
@@ -77,7 +71,13 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
         $telco  ||= '';
         $format ||= '';
 
-        next if($status !~ /^(Protected|Allocated ?(\(Closed Range\)|for Migration only)?)$/);
+        # checked on 2021-06-01
+        # next check due 2022-06-01 (annually)
+        next if(
+            $prefix !~ /^11[46]496$/ && # These drama prefixex have status 'Quarantined'
+                                        # unlike other drama prefixes which are 'Protected'
+            $status !~ /^(Protected|Allocated ?(\(Closed Range\)|for Migration only)?)$/
+        );
         $statuses{"$prefix"} = $status;
 
         if($prefix =~ /^[12]/)                         { push @geo_prefices, $prefix }
@@ -165,25 +165,39 @@ Data::CompactReadonly->create(
         special_prefices     => { map { ($_, 1) } @special_prefices },
         adult_prefices       => { map { ($_, 1) } @adult_prefices },
         ip_prefices          => { map { ($_, 1) } @ip_prefices },
-        areanames            => { map { s/( National Dialling)//ig; $_; } %areanames },
+        areanames            => \%areanames,
         telco_format         => \%telco_format_cache,
         telco_and_length     => \%telco_and_length,
         subclass             => {
-            # special case, UK-wide mobile range for use in drama,
-            # conflicts with 7700 being Jersey below
-            '7700900' => '',
             # taken from libphonenumber
-            # checked on 2020-09-04
-            # next check due 2021-09-01 (annually)
+            # checked on 2021-09-02
+            # next check due 2022-09-01 (annually)
+            # NB for all of these also check build-data.country-mapping
             (map { $_ => 'GG' } (
-                1481, 7781, 7839, 7911
+                1481, 7781, 7839, 79111, 79117
             )),
             (map { $_ => 'JE' } (
-                1534, 7509, 7829, 7937, 7700, 7797
+                1534, 7509, 7829, 7937,
+                77003,
+                77007,
+                77008,
+                7797,
             )),
             (map { $_ => 'IM' } (
                 1624,
-                74576, 7524, 7624, 7924,
+                74576,
+                7524,
+                76240,
+                76241,
+                76242,
+                76243,
+                76244,
+                762450,
+                762456,
+                76246,
+                76248,
+                76249,
+                7924,
                 808162,
                 8440406, 8440906,
                 845624, 870624,

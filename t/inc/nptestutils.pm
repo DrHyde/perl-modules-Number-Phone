@@ -2,11 +2,19 @@ package nptestutils;
 
 use strict;
 use warnings;
+
+use Carp;
 use Exporter qw(import);
 our @EXPORT = qw(building_without_uk);
 
 $SIG{__WARN__} = sub {
-    die("warning made fatal: ".join('', @_)."\n")
+    my $warning = join('', @_);
+    return if(
+        $warning =~ /Your perl only supports 32 bit ints/ ||
+        $warning =~ /^Devel::Hide/ ||
+        $warning =~ /^Can't locate.*\(hidden\)/
+    );
+    confess("warning made fatal: ".join('', @_)."\n")
 };
 
 unshift @INC, sub {
@@ -23,7 +31,7 @@ unshift @INC, sub {
     # we also want this particular failure mode to get reported by N::P and
     # for it to not fall back to loading a Stub instead. This is to prevent
     # erroneously writing tests in the future that forget about --without_uk.
-    die("Building --without_uk but tried to load $wanted_file\n");
+    die("Number::Phone built --without_uk but tried to load $wanted_file\n");
 };
 
 sub building_without_uk { !-e 'blib/lib/Number/Phone/UK.pm' }

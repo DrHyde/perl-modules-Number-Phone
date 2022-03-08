@@ -95,6 +95,8 @@ t/source_data.t
 buildtools/Number/Phone/BuildTools.pm
 t/manifest-contains-all-modules.t
 t/only-use-blib-under-make-test.t
+t/deprecations.t
+t/constructor.t
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm

@@ -22,6 +22,9 @@ LIBPHONENUMBERTAG=unset
 FORCE=0
 EXITSTATUS=0
 
+# some machines have one of 'em, some have t'other
+MD5=$(which md5 || which md5sum)
+
 # now get an up-to-date libphonenumber and data-files
 (
     (cd libphonenumber || (echo Checking out libphonenumber ...; git clone https://github.com/googlei18n/libphonenumber.git))
@@ -75,41 +78,43 @@ fi
 echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 
 # first get OFCOM data and NANP operator data
+# OFCOM data was found at:
+#   https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbering-data
+#   (prev at http://static.ofcom.org.uk/static/numbering/)
 # NANP data was found at:
-#     https://www.nationalnanpa.com/reports/reports_cocodes_assign.html
-#     https://www.nationalnanpa.com/reports/reports_cocodes.html
-#     http://cnac.ca/co_codes/co_code_status.htm
+#   https://www.nationalnanpa.com/reports/reports_cocodes_assign.html
+#   https://www.nationalnanpa.com/reports/reports_cocodes.html
+#   http://cnac.ca/co_codes/co_code_status.htm
 (
     cd data-files
     for i in \
-        http://static.ofcom.org.uk/static/numbering/sabc.txt                        \
-        http://static.ofcom.org.uk/static/numbering/sabcde11_12.xlsx                 \
-        http://static.ofcom.org.uk/static/numbering/sabcde13.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde14.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde15.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde16.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde17.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde18.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde19.xlsx                    \
-        http://static.ofcom.org.uk/static/numbering/sabcde2.xlsx                     \
-        http://static.ofcom.org.uk/static/numbering/S3.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S5.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S7.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S8.xlsx                          \
-        http://static.ofcom.org.uk/static/numbering/S9.xlsx                          \
-        https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip  \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0029/227747/sabcde11_12.xlsx \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0031/227749/sabcde13.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0024/227751/sabcde14.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0026/227753/sabcde15.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0028/227755/sabcde16.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0030/227757/sabcde17.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0032/227759/sabcde18.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0025/227761/sabcde19.xlsx    \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0027/227745/sabcde2.xlsx     \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0024/227733/S3.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0026/227735/S5.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0028/227737/S7.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0030/227739/S8.xlsx          \
+        https://www.ofcom.org.uk/__data/assets/excel_doc/0023/227741/S9.xlsx          \
+        https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip   \
         https://cnac.ca/data/COCodeStatus_ALL.zip;
     do
         # make sure that there's a file that curl -z can look at
         if test ! -e `basename $i`; then
             touch -t 198001010101 `basename $i`
         fi
-        echo Fetching $i
+        echo -n Fetching $i ...
         curl -z `basename $i` -R -O -s -S $i;
         if [ "$?" == "0" ]; then
-            echo "  ... OK"
+            echo " OK"
           else
-            echo "  ... failed with $?, retry"
+            echo " failed with $?, retry"
             sleep 15
             rm `basename $i`
             curl -R -O -s -S $i;
@@ -135,13 +140,25 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 )
 
 # stash the Unix epoch of the OFCOM data
-OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt sabc.txt *.xlsx|tail -1))
+OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt *.xlsx|tail -1))
 CADATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
 USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' AllBlocksAugmentedReport.txt)
 
-# if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff is newer ...
+# whine/quit if any of those are older than three months
+CURRENTDATETIME=$(date +%s)
+THREEMONTHS=7776000
+if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $THREEMONTHS -o \
+     $(( $CURRENTDATETIME - $CADATETIME    )) -gt $THREEMONTHS -o \
+     $(( $CURRENTDATETIME - $USDATETIME    )) -gt $THREEMONTHS    \
+   ]; then
+    echo Data files are ANCIENT, check that the URLs are correct
+    exit 1
+fi
+
+# if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff or
+# libphonenumber's list of area codes is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
-  data-files/sabc.txt         -nt share/Number-Phone-UK-Data.db -o \
+  libphonenumber/resources/geocoding/en/44.txt -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde11_12.xlsx -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde13.xlsx    -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde14.xlsx    -nt share/Number-Phone-UK-Data.db -o \
@@ -236,7 +253,7 @@ else
 fi
 
 # update Number::Phone::Data with update date/times and libphonenumber tag
-OLD_N_P_DATA_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
+OLD_N_P_DATA_MD5=$($MD5 lib/Number/Phone/Data.pm 2>/dev/null)
 (
     echo \# automatically generated file, don\'t edit
     echo package Number::Phone::Data\;
@@ -265,7 +282,7 @@ OLD_N_P_DATA_MD5=$(md5sum lib/Number/Phone/Data.pm 2>/dev/null)
     echo
     echo =cut
 )>lib/Number/Phone/Data.pm
-if [ "$OLD_N_P_DATA_MD5" != "$(md5sum lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
+if [ "$OLD_N_P_DATA_MD5" != "$($MD5 lib/Number/Phone/Data.pm)" ] && [ "$CI" != "True" ] && [ "$CI" != "true" ]; then
     EXITSTATUS=1
 fi
 

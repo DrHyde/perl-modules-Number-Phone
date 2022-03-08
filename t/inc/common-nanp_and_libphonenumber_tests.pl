@@ -127,7 +127,7 @@ note("operator");
 skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     is($CLASS->new('+1 416 392 2489')->operator(), 'Bell Canada', "Canada");
 
-    is($CLASS->new('+1 216 208 0000')->operator(), 'ONVOY LLC - OH',
+    is($CLASS->new('+1 216 208 0000')->operator(), 'ONVOY, LLC - OH',
         "Unicode en-dash in some US data converted to hyphen");
 
     my @codes_seen = ();
@@ -143,12 +143,12 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         ['+1 473 230 0000' => 'COLUMBUS COMMUNICATIONS (GRENADA) LIMITED'],
         ['+1 649 231 0000' => 'CABLE & WIRELESS - TURKS & CAICOS'],
         # No data yet.
-        # checked on 2020-12-04
-        # next check due 2021-12-01 (annually) until there's data
+        # checked on 2021-12-06
+        # next check due 2022-12-01 (annually) until there's data
         # at https://localcallingguide.com/xmlprefix.php?npa=658&blocks=1
         # ['+1 658 ??? 0000' => '???'],
         ['+1 664 349 0000' => 'CABLE & WIRELESS - MONTSERRAT'],
-        ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORP.'],
+        ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORPORATION'],
         ['+1 671 472 7679' => 'TELEGUAM HOLDINGS, LLC'],
         ['+1 684 248 0000' => 'AST TELECOM, LLC - AS'],
         ['+1 721 547 0000' => 'ST. MAARTEN TELEPHONE COMPANY, NV'],
@@ -174,12 +174,12 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         "Oh good, the database contains data for all the non-US/CA area codes (except 658, for which no data are yet available)"
     );
 
-    # checked on 2020-12-04 that these are consolidated ten-thousand blocks
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-06 that these are consolidated ten-thousand blocks
+    # next check due 2022-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=630&blocks=1
     is($CLASS->new('+1 630 847 0000')->operator(), 'YMAX COMMUNICATIONS CORP. - IL', 'USA, thousands blocks all for same operator, so consolidated into one to save space in database');
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-06
+    # next check due 2022-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=242&blocks=1
     is($CLASS->new('+1 242 367 0000')->operator(), 'BAHAMAS TELECOMMUNICATIONS CORP.', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
 
@@ -194,16 +194,16 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         [ 'Bahamas', '+1 242 331 7000', undef ],
         [ 'Bahamas', '+1 242 331 8000', undef ],
         [ 'Bahamas', '+1 242 331 9000', undef ],
-        [ 'USA',     '+1 512 373 0000', 'SPRINT SPECTRUM L.P.' ],
+        [ 'USA',     '+1 512 373 0000', 'SPRINT SPECTRUM, L.P.' ],
         [ 'USA',     '+1 512 373 1000', undef ],
-        [ 'USA',     '+1 512 373 2000', 'SPRINT SPECTRUM L.P.', ],
+        [ 'USA',     '+1 512 373 2000', 'SPRINT SPECTRUM, L.P.', ],
         [ 'USA',     '+1 512 373 3000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL', ],
         [ 'USA',     '+1 512 373 4000', undef ],
-        [ 'USA',     '+1 512 373 5000', 'SPRINT SPECTRUM L.P.' ],
-        [ 'USA',     '+1 512 373 6000', 'SPRINT SPECTRUM L.P.' ],
+        [ 'USA',     '+1 512 373 5000', 'SPRINT SPECTRUM, L.P.' ],
+        [ 'USA',     '+1 512 373 6000', 'SPRINT SPECTRUM, L.P.' ],
         [ 'USA',     '+1 512 373 7000', undef ],
         [ 'USA',     '+1 512 373 8000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL' ],
-        [ 'USA',     '+1 512 373 9000', 'SPRINT SPECTRUM L.P.' ]
+        [ 'USA',     '+1 512 373 9000', 'SPRINT SPECTRUM, L.P.' ]
     ) {
         is(
             $CLASS->new($number->[1])->operator(),

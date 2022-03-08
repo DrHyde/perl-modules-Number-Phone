@@ -93,7 +93,7 @@ my $pid = -1;
 sub _datafh {
     if(!$datafh || $pid != $$) {
         my $file = Number::Phone::_find_data_file('Number-Phone-NANP-Data.db');
-        open($datafh, '< :raw :bytes', $file) || die("Can't read $file: $!");
+        open($datafh, '<:bytes', $file) || die("Can't read $file: $!");
         read($datafh, my $header, 8);
         die("$file isn't the right format\n") unless($header eq 'NANPOP'.chr(0).chr(0));
         read($datafh, $WORDLENGTH, 1);

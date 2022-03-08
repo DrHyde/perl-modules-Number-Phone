@@ -32,43 +32,44 @@ sub phone2country {
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
-        # checked on 2020-12-04
-        # next check due 2021-06-01 (semi-annually)
+        # checked on 2021-12-06
+        # next check due 2022-06-01 (semi-annually)
         my $canada = join('|', qw(
-            204 226 236 249 250 289
+            204 226 236 249 250 263 289
             306 343 354 365 367 368
-            403 416 418 428 431 437 438 450 474
+            403 416 418 428 431 437 438 450 468 474
             506 514 519 548 579 581 587
-            604 613 639 647 672
-            705 709 742 778 780 782
+            604 613 639 647 672 683
+            705 709 742 753 778 780 782
             807 819 825 867 873 879
             902 905
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_600
-        # checked on 2020-06-06
-        # next check due 2021-12-01 (semi-annually)
+        # checked on 2021-12-06
+        # next check due 2022-06-01 (semi-annually)
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
-        # see https://www.allareacodes.com/area_code_listings_by_state.htm
-        # and https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#United_States
+        # see https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#United_States
+        #   and https://www.allareacodes.com/area_code_listings_by_state.htm
+        #   but the latter doesn't contain some overlays that are about to come into service
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
-        # checked on 2020-12-04
-        # next check due 2021-06-01 (semi-annually)
+        # checked on 2021-12-06
+        # next check due 2022-06-01 (semi-annually)
         my $usa = join('|', qw(
             205 251 256 334 659 938
             907
             480 520 602 623 928
             327 479 501 870
             209 213 279 310 323 341 408 415 424 442 510 530 559 562 619 626 628 650 657 661 669 707 714 747 760 805 818 820 831 840 858 909 916 925 949 951
-            303 719 720 970
+            303 719 720 970 983
             203 475 860 959
             302
             202 771
             239 305 321 352 386 407 448 561 656 689 727 754 772 786 813 850 863 904 941 954
-            229 404 470 478 678 706 762 770 912
+            229 404 470 478 678 706 762 770 912 943
             808
             208 986
             217 224 309 312 331 447 464 618 630 708 730 773 779 815 847 872
@@ -112,13 +113,13 @@ our %NANP_areas = (
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_710
-        # checked on 2019-12-11
-        # next check due 2021-12-01 (bi-annually)
+        # checked on 2021-12-06
+        # next check due 2023-12-01 (bi-annually)
         $usa    = join('|', $usa, 710);
     },
     # see https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Countries_and_territories
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-06
+    # next check due 2022-12-01 (annually)
     AS => '684',         # American Samoa
     AI => '264',         # Anguilla
     AG => '268',         # Antigua and Barbude

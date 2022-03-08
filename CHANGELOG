@@ -1,8 +1,58 @@
-XXXX-XX-XX      XXXXXX  Switch to Data::CompactReadonly for UK database
+XXXXXX    XXXX-XX-XX
 
-XXXX-XX-XX      XXXXXX  Data updates;
-                        Add deprecation warning for platforms with 32 bit int (support will
-                          go away some time after 2023-06-01 with no further warning)
+- Switch to Data::CompactReadonly for UK database
+
+3.8004    2022-03-07
+
+- Fix test failure that only occurred if Number::Phone::JP was installed
+  (it doesn't have exactly the data we expect from ...::StubCountry::JP)
+
+- Data updates from OFCOM
+
+3.8003    2022-03-05
+
+- New Canadian area codes
+- +882 34 recognised as Antarctica, via Global Networks Switzerland
+
+3.8002    2021-12-06
+
+- Fix Makefile.PL to not consume arguments that my code doesn't know about but
+  which are relevant to EU::MM (https://github.com/DrHyde/perl-modules-Number-Phone/pull/106)
+
+- Explicitly open databases read-only so it works on a RO filesystem
+  (https://github.com/DrHyde/perl-modules-Number-Phone/issues/107)
+
+- Data updates
+
+3.8001    2021-09-21
+
+- Tweak build to use more compatible options to tar(1) so some really old tars
+  can read the archive correctly
+
+3.8000    2021-09-19
+
+- Bugfix for numbers in local format which may be ambiguous for UK Crown Dependencies
+  when using Number::Phone::Lib
+
+- Bugfix for when you ask for an object representing a number in one country
+  but provide a number for a different country. This mostly affects countries
+  that contain other jurisdictions squatting on parts of their number plan,
+  such as the Vatican in the Italian plan, and the Crown Dependencies in the UK
+  plan. It is now an error to ask for an object representing a number in a
+  'sub-country' which isn't valid in that sub-country (eg asking for a Jersey
+  object but passing a Guernsey number); but if you ask for an object representing
+  the 'super-country' but pass a 'sub-country' number you'll still get an object
+  representing the sub-country. ie, say "gimme a GB object for this 'ere Guernsey number"
+  and you'll get a Guernsey object.
+
+- Data updates
+
+3.7003    2021-06-02
+
+- Data updates;
+
+- Add deprecation warning for platforms with 32 bit int (support will
+  go away some time after 2023-06-01 with no further warning)
 
 2021-03-09      3.7002  Data updates
 

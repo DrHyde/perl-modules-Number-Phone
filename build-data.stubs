@@ -46,6 +46,9 @@ TERRITORY: foreach my $territory (@territories) {
   my $national_code = ''.$territory->find('@nationalPrefixForParsing') || ''.$territory->find('@nationalPrefix');
   my $national_prefix_transform_rule = ''.$territory->find('@nationalPrefixTransformRule');
 
+  # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/101
+  $national_prefix_transform_rule = '' if($IDD_country_code == 44);
+
   my $ISO_country_code = ''.$territory->find('@id');
   if($ISO_country_code !~ /^..$/) {
     warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");

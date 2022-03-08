@@ -14,13 +14,13 @@ my $data = {
     mobile     => '+44 7700 300000', # used specifically because there's a special case for 7700 900
     geographic => '+44 1534 440000',
     operator   => qr/^(JT|Sure) \(Jersey\) Limited$/,
-    regulator  => 'Office of Utility Regulation, http://www.cicra.gg'
+    regulator  => 'Jersey Competition Regulation Authority, https://www.jcra.je/',
   },
   GG => {
     mobile     => '+44 7781 000000',
     geographic => '+44 1481 200000',
     operator   => 'Sure (Guernsey) Limited',
-    regulator  => 'Office of Utility Regulation, http://www.cicra.gg'
+    regulator  => 'Guernsey Competition & Regulatory Authority, https://www.gcra.gg/'
   },
   IM => {
     mobile      => ['+44 7624 000000', '+44 7457 600000'],

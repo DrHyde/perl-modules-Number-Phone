@@ -146,8 +146,8 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
     
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-06
+    # next check due 2022-12-01 (annually)
     [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 262269  => 'YT' ], # Mayotte fixed lines, see http://www.wtng.info/wtng-262-fr.html
@@ -158,33 +158,61 @@ foreach my $tuple (
     [ 390549  => 'SM' ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
 
     # sourced from libphonenumber
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
-    [ 441481 => 'GG' ],
-    [ 447781 => 'GG' ],
-    [ 447839 => 'GG' ],
-    [ 447911 => 'GG' ],
-    [ 441624 => 'IM' ],
-    [ 447457 => 'IM' ],
-    [ 4474576 => 'IM' ],
-    [ 447524 => 'IM' ],
-    [ 447624 => 'IM' ],
-    [ 447924 => 'IM' ],
-    [ 441534 => 'JE' ],
-    [ 447509 => 'JE' ],
-    [ 447829 => 'JE' ],
-    [ 447937 => 'JE' ],
-    [ 447700 => 'JE' ],
-    [ 447797 => 'JE' ],
+    # checked on 2021-09-02
+    # next check due 2022-09-01 (annually)
+    (
+        map {
+            [ '44'.$_ => 'GG' ]
+        } (
+            1481, 7781, 7839, 79111, 79117
+        )
+    ),
+    (
+        map {
+            [ '44'.$_ => 'IM' ]
+        } (
+          1624,
+          74576,
+          7524,
+          76240,
+          76241,
+          76242,
+          76243,
+          76244,
+          762450,
+          762456,
+          76246,
+          76248,
+          76249,
+          7924,
+          808162,
+          8440406, 8440906,
+          845624, 870624,
+          872299,
+          900624, 901624, 906624, 907624,
+      )
+    ),
+    (
+        map {
+            [ '44'.$_ => 'JE' ]
+        } (
+          1534, 7509, 7829, 7937,
+          77003,
+          77007,
+          77008,
+          7797,
+        )
+    ),
 
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Cura%C3%A7ao_and_the_Caribbean_Netherlands
     # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
     #   NB the company listed there for +61 406 went bust
     # see http://wtng.info/ccod-6.html#CC61 (Christmas Island)
+    #   2G mobile only, no data: https://parksaustralia.gov.au/christmas/plan/phone-web/
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Norfolk_Island
-    # checked on 2020-12-04
-    # next check due 2021-12-01 (annually)
+    # checked on 2021-12-0r64
+    # next check due 2022-12-01 (annually)
     [ 5999    => 'CW' ], # Curacao
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
@@ -196,8 +224,9 @@ foreach my $tuple (
     [ 6723    => 'NF' ], # Norfolk Island
 
     # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
-    # checked on 2020-12-04
-    # next check due 2022-12-01 (bi-annually)
+    # NB planned change to +997
+    # checked on 2021-12-06
+    # next check due 2022-12-01 (annually)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 
@@ -219,8 +248,8 @@ foreach my $tuple (
     # see https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
     #     https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
     #     wtng.info
-    # checked on 2019-12-11
-    # next check due 2021-12-01 (bi-annually)
+    # checked on 2022-03-04
+    # next check due 2024-12-01 (bi-annually)
     [ 800     => 'InternationalFreephone'    ],
     [ 808     => 'SharedCostServices'        ],
     [ 870     => 'Inmarsat'                  ],
@@ -233,8 +262,8 @@ foreach my $tuple (
     [ 881     => 'GMSS',                     ], # \ Sat-phones
     [ 8810    => 'ICO',                      ], # |
     [ 8811    => 'ICO',                      ], # |
-    # 8812 and 8813 assigned to Ellipso         # |
-    # but that apparently never launched        # |
+    # 8812 is vacant (Ellipso never launched)   # |
+    # 8813 is vacant (Ellipso never launched)   # |
     # 8814 is spare                             # |
     # 8815 is spare                             # |
     [ 8816    => 'Iridium',                  ], # |
@@ -242,14 +271,15 @@ foreach my $tuple (
     [ 8818    => 'Globalstar',               ], # |
     [ 8819    => 'Globalstar',               ], # /
     [ 882     => 'InternationalNetworks'     ], # many allocations not listed as I don't know if they're diallable, see wtng.info
-    [ 88213   => 'Telespazio'                ], # Sat-ohone
+    [ 88213   => 'Telespazio'                ], # Sat-phone
     [ 88216   => 'Thuraya'                   ], # Sat-phone
     [ 88220   => 'GarudaMobile'              ], # Sat-phone
+    [ 88234   => 'AQ'                        ], # Antarctica, via Global Networks Switzerland, http://wtng.info/wtng-spe.html#Networks
     [ 883     => 'InternationalNetworks'     ],
     [ 883120  => 'Telenor'                   ],
     [ 883130  => 'Mobistar'                  ],
     [ 883140  => 'MTTGlobalNetworks'         ],
-    [ 8835100 => 'VOXBON'                    ],
+    # 8835100 => 'VOXBON' # decommissioned, https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
     [ 888     => 'TelecomsForDisasterRelief' ],
     # 979 is used for testing when we fail to load a module when we
     # know what "country" it is

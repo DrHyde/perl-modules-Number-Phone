@@ -13,9 +13,9 @@ sub new {
     # libphonenumber erroneously treats non-geographic numbers such
     # as 1-800 numbers as being in the US
     $country = 'US' if($country eq 'NANP');
-    $country = 'GB' if $country eq 'UK';
+    $country = 'GB' if($country eq 'UK');
 
-    return $class->_make_stub_object($number, $country)
+    return $class->_make_stub_object($number, $country);
 }
 
 1;
