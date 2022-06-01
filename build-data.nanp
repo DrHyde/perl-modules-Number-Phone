@@ -143,11 +143,12 @@ open(my $CA_operators, '<', 'data-files/COCodeStatus_ALL.csv') ||
     die("Couldn't open data-files/COCodeStatus_ALL.csv: $!\n");
 $csv->getline($CA_operators); # header line
 $csv->getline($CA_operators); # date stamp?
+my($NPA_FIELD, $CO_FIELD, $OP_FIELD) = (0, 1, 4);
 while(my $row = $csv->getline($CA_operators)) {
-    last unless($row->[0]);
-    next unless($row->[2]);
-    my($co, $op) = (join('', $row->[0], $row->[1]), $row->[2]);
-    _write_operator_data($co, $op);
+    last unless($row->[$NPA_FIELD]);
+    next unless($row->[$OP_FIELD]);
+    my($prefix, $op) = (join('', $row->[$NPA_FIELD], $row->[$CO_FIELD]), $row->[$OP_FIELD]);
+    _write_operator_data($prefix, $op);
 }
 
 warn("Extracting US operators\n");
