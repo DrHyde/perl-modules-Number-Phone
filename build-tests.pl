@@ -32,7 +32,10 @@ TERRITORY: foreach my $territory (@territories) {
       my $type = ($example_number->find('..')->get_nodelist())[0]->getName();
       if($type =~ /^(voicemail|noInternationalDialling)$/) {
           # warn("skipping type $type for $ISO_country_code (+$IDD_country_code)\n");
-          next NUMBER
+          next NUMBER;
+      } elsif($ISO_country_code eq 'CA' && $number eq '3101234') {
+          warn("skipping bogus $number for $ISO_country_code\n");
+          next NUMBER;
       }
       my @test_tuples = map {
           ($_->[0] eq 'GB') ? ($_, ['UK', $_->[1]]) : $_
