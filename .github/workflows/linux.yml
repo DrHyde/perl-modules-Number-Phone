@@ -7,7 +7,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     strategy:
       matrix:
-        perl: [ '5.32', '5.30', '5.26', '5.22', '5.16', '5.8' ]
+        perl: [ '5.36', '5.30', '5.26', '5.22', '5.16', '5.8' ]
     name: Perl ${{ matrix.perl }}
     steps:
       - name: check out code
