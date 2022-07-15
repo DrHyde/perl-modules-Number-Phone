@@ -28,6 +28,8 @@ jobs:
         run: |
           perl -v
           cpan ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage App::cpanminus
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
           cpanm --installdeps .
+          ./build-data.sh
           perl Makefile.PL
           make test TEST_VERBOSE=1
