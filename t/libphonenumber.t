@@ -76,11 +76,6 @@ isa_ok($CLASS->new('GB', '020 8771 2924'), 'Number::Phone::StubCountry::GB', "N:
 isa_ok($CLASS->new('UK', '020 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('UK', '0NNNNN')");
 isa_ok($CLASS->new('GB', '20 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('GB', 'NNNNN')");
 
-note('National prefix issues');
-
-is($CLASS->new("CO", "03211234567"), undef, 'N::P::Lib->new("CO", "03 21 NNNN") invalid');
-isa_ok($CLASS->new("CO", "033211234567"), 'Number::Phone::StubCountry::CO','N::P::Lib->new("CO", "03 321 NNNN") valid');
-
 # switch N::P::C into "UK mode", make sure that N::P::Lib still DTRT
 eval "use Number::Phone::Country qw(uk noexport)";
 isa_ok($CLASS->new('GB', '020 8771 2924'), 'Number::Phone::StubCountry::GB', "N::P::Lib->new('GB', '0NNNNN') with N::P::C in 'uk mode'");
