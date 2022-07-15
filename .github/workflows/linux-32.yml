@@ -1,0 +1,33 @@
+name: Linux (32bit)
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: i386/ubuntu:latest
+    steps:
+      - name: install the Perl header, core modules, building tools
+        run: |
+          apt update
+          apt install -y libperl-dev build-essential
+      - uses: actions/checkout@v1
+      - name: perl -V
+        run: perl -V
+      - name: perl %Config
+        run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+      - name: run tests
+        env:
+          PERL_USE_UNSAFE_INC: 0
+        run: |
+          perl -v
+          cpan ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage App::cpanminus
+          cpanm --installdeps .
+          perl Makefile.PL
+          make test TEST_VERBOSE=1
