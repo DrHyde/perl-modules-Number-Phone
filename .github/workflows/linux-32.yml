@@ -16,7 +16,7 @@ jobs:
       - name: install the Perl header, core modules, building tools
         run: |
           apt update
-          apt install -y libperl-dev build-essential
+          apt install -y libperl-dev build-essential openssl libssl-dev zlib1g-dev
       - uses: actions/checkout@v1
       - name: perl -V
         run: perl -V
