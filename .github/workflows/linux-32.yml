@@ -16,7 +16,7 @@ jobs:
       - name: install the Perl header, core modules, building tools
         run: |
           apt update
-          apt install -y libperl-dev build-essential openssl libssl-dev zlib1g-dev libexpat1-dev git curl
+          apt install -y libperl-dev build-essential openssl libssl-dev zlib1g-dev libexpat1-dev git curl unzip
       - uses: actions/checkout@v1
       - name: perl -V
         run: perl -V
@@ -30,6 +30,7 @@ jobs:
           cpan ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage App::cpanminus
           cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
           cpanm --installdeps .
+          git config --global --add safe.directory /__w/perl-modules-Number-Phone/perl-modules-Number-Phone
           ./build-data.sh
           perl Makefile.PL
           make test TEST_VERBOSE=1
