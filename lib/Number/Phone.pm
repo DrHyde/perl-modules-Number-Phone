@@ -28,6 +28,9 @@ sub import {
 if(~0 == 4294967295) {
     warn("Your perl only supports 32 bit ints; Number::Phone will require 64 bit ints from some time after 2023-06-01");
 }
+if($] < 5.010) {
+    warn("Your perl is too old to be fully supported. Support may be withdrawn at any time");
+}
 
 sub _find_data_file {
     my $wanted = shift;
@@ -205,8 +208,6 @@ As of version 3.6000 the C<areaname> method pays attention to your locale
 settings and so you might start getting locale-appropriate versions of
 areanames instead of what you used to get.
 
-64 bit ints will be required some time after 2023-06-01.
-
 3.8000 is a bit stricter about numbers and countries not matching in the
 constructor. This may affect users who specify places like Guernsey but
 provide numbers from Jersey or the Isle of Man, all three of which are separate
@@ -231,7 +232,22 @@ Alternatively, if you want to *always* use data derived from libphonenumber,
 you should use the L<Number::Phone::Lib> module instead. This is a subclass
 of Number::Phone that will use the libphonenumber-derived stub classes even
 when extra data is available in, for example, Number::Phone::UK. You might
-want to do this for compatibility or performance. Number::Phone::UK is quite slow, because it uses a huge database for some of its features.
+want to do this for compatibility or performance. Number::Phone::UK is quite
+slow, because it uses a huge database for some of its features.
+
+=head1 PERL VERSIONS SUPPORTED
+
+A perl built with support for 64 bit ints will be required some time after 2023-06-01.
+This is the default for all vaguely recent builds of perl on all modern systems.
+
+Perl 5.8 (and below) is not fully supported as of version 3.8006. This is
+because I have a dependency when packaging it on L<XML::XPath> which dropped
+support for perl 5.8. This means that I can no longer automatically test
+Number::Phone on perl 5.8. There is no runtime dependency on XML::XPath, so I
+expect Number::Phone to keep on truckin' on 5.8, and I won't B<deliberately>
+remove support without notice. However, because I can not automatically test, I
+can't guarantee that I won't B<accidentally> remove support. If I do
+accidentally remove it, it ain't coming back.
 
 =cut
 
