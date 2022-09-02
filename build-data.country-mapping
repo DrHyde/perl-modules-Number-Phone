@@ -145,7 +145,7 @@ foreach my $tuple (
     [ 596 => ['MQ', 'TF'       ]], # no TF in libphonenumber
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
-    
+
     # checked on 2021-12-06
     # next check due 2022-12-01 (annually)
     [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
@@ -158,8 +158,8 @@ foreach my $tuple (
     [ 390549  => 'SM' ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
 
     # sourced from libphonenumber
-    # checked on 2021-09-02
-    # next check due 2022-09-01 (annually)
+    # checked on 2022-09-02
+    # next check due 2023-09-01 (annually)
     (
         map {
             [ '44'.$_ => 'GG' ]
@@ -200,7 +200,9 @@ foreach my $tuple (
           77003,
           77007,
           77008,
-          7797,
+          77977,
+          77978,
+          77979,
         )
     ),
 

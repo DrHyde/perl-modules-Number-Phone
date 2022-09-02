@@ -32,13 +32,13 @@ sub phone2country {
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
-        # checked on 2021-12-06
-        # next check due 2022-06-01 (semi-annually)
+        # checked on 2022-09-02
+        # next check due 2023-03-01 (semi-annually)
         my $canada = join('|', qw(
             204 226 236 249 250 263 289
-            306 343 354 365 367 368
+            306 343 354 365 367 368 382
             403 416 418 428 431 437 438 450 468 474
-            506 514 519 548 579 581 587
+            506 514 519 548 579 581 584 587
             604 613 639 647 672 683
             705 709 742 753 778 780 782
             807 819 825 867 873 879
@@ -46,8 +46,8 @@ our %NANP_areas = (
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_600
-        # checked on 2021-12-06
-        # next check due 2022-06-01 (semi-annually)
+        # checked on 2022-09-02
+        # next check due 2023-03-01 (semi-annually)
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
@@ -56,8 +56,8 @@ our %NANP_areas = (
         #   but the latter doesn't contain some overlays that are about to come into service
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
-        # checked on 2021-12-06
-        # next check due 2022-06-01 (semi-annually)
+        # checked on 2022-09-02
+        # next check due 2023-03-01 (semi-annually)
         my $usa = join('|', qw(
             205 251 256 334 659 938
             907
@@ -84,14 +84,14 @@ our %NANP_areas = (
             231 248 269 313 517 586 616 679 734 810 906 947 989
             218 320 507 612 651 763 952
             228 601 662 769
-            314 417 557 573 636 660 816 975
+            235 314 417 557 573 636 660 816 975
             406
             308 402 531
             702 725 775
             603
             201 551 609 640 732 848 856 862 908 973
             505 575
-            212 315 332 347 516 518 585 607 631 646 680 716 718 838 845 914 917 929 934
+            212 315 332 347 363 516 518 585 607 631 646 680 716 718 838 845 914 917 929 934
             252 336 704 743 828 910 919 980 984
             701
             216 220 234 283 326 330 380 419 440 513 567 614 740 937
