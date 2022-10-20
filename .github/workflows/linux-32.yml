@@ -13,24 +13,27 @@ jobs:
     container:
       image: i386/ubuntu:latest
     steps:
-      - name: install the Perl header, core modules, building tools
+      - name: install building tools
         run: |
           apt update
-          apt install -y libperl-dev build-essential openssl libssl-dev zlib1g-dev libexpat1-dev git curl unzip
+          apt install -y build-essential curl openssl libssl-dev zlib1g-dev libexpat1-dev unzip
+          curl -L https://install.perlbrew.pl | bash
+          bash -c " source ~/perl5/perlbrew/etc/bashrc; perlbrew install --notest perl-5.32.0 "
       - uses: actions/checkout@v1
-      - name: perl -V
-        run: perl -V
-      - name: perl %Config
-        run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
       - name: run tests
         env:
           PERL_USE_UNSAFE_INC: 0
         run: |
-          perl -v
-          cpan ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage App::cpanminus
-          cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
-          cpanm --installdeps .
-          git config --global --add safe.directory /__w/perl-modules-Number-Phone/perl-modules-Number-Phone
-          ./build-data.sh
-          perl Makefile.PL
-          make test TEST_VERBOSE=1
+          bash -c "
+            source ~/perl5/perlbrew/etc/bashrc
+            perlbrew switch perl-5.32.0
+            perlbrew install-cpanm
+            perl -V
+            cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage App::cpanminus
+            cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5 File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+            cpanm --installdeps .
+            git config --global --add safe.directory /__w/perl-modules-Number-Phone/perl-modules-Number-Phone
+            ./build-data.sh
+            perl Makefile.PL
+            make test TEST_VERBOSE=1
+          "
