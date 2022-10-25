@@ -16,7 +16,7 @@ jobs:
       - name: install building tools
         run: |
           apt update
-          apt install -y build-essential curl openssl libssl-dev zlib1g-dev libexpat1-dev unzip
+          apt install -y build-essential curl openssl libssl-dev zlib1g-dev libexpat1-dev unzip git
           curl -L https://install.perlbrew.pl | bash
           bash -c " source ~/perl5/perlbrew/etc/bashrc; perlbrew install --notest perl-5.32.0 "
       - uses: actions/checkout@v1
