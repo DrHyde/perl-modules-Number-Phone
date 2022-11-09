@@ -1,6 +1,9 @@
 use strict;
 use warnings;
 
+use lib 't/inc';
+use nptestutils;
+
 use Test::More;
 eval "use Test::Pod::Coverage 1.08";
 plan skip_all => "Test::Pod::Coverage 1.08 required for testing POD coverage" if $@;

@@ -10,8 +10,8 @@ our @EXPORT = qw(building_without_uk);
 $SIG{__WARN__} = sub {
     my $warning = join('', @_);
     return if(
-        $warning =~ /Your perl only supports 32 bit ints/ ||
-        $warning =~ /Your perl is too old to be fully supported/ ||
+        $warning =~ /32 bit integers/ ||
+        $warning =~ /Perl too old/ ||
         $warning =~ /^Devel::Hide/ ||
         $warning =~ /^Can't locate.*\(hidden\)/
     );

@@ -13,6 +13,10 @@ use Number::Phone::Country qw(noexport);
 use Number::Phone::Data;
 use Number::Phone::StubCountry;
 
+use Devel::Deprecations::Environmental
+    Int32   => { unsupported_from => '2023-06-01' },
+    OldPerl => { unsupported_from => '2022-11-08', older_than => '5.10.0' };
+
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
 our $VERSION = '3.8006';
 
@@ -25,20 +29,13 @@ sub import {
   }
 }
 
-if(~0 == 4294967295) {
-    warn("Your perl only supports 32 bit ints; Number::Phone will require 64 bit ints from some time after 2023-06-01");
-}
-if($] < 5.010) {
-    warn("Your perl is too old to be fully supported. Support may be withdrawn at any time");
-}
-
 sub _find_data_file {
     my $wanted = shift;
 
     # giant ball of hate because lib::abs doesn't work on Windows
     my $this_file = __FILE__;
     my $this_dir  = dirname($this_file);
-    
+
     my @candidate_files = (
          # if this is $devdir/lib ...
          catfile($this_dir, qw(.. .. lib .. share), $wanted),
