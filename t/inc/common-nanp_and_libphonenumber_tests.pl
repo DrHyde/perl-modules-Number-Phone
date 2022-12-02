@@ -155,7 +155,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         ['+1 758 234 0000' => 'CABLE & WIRELESS - ST. LUCIA, LTD'],
         ['+1 767 221 0000' => 'DIGICEL (GRENADA) LIMITED'],
         ['+1 784 266 0000' => 'CABLE & WIRELESS - ST. VINCENT'],
-        ['+1 787 200 0000' => 'LIBERTY CABLEVISION OF PUERTO RICO, LLC - PR'],
+        ['+1 787 200 0000' => 'LIBERTY COMMUNICATIONS OF PUERTO RICO LLC'],
         ['+1 809 202 0000' => 'ECONOMITEL, C. POR A. - DR'],
         ['+1 829 201 0000' => 'CODETEL'],
         ['+1 849 201 0000' => 'CODETEL'],
