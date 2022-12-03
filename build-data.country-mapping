@@ -146,8 +146,8 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
 
-    # checked on 2021-12-06
-    # next check due 2022-12-01 (annually)
+    # checked on 2022-12-03
+    # next check due 2023-12-01 (annually)
     [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 262269  => 'YT' ], # Mayotte fixed lines, see http://www.wtng.info/wtng-262-fr.html
@@ -157,9 +157,6 @@ foreach my $tuple (
     [ 3906698 => 'VA' ], # Vatican in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_Vatican_City
     [ 390549  => 'SM' ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
 
-    # sourced from libphonenumber
-    # checked on 2022-09-02
-    # next check due 2023-09-01 (annually)
     (
         map {
             [ '44'.$_ => 'GG' ]
@@ -171,50 +168,46 @@ foreach my $tuple (
         map {
             [ '44'.$_ => 'IM' ]
         } (
-          1624,
-          74576,
-          7524,
-          76240,
-          76241,
-          76242,
-          76243,
-          76244,
-          762450,
-          762456,
-          76246,
-          76248,
-          76249,
-          7924,
-          808162,
-          8440406, 8440906,
-          845624, 870624,
-          872299,
-          900624, 901624, 906624, 907624,
+            1624,
+            762450,
+            762456,
+            74576,
+            7524,
+            7924,
+            76240,
+            76241,
+            76242,
+            76243,
+            76244,
+            76246,
+            76248,
+            76249,
+            808162,
+            8440406, 8440906,
+            872299,
+            845624, 870624,
+            900624, 901624, 906624, 907624,
       )
     ),
     (
         map {
             [ '44'.$_ => 'JE' ]
         } (
-          1534, 7509, 7829, 7937,
-          77003,
-          77007,
-          77008,
-          77977,
-          77978,
-          77979,
+            1534,
+            7509, 7829, 7937,
+            77003, 77007, 77008,
+            77977, 77978, 77979,
         )
     ),
 
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Cura%C3%A7ao_and_the_Caribbean_Netherlands
     # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
-    #   NB the company listed there for +61 406 went bust
+    #   NB +61 406 listed there for mobiles may be a pan-Australia area code
     # see http://wtng.info/ccod-6.html#CC61 (Christmas Island)
-    #   2G mobile only, no data: https://parksaustralia.gov.au/christmas/plan/phone-web/
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Norfolk_Island
-    # checked on 2021-12-0r64
-    # next check due 2022-12-01 (annually)
+    # checked on 2022-12-03
+    # next check due 2023-12-01 (annually)
     [ 5999    => 'CW' ], # Curacao
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
@@ -227,14 +220,14 @@ foreach my $tuple (
 
     # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
     # NB planned change to +997
-    # checked on 2021-12-06
-    # next check due 2022-12-01 (annually)
+    # checked on 2022-12-03
+    # next check due 2023-12-01 (annually)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Kosovo
-    # checked on 2020-12-04
-    # next check due 2022-12-01 (bi-annually)
+    # checked on 2022-12-01
+    # next check due 2024-12-01 (bi-annually)
     #
     # in the Serbian country code ... https://en.wikipedia.org/wiki/Telephone_numbers_in_Serbia#Kosovo
     [ 38128   => 'XK' ],
