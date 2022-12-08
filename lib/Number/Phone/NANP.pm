@@ -308,7 +308,7 @@ The number is free to the caller. 800, 844, 855, 866, 877 and 888 "area codes"
 
 sub is_tollfree {
     my $self = shift;
-    if(${$self} =~ /^(\+1)?8[045678]{2}/) { return 1; }
+    if(${$self} =~ /^(\+1)?8(00|44|55|66|77|88)/) { return 1; }
      else { return 0; }
 }
 
