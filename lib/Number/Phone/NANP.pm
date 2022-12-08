@@ -302,13 +302,13 @@ sub is_government {
 
 =item is_tollfree
 
-The number is free to the caller. 800, 844, 855, 866, 877 and 888 "area codes"
+The number is free to the caller. 800, 833, 844, 855, 866, 877 and 888 "area codes"
 
 =cut
 
 sub is_tollfree {
     my $self = shift;
-    if(${$self} =~ /^(\+1)?8(00|44|55|66|77|88)/) { return 1; }
+    if(${$self} =~ /^(\+1)?8(00|33|44|55|66|77|88)/) { return 1; }
      else { return 0; }
 }
 
