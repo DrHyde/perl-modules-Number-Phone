@@ -308,6 +308,9 @@ The number is free to the caller. 800, 833, 844, 855, 866, 877 and 888 "area cod
 
 sub is_tollfree {
     my $self = shift;
+
+    # checked on 2022-12-08
+    # next check due 2023-12-01 (annually)
     if(${$self} =~ /^(\+1)?8(00|33|44|55|66|77|88)/) { return 1; }
      else { return 0; }
 }
