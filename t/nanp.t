@@ -11,6 +11,7 @@ use Scalar::Util qw(blessed);
 require 'common-nanp_and_libphonenumber_tests.pl';
 
 regulators();
+toll_free();
 
 sub regulators {
     note("NANP regulators");
@@ -89,6 +90,29 @@ sub regulators {
             if($regulators{$country} ne '');
         is($number->country_code(), 1, "$country has country code 1");
         like($number->format(), qr/\+1 \d{3} \d{3} \d{4}$/, "$country can format numbers");
+    }
+}
+
+sub toll_free {
+    note("NANP tollfree numbers");
+    my %test_numbers = (
+        '866 623 2282' => 1,
+        '888 225 5322' => 1,
+        '202 418 0500' => 0,
+        '888 888 8888' => 1,
+        '800 800 8000' => 1,
+        '808 808 1111' => 0,
+        '845 321 4567' => 0,
+        '833 789 0000' => 1
+    );
+
+    foreach my $test_number (sort keys %test_numbers) {
+        my $number = Number::Phone->new('+1'.$test_number);
+
+        ok($number->is_tollfree(), "$test_number has right is_tollfree() assignment")
+            if($test_numbers{$test_number});
+        ok(!$number->is_tollfree(), "$test_number has right is_tollfree() assignment")
+            if(!$test_numbers{$test_number});
     }
 }
 
