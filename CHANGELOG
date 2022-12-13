@@ -1,3 +1,11 @@
+X.XXXX    XXXX-XX-XX
+
+- Bug fix: NANP toll-free numbers corrected. 833 area code now supported,
+  and regex fixed to only match when the B and C digits are the same, so
+  800 is toll-free, 888 is toll-free, but 808 is not.
+
+- Data updates
+
 3.8007    2022-12-02
 
 - Data updates

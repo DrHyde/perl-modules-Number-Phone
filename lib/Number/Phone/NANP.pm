@@ -309,6 +309,9 @@ The number is free to the caller. 800, 833, 844, 855, 866, 877 and 888 "area cod
 sub is_tollfree {
     my $self = shift;
 
+    # FIXME this really should be data-driven, based on US data in libphonenumber
+    # https://en.wikipedia.org/wiki/Toll-free_telephone_numbers_in_the_North_American_Numbering_Plan
+    # see also tests in t/nanp.t if anything changes
     # checked on 2022-12-08
     # next check due 2023-12-01 (annually)
     if(${$self} =~ /^(\+1)?8(00|33|44|55|66|77|88)/) { return 1; }
