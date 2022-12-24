@@ -81,6 +81,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 # OFCOM data was found at:
 #   https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbering-data
 #   (prev at http://static.ofcom.org.uk/static/numbering/)
+#   report errors at https://www.ofcom.org.uk/about-ofcom/contact-us/contact-the-webmaster
 # NANP data was found at:
 #   https://www.nationalnanpa.com/reports/reports_cocodes_assign.html
 #   https://www.nationalnanpa.com/reports/reports_cocodes.html
@@ -298,7 +299,7 @@ for file in `grep -ri next.check.due lib build-* t|grep -v build-data.sh|sed 's/
                     );
         while(my $line = <STDIN>) {
             chomp($line);
-            $line =~ s/^\s+#\s+next\s+check\s+due\s+//;
+            $line =~ s/^\s*#\s+next\s+check\s+due\s+//;
             $line =~ s/ .*$//;
             print "Found a next check due on $line in $file\n"
                 if($line lt $today);

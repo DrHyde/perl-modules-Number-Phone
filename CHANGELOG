@@ -4,6 +4,10 @@ X.XXXX    XXXX-XX-XX
   and regex fixed to only match when the B and C digits are the same, so
   800 is toll-free, 888 is toll-free, but 808 is not.
 
+- Workaround: OFCOM have the wrong number length for the +44 800 716 range,
+  we now have an egregious hack to work around that. See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
+
 - Data updates
 
 3.8007    2022-12-02
