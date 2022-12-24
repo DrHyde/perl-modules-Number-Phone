@@ -96,21 +96,21 @@ ok($number->is_pager(), "pagers correctly identified");
 # checked on 2022-12-24
 # next check due 2023-06-01 (semi-annually)
 subtest "0800 716 range has the wrong length, OFCOM says 10 digits but 0800 716 598 is diallable" => sub {
-	$number = Number::Phone->new('UK', '0800716598'); # used by Barclays
-	ok($number->is_tollfree(), "valid 9 digit number in a range supposedly for 10 digit numbers");
+    $number = Number::Phone->new('UK', '0800716598'); # used by Barclays
+    ok($number->is_tollfree(), "valid 9 digit number in a range supposedly for 10 digit numbers");
 
-	$number = Number::Phone->new('+44800716598'); # used by Barclays
-	ok($number->is_tollfree(), "valid 9 digit number in a range supposedly for 10 digit numbers");
+    $number = Number::Phone->new('+44800716598'); # used by Barclays
+    ok($number->is_tollfree(), "valid 9 digit number in a range supposedly for 10 digit numbers");
 
     # this is invalid, it's a digit appended to the above, but this may
-	# be a mixed 9 and 10 digit range, so test it to make sure the length
-	# check passes
-	$number = Number::Phone->new('+448007165980');
-	ok($number->is_tollfree(), "10 digit number also in that range");
+    # be a mixed 9 and 10 digit range, so test it to make sure the length
+    # check passes
+    $number = Number::Phone->new('+448007165980');
+    ok($number->is_tollfree(), "10 digit number also in that range");
 
-	# this is invalid, it's too short, in that mixed range
-	$number = Number::Phone->new('+4480071659');
-	is($number, undef, "too short number doesn't validate");
+    # this is invalid, it's too short, in that mixed range
+    $number = Number::Phone->new('+4480071659');
+    is($number, undef, "too short number doesn't validate");
 };
 
 $number = Number::Phone->new('+44800001012');

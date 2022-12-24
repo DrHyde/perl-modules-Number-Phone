@@ -110,13 +110,13 @@ foreach my $datum (@telco_length_data) {
     #     if($format eq '') { $format = '4+6' }
     # }
 
-	# see https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
-	# checked on 2022-12-24
-	# next check due 2023-06-01 (semi-annually)
-	if($prefix eq '800716') {
-		warn "Correcting OFCOM's broken data for 8007 16\n";
-		$format = '0+9/10';
-	}
+    # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
+    # checked on 2022-12-24
+    # next check due 2023-06-01 (semi-annually)
+    if($prefix eq '800716') {
+        warn "Correcting OFCOM's broken data for 8007 16\n";
+        $format = '0+9/10';
+    }
 
     if($format eq '') {
         if(    $prefix =~ /^[37]/     ) { $format = '10 digit numbers' }
