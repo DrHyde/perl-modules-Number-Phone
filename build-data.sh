@@ -82,6 +82,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 #   https://www.ofcom.org.uk/phones-telecoms-and-internet/information-for-industry/numbering/numbering-data
 #   (prev at http://static.ofcom.org.uk/static/numbering/)
 #   report errors at https://www.ofcom.org.uk/about-ofcom/contact-us/contact-the-webmaster
+#   contact@ofcom.org.uk might work too
 # NANP data was found at:
 #   https://www.nationalnanpa.com/reports/reports_cocodes_assign.html
 #   https://www.nationalnanpa.com/reports/reports_cocodes.html
