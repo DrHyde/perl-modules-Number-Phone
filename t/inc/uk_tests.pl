@@ -100,7 +100,7 @@ subtest "0800 716 range has the wrong length, OFCOM says 10 digits but 0800 716 
     ok($number->is_tollfree(), "valid 9 digit number in a range supposedly for 10 digit numbers");
 
     $number = Number::Phone->new(
-        (is_mocked_uk ? 'MOCK' : 'UK'),
+        (is_mocked_uk() ? 'MOCK' : 'UK'),
         '0800716598'
     );
     ok($number->is_tollfree(), "valid 9 digit number (national format) in a range supposedly for 10 digit numbers");
