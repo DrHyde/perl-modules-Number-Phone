@@ -34,14 +34,15 @@ MD5=$(which md5 || which md5sum)
         git pull -q
     )
 
-    if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
-        (cd data-files || (echo Checking out data-files ...; git clone git@github.com:DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
-    fi
-    (cd data-files || mkdir data-files) # for CI envs that can't yet check that repo out
+    # # LFS repo removed from github cos it ran out of space
+    # if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
+    #     (cd data-files || (echo Checking out data-files ...; git clone git@github.com:DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
+    # fi
+    (cd data-files || mkdir data-files) # for devs and CI envs that can't yet check that repo out
     (
         cd data-files
         git checkout -q master
-        git pull -q
+        # git pull -q
     )
 )
 
@@ -319,7 +320,7 @@ fi
     cd data-files
     if test -e .gitignore; then
         git commit -q $(grep -vf .gitignore <(ls)) -m "data files as at $(date)"
-        git push -q
+        # git push -q
         git gc -q
     fi
 )
