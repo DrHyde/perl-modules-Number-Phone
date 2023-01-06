@@ -6,7 +6,7 @@ use File::Find::Rule;
 use Test::More;
 use Test::Differences;
 
-# This is a sanity-check to make sure that MANIFEST is up-to-daet, as it is
+# This is a sanity-check to make sure that MANIFEST is up-to-date, as it is
 # used by Makefile.PL to generate the list of files to install (see the PM
 # section in Makefile.PL)
 
@@ -20,5 +20,7 @@ eq_or_diff(
     "MANIFEST and lib/**/*.pm match",
     { filename_a => 'MANIFEST', filename_b => 'lib/**/*.pm' }
 );
+
+ok(!-f 'Number/Phone/StubCountry/001.pm', "There's no stub for country 001");
 
 done_testing();

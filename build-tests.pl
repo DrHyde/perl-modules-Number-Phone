@@ -8,6 +8,9 @@ use strict;
 use warnings;
 use XML::XPath;
 
+use lib 'buildtools';
+use Number::Phone::BuildHelpers;
+
 $| = 1;
 
 open(my $testfh, '>', 't/example-phone-numbers.t') ||
@@ -22,9 +25,9 @@ my @tests = ();
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
   my $ISO_country_code = ''.$territory->find('@id');
-  if($ISO_country_code !~ /^..$/) {
-    # warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
-    next TERRITORY;
+  if(is_dodgy_unknown_country($ISO_country_code, $IDD_country_code)) {
+      warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
+      next TERRITORY;
   }
   my @example_numbers = $territory->find('*/exampleNumber')->get_nodelist();
   NUMBER: foreach my $example_number (@example_numbers) {
