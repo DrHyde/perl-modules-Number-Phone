@@ -9,6 +9,8 @@ use warnings;
 
 # use lib 'lib';
 # use Number::Phone::NANP::Data;
+use lib 'buildtools';
+use Number::Phone::BuildHelpers;
 
 $| = 1;
 
@@ -27,7 +29,7 @@ TERRITORY: foreach my $territory (@territories) {
     my $international_code = ''.$territory->find('@preferredInternationalPrefix') ||
                                 $international_rx;
     my $ISO_country_code   = ''.$territory->find('@id');
-    if($ISO_country_code !~ /^..$/) {
+    if(is_dodgy_unknown_country($ISO_country_code, $IDD_country_code)) {
         warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
         next TERRITORY;
     }
@@ -240,47 +242,12 @@ foreach my $tuple (
     # [ 38643   => 'XK' ],
     # [ 38649   => 'XK' ],
 
-    # see https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
-    #     https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
-    #     wtng.info
-    # checked on 2022-03-04
-    # next check due 2024-12-01 (bi-annually)
-    [ 800     => 'InternationalFreephone'    ],
-    [ 808     => 'SharedCostServices'        ],
-    [ 870     => 'Inmarsat'                  ],
-    # 871-874 handed back to ITU: https://www.inmarsat.com/news/one-world-one-number-for-all-inmarsat-services/
-    # [ 871     => 'Inmarsat'                  ],
-    # [ 872     => 'Inmarsat'                  ],
-    # [ 873     => 'Inmarsat'                  ],
-    # [ 874     => 'Inmarsat'                  ],
-    [ 878     => 'UniversalPersonalTelecoms' ],
-    [ 881     => 'GMSS',                     ], # \ Sat-phones
-    [ 8810    => 'ICO',                      ], # |
-    [ 8811    => 'ICO',                      ], # |
-    # 8812 is vacant (Ellipso never launched)   # |
-    # 8813 is vacant (Ellipso never launched)   # |
-    # 8814 is spare                             # |
-    # 8815 is spare                             # |
-    [ 8816    => 'Iridium',                  ], # |
-    [ 8817    => 'Iridium',                  ], # |
-    [ 8818    => 'Globalstar',               ], # |
-    [ 8819    => 'Globalstar',               ], # /
-    [ 882     => 'InternationalNetworks'     ], # many allocations not listed as I don't know if they're diallable, see wtng.info
-    [ 88213   => 'Telespazio'                ], # Sat-phone
-    [ 88216   => 'Thuraya'                   ], # Sat-phone
-    [ 88220   => 'GarudaMobile'              ], # Sat-phone
-    [ 88234   => 'AQ'                        ], # Antarctica, via Global Networks Switzerland, http://wtng.info/wtng-spe.html#Networks
-    [ 883     => 'InternationalNetworks'     ],
-    [ 883120  => 'Telenor'                   ],
-    [ 883130  => 'Mobistar'                  ],
-    [ 883140  => 'MTTGlobalNetworks'         ],
-    # 8835100 => 'VOXBON' # decommissioned, https://en.wikipedia.org/wiki/International_Networks_%28country_code%29
-    [ 888     => 'TelecomsForDisasterRelief' ],
-    # 979 is used for testing when we fail to load a module when we
-    # know what "country" it is
-    [ 979     => 'InternationalPremiumRate'  ],
-    [ 991     => 'ITPCS'                     ],
-    # 999 deliberately NYI for testing; proposed to be like 888.
+    do {
+        my %known_non_country_codes = known_non_country_codes();
+        map {
+            [ $_ => $known_non_country_codes{$_} ]
+        } keys %known_non_country_codes
+    },
 ) {
     print $module_fh
         '$Number::Phone::Country::idd_codes{'.
