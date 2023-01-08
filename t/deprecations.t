@@ -3,9 +3,9 @@ use warnings;
 
 use Data::Dumper::Concise;
 use Test::More;
-use Test::Warnings qw(warning :no_end_test);
+use Test::Warnings qw(warnings :no_end_test);
 
-my $warnings = [ warning { use_ok 'Number::Phone' } ];
+my $warnings = [ warnings { use_ok 'Number::Phone' } ];
 
 if(~0 == 4294967295) {
     ok(
@@ -20,13 +20,18 @@ if(~0 == 4294967295) {
 }
 
 if($] < 5.010) {
-    ok(
-        scalar(grep { /too old/ } @{$warnings}) == 1,
+    is(
+        scalar(grep { /too old/ } @{$warnings}), 2,
+        "warned about perl being too old (for both 5.10 and 5.12)"
+    )
+} elsif($] < 5.012) {
+    is(
+        scalar(grep { /too old/ } @{$warnings}), 1,
         "warned about perl being too old"
     )
 } else {
-    ok(
-        scalar(grep { /too old/ } @{$warnings}) == 0,
+    is(
+        scalar(grep { /too old/ } @{$warnings}), 0,
         "no warnings about perl being too old"
     )
 }

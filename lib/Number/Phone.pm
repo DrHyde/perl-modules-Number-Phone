@@ -15,7 +15,8 @@ use Number::Phone::StubCountry;
 
 use Devel::Deprecations::Environmental
     Int32   => { unsupported_from => '2023-06-01' },
-    OldPerl => { unsupported_from => '2022-11-08', older_than => '5.10.0' };
+    OldPerl => { unsupported_from => '2022-11-08', older_than => '5.10.0' },
+    OldPerl => { unsupported_from => '2022-01-08', older_than => '5.12.0' };
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
 our $VERSION = '3.8007';
@@ -245,6 +246,14 @@ expect Number::Phone to keep on truckin' on 5.8, and I won't B<deliberately>
 remove support without notice. However, because I can not automatically test, I
 can't guarantee that I won't B<accidentally> remove support. If I do
 accidentally remove it, it ain't coming back.
+
+Similarly, Perl 5.10 is not fully supported as of the version after 3.8007, whatever
+that may be. This is because there is a dependency on L<Test::Deep>, which
+dropped support for that version of perl at the start of 2023. This means that
+I can no longer automatically test on that version of perl, and you can't
+(easily) install the necessary dependencies. Depending on details of what you
+installed when, future releases of Number::Phone may or may not continue to
+work for you.
 
 =cut
 

@@ -8,6 +8,9 @@ X.XXXX    XXXX-XX-XX
   we now have an egregious hack to work around that. See
   https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
 
+- No longer auto-tested on 5.10 because a 'make test'-time dependency (Test::Deep)
+  no longer supports that.
+
 - Data updates
 
 3.8007    2022-12-02
