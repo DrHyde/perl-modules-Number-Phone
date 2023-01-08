@@ -23,8 +23,8 @@ task:
 
 task:
   name: MacOS
-  osx_instance:
-    image: catalina-xcode-12.0
+  macos_instance:
+    image: ghcr.io/cirruslabs/macos-ventura-base:latest
   test_script:
     - echo|cpan App::cpanminus
     - export PERL5LIB=/Users/admin/perl5/lib/perl5
@@ -36,7 +36,9 @@ task:
     - /Users/admin/perl5/bin/cpanm --quiet --notest Spreadsheet::XLSX
     - /Users/admin/perl5/bin/cpanm --quiet --notest Text::CSV_XS
     - /Users/admin/perl5/bin/cpanm --quiet --notest LWP::Protocol::https
-    - /Users/admin/perl5/bin/cpanm --installdeps .
+    - /Users/admin/perl5/bin/cpanm --quiet --notest Test2
+    - rm /Users/admin/.cpanm/work/*/build.log
+    - /Users/admin/perl5/bin/cpanm --installdeps . || cat /Users/admin/.cpanm/work/*/build.log
     - ./build-data.sh
     - perl Makefile.PL
     - make
