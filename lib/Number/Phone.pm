@@ -16,7 +16,7 @@ use Number::Phone::StubCountry;
 use Devel::Deprecations::Environmental
     Int32   => { unsupported_from => '2023-06-01' },
     OldPerl => { unsupported_from => '2022-11-08', older_than => '5.10.0' },
-    OldPerl => { unsupported_from => '2022-01-08', older_than => '5.12.0' };
+    OldPerl => { unsupported_from => '2023-01-08', older_than => '5.12.0' };
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
 our $VERSION = '3.8007';
