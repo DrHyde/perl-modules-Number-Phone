@@ -111,6 +111,8 @@ foreach my $datum (@telco_length_data) {
     # }
 
     # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
+    # at least some 9 digit numbers exist in this range but OFCOM claim
+    # it's 10 digit
     # checked on 2022-12-24
     # next check due 2023-06-01 (semi-annually)
     if($prefix eq '800716') {
