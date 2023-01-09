@@ -19,15 +19,16 @@ Number::Phone::StubCountry - Base class for auto-generated country files
 sub country_code {
     my $self = shift;
     
-    return exists($self->{country_code})
-           ? $self->{country_code}
-           : Number::Phone::Country::country_code($self->country());
+    return $self->{country_code};
+    # return exists($self->{country_code})
+    #        ? $self->{country_code}
+    #        : Number::Phone::Country::country_code($self->country());
 }
 
 sub country {
     my $self = shift;
     if(exists($self->{country})) { return $self->{country}; }
-    ref($self)=~ /::(\w\w(\w\w)?)$/; # extra \w\w is for MOCK during testing
+    ref($self)=~ /StubCountry::(\w+)$/;
     return $1;
 }
 

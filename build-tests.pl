@@ -29,6 +29,9 @@ TERRITORY: foreach my $territory (@territories) {
       warn("skipping 'country' $ISO_country_code (+$IDD_country_code)\n");
       next TERRITORY;
   }
+
+  my $final_class_part = get_final_class_part($ISO_country_code, $IDD_country_code);
+
   my @example_numbers = $territory->find('*/exampleNumber')->get_nodelist();
   NUMBER: foreach my $example_number (@example_numbers) {
       my $number = $example_number->string_value();
@@ -155,7 +158,7 @@ print $testfh ') {
             );
         my $object = $class->new(@{$args});
         my $obj_class = $object ? blessed($object) : "[undef]";
-        ok(defined($object), "$class->new(".join(", ", @{$args}).") returns an object: $obj_class") && 
+        ok(defined($object), "$class->new(".join(", ", @{$args}).") returns an object: $obj_class") &&
         ok(
             # grep is because a number might need to be checked as is_geographic *or* is_fixed_line
             (grep { $class->new(@{$args})->$_() } @{$methods}),
@@ -191,7 +194,7 @@ sub preamble {
         # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         # See the License for the specific language governing permissions and
         # limitations under the License.
-        
+
         use strict;
         use warnings;
         use lib 't/inc';

@@ -342,3 +342,11 @@ lib/Number/Phone/StubCountry/YT.pm
 lib/Number/Phone/StubCountry/ZA.pm
 lib/Number/Phone/StubCountry/ZM.pm
 lib/Number/Phone/StubCountry/ZW.pm
+lib/Number/Phone/StubCountry/InternationalFreephone.pm
+lib/Number/Phone/StubCountry/SharedCostServices.pm
+lib/Number/Phone/StubCountry/Inmarsat.pm
+lib/Number/Phone/StubCountry/UniversalPersonalTelecoms.pm
+lib/Number/Phone/StubCountry/InternationalNetworks882.pm
+lib/Number/Phone/StubCountry/InternationalNetworks883.pm
+lib/Number/Phone/StubCountry/TelecomsForDisasterRelief.pm
+lib/Number/Phone/StubCountry/InternationalPremiumRate.pm

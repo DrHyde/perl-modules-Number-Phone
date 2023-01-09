@@ -44,6 +44,8 @@ my @gb_formats = formats_for($xml->find(
     '/phoneNumberMetadata/territories/territory[@id="GB"]')->get_node(1)
 );
 
+unlink($_) foreach(File::Find::Rule->file()->name('*.pm')->in('lib/Number/Phone/StubCountry'));
+
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
   my $national_code = ''.$territory->find('@nationalPrefixForParsing') || ''.$territory->find('@nationalPrefix');
@@ -58,12 +60,13 @@ TERRITORY: foreach my $territory (@territories) {
       next TERRITORY;
   }
 
-  unlink "$dir/$ISO_country_code.pm"; # to clear out countries that no longer exist
+  my $final_class_part = get_final_class_part($ISO_country_code, $IDD_country_code);
+  my $filename = "$dir/$final_class_part.pm";
 
-  open(my $module_fh, '>:encoding(UTF-8)', "$dir/$ISO_country_code.pm")
-    || die("Can't write $dir/$ISO_country_code.pm: $!\n");
-  print $manifest_fh "$dir/$ISO_country_code.pm\n";
-  print $module_fh preamble($ISO_country_code);
+  open(my $module_fh, '>:encoding(UTF-8)', $filename)
+    || die("Can't write $filename: $!\n");
+  print $manifest_fh "$filename\n";
+  print $module_fh preamble($final_class_part);
 
   my @formatters = formats_for($territory, $ISO_country_code);
   print $module_fh 'my '.Data::Dumper->new([\@formatters], [qw(formatters)])->Dump()."\n";
@@ -143,7 +146,7 @@ TERRITORY: foreach my $territory (@territories) {
       my \$class = shift;
       my \$number = shift;
       \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
-      my \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
+      my \$self = bless({ country_code => '$IDD_country_code', number => \$number, formatters => \$formatters, validators => \$validators, ".
       (($IDD_country_code != 1 && $got_area_names) ? 'areanames => \\%areanames' : '')
       ."}, \$class);
   ";
@@ -179,7 +182,7 @@ TERRITORY: foreach my $territory (@territories) {
     }
 
     push @code,
-      "  \$self = bless({ number => \$number, formatters => \$formatters, validators => \$validators, ".
+      "  \$self = bless({ country_code => '$IDD_country_code', number => \$number, formatters => \$formatters, validators => \$validators, ".
       (($IDD_country_code != 1 && $got_area_names) ? 'areanames => \\%areanames' : '')
       ."}, \$class);";
 
@@ -192,7 +195,7 @@ TERRITORY: foreach my $territory (@territories) {
 }
 
 sub preamble {
-  my $iso_code = shift;
+  my $final_class_part = shift;
   "# automatically generated file, don't edit\n\n".
   q{
 
@@ -210,7 +213,7 @@ sub preamble {
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-package Number::Phone::StubCountry::}.$iso_code.q{;
+package Number::Phone::StubCountry::}.$final_class_part.q{;
 use base qw(Number::Phone::StubCountry);
 
 use strict;
