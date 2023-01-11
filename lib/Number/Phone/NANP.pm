@@ -173,6 +173,9 @@ not yet be allocated, or it may be reserved.
 
 NANP-globals like 1-800 aren't geographic, the rest are.
 
+As a special case, 1-600 is non-geographic. So too will be
+1-622/633/644/655/677/688 when they come in to service.
+
 =item is_mobile
 
 NANP-globals like 1-800 aren't mobile. For most others we just don't know because
@@ -245,8 +248,16 @@ foreach my $method (qw(areacode subscriber)) {
     }
 }
 
+sub _is_canadian_600 {
+    my $self = shift;
+    ${$self} =~ /^(\+1)?6([0234578])\2/;
+}
+
 sub is_geographic {
     my $self = shift;
+    # 600 is non-geographic. 6(22|33|44|55|77|88) are reserved
+    # for non-geographic use but not yet in use
+    return 0 if($self->_is_canadian_600());
     # NANP-globals like 1-800 aren't geographic, the rest are
     return ref($self) eq __PACKAGE__ ? 0 : 1;
 }

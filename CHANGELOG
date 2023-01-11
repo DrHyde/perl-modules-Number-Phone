@@ -2,7 +2,11 @@ X.XXXX    XXXX-XX-XX
 
 - Bug fix: NANP toll-free numbers corrected. 833 area code now supported,
   and regex fixed to only match when the B and C digits are the same, so
-  800 is toll-free, 888 is toll-free, but 808 is not.
+  800 is toll-free, 888 is toll-free, but 808 is not. See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/110
+
+- Bug fix: NANP 1-600 area code is non-geographic. See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/113
 
 - Workaround: OFCOM have the wrong number length for the +44 800 716 range,
   we now have an egregious hack to work around that. See
