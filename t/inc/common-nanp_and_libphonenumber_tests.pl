@@ -17,6 +17,26 @@ use vars qw($CLASS);
 
 note("Common tests for Number::Phone::NANP and Number::Phone::Lib");
 
+my $ca_600 = $CLASS->new('+1 600 555 1000');
+isa_ok $ca_600, is_libphonenumber() ? 'Number::Phone::StubCountry::CA'
+                                    : 'Number::Phone::NANP::CA';
+is $ca_600->country(), 'CA', "$CLASS->new('+1 600 555 1000')->country()";
+is_deeply(
+    [sort $ca_600->type()],
+    [sort('is_valid', is_libphonenumber() ? 'is_ipphone' : ())],
+    "$CLASS->new('+1 600 555 1000')->type()"
+);
+
+my $ca_604 = $CLASS->new('+1 604 555 1000');
+isa_ok $ca_604, is_libphonenumber() ? 'Number::Phone::StubCountry::CA'
+                                    : 'Number::Phone::NANP::CA';
+is $ca_604->country(), 'CA', "$CLASS->new('+1 604 555 1000')->country()";
+is_deeply(
+    [sort $ca_604->type()],
+    [sort qw(is_geographic is_valid)],
+    "$CLASS->new('+1 604 555 1000')->type()"
+);
+
 my $the_man = '+1 (202) 456-6213';
 my $us = $CLASS->new($the_man);
 isa_ok $us, is_libphonenumber() ? 'Number::Phone::StubCountry::US'
