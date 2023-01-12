@@ -18,7 +18,7 @@ Number::Phone::StubCountry - Base class for auto-generated country files
 
 sub country_code {
     my $self = shift;
-    
+
     return $self->{country_code};
     # return exists($self->{country_code})
     #        ? $self->{country_code}
@@ -28,7 +28,7 @@ sub country_code {
 sub country {
     my $self = shift;
     if(exists($self->{country})) { return $self->{country}; }
-    ref($self)=~ /StubCountry::(\w+)$/;
+    ref($self)=~ /::(\w+?)$/;
     return $1;
 }
 

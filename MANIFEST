@@ -97,6 +97,14 @@ t/manifest-contains-all-modules.t
 t/only-use-blib-under-make-test.t
 t/deprecations.t
 t/constructor.t
+lib/Number/Phone/StubCountry/GMSS/Globalstar.pm
+lib/Number/Phone/StubCountry/GMSS/ICO.pm
+lib/Number/Phone/StubCountry/GMSS/Iridium.pm
+lib/Number/Phone/StubCountry/InternationalNetworks882/GarudaMobile.pm
+lib/Number/Phone/StubCountry/InternationalNetworks882/Telespazio.pm
+lib/Number/Phone/StubCountry/InternationalNetworks882/Thuraya.pm
+lib/Number/Phone/StubCountry/InternationalNetworks883/MTTGlobalNetworks.pm
+lib/Number/Phone/StubCountry/InternationalNetworks883/Mobistar.pm
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
@@ -346,6 +354,7 @@ lib/Number/Phone/StubCountry/InternationalFreephone.pm
 lib/Number/Phone/StubCountry/SharedCostServices.pm
 lib/Number/Phone/StubCountry/Inmarsat.pm
 lib/Number/Phone/StubCountry/UniversalPersonalTelecoms.pm
+lib/Number/Phone/StubCountry/GMSS.pm
 lib/Number/Phone/StubCountry/InternationalNetworks882.pm
 lib/Number/Phone/StubCountry/InternationalNetworks883.pm
 lib/Number/Phone/StubCountry/TelecomsForDisasterRelief.pm

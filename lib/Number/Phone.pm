@@ -323,22 +323,41 @@ sub new {
 sub _make_stub_object {
     my ($class, $number, $country_name) = @_;
     die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
+
+    # use Test::More ();
+    # Test::More::diag("Trying to make a stub");
+    # Test::More::diag("   number: $number");
+    # Test::More::diag("  country: $country_name");
+
     my $stub_class = "Number::Phone::StubCountry::$country_name";
+    # Test::More::diag("Trying to load $stub_class");
     eval "use $stub_class";
-    # die("Can't find $stub_class: $@\n") if($@);
-    if($@) {
+    if($@ && $number =~ /^\+881/) {
+        $stub_class = "Number::Phone::StubCountry::GMSS::$country_name";
+        # Test::More::diag("Trying to load $stub_class");
+        eval "use $stub_class";
+    } elsif($@ && $number =~ /^\+882/ && $country_name ne 'AQ') {
+        $stub_class = "Number::Phone::StubCountry::InternationalNetworks882::$country_name";
+        # Test::More::diag("Trying to load $stub_class");
+        eval "use $stub_class";
+    } elsif($@ && $number =~ /^\+883/) {
+        $stub_class = "Number::Phone::StubCountry::InternationalNetworks883::$country_name";
+        # Test::More::diag("Trying to load $stub_class");
+        eval "use $stub_class";
+    } elsif($@) {
         my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
         # an instance of this class is the ultimate fallback
         (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
         if($local_number eq '') { return undef; }
         return bless({
             country_code => $country_idd,
-            country      => $country_name,
+            # country      => $country_name,
             is_valid     => undef,
             number       => $local_number,
         }, 'Number::Phone::StubCountry');
     }
 
+    # Test::More::diag("Loaded $stub_class");
     $stub_class->new($number);
 }
 

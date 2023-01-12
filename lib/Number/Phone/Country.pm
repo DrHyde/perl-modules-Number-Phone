@@ -196,7 +196,7 @@ sub phone2country_and_idd {
                     }
                     $country = @$country[0];
                 }
-
+                $country =~ s/.*:://;
                 return ($country, $idd);
             }
         }

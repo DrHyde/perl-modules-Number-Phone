@@ -28,7 +28,7 @@ open(my $manifest_fh, 'MANIFEST') || die("Can't read MANIFEST\n");
 my @manifest_files = grep { /./ } <$manifest_fh>;
 close($manifest_fh);
 open($manifest_fh, '>', 'MANIFEST') || die("Can't write MANIFEST\n");
-print $manifest_fh "$_" foreach( grep { $_ !~ m{^lib/Number/Phone/StubCountry/} } @manifest_files);
+print $manifest_fh "$_" foreach( grep { $_ !~ m{^lib/Number/Phone/StubCountry/\w+\.pm} } @manifest_files);
 
 mkdir('lib/Number/Phone/StubCountry');
 mkdir('t/lib');
@@ -44,7 +44,7 @@ my @gb_formats = formats_for($xml->find(
     '/phoneNumberMetadata/territories/territory[@id="GB"]')->get_node(1)
 );
 
-unlink($_) foreach(File::Find::Rule->file()->name('*.pm')->in('lib/Number/Phone/StubCountry'));
+unlink(glob('lib/Number/Phone/StubCountry/*pm'));
 
 TERRITORY: foreach my $territory (@territories) {
   my $IDD_country_code = ''.$territory->find('@countryCode');
