@@ -1,4 +1,4 @@
-X.XXXX    XXXX-XX-XX
+3.8099_01  2023-01-12
 
 - Bug fix: NANP toll-free numbers corrected. 833 area code now supported,
   and regex fixed to only match when the B and C digits are the same, so
