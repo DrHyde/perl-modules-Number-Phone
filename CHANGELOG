@@ -1,5 +1,9 @@
 3.8099_01  2023-01-12
 
+- Add validation using libphonenumber's data for non-geographic country
+  codes like +800 (International free phone) and +870 (Inmarsat). See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/17
+
 - Bug fix: NANP toll-free numbers corrected. 833 area code now supported,
   and regex fixed to only match when the B and C digits are the same, so
   800 is toll-free, 888 is toll-free, but 808 is not. See
