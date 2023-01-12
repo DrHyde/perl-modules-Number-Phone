@@ -47,7 +47,7 @@ TERRITORY: foreach my $territory (@territories) {
           ($_->[0] eq 'GB') ? ($_, ['UK', $_->[1]]) : $_
       } (
           [$ISO_country_code, "+$IDD_country_code$number"],
-          [$ISO_country_code, $number],
+          [$ISO_country_code, "$number"],
           [                   "+$IDD_country_code$number"]
       );
       TUPLE: foreach my $test_tuple (@test_tuples) {
@@ -111,6 +111,9 @@ TERRITORY: foreach my $territory (@territories) {
               warnonce("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data needs to be treated as IT");
               $test_tuple->[0] = 'IT';
           }
+          if($test_tuple->[0] eq '001') {
+              $test_tuple->[0] = get_final_class_part($ISO_country_code, $IDD_country_code);
+          }
           if($IDD_country_code eq '44' && $number =~ /
               ^
               800   123 4567  |
@@ -128,6 +131,8 @@ TERRITORY: foreach my $territory (@territories) {
           my $constructor_args = [map { "'$_'" } @{$test_tuple}];
           my @classes = $IDD_country_code eq '44' ? qw(Number::Phone Number::Phone::Lib) :
                         $IDD_country_code eq '1'  ? qw(Number::Phone Number::Phone::Lib) :
+                        $IDD_country_code =~ /$non_geo_IDD_codes_regex/
+                                                  ? qw(Number::Phone Number::Phone::Lib) :
                                                     qw(Number::Phone::Lib);
 
           if(!ref($test_method)) { $test_method = [$test_method] }

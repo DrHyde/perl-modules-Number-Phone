@@ -253,7 +253,7 @@ is(phone2country('+67210123'), 'AQ', '+67210 is AQ');
 is(phone2country('+67211123'), 'AQ', '+67211 is AQ');
 is(phone2country('+67212123'), 'AQ', '+67212 is AQ');
 is(phone2country('+67213123'), 'AQ', '+67213 is AQ');
-is(phone2country('+882345'), 'AQ', '+67213 is AQ');   # Global Networks Switzerland
+is(phone2country('+882345'), 'AQ', '+882345 is AQ');   # Global Networks Switzerland
 is(phone2country('+6723123'), 'NF', '+6723 is NF');
 is(phone2country('+673123'), 'BN', '+673 is BN');
 is(phone2country('+674123'), 'NR', '+674 is NR');

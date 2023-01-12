@@ -12,6 +12,8 @@ use warnings;
 use lib 'buildtools';
 use Number::Phone::BuildHelpers;
 
+my %known_non_country_codes = known_non_country_codes();
+
 $| = 1;
 
 use XML::XPath;
@@ -243,7 +245,6 @@ foreach my $tuple (
     # [ 38649   => 'XK' ],
 
     do {
-        my %known_non_country_codes = known_non_country_codes();
         map {
             [ $_ => $known_non_country_codes{$_} ]
         } keys %known_non_country_codes
@@ -258,6 +259,13 @@ foreach my $tuple (
             : "'".$tuple->[1]."'"
         ).
         ";\n";
+}
+
+foreach my $IDD (keys %known_non_country_codes) {
+    my $name = $known_non_country_codes{$IDD};
+    print $module_fh qq{
+        \$Number::Phone::Country::prefix_codes{'$name'} = ['$IDD'];
+    };
 }
 
 # countries that don't exist in libphonenumber

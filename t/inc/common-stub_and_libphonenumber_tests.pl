@@ -68,11 +68,11 @@ isa_ok($international883, "Number::Phone::StubCountry::InternationalNetworks883"
 is($international883->country(), 'InternationalNetworks883', '$CLASS->new("+883510012345")->country()');
 
 note("MTTGlobalNetworks (in InternationalNetworks883)");
-my $international883_telenor = $CLASS->new("+883140 00000");
-isa_ok($international883_telenor, "Number::Phone::StubCountry");
-isa_ok($international883_telenor, "Number::Phone::StubCountry::InternationalNetworks883");
-isa_ok($international883_telenor, "Number::Phone::StubCountry::InternationalNetworks883::MTTGlobalNetworks");
-is($international883_telenor->country(), 'MTTGlobalNetworks', '$CLASS->new("+88312000000")->country()');
+my $international883_mtt = $CLASS->new("+883140 00000");
+isa_ok($international883_mtt, "Number::Phone::StubCountry");
+isa_ok($international883_mtt, "Number::Phone::StubCountry::InternationalNetworks883");
+isa_ok($international883_mtt, "Number::Phone::StubCountry::InternationalNetworks883::MTTGlobalNetworks");
+is($international883_mtt->country(), 'MTTGlobalNetworks', '$CLASS->new("+88312000000")->country()');
 
 my $fo = $CLASS->new('+298 303030'); # Faroes Telecom
 is($fo->country_code(), 298, "$CLASS->new('+298 303030')->country_code()");

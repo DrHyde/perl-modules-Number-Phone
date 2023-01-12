@@ -10,14 +10,16 @@ our @EXPORT = qw(
     get_final_class_part
     is_dodgy_unknown_country
     known_non_country_codes
+    $non_geo_IDD_codes_regex
 );
 
+our $non_geo_IDD_codes_regex = qr/^(800|808|870|878|881|882|883|888|979)$/;
 # these are territories where libphonenumber has some data, but
 # for "ISO" country code "001"
 sub is_dodgy_unknown_country {
     my($ISO, $IDD) = @_;
 
-    $ISO !~ /^..$/ && $IDD !~ /^(800|808|870|878|881|882|883|888|979)$/;
+    $ISO !~ /^..$/ && $IDD !~ /$non_geo_IDD_codes_regex/
 }
 
 # see https://en.wikipedia.org/wiki/Global_Mobile_Satellite_System
@@ -33,6 +35,7 @@ sub known_non_country_codes {
         878    => 'UniversalPersonalTelecoms',
         # NB all the sub-ranges in 881, 882 and 883 except AQ need empty sub-classes in lib/Number/Phone/StubCountry/.../
         # There's also logic for them in Number::Phone->_make_stub_object()
+        # and for AQ in Number::Phone->_new_args()
         881    => 'GMSS',                                   # \ Satphones
         8810   => 'GMSS::ICO',                              # |
         8811   => 'GMSS::ICO',                              # |

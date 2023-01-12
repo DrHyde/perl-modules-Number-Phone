@@ -205,7 +205,8 @@ sub phone2country_and_idd {
 }
 
 sub country_code {
-    my $country = uc shift;
+    my $country = shift;
+    $country    = uc($country) if($country =~ /^[a-z]{2}$/i);
 
     my $data = $prefix_codes{$country} or return;
 

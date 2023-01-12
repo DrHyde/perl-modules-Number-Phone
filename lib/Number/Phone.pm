@@ -266,8 +266,12 @@ sub _new_args {
 
     if(!defined($number)) { # one arg
         $number = $country;
-    } elsif($country =~ /[a-z]/i) { # eg 'UK', '12345'
-        $original_country = uc($country);
+    } elsif($country =~ /[a-z]/i) {
+        # eg ('UK', '12345')
+        #    ('MOCK', ...)
+        #    ('InternationalNetworks882', ...)
+        # we accept lower-case ISO codes
+        $original_country = uc($country) if($country =~ /^[a-z]{2}$/i);
         $number = '+'.
                   Number::Phone::Country::country_code($country).
                   $number
@@ -280,6 +284,9 @@ sub _new_args {
     $number = "+$number" unless($number =~ /^\+/);
 
     $country = Number::Phone::Country::phone2country($number) or return;
+    if($country eq 'AQ' && $number =~ /^\+882/) {
+        $original_country = 'InternationalNetworks882';
+    }
 
     # special cases where you can legitimately ask for a containing country (eg
     # GB) and get back a sub-country (eg GG, which squats upon parts of the GB
@@ -324,25 +331,16 @@ sub _make_stub_object {
     my ($class, $number, $country_name) = @_;
     die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
 
-    # use Test::More ();
-    # Test::More::diag("Trying to make a stub");
-    # Test::More::diag("   number: $number");
-    # Test::More::diag("  country: $country_name");
-
     my $stub_class = "Number::Phone::StubCountry::$country_name";
-    # Test::More::diag("Trying to load $stub_class");
     eval "use $stub_class";
     if($@ && $number =~ /^\+881/) {
         $stub_class = "Number::Phone::StubCountry::GMSS::$country_name";
-        # Test::More::diag("Trying to load $stub_class");
         eval "use $stub_class";
     } elsif($@ && $number =~ /^\+882/ && $country_name ne 'AQ') {
         $stub_class = "Number::Phone::StubCountry::InternationalNetworks882::$country_name";
-        # Test::More::diag("Trying to load $stub_class");
         eval "use $stub_class";
     } elsif($@ && $number =~ /^\+883/) {
         $stub_class = "Number::Phone::StubCountry::InternationalNetworks883::$country_name";
-        # Test::More::diag("Trying to load $stub_class");
         eval "use $stub_class";
     } elsif($@) {
         my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
@@ -357,7 +355,6 @@ sub _make_stub_object {
         }, 'Number::Phone::StubCountry');
     }
 
-    # Test::More::diag("Loaded $stub_class");
     $stub_class->new($number);
 }
 
