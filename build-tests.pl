@@ -142,7 +142,8 @@ TERRITORY: foreach my $territory (@territories) {
               push @tests, {
                   class   => $class,
                   args    => $constructor_args,
-                  methods => $test_methods
+                  methods => $test_methods,
+                  test_country => 0 + !($IDD_country_code eq '1' && grep { /^is_(specialrate|tollfree|personal)$/ } @{$test_methods})
               };
           }
       }
@@ -158,24 +159,35 @@ foreach my $class (qw(Number::Phone Number::Phone::Lib)) {
         [qw(InternationalNetworks882::Thuraya           1610100  +8821610100 )],
         [qw(InternationalNetworks883::MTTGlobalNetworks 14000000 +88314000000)],
     ) {
+        my @is = $test->[0] =~ /^GMSS/                        ? 'is_mobile' :
+                 $test->[0] =~ /^InternationalNetworks88[23]/ ? 'is_ipphone' :
+                                                                ();
+        push @tests, {
+            class   => $class,
+            args    => [$test->[2]],
+            methods => \@is,
+            test_country => 0,
+        };
         push @tests, {
             class   => $class,
             args    => [$test->[0], $test->[$_]],
-            methods => [
-                $test->[0] =~ /^GMSS/                        ? 'is_mobile' :
-                $test->[0] =~ /^InternationalNetworks88[23]/ ? 'is_ipphone' :
-                                                               ()
-            ]
+            methods => \@is,
+            test_country => 1,
         } foreach(1, 2);
     }
 }
 
 print $testfh 'foreach my $test (';
 foreach my $test (@tests) {
-    print $testfh "{ class => '".$test->{class}."', args => [".join(',', map { "'$_'" } @{$test->{args}})."], methods => [".join(',', map { "'$_'" } @{$test->{methods}})."] },\n";
+    print $testfh "{
+        class   => '".$test->{class}."',
+        args    => [".join(',', map { "'$_'" } @{$test->{args}})."],
+        methods => [".join(',', map { "'$_'" } @{$test->{methods}})."],
+        test_country => ".$test->{test_country}.",
+    },\n";
 }
 print $testfh ') {
-    my($class, $args, $methods) = map { $test->{$_} } qw(class args methods);
+    my($class, $args, $methods, $test_country) = map { $test->{$_} } qw(class args methods test_country);
     SKIP: {
         skip("built --without_uk so not testing that full-fat implementation today", 1)
             if(
@@ -187,9 +199,25 @@ print $testfh ') {
         ok(defined($object), "$class->new(".join(", ", @{$args}).") returns an object: $obj_class") &&
         ok(
             # grep is because a number might need to be checked as is_geographic *or* is_fixed_line
-            (grep { $class->new(@{$args})->$_() } @{$methods}),
+            (grep { $object->$_() } @{$methods}),
             "$class->new(".join(", ", @{$args}).")->".join(", ", @{$methods})."() does the right thing"
         );
+        if($test_country && scalar(@{$args}) > 1) {
+            my $got_country = $object->country();
+            (my $expected_country = $args->[0]) =~ s/.*:://;
+            if(
+                ($got_country =~ /^(UK|GB)$/ && $expected_country =~ /^(UK|GB)$/) ||
+                ($got_country eq "VA"        && $expected_country eq "IT"       ) ||
+                ($got_country eq "Iridium"   && $expected_country eq "GMSS"     )
+            ) {
+                pass "$class->new(".join(", ", @{$args}).")->country() does the right thing"
+            } else {
+                is(
+                    $object->country(), $expected_country,
+                    "$class->new(".join(", ", @{$args}).")->country() does the right thing"
+                );
+            }
+        }
     }
 }
 done_testing();
