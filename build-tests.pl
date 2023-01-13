@@ -128,7 +128,7 @@ TERRITORY: foreach my $territory (@territories) {
               # warn("$ISO_country_code number +$IDD_country_code $number in libphonenumber's example data is wrong\n");
               next NUMBER;
           }
-          my $constructor_args = [map { "'$_'" } @{$test_tuple}];
+          my $constructor_args = [@{$test_tuple}];
           my @classes = $IDD_country_code eq '44' ? qw(Number::Phone Number::Phone::Lib) :
                         $IDD_country_code eq '1'  ? qw(Number::Phone Number::Phone::Lib) :
                         $IDD_country_code =~ /$non_geo_IDD_codes_regex/
@@ -136,7 +136,7 @@ TERRITORY: foreach my $territory (@territories) {
                                                     qw(Number::Phone::Lib);
 
           if(!ref($test_method)) { $test_method = [$test_method] }
-          my $test_methods     = [map { "'$_'" } @{$test_method}];
+          my $test_methods     = [@{$test_method}];
 
           foreach my $class (@classes) {
               push @tests, {
@@ -149,9 +149,30 @@ TERRITORY: foreach my $territory (@territories) {
   }
 }
 
+foreach my $class (qw(Number::Phone Number::Phone::Lib)) {
+    foreach my $test (
+        [qw(GMSS::Iridium    612345678 +881612345678)],
+        [qw(GMSS::ICO        012345678 +881012345678)],
+        [qw(GMSS::Globalstar 812345678 +881812345678)],
+        [qw(InternationalNetworks882::Telespazio        13201234 +88213201234)],
+        [qw(InternationalNetworks882::Thuraya           1610100  +8821610100 )],
+        [qw(InternationalNetworks883::MTTGlobalNetworks 14000000 +88314000000)],
+    ) {
+        push @tests, {
+            class   => $class,
+            args    => [$test->[0], $test->[$_]],
+            methods => [
+                $test->[0] =~ /^GMSS/                        ? 'is_mobile' :
+                $test->[0] =~ /^InternationalNetworks88[23]/ ? 'is_ipphone' :
+                                                               ()
+            ]
+        } foreach(1, 2);
+    }
+}
+
 print $testfh 'foreach my $test (';
 foreach my $test (@tests) {
-    print $testfh "{ class => '".$test->{class}."', args => [".join(',',@{$test->{args}})."], methods => [".join(',',@{$test->{methods}})."] },\n";
+    print $testfh "{ class => '".$test->{class}."', args => [".join(',', map { "'$_'" } @{$test->{args}})."], methods => [".join(',', map { "'$_'" } @{$test->{methods}})."] },\n";
 }
 print $testfh ') {
     my($class, $args, $methods) = map { $test->{$_} } qw(class args methods);

@@ -50,7 +50,6 @@ sub known_non_country_codes {
         882    => 'InternationalNetworks882',               # many allocations not listed as I don't know if they're diallable, see wtng.info
         88213  => 'InternationalNetworks882::Telespazio',   # Sat-phone
         88216  => 'InternationalNetworks882::Thuraya',      # Sat-phone
-        88220  => 'InternationalNetworks882::GarudaMobile', # Sat-phone
         88234  => 'AQ',                                     # Antarctica, via Global Networks Switzerland, http://wtng.info/wtng-spe.html#Networks
         883    => 'InternationalNetworks883',
         883130 => 'InternationalNetworks883::Mobistar',

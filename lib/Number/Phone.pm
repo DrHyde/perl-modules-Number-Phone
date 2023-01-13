@@ -263,6 +263,7 @@ sub _new_args {
     die("Number::Phone->new(): too many params\n") if(exists($_[2]));
 
     my $original_country;
+    $original_country = $country if($country =~ /::/);
 
     if(!defined($number)) { # one arg
         $number = $country;
@@ -272,10 +273,18 @@ sub _new_args {
         #    ('InternationalNetworks882', ...)
         # we accept lower-case ISO codes
         $original_country = uc($country) if($country =~ /^[a-z]{2}$/i);
-        $number = '+'.
-                  Number::Phone::Country::country_code($country).
-                  $number
-          unless(index($number, '+'.Number::Phone::Country::country_code($country)) == 0);
+        if($country =~ /^GMSS::[a-zA-Z]+$/) {
+            if($number !~ /^\+881/) {
+                $number = "+881$number";
+            }
+        } elsif($country =~ /^InternationalNetworks(88[23])::[a-zA-Z]+$/) {
+            my $idd = $1;
+            if($number !~ /^\+$idd/) {
+                $number = "+$idd$number";
+            }
+        } elsif(index($number, '+'.Number::Phone::Country::country_code($country)) != 0) {
+            $number = '+'.Number::Phone::Country::country_code($country).$number;
+        }
     } else { # (+)NNN
         $number = join('', grep { defined } ($country, $number));
     }

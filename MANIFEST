@@ -100,7 +100,6 @@ t/constructor.t
 lib/Number/Phone/StubCountry/GMSS/Globalstar.pm
 lib/Number/Phone/StubCountry/GMSS/ICO.pm
 lib/Number/Phone/StubCountry/GMSS/Iridium.pm
-lib/Number/Phone/StubCountry/InternationalNetworks882/GarudaMobile.pm
 lib/Number/Phone/StubCountry/InternationalNetworks882/Telespazio.pm
 lib/Number/Phone/StubCountry/InternationalNetworks882/Thuraya.pm
 lib/Number/Phone/StubCountry/InternationalNetworks883/MTTGlobalNetworks.pm

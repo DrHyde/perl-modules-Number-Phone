@@ -72,7 +72,7 @@ my $international883_mtt = $CLASS->new("+883140 00000");
 isa_ok($international883_mtt, "Number::Phone::StubCountry");
 isa_ok($international883_mtt, "Number::Phone::StubCountry::InternationalNetworks883");
 isa_ok($international883_mtt, "Number::Phone::StubCountry::InternationalNetworks883::MTTGlobalNetworks");
-is($international883_mtt->country(), 'MTTGlobalNetworks', '$CLASS->new("+88312000000")->country()');
+is($international883_mtt->country(), 'MTTGlobalNetworks', '$CLASS->new("+88314000000")->country()');
 
 my $fo = $CLASS->new('+298 303030'); # Faroes Telecom
 is($fo->country_code(), 298, "$CLASS->new('+298 303030')->country_code()");
