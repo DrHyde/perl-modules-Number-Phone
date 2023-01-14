@@ -358,7 +358,6 @@ sub _make_stub_object {
         if($local_number eq '') { return undef; }
         return bless({
             country_code => $country_idd,
-            # country      => $country_name,
             is_valid     => undef,
             number       => $local_number,
         }, 'Number::Phone::StubCountry');

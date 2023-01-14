@@ -20,16 +20,13 @@ sub country_code {
     my $self = shift;
 
     return $self->{country_code};
-    # return exists($self->{country_code})
-    #        ? $self->{country_code}
-    #        : Number::Phone::Country::country_code($self->country());
 }
 
 sub country {
     my $self = shift;
     if(exists($self->{country})) { return $self->{country}; }
     ref($self)=~ /::(\w+?)$/;
-    return $1;
+    return $self->{country} = $1;
 }
 
 sub raw_number {
@@ -43,9 +40,9 @@ sub is_valid {
       return $self->{is_valid};
   }
   foreach (map { "is_$_" } qw(specialrate geographic mobile pager tollfree personal ipphone)) {
-    return 1 if($self->$_());
+    return $self->{is_valid} = 1 if($self->$_());
   }
-  return 0;
+  return $self->{is_valid} = 0;
 }
 
 sub is_geographic   { shift()->_validator('geographic'); }
@@ -75,7 +72,6 @@ sub areaname {
         }
     }
     my $number = $self->raw_number();
-    return unless $self->{areanames};
     LANGUAGE: foreach my $language (@languages) {
         next LANGUAGE unless(exists($self->{areanames}->{$language}));
         my %map = %{$self->{areanames}->{$language}};
@@ -96,7 +92,7 @@ sub format {
       return join(' ', '+'.$self->country_code(), @bits);
     }
   }
-  return '+'.$self->country_code().' '.$number;
+  # return '+'.$self->country_code().' '.$number;
 }
 
 1;

@@ -55,11 +55,8 @@ sub known_non_country_codes {
         883130 => 'InternationalNetworks883::Mobistar',
         883140 => 'InternationalNetworks883::MTTGlobalNetworks',
         888    => 'TelecomsForDisasterRelief',
-        # 979 is used for testing when we fail to load a module when we
-        # know what 'country' it is
         979    => 'InternationalPremiumRate',
         991    => 'ITPCS',
-        # 999 deliberately NYI for testing; proposed to be like 888.
     )
 }
 
