@@ -23,6 +23,7 @@ install_share 'share';
 
 WriteMakefile(
   NAME         => 'Number::Phone',
+  LICENSE      => 'open_source',
     META_MERGE => {
         license => 'open_source',
         resources => {
