@@ -436,7 +436,7 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2012
+Copyright 2023
 
 =cut
 

@@ -817,7 +817,7 @@ L<git://github.com/DrHyde/perl-modules-Number-Phone.git>
 
 =head1 AUTHOR, COPYRIGHT and LICENCE
 
-Copyright 2004 - 2015 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+Copyright 2004 - 2023 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
 This software is free-as-in-speech software, and may be used,
 distributed, and modified under the terms of either the GNU

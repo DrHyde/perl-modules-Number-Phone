@@ -406,7 +406,7 @@ Thanks to Shraga Bor-Sood for the updates in version 1.4.
 
 Copyright 2003 by MaxMind LLC
 
-Copyright 2004 - 2011 David Cantrell
+Copyright 2004 - 2023 David Cantrell
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
