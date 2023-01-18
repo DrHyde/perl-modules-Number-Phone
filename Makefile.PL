@@ -25,7 +25,6 @@ WriteMakefile(
   NAME         => 'Number::Phone',
   LICENSE      => 'open_source',
     META_MERGE => {
-        license => 'open_source',
         resources => {
             repository => 'https://github.com/DrHyde/perl-modules-Number-Phone',
             bugtracker => 'https://github.com/DrHyde/perl-modules-Number-Phone/issues'
