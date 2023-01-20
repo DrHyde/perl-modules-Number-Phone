@@ -43,6 +43,7 @@ function quietly? {
         cd libphonenumber
         git checkout -q master
         git pull -q
+        touch -t $(git --no-pager log -1 --format=%ad --date=format:%Y%m%d%H%M.%S resources/PhoneNumberMetadata.xml) resources/PhoneNumberMetadata.xml
     )
 
     # # LFS repo removed from github cos it ran out of space
@@ -88,7 +89,11 @@ if [ "$FORCE" == "1" ]; then
 fi
 
 # switch to our desired tag, and cache it for a future --previouslibphonenumbertag build
-(cd libphonenumber; git checkout -q $LIBPHONENUMBERTAG)
+(
+    cd libphonenumber
+    git checkout -q $LIBPHONENUMBERTAG
+    touch -t $(git --no-pager log -1 --format=%ad --date=format:%Y%m%d%H%M.%S resources/PhoneNumberMetadata.xml) resources/PhoneNumberMetadata.xml
+)
 echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 
 # first get OFCOM data and NANP operator data
