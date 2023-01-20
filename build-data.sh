@@ -161,6 +161,7 @@ fi
 # if share/Number-Phone-UK-Data.db doesn't exist, or OFCOM's stuff or
 # libphonenumber's list of area codes is newer ...
 if test ! -e share/Number-Phone-UK-Data.db -o \
+  buildtools/Number/Phone/BuildHelpers.pm      -nt share/Number-Phone-UK-Data.db -o \
   libphonenumber/resources/geocoding/en/44.txt -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde11_12.xlsx -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde13.xlsx    -nt share/Number-Phone-UK-Data.db -o \
@@ -189,6 +190,7 @@ fi
 
 # lib/Number/Phone/Country/Data.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/Country/Data.pm -o \
+  buildtools/Number/Phone/BuildHelpers.pm          -nt lib/Number/Phone/Country/Data.pm -o \
   build-data.country-mapping                       -nt lib/Number/Phone/Country/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/Country/Data.pm;
 then
@@ -204,6 +206,7 @@ fi
 # lib/Number/Phone/NANP/Data.pm doesn't exist, or if libphonenumber/resources/geocoding/en/1.txt or PhoneNumberMetadata.xml is newer ...
 if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   ! -e share/Number-Phone-NANP-Data.db -o \
+  buildtools/Number/Phone/BuildHelpers.pm          -nt lib/Number/Phone/NANP/Data.pm -o \
   build-data.nanp                                  -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/geocoding/en/1.txt      -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm -o \
@@ -227,6 +230,7 @@ NANPDATETIME=$(perl -e 'print +(stat(shift))[9]' $(ls -rt data-files/[0-9][0-9][
 # lib/Number/Phone/StubCountry/KZ.pm doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer,
 # or if lib/Number/Phone/NANP/Data.pm is newer ...
 if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
+  buildtools/Number/Phone/BuildHelpers.pm          -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   build-data.stubs                                 -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/geocoding/en/1.txt      -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
@@ -243,6 +247,7 @@ fi
 
 # t/example-phone-numbers.t doesn't exist, or if libphonenumber/resources/PhoneNumberMetadata.xml is newer
 if test ! -e t/example-phone-numbers.t -o \
+  buildtools/Number/Phone/BuildHelpers.pm          -nt t/example-phone-numbers.t -o \
   build-tests.pl                                   -nt t/example-phone-numbers.t -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt t/example-phone-numbers.t;
 then

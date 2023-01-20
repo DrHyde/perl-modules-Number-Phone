@@ -97,11 +97,25 @@ ok($number->is_pager(), "pagers correctly identified");
 # next check due 2023-06-01 (semi-annually)
 subtest "0800 716 range has the wrong length, OFCOM says 10 digits but 0800 716 598 is diallable" => sub {
     $number = Number::Phone->new('+44800716598'); # used by Barclays
+    isa_ok(
+        $number,
+        (is_mocked_uk()
+            ? 'Number::Phone::StubCountry::MOCK'
+            : 'Number::Phone::UK'
+        )
+    );
     ok($number->is_tollfree(), "valid 9 digit number in a range supposedly for 10 digit numbers");
 
     $number = Number::Phone->new(
         (is_mocked_uk() ? 'MOCK' : 'UK'),
         '0800716598'
+    );
+    isa_ok(
+        $number,
+        (is_mocked_uk()
+            ? 'Number::Phone::StubCountry::MOCK'
+            : 'Number::Phone::UK'
+        )
     );
     ok($number->is_tollfree(), "valid 9 digit number (national format) in a range supposedly for 10 digit numbers");
 
