@@ -12,6 +12,8 @@
 #       Use latest in their repo if not specified
 #   --previouslibphonenumbertag
 #       build using whatever --libphonenumbertag was used last time
+#   --quietly
+#       suppress output from other scripts
 #
 # Generally you will develop using --force and/or --libphonenumbertag, but then
 # when a dist is built it will be freshened with --previouslibphonenumbertag to
@@ -21,9 +23,18 @@
 LIBPHONENUMBERTAG=unset
 FORCE=0
 EXITSTATUS=0
+BUILD_QUIETLY=0
 
 # some machines have one of 'em, some have t'other
 MD5=$(which md5 || which md5sum)
+
+function quietly? {
+    if [ "$BUILD_QUIETLY" == "1" ]; then
+        "$@" >/dev/null 2>&1
+    else
+        "$@"
+    fi
+}
 
 # now get an up-to-date libphonenumber and data-files
 (
@@ -55,6 +66,8 @@ while [ "$#" != "0" ] ; do
         LIBPHONENUMBERTAG=$(cat .libphonenumber-tag)
     elif [ "$1" == "--force" ]; then
         FORCE=1
+    elif [ "$1" == "--quietly" ]; then
+        BUILD_QUIETLY=1
     fi
 
     shift
@@ -112,19 +125,16 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
         if test ! -e `basename $i`; then
             touch -t 198001010101 `basename $i`
         fi
-        echo -n Fetching $i ...
         curl -z `basename $i` -R -O -s -S $i;
-        if [ "$?" == "0" ]; then
-            echo " OK"
-          else
-            echo " failed with $?, retry"
+        if [ "$?" != "0" ]; then
+            echo -n Fetching $i failed with $?, retrying ...
             sleep 15
             rm `basename $i`
             curl -R -O -s -S $i;
             if [ "$?" == "0" ]; then
                 echo "  ... OK"
               else
-                echo "  ... failed with $?, retry again"
+                echo "  ... failed with $?, retrying again"
                 sleep 15
                 rm `basename $i`
                 curl -R -O -s -S $i;
@@ -183,7 +193,14 @@ then
     EXITSTATUS=1
   fi
   echo rebuilding share/Number-Phone-UK-Data.db
-  perl build-data.uk
+  if test ! -e share/Number-Phone-UK-Data.db; then
+      echo "  because it doesn't exist"
+  else
+      ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/sabcde* data-files/S?.xlsx build-data.uk | \
+          sed 's/^/  /'
+  fi
+
+  quietly? perl build-data.uk
 else
   echo share/Number-Phone-UK-Data.db is up-to-date
 fi
@@ -198,7 +215,13 @@ then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/Country/Data.pm
-  perl build-data.country-mapping
+  if test ! -e lib/Number/Phone/Country/Data.pm; then
+      echo "  because it doesn't exist"
+  else
+      ls -ltr lib/Number/Phone/Country/Data.pm buildtools/Number/Phone/BuildHelpers.pm build-data.country-mapping libphonenumber/resources/PhoneNumberMetadata.xml | \
+          sed 's/^/  /'
+  fi
+  quietly? perl build-data.country-mapping
 else
   echo lib/Number/Phone/Country/Data.pm is up-to-date
 fi
@@ -218,9 +241,14 @@ then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
   fi
-  echo rebuilding lib/Number/Phone/NANP/Data.pm
-  echo   and share/Number-Phone-NANP-Data.db
-  perl build-data.nanp
+  echo rebuilding lib/Number/Phone/NANP/Data.pm share/Number-Phone-NANP-Data.db
+  if test ! -e lib/Number/Phone/NANP/Data.pm -o ! -e share/Number-Phone-NANP-Data.db; then
+      echo "  because they don't both exist"
+  else
+      ls -ltr lib/Number/Phone/NANP/Data.pm share/Number-Phone-NANP-Data.db buildtools/Number/Phone/BuildHelpers.pm build-data.nanp libphonenumber/resources/geocoding/en/1.txt libphonenumber/resources/PhoneNumberMetadata.xml data-files/AllBlocksAugmentedReport.* data-files/COCodeStatus_ALL.* | \
+          sed 's/^/  /'
+  fi
+  quietly? perl build-data.nanp
 else
   echo lib/Number/Phone/NANP/Data.pm and share/Number-Phone-NANP-Data.db are up-to-date
 fi
@@ -240,7 +268,14 @@ then
     EXITSTATUS=1
   fi
   echo rebuilding lib/Number/Phone/StubCountry/\*.pm
-  perl build-data.stubs
+  if test ! -e lib/Number/Phone/StubCountry/KZ.pm; then
+      echo "  because they don't all exist"
+  else
+      ls -ltr lib/Number/Phone/StubCountry/KZ.pm buildtools/Number/Phone/BuildHelpers.pm build-data.stubs libphonenumber/resources/geocoding/en/1.txt libphonenumber/resources/PhoneNumberMetadata.xml lib/Number/Phone/NANP/Data.pm | \
+          sed 's/^/  /'
+  fi
+
+  quietly? perl build-data.stubs
 else
   echo lib/Number/Phone/StubCountry/\*.pm are up-to-date
 fi
@@ -255,7 +290,14 @@ then
     EXITSTATUS=1
   fi
   echo rebuilding t/example-phone-numbers.t
-  perl build-tests.pl
+  if test ! -e t/example-phone-numbers.t; then
+      echo "  because it doesn't exist"
+  else
+      ls -ltr t/example-phone-numbers.t buildtools/Number/Phone/BuildHelpers.pm build-tests.pl libphonenumber/resources/PhoneNumberMetadata.xml | \
+          sed 's/^/  /'
+  fi
+
+  quietly? perl build-tests.pl
 else
   echo t/example-phone-numbers.t is up-to-date
 fi

@@ -69,7 +69,7 @@ WriteMakefile(
     'if'                     => 0,
   },
   dist => {
-    PREOP    => "./build-data.sh --previouslibphonenumbertag",
+    PREOP    => "./build-data.sh --previouslibphonenumbertag --quietly",
     TARFLAGS => "--format ustar -c -v -f",
   },
   realclean => {
