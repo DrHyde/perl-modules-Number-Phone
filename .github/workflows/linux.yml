@@ -6,6 +6,7 @@ jobs:
   build:
     runs-on: 'ubuntu-latest'
     strategy:
+      fail-fast: false
       matrix:
         perl: [ '5.36', '5.30', '5.26', '5.22', '5.16', '5.12' ]
     name: Perl ${{ matrix.perl }}
