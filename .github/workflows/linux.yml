@@ -12,7 +12,7 @@ jobs:
     name: Perl ${{ matrix.perl }}
     steps:
       - name: check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: switch to perl ${{ matrix.perl }}
         uses: shogo82148/actions-setup-perl@v1
