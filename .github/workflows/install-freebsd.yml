@@ -1,0 +1,46 @@
+on: [push, pull_request]
+name: FreeBSD install
+
+jobs:
+  build:
+    runs-on: 'macos-10.15'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Perl environment
+        uses: shogo82148/actions-setup-perl@v1
+      - name: Test and build
+        run: |
+          cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+          cpanm File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5
+          cpanm File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+          cpanm --installdeps .
+          perl Makefile.PL
+          ./build-data.sh
+          make test
+          make dist
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dist-for-freebsd-install
+          path: '*.tar.gz'
+          retention-days: 1
+  install-freebsd:
+    runs-on: macos-10.15
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist-for-freebsd-install
+      - name: Install on FreeBSD
+        uses: cross-platform-actions/action@v0.10.0
+        with:
+          operating_system: freebsd
+          version: 13.1
+          shell: bash
+          run: |
+            mkdir dist-for-test &&
+            tar -C dist-for-test -xzf *.tar.gz &&
+            cd dist-for-test/* &&
+            sudo pkg install -y perl5 &&
+            cpan App::cpanminus &&
+            /home/runner/perl5/bin/cpanm --installdeps . &&
+            /home/runner/perl5/bin/cpanm -v .
