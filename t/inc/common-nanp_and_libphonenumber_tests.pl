@@ -152,36 +152,36 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
 
     my @codes_seen = ();
     foreach my $tuple (
-        ['+1 242 225 0000' => 'BAHAMAS TELECOMMUNICATIONS CORP.'],
-        ['+1 246 220 0000' => 'CABLE & WIRELESS BARBADOS'],
-        ['+1 264 222 0000' => 'CABLE & WIRELESS - ANGUILLA'],
-        ['+1 268 268 0000' => 'CABLE & WIRELESS - ANTIGUA'],
-        ['+1 284 229 0000' => 'CABLE & WIRELESS - TORTOLA'],
+        ['+1 242 225 0000' => 'BARTELCO (BA)'],
+        ['+1 246 220 0000' => 'CABLE & WIRELESS BARTEL LIMITED - BB'],
+        ['+1 264 222 0000' => 'CABLE & WIRELESS (AI)'],
+        ['+1 268 268 0000' => 'CABLE & WIRELESS (AN)'],
+        ['+1 284 229 0000' => 'CABLE & WIRELESS (BV)'],
         ['+1 340 774 5666' => 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE'],
-        ['+1 345 222 0000' => 'CABLE & WIRELESS - CAYMAN ISLANDS'],
+        ['+1 345 222 0000' => 'CABLE & WIRELESS (CQ)'],
         ['+1 441 222 0000' => 'BERMUDA CABLEVISION LIMITED - BM'],
         ['+1 473 230 0000' => 'COLUMBUS COMMUNICATIONS (GRENADA) LIMITED'],
-        ['+1 649 231 0000' => 'CABLE & WIRELESS - TURKS & CAICOS'],
+        ['+1 649 231 0000' => 'CABLE & WIRELESS (TC)'],
         # No data yet.
         # checked on 2022-12-03
         # next check due 2023-12-01 (annually) until there's data
         # at https://localcallingguide.com/xmlprefix.php?npa=658&blocks=1
         # ['+1 658 ??? 0000' => '???'],
-        ['+1 664 349 0000' => 'CABLE & WIRELESS - MONTSERRAT'],
+        ['+1 664 349 0000' => 'CABLE & WIRELESS (RT)'],
         ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORPORATION'],
         ['+1 671 472 7679' => 'TELEGUAM HOLDINGS, LLC'],
         ['+1 684 248 0000' => 'AST TELECOM, LLC - AS'],
         ['+1 721 547 0000' => 'ST. MAARTEN TELEPHONE COMPANY, NV'],
-        ['+1 758 234 0000' => 'CABLE & WIRELESS - ST. LUCIA, LTD'],
-        ['+1 767 221 0000' => 'DIGICEL (GRENADA) LIMITED'],
-        ['+1 784 266 0000' => 'CABLE & WIRELESS - ST. VINCENT'],
+        ['+1 758 234 0000' => 'CABLE & WIRELESS (SA)'],
+        ['+1 767 221 0000' => 'DIGICEL GRENADA LIMITED'],
+        ['+1 784 266 0000' => 'CABLE & WIRELESS (ZF)'],
         ['+1 787 200 0000' => 'LIBERTY COMMUNICATIONS OF PUERTO RICO LLC'],
         ['+1 809 202 0000' => 'ECONOMITEL, C. POR A. - DR'],
-        ['+1 829 201 0000' => 'CODETEL'],
-        ['+1 849 201 0000' => 'CODETEL'],
+        ['+1 829 201 0000' => 'CODETEL (DR)'],
+        ['+1 849 201 0000' => 'CODETEL (DR)'],
         ['+1 868 215 0000' => 'COLUMBUS COMMUNICATIONS TRINIDAD LIMITED'],
-        ['+1 869 212 0000' => 'ST KITTS NEVIS TELEPHONE - NEVIS'],
-        ['+1 876 202 0000' => 'JAMAICA TELEPHONE CO.'],
+        ['+1 869 212 0000' => 'ST. KITTS NEVIS TELEC (NI)'],
+        ['+1 876 202 0000' => 'JAMAICA TEL. CO. (JM)'],
         ['+1 939 201 0000' => 'AT&T, INC. - PR'],
     ) {
         my($number, $op) = @{$tuple};
@@ -201,13 +201,13 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     # checked on 2022-12-03
     # next check due 2023-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=242&blocks=1
-    is($CLASS->new('+1 242 367 0000')->operator(), 'BAHAMAS TELECOMMUNICATIONS CORP.', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
+    is($CLASS->new('+1 242 367 0000')->operator(), 'BARTELCO (BA)', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
 
     foreach my $number(
         [ 'Bahamas', '+1 242 331 0000', undef ],
         [ 'Bahamas', '+1 242 331 1000', undef ],
-        [ 'Bahamas', '+1 242 331 2000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
-        [ 'Bahamas', '+1 242 331 3000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
+        [ 'Bahamas', '+1 242 331 2000', 'BARTELCO (BA)' ],
+        [ 'Bahamas', '+1 242 331 3000', 'BARTELCO (BA)' ],
         [ 'Bahamas', '+1 242 331 4000', undef ],
         [ 'Bahamas', '+1 242 331 5000', undef ],
         [ 'Bahamas', '+1 242 331 6000', undef ],
