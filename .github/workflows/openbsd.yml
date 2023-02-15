@@ -1,5 +1,5 @@
 on: [push, pull_request]
-name: FreeBSD install
+name: OpenBSD
 
 jobs:
   build:
@@ -10,37 +10,36 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
       - name: Test and build
         run: |
-          cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
-          cpanm File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5
-          cpanm File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
-          cpanm --installdeps .
+          cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5
+          cpanm --quiet --notest File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+          cpanm --quiet --notest --installdeps .
           perl Makefile.PL
           ./build-data.sh
           make test
           make dist
       - uses: actions/upload-artifact@v2
         with:
-          name: dist-for-freebsd-install
+          name: dist-for-openbsd-install
           path: '*.tar.gz'
           retention-days: 1
-  install-freebsd:
+  install-openbsd:
     runs-on: macos-10.15
     needs: build
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: dist-for-freebsd-install
-      - name: Install on FreeBSD
-        uses: cross-platform-actions/action@v0.10.0
+          name: dist-for-openbsd-install
+      - name: Install on OpenBSD
+        uses: cross-platform-actions/action@v0.3.1
         with:
-          operating_system: freebsd
-          version: 13.1
+          operating_system: openbsd
+          version: 6.9
           shell: bash
           run: |
             mkdir dist-for-test &&
             tar -C dist-for-test -xzf *.tar.gz &&
             cd dist-for-test/* &&
-            sudo pkg install -y perl5 &&
             cpan App::cpanminus &&
-            /home/runner/perl5/bin/cpanm --installdeps . &&
+            /home/runner/perl5/bin/cpanm --quiet --notest --installdeps . &&
             /home/runner/perl5/bin/cpanm -v .
