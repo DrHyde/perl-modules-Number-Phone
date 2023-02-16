@@ -18,7 +18,7 @@ jobs:
           ./build-data.sh
           make test
           make dist
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: dist-for-freebsd-install
           path: '*.tar.gz'
