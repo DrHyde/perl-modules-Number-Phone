@@ -18,7 +18,7 @@ jobs:
           ./build-data.sh
           make test
           make dist
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: dist-for-windows-install
           path: '*.tar.gz'
@@ -38,7 +38,7 @@ jobs:
         with:
           distribution: strawberry
           perl-version: ${{ matrix.perl-version }}
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: dist-for-windows-install
       - name: Install on Windows
