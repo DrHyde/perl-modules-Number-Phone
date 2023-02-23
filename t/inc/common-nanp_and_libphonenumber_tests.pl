@@ -252,10 +252,16 @@ note("dodgy numbers");
 
 ok(!defined($CLASS->new('+1 613 563 72423')), "too long");
 ok(!defined($CLASS->new('+1 613 563 724')),   "too short");
-ok(!defined($CLASS->new('+1 113 563 7242')),  "A digit must be 2-9");
+ok(!defined($CLASS->new('+1 113 563 7242')),  "A  must not be 1");
+ok(!defined($CLASS->new('+1 613 163 7242')),  "D  must not be 1");
+ok(!defined($CLASS->new('+1 611 563 7242')),  "BC must not be 11");
+#
+# checked on 2023-02-23
+# next check due 2024-01-01 (annually)
+# https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Summary_table
+ok(!defined($CLASS->new('+1 290 563 7242')),  "B  must not be 9");
 ok(!defined($CLASS->new('+1 373 563 7242')),  "AB must not be 37");
 ok(!defined($CLASS->new('+1 963 563 7242')),  "AB must not be 96");
-ok(!defined($CLASS->new('+1 611 563 7242')),  "BC must not be 11");
 
 # the following work with a valid area code so at this point we will be down in a stub's
 # constructor before we reject the number, so we need to check this for all countries

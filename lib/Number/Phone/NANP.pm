@@ -189,12 +189,8 @@ exceptions as per is_mobile above.
 
 =cut
 
-# See Message-ID: <008001c406ba$6bd01820$dad4a645@anhmca.adelphia.net>
-# by Doug Ewell on Wed Mar 10 2004 in telnum-l.
-#
 # NB the EF digits being 11 *is* legal in at least some area codes.
 # Obviously you can't dial, eg, 911-1234
-
 sub is_valid {
     my $number = shift;
 
@@ -226,11 +222,16 @@ sub is_valid {
     # }
     
     $cache->{$number}->{is_valid} = (
-        $digits{A} >= 2 && $digits{A} <= 9 &&
-        $digits{D} >= 2 && $digits{D} <= 9 &&
+        $digits{A}            ne '1'  &&
+        $digits{D}            ne '1'  &&
+        $digits{B}.$digits{C} ne '11' &&
+
+        # checked on 2023-02-23
+        # next check due 2024-01-01 (annually)
+        # https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Summary_table
+        $digits{B}            ne '9'  &&
         $digits{A}.$digits{B} ne '37' &&
-        $digits{A}.$digits{B} ne '96' &&
-        $digits{B}.$digits{C} ne '11'
+        $digits{A}.$digits{B} ne '96'
     ) ? 1 : 0;
 
     $cache->{$number}->{areacode}   = substr($parsed_number, 0, 3);
