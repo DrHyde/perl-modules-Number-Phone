@@ -50,7 +50,7 @@ WriteMakefile(
     'DBM::Deep'                          => 2.0008,
     'Data::Dumper::Concise'              => 0,
     'Devel::CheckOS'                     => '1.83',
-    'Devel::Deprecations::Environmental' => 0,
+    'Devel::Deprecations::Environmental' => '1.101',
     'Digest::MD5'                        => 0,
     'File::Basename'                     => 0,
     'File::Find::Rule'                   => 0,
