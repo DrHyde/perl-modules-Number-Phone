@@ -235,11 +235,11 @@ sub _get_xml_data {
         } else {
             $retries++;
             if($retries < 3) {
-                warn("Can't talk to localcallingguide.com for $NAP: ".$res->status_line()."\n".$res->decoded_content()."\n");
+                warn("Can't talk to localcallingguide.com for $NPA: ".$res->status_line()."\n".$res->decoded_content()."\n");
                 sleep 5;
                 goto TRY
             }
-            die("Can't talk to localcallingguide.com for $NAP: ".$res->status_line()."\n".$res->decoded_content()."\n");
+            die("Can't talk to localcallingguide.com for $NPA: ".$res->status_line()."\n".$res->decoded_content()."\n");
         }
         open(my $fh, '>', "data-files/$NPA.xml") || die("Can't write data-files/$NPA.xml: $!\n");
         print $fh $data;
