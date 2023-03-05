@@ -1,4 +1,4 @@
-3.9000    2023-03-04
+3.9000    2023-03-05
 
 - Add validation using libphonenumber's data for non-geographic country
   codes like +800 (International free phone) and +870 (Inmarsat). See
