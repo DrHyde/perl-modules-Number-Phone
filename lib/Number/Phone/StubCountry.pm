@@ -92,7 +92,8 @@ sub format {
       return join(' ', '+'.$self->country_code(), @bits);
     }
   }
-  # return '+'.$self->country_code().' '.$number;
+  # if there's no formatters defined ...
+  return '+'.$self->country_code().' '.$number;
 }
 
 1;

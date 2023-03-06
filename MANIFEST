@@ -358,3 +358,4 @@ lib/Number/Phone/StubCountry/InternationalNetworks882.pm
 lib/Number/Phone/StubCountry/InternationalNetworks883.pm
 lib/Number/Phone/StubCountry/TelecomsForDisasterRelief.pm
 lib/Number/Phone/StubCountry/InternationalPremiumRate.pm
+t/country-test-bq.t
