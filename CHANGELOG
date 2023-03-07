@@ -1,3 +1,10 @@
+3.9001    2023-03-07
+
+- Bug fix: if libphonenumber doesn't define any formatters for a country,
+  such as for Bonaire (BQ), do the best we can and return +CC NNNNN
+  instead of nothing. This was a regression in 3.9000, see
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/122
+
 3.9000    2023-03-05
 
 - Add validation using libphonenumber's data for non-geographic country
