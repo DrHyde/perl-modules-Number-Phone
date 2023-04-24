@@ -31,7 +31,7 @@ jobs:
         with:
           name: dist-for-openbsd-install
       - name: Install on OpenBSD
-        uses: cross-platform-actions/action@v0.11.0
+        uses: cross-platform-actions/action@v0.12.0
         with:
           operating_system: openbsd
           version: 6.9
