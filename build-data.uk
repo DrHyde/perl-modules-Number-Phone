@@ -59,8 +59,9 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
             exists($header_fields_index_by_name{'CP Name'})                 ? 'CP Name' :
             die("Can't find a telco field in $xlsfile\n");
         my $status_field =
-            exists($header_fields_index_by_name{'Status'})       ? 'Status' :
-            exists($header_fields_index_by_name{'Block Status'}) ? 'Block Status' :
+            exists($header_fields_index_by_name{'Status'})               ? 'Status' :
+            exists($header_fields_index_by_name{'Block Status'})         ? 'Block Status' :
+            exists($header_fields_index_by_name{'Block Status Formula'}) ? 'Block Status Formula' :
             die("Can't find a status field in $xlsfile\n");
 
         my($status, $telco, $format) = map {
@@ -113,8 +114,8 @@ foreach my $datum (@telco_length_data) {
     # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
     # at least some 9 digit numbers exist in this range but OFCOM claim
     # it's 10 digit
-    # checked on 2022-12-24
-    # next check due 2023-06-01 (semi-annually)
+    # checked on 2023-06-01
+    # next check due 2023-12-01 (semi-annually)
     if($prefix eq '800716') {
         warn "Correcting OFCOM's broken data for 8007 16\n";
         $format = '0+9/10';
