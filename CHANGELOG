@@ -1,3 +1,7 @@
+3.9002    2023-06-14
+
+- Data updates only
+
 3.9001    2023-03-07
 
 - Bug fix: if libphonenumber doesn't define any formatters for a country,
