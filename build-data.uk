@@ -61,6 +61,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
         my $status_field =
             exists($header_fields_index_by_name{'Status'})               ? 'Status' :
             exists($header_fields_index_by_name{'Block Status'})         ? 'Block Status' :
+            exists($header_fields_index_by_name{'Block Status '})        ? 'Block Status ' :
             exists($header_fields_index_by_name{'Block Status Formula'}) ? 'Block Status Formula' :
             die("Can't find a status field in $xlsfile\n");
 
