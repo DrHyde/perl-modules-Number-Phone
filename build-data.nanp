@@ -22,7 +22,7 @@ open(MODULE, '>lib/Number/Phone/NANP/Data.pm') || die("Can't write lib/Number/Ph
 print MODULE "# automatically generated file, don't edit\n\n";
 print MODULE q{
 
-  # Copyright 2011 David Cantrell
+  # Copyright 2023 David Cantrell
   #
   # Uses data from:
   #   libphonenumber      http://code.google.com/p/libphonenumber/
@@ -143,11 +143,12 @@ open(my $CA_operators, '<', 'data-files/COCodeStatus_ALL.csv') ||
     die("Couldn't open data-files/COCodeStatus_ALL.csv: $!\n");
 $csv->getline($CA_operators); # header line
 $csv->getline($CA_operators); # date stamp?
+my($NPA_FIELD, $CO_FIELD, $OP_FIELD) = (0, 1, 4);
 while(my $row = $csv->getline($CA_operators)) {
-    last unless($row->[0]);
-    next unless($row->[2]);
-    my($co, $op) = (join('', $row->[0], $row->[1]), $row->[2]);
-    _write_operator_data($co, $op);
+    last unless($row->[$NPA_FIELD]);
+    next unless($row->[$OP_FIELD]);
+    my($prefix, $op) = (join('', $row->[$NPA_FIELD], $row->[$CO_FIELD]), $row->[$OP_FIELD]);
+    _write_operator_data($prefix, $op);
 }
 
 warn("Extracting US operators\n");
@@ -221,20 +222,24 @@ sub _clean_up_op {
 sub _get_xml_data {
     my $NPA = shift;
     if(!-e "$NPA.xml" || -M "$NPA.xml" > 14) {
+        my $retries = 0;
         my $data;
         my $ua = LWP::UserAgent->new(
             ssl_opts => { verify_hostname => 0 },
             agent    => 'Number::Phone-builder/1.0 (david@cantrell.org.uk)'.
-                        ($ENV{TRAVIS}    ? ' (Travis build)' :
-                         $ENV{BUILD_TAG} ? ' (Jenkins build)' :
-                         ''
-                        ),
+                        ($ENV{CI} ? ' (CI build)' : ''),
         );
-        my $res = $ua->get("https://localcallingguide.com/xmlprefix.php?npa=$NPA&blocks=1");
+        TRY: my $res = $ua->get("https://localcallingguide.com/xmlprefix.php?npa=$NPA&blocks=1");
         if($res->is_success()) {
             $data = $res->content();
         } else {
-            die("Can't talk to localcallingguide.com: ".$res->status_line()."\n".$res->decoded_content()."\n");
+            $retries++;
+            if($retries < 3) {
+                warn("Can't talk to localcallingguide.com for $NPA: ".$res->status_line()."\n".$res->decoded_content()."\n");
+                sleep 5;
+                goto TRY
+            }
+            die("Can't talk to localcallingguide.com for $NPA: ".$res->status_line()."\n".$res->decoded_content()."\n");
         }
         open(my $fh, '>', "data-files/$NPA.xml") || die("Can't write data-files/$NPA.xml: $!\n");
         print $fh $data;

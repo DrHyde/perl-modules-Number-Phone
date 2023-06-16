@@ -173,6 +173,9 @@ not yet be allocated, or it may be reserved.
 
 NANP-globals like 1-800 aren't geographic, the rest are.
 
+As a special case, 1-600 is non-geographic. So too will be
+1-622/633/644/655/677/688 when they come in to service.
+
 =item is_mobile
 
 NANP-globals like 1-800 aren't mobile. For most others we just don't know because
@@ -186,12 +189,8 @@ exceptions as per is_mobile above.
 
 =cut
 
-# See Message-ID: <008001c406ba$6bd01820$dad4a645@anhmca.adelphia.net>
-# by Doug Ewell on Wed Mar 10 2004 in telnum-l.
-#
 # NB the EF digits being 11 *is* legal in at least some area codes.
 # Obviously you can't dial, eg, 911-1234
-
 sub is_valid {
     my $number = shift;
 
@@ -223,11 +222,16 @@ sub is_valid {
     # }
     
     $cache->{$number}->{is_valid} = (
-        $digits{A} >= 2 && $digits{A} <= 9 &&
-        $digits{D} >= 2 && $digits{D} <= 9 &&
+        $digits{A}            ne '1'  &&
+        $digits{D}            ne '1'  &&
+        $digits{B}.$digits{C} ne '11' &&
+
+        # checked on 2023-02-23
+        # next check due 2024-01-01 (annually)
+        # https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Summary_table
+        $digits{B}            ne '9'  &&
         $digits{A}.$digits{B} ne '37' &&
-        $digits{A}.$digits{B} ne '96' &&
-        $digits{B}.$digits{C} ne '11'
+        $digits{A}.$digits{B} ne '96'
     ) ? 1 : 0;
 
     $cache->{$number}->{areacode}   = substr($parsed_number, 0, 3);
@@ -245,8 +249,16 @@ foreach my $method (qw(areacode subscriber)) {
     }
 }
 
+sub _is_canadian_600 {
+    my $self = shift;
+    ${$self} =~ /^(\+1)?6([0234578])\2/;
+}
+
 sub is_geographic {
     my $self = shift;
+    # 600 is non-geographic. 6(22|33|44|55|77|88) are reserved
+    # for non-geographic use but not yet in use
+    return 0 if($self->_is_canadian_600());
     # NANP-globals like 1-800 aren't geographic, the rest are
     return ref($self) eq __PACKAGE__ ? 0 : 1;
 }
@@ -302,13 +314,19 @@ sub is_government {
 
 =item is_tollfree
 
-The number is free to the caller. 800, 844, 855, 866, 877 and 888 "area codes"
+The number is free to the caller. 800, 833, 844, 855, 866, 877 and 888 "area codes"
 
 =cut
 
 sub is_tollfree {
     my $self = shift;
-    if(${$self} =~ /^(\+1)?8[045678]{2}/) { return 1; }
+
+    # FIXME this really should be data-driven, based on US data in libphonenumber
+    # https://en.wikipedia.org/wiki/Toll-free_telephone_numbers_in_the_North_American_Numbering_Plan
+    # see also tests in t/nanp.t if anything changes
+    # checked on 2022-12-08
+    # next check due 2023-12-01 (annually)
+    if(${$self} =~ /^(\+1)?8(00|33|44|55|66|77|88)/) { return 1; }
      else { return 0; }
 }
 
@@ -419,7 +437,7 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2012
+Copyright 2023
 
 =cut
 

@@ -23,8 +23,8 @@ install_share 'share';
 
 WriteMakefile(
   NAME         => 'Number::Phone',
+  LICENSE      => 'open_source',
     META_MERGE => {
-        license => 'open_source',
         resources => {
             repository => 'https://github.com/DrHyde/perl-modules-Number-Phone',
             bugtracker => 'https://github.com/DrHyde/perl-modules-Number-Phone/issues'
@@ -46,29 +46,30 @@ WriteMakefile(
     'File::ShareDir::Install' => 0.11
   },
   PREREQ_PM    => {
-    'Cwd'                    => 0,
-    'Data::CompactReadonly'  => '0.0.3',
-    'Data::Dumper::Concise'  => 0,
-    'Devel::CheckOS'         => '1.83',
-    'Digest::MD5'            => 0,
-    'File::Basename'         => 0,
-    'File::Find::Rule'       => 0,
-    'File::ShareDir'         => 1.104,
-    'File::Spec'             => 0,
-    'I18N::LangTags'         => 0,
-    'I18N::LangTags::Detect' => 0,
-    'Scalar::Util'           => 1.48,
+    'Cwd'                                => 0,
+    'Data::CompactReadonly'              => '0.1.0',
+    'Data::Dumper::Concise'              => 0,
+    'Devel::CheckOS'                     => '1.83',
+    'Devel::Deprecations::Environmental' => '1.101',
+    'Digest::MD5'                        => 0,
+    'File::Basename'                     => 0,
+    'File::Find::Rule'                   => 0,
+    'File::ShareDir'                     => 1.104,
+    'File::Spec'                         => 0,
+    'I18N::LangTags'                     => 0,
+    'I18N::LangTags::Detect'             => 0,
+    'Scalar::Util'                       => 1.48,
   },
   TEST_REQUIRES => {
     'Carp'                   => 0,
     'Test::Differences'      => 0.62,
     'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
-    'Test::Warnings'         => 0,
+    'Test::Warnings'         => 0.031,
     'Devel::Hide'            => 0,
     'if'                     => 0,
   },
   dist => {
-    PREOP    => "./build-data.sh --previouslibphonenumbertag",
+    PREOP    => "./build-data.sh --previouslibphonenumbertag --quietly",
     TARFLAGS => "--format ustar -c -v -f",
   },
   realclean => {

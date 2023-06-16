@@ -253,7 +253,7 @@ is(phone2country('+67210123'), 'AQ', '+67210 is AQ');
 is(phone2country('+67211123'), 'AQ', '+67211 is AQ');
 is(phone2country('+67212123'), 'AQ', '+67212 is AQ');
 is(phone2country('+67213123'), 'AQ', '+67213 is AQ');
-is(phone2country('+882345'), 'AQ', '+67213 is AQ');   # Global Networks Switzerland
+is(phone2country('+882345'), 'AQ', '+882345 is AQ');   # Global Networks Switzerland
 is(phone2country('+6723123'), 'NF', '+6723 is NF');
 is(phone2country('+673123'), 'BN', '+673 is BN');
 is(phone2country('+674123'), 'NR', '+674 is NR');
@@ -299,7 +299,9 @@ is(phone2country('+8816123'), 'Iridium', '+8816 is Iridium');
 is(phone2country('+8817123'), 'Iridium', '+8817 is Iridium');
 is(phone2country('+8818123'), 'Globalstar', '+8818 is Globalstar');
 is(phone2country('+8819123'), 'Globalstar', '+8819 is Globalstar');
-is(phone2country('+882123'), 'InternationalNetworks', '+882 is InternationalNetworks');
+is(phone2country('+882123'), 'InternationalNetworks882', '+882 is InternationalNetworks882');
+is(phone2country('+882130'), 'Telespazio', '+88213 is Telespazio');
+is(phone2country('+883123'), 'InternationalNetworks883', '+883 is InternationalNetworks883');
 is(phone2country('+886123'), 'TW', '+886 is TW');
 is(phone2country('+90123'), 'TR', '+90 is TR');
 is(phone2country('+91123'), 'IN', '+91 is IN');

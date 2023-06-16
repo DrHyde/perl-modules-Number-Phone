@@ -8,7 +8,7 @@ blib/
 lib/Number/Phone/NANP/Data.pm
 share/
 lib/Number/Phone/Country/
-lib/Number/Phone/StubCountry/
+lib/Number/Phone/StubCountry/*.pm
 libphonenumber/
 data-files/
 pm_to_blib

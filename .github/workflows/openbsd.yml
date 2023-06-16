@@ -1,11 +1,11 @@
 on: [push, pull_request]
-name: Dist installation
+name: OpenBSD
 
 jobs:
   build:
-    runs-on: 'macos-10.15'
+    runs-on: 'macos-latest'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Perl environment
         uses: shogo82148/actions-setup-perl@v1
       - name: Test and build
@@ -18,32 +18,20 @@ jobs:
           ./build-data.sh
           make test
           make dist
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
-          name: dist-for-installation-test
+          name: dist-for-openbsd-install
           path: '*.tar.gz'
           retention-days: 1
-  install-linux:
-    runs-on: 'ubuntu-latest'
-    needs: build
-    container:
-      image: perl:5.34
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: dist-for-installation-test
-      - name: Install on Linux
-        run: |
-          cpanm *.tar.gz
   install-openbsd:
-    runs-on: macos-10.15
+    runs-on: macos-latest
     needs: build
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
-          name: dist-for-installation-test
+          name: dist-for-openbsd-install
       - name: Install on OpenBSD
-        uses: cross-platform-actions/action@v0.3.1
+        uses: cross-platform-actions/action@v0.14.0
         with:
           operating_system: openbsd
           version: 6.9

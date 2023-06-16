@@ -27,14 +27,17 @@ $ENV{IGNORE_WIN32_LOCALE} = 1;
 
 note("Common tests for Number::Phone::StubCountry::* and Number::Phone::Lib");
 
-my $inmarsat870 = $CLASS->new("+870123456");
+note("Inmarsat");
+my $inmarsat870 = $CLASS->new("+870761234567");
+isa_ok($inmarsat870, "Number::Phone::StubCountry");
+isa_ok($inmarsat870, "Number::Phone::StubCountry::Inmarsat");
 is($inmarsat870->country_code(), '870', 'Inmarsat number has right country_code');
-is($inmarsat870->country(), 'Inmarsat', "$CLASS->new('+870123456')->country()");
-is($inmarsat870->format(), '+870 123456', "$CLASS->new('+870123456')->format()");
-is($inmarsat870->is_valid(), undef, "$CLASS->new('+870123456')->is_valid()");
-is($inmarsat870->is_mobile(), undef, "$CLASS->new('+870123456')->is_mobile()");
-is($inmarsat870->is_geographic(), undef, "$CLASS->new('+870123456')->is_geographic()");
-is($inmarsat870->is_fixed_line(), undef, "$CLASS->new('+870123456')->is_fixed_line()");
+is($inmarsat870->country(), 'Inmarsat', "$CLASS->new('+870761234567')->country()");
+is($inmarsat870->format(), '+870 761 234 567', "$CLASS->new('+870761234567')->format()");
+is($inmarsat870->is_valid(), 1, "$CLASS->new('+870761234567')->is_valid()");
+is($inmarsat870->is_mobile(), 1, "$CLASS->new('+870761234567')->is_mobile()");
+is($inmarsat870->is_geographic(), undef, "$CLASS->new('+870761234567')->is_geographic()");
+is($inmarsat870->is_fixed_line(), undef, "$CLASS->new('+870761234567')->is_fixed_line()");
 
 # my $inmarsat871 = $CLASS->new("+8719744591");
 # is($inmarsat871->country_code(), '871', 'Inmarsat number has right country_code');
@@ -45,13 +48,31 @@ is($inmarsat870->is_fixed_line(), undef, "$CLASS->new('+870123456')->is_fixed_li
 # is($inmarsat871->is_geographic(), undef, "$CLASS->new('+8719744591')->is_geographic()");
 # is($inmarsat871->is_fixed_line(), undef, "$CLASS->new('+8719744591')->is_fixed_line()");
 
-my $international883 = $CLASS->new("+88300000000");
-isa_ok($international883, "Number::Phone::StubCountry");
-is($international883->country(), 'InternationalNetworks', '$CLASS->new("+88300000000")->country()');
+note("InternationalNetworks882");
+my $international882 = $CLASS->new("+88249123456");
+isa_ok($international882, "Number::Phone::StubCountry");
+isa_ok($international882, "Number::Phone::StubCountry::InternationalNetworks882");
+is($international882->country(), 'InternationalNetworks882', '$CLASS->new("+88249123456")->country()');
 
-my $international883120 = $CLASS->new("+88312000000");
-isa_ok($international883120, "Number::Phone::StubCountry");
-is($international883120->country(), 'Telenor', '$CLASS->new("+88312000000")->country()');
+note("Thuraya (in InternationalNetworks882)");
+my $international882_thuraya = $CLASS->new("+88216123456");
+isa_ok($international882_thuraya, "Number::Phone::StubCountry");
+isa_ok($international882_thuraya, "Number::Phone::StubCountry::InternationalNetworks882");
+isa_ok($international882_thuraya, "Number::Phone::StubCountry::InternationalNetworks882::Thuraya");
+is($international882_thuraya->country(), 'Thuraya', '$CLASS->new("+8821612345")->country()');
+
+note("InternationalNetworks883");
+my $international883 = $CLASS->new("+883510012345");
+isa_ok($international883, "Number::Phone::StubCountry");
+isa_ok($international883, "Number::Phone::StubCountry::InternationalNetworks883");
+is($international883->country(), 'InternationalNetworks883', '$CLASS->new("+883510012345")->country()');
+
+note("MTTGlobalNetworks (in InternationalNetworks883)");
+my $international883_mtt = $CLASS->new("+883140 00000");
+isa_ok($international883_mtt, "Number::Phone::StubCountry");
+isa_ok($international883_mtt, "Number::Phone::StubCountry::InternationalNetworks883");
+isa_ok($international883_mtt, "Number::Phone::StubCountry::InternationalNetworks883::MTTGlobalNetworks");
+is($international883_mtt->country(), 'MTTGlobalNetworks', '$CLASS->new("+88314000000")->country()');
 
 my $fo = $CLASS->new('+298 303030'); # Faroes Telecom
 is($fo->country_code(), 298, "$CLASS->new('+298 303030')->country_code()");

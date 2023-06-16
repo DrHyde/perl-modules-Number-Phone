@@ -17,6 +17,26 @@ use vars qw($CLASS);
 
 note("Common tests for Number::Phone::NANP and Number::Phone::Lib");
 
+my $ca_600 = $CLASS->new('+1 600 555 1000');
+isa_ok $ca_600, is_libphonenumber() ? 'Number::Phone::StubCountry::CA'
+                                    : 'Number::Phone::NANP::CA';
+is $ca_600->country(), 'CA', "$CLASS->new('+1 600 555 1000')->country()";
+is_deeply(
+    [sort $ca_600->type()],
+    [sort('is_valid', is_libphonenumber() ? 'is_ipphone' : ())],
+    "$CLASS->new('+1 600 555 1000')->type()"
+);
+
+my $ca_604 = $CLASS->new('+1 604 555 1000');
+isa_ok $ca_604, is_libphonenumber() ? 'Number::Phone::StubCountry::CA'
+                                    : 'Number::Phone::NANP::CA';
+is $ca_604->country(), 'CA', "$CLASS->new('+1 604 555 1000')->country()";
+is_deeply(
+    [sort $ca_604->type()],
+    [sort qw(is_geographic is_valid)],
+    "$CLASS->new('+1 604 555 1000')->type()"
+);
+
 my $the_man = '+1 (202) 456-6213';
 my $us = $CLASS->new($the_man);
 isa_ok $us, is_libphonenumber() ? 'Number::Phone::StubCountry::US'
@@ -132,36 +152,36 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
 
     my @codes_seen = ();
     foreach my $tuple (
-        ['+1 242 225 0000' => 'BAHAMAS TELECOMMUNICATIONS CORP.'],
-        ['+1 246 220 0000' => 'CABLE & WIRELESS BARBADOS'],
-        ['+1 264 222 0000' => 'CABLE & WIRELESS - ANGUILLA'],
-        ['+1 268 268 0000' => 'CABLE & WIRELESS - ANTIGUA'],
-        ['+1 284 229 0000' => 'CABLE & WIRELESS - TORTOLA'],
+        ['+1 242 225 0000' => 'BARTELCO (BA)'],
+        ['+1 246 220 0000' => 'CABLE & WIRELESS BARTEL LIMITED - BB'],
+        ['+1 264 222 0000' => 'CABLE & WIRELESS (AI)'],
+        ['+1 268 268 0000' => 'CABLE & WIRELESS (AN)'],
+        ['+1 284 229 0000' => 'CABLE & WIRELESS (BV)'],
         ['+1 340 774 5666' => 'VIRGIN ISLANDS TEL. CORP. DBA INNOVATIVE TELEPHONE'],
-        ['+1 345 222 0000' => 'CABLE & WIRELESS - CAYMAN ISLANDS'],
+        ['+1 345 222 0000' => 'CABLE & WIRELESS (CQ)'],
         ['+1 441 222 0000' => 'BERMUDA CABLEVISION LIMITED - BM'],
         ['+1 473 230 0000' => 'COLUMBUS COMMUNICATIONS (GRENADA) LIMITED'],
-        ['+1 649 231 0000' => 'CABLE & WIRELESS - TURKS & CAICOS'],
+        ['+1 649 231 0000' => 'CABLE & WIRELESS (TC)'],
         # No data yet.
-        # checked on 2021-12-06
-        # next check due 2022-12-01 (annually) until there's data
+        # checked on 2022-12-03
+        # next check due 2023-12-01 (annually) until there's data
         # at https://localcallingguide.com/xmlprefix.php?npa=658&blocks=1
         # ['+1 658 ??? 0000' => '???'],
-        ['+1 664 349 0000' => 'CABLE & WIRELESS - MONTSERRAT'],
+        ['+1 664 349 0000' => 'CABLE & WIRELESS (RT)'],
         ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORPORATION'],
         ['+1 671 472 7679' => 'TELEGUAM HOLDINGS, LLC'],
         ['+1 684 248 0000' => 'AST TELECOM, LLC - AS'],
         ['+1 721 547 0000' => 'ST. MAARTEN TELEPHONE COMPANY, NV'],
-        ['+1 758 234 0000' => 'CABLE & WIRELESS - ST. LUCIA, LTD'],
-        ['+1 767 221 0000' => 'DIGICEL (GRENADA) LIMITED'],
-        ['+1 784 266 0000' => 'CABLE & WIRELESS - ST. VINCENT'],
-        ['+1 787 200 0000' => 'LIBERTY CABLEVISION OF PUERTO RICO, LLC - PR'],
+        ['+1 758 234 0000' => 'CABLE & WIRELESS (SA)'],
+        ['+1 767 221 0000' => 'DIGICEL GRENADA LIMITED'],
+        ['+1 784 266 0000' => 'CABLE & WIRELESS (ZF)'],
+        ['+1 787 200 0000' => 'LIBERTY COMMUNICATIONS OF PUERTO RICO LLC'],
         ['+1 809 202 0000' => 'ECONOMITEL, C. POR A. - DR'],
-        ['+1 829 201 0000' => 'CODETEL'],
-        ['+1 849 201 0000' => 'CODETEL'],
+        ['+1 829 201 0000' => 'CODETEL (DR)'],
+        ['+1 849 201 0000' => 'CODETEL (DR)'],
         ['+1 868 215 0000' => 'COLUMBUS COMMUNICATIONS TRINIDAD LIMITED'],
-        ['+1 869 212 0000' => 'ST KITTS NEVIS TELEPHONE - NEVIS'],
-        ['+1 876 202 0000' => 'JAMAICA TELEPHONE CO.'],
+        ['+1 869 212 0000' => 'ST. KITTS NEVIS TELEC (NI)'],
+        ['+1 876 202 0000' => 'JAMAICA TEL. CO. (JM)'],
         ['+1 939 201 0000' => 'AT&T, INC. - PR'],
     ) {
         my($number, $op) = @{$tuple};
@@ -174,36 +194,36 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         "Oh good, the database contains data for all the non-US/CA area codes (except 658, for which no data are yet available)"
     );
 
-    # checked on 2021-12-06 that these are consolidated ten-thousand blocks
-    # next check due 2022-12-01 (annually)
+    # checked on 2022-12-03 that these are consolidated ten-thousand blocks
+    # next check due 2023-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=630&blocks=1
     is($CLASS->new('+1 630 847 0000')->operator(), 'YMAX COMMUNICATIONS CORP. - IL', 'USA, thousands blocks all for same operator, so consolidated into one to save space in database');
-    # checked on 2021-12-06
-    # next check due 2022-12-01 (annually)
+    # checked on 2022-12-03
+    # next check due 2023-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=242&blocks=1
-    is($CLASS->new('+1 242 367 0000')->operator(), 'BAHAMAS TELECOMMUNICATIONS CORP.', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
+    is($CLASS->new('+1 242 367 0000')->operator(), 'BARTELCO (BA)', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
 
     foreach my $number(
         [ 'Bahamas', '+1 242 331 0000', undef ],
         [ 'Bahamas', '+1 242 331 1000', undef ],
-        [ 'Bahamas', '+1 242 331 2000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
-        [ 'Bahamas', '+1 242 331 3000', 'BAHAMAS TELECOMMUNICATIONS CORP.' ],
+        [ 'Bahamas', '+1 242 331 2000', 'BARTELCO (BA)' ],
+        [ 'Bahamas', '+1 242 331 3000', 'BARTELCO (BA)' ],
         [ 'Bahamas', '+1 242 331 4000', undef ],
         [ 'Bahamas', '+1 242 331 5000', undef ],
         [ 'Bahamas', '+1 242 331 6000', undef ],
         [ 'Bahamas', '+1 242 331 7000', undef ],
         [ 'Bahamas', '+1 242 331 8000', undef ],
         [ 'Bahamas', '+1 242 331 9000', undef ],
-        [ 'USA',     '+1 512 373 0000', 'SPRINT SPECTRUM, L.P.' ],
+        [ 'USA',     '+1 512 373 0000', 'METROPCS, INC.' ],
         [ 'USA',     '+1 512 373 1000', undef ],
-        [ 'USA',     '+1 512 373 2000', 'SPRINT SPECTRUM, L.P.', ],
+        [ 'USA',     '+1 512 373 2000', 'METROPCS, INC.', ],
         [ 'USA',     '+1 512 373 3000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL', ],
         [ 'USA',     '+1 512 373 4000', undef ],
-        [ 'USA',     '+1 512 373 5000', 'SPRINT SPECTRUM, L.P.' ],
-        [ 'USA',     '+1 512 373 6000', 'SPRINT SPECTRUM, L.P.' ],
+        [ 'USA',     '+1 512 373 5000', 'METROPCS, INC.' ],
+        [ 'USA',     '+1 512 373 6000', 'METROPCS, INC.' ],
         [ 'USA',     '+1 512 373 7000', undef ],
         [ 'USA',     '+1 512 373 8000', 'TIME WARNER CBLE INFO SVC (TX) DBA TIME WARNER CBL' ],
-        [ 'USA',     '+1 512 373 9000', 'SPRINT SPECTRUM, L.P.' ]
+        [ 'USA',     '+1 512 373 9000', 'METROPCS, INC.' ]
     ) {
         is(
             $CLASS->new($number->[1])->operator(),
@@ -232,10 +252,16 @@ note("dodgy numbers");
 
 ok(!defined($CLASS->new('+1 613 563 72423')), "too long");
 ok(!defined($CLASS->new('+1 613 563 724')),   "too short");
-ok(!defined($CLASS->new('+1 113 563 7242')),  "A digit must be 2-9");
+ok(!defined($CLASS->new('+1 113 563 7242')),  "A  must not be 1");
+ok(!defined($CLASS->new('+1 613 163 7242')),  "D  must not be 1");
+ok(!defined($CLASS->new('+1 611 563 7242')),  "BC must not be 11");
+#
+# checked on 2023-02-23
+# next check due 2024-01-01 (annually)
+# https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Summary_table
+ok(!defined($CLASS->new('+1 290 563 7242')),  "B  must not be 9");
 ok(!defined($CLASS->new('+1 373 563 7242')),  "AB must not be 37");
 ok(!defined($CLASS->new('+1 963 563 7242')),  "AB must not be 96");
-ok(!defined($CLASS->new('+1 611 563 7242')),  "BC must not be 11");
 
 # the following work with a valid area code so at this point we will be down in a stub's
 # constructor before we reject the number, so we need to check this for all countries

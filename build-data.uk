@@ -48,19 +48,21 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
     foreach my $row (@rows) {
         my $prefix = join('', map { s/\s//g; $_; }  grep { defined } map { $row->[$_] } @header_fields_index_by_name{@prefix_fields});
 
-        my $format_field = 
+        my $format_field =
             exists($header_fields_index_by_name{'Number Length'})         ? 'Number Length' :
             exists($header_fields_index_by_name{'NumberLengthNonGeo'})    ? 'NumberLengthNonGeo' :
             exists($header_fields_index_by_name{'Non Geo Number Length'}) ? 'Non Geo Number Length' :
             exists($header_fields_index_by_name{'Geographic Number Length'}) ? 'Geographic Number Length' :
             die("Can't find a format field in $xlsfile\n");
-        my $telco_field = 
+        my $telco_field =
             exists($header_fields_index_by_name{'Communications Provider'}) ? 'Communications Provider' :
             exists($header_fields_index_by_name{'CP Name'})                 ? 'CP Name' :
             die("Can't find a telco field in $xlsfile\n");
-        my $status_field = 
-            exists($header_fields_index_by_name{'Status'})       ? 'Status' :
-            exists($header_fields_index_by_name{'Block Status'}) ? 'Block Status' :
+        my $status_field =
+            exists($header_fields_index_by_name{'Status'})               ? 'Status' :
+            exists($header_fields_index_by_name{'Block Status'})         ? 'Block Status' :
+            exists($header_fields_index_by_name{'Block Status '})        ? 'Block Status ' :
+            exists($header_fields_index_by_name{'Block Status Formula'}) ? 'Block Status Formula' :
             die("Can't find a status field in $xlsfile\n");
 
         my($status, $telco, $format) = map {
@@ -71,11 +73,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
         $telco  ||= '';
         $format ||= '';
 
-        # checked on 2021-06-01
-        # next check due 2022-06-01 (annually)
         next if(
-            $prefix !~ /^11[46]496$/ && # These drama prefixex have status 'Quarantined'
-                                        # unlike other drama prefixes which are 'Protected'
             $status !~ /^(Protected|Allocated ?(\(Closed Range\)|for Migration only)?)$/
         );
         $statuses{"$prefix"} = $status;
@@ -100,7 +98,7 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
 # special numbers allocated for use in drama that don't appear
 # in the spreadsheets
 push @free_prefices, '8081570';
-push @special_prefices, '9098790', '3069990'; 
+push @special_prefices, '9098790', '3069990';
 
 print "Building telco/length data ...\n";
 my %telco_format_cache = ();
@@ -113,6 +111,17 @@ foreach my $datum (@telco_length_data) {
     #     warn "  check this and remove the warning if fixed in XLS file (last checked 2017/06/20)\n";
     #     if($format eq '') { $format = '4+6' }
     # }
+
+    # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
+    # at least some 9 digit numbers exist in this range but OFCOM claim
+    # it's 10 digit
+    # checked on 2023-06-01
+    # next check due 2023-12-01 (semi-annually)
+    if($prefix eq '800716') {
+        warn "Correcting OFCOM's broken data for 8007 16\n";
+        $format = '0+9/10';
+    }
+
     if($format eq '') {
         if(    $prefix =~ /^[37]/     ) { $format = '10 digit numbers' }
          elsif($prefix =~ /^2/        ) { $format = '2+8' }

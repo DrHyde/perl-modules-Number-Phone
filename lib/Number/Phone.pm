@@ -13,8 +13,13 @@ use Number::Phone::Country qw(noexport);
 use Number::Phone::Data;
 use Number::Phone::StubCountry;
 
+use Devel::Deprecations::Environmental
+    Int32   => { unsupported_from => '2023-06-01' },
+    OldPerl => { unsupported_from => '2022-11-08', older_than => '5.10.0' },
+    OldPerl => { unsupported_from => '2023-01-08', older_than => '5.12.0' };
+
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '3.8004';
+our $VERSION = '3.9002';
 
 my $NOSTUBS = 0;
 sub import {
@@ -25,17 +30,13 @@ sub import {
   }
 }
 
-if(~0 == 4294967295) {
-    warn("Your perl only supports 32 bit ints; Number::Phone will require 64 bit ints from some time after 2023-06-01");
-}
-
 sub _find_data_file {
     my $wanted = shift;
 
     # giant ball of hate because lib::abs doesn't work on Windows
     my $this_file = __FILE__;
     my $this_dir  = dirname($this_file);
-    
+
     my @candidate_files = (
          # if this is $devdir/lib ...
          catfile($this_dir, qw(.. .. lib .. share), $wanted),
@@ -205,8 +206,6 @@ As of version 3.6000 the C<areaname> method pays attention to your locale
 settings and so you might start getting locale-appropriate versions of
 areanames instead of what you used to get.
 
-64 bit ints will be required some time after 2023-06-01.
-
 3.8000 is a bit stricter about numbers and countries not matching in the
 constructor. This may affect users who specify places like Guernsey but
 provide numbers from Jersey or the Isle of Man, all three of which are separate
@@ -231,7 +230,30 @@ Alternatively, if you want to *always* use data derived from libphonenumber,
 you should use the L<Number::Phone::Lib> module instead. This is a subclass
 of Number::Phone that will use the libphonenumber-derived stub classes even
 when extra data is available in, for example, Number::Phone::UK. You might
-want to do this for compatibility or performance. Number::Phone::UK is quite slow, because it uses a huge database for some of its features.
+want to do this for compatibility or performance. Number::Phone::UK is quite
+slow, because it uses a huge database for some of its features.
+
+=head1 PERL VERSIONS SUPPORTED
+
+A perl built with support for 64 bit ints will be required some time after 2023-06-01.
+This is the default for all vaguely recent builds of perl on all modern systems.
+
+Perl 5.8 (and below) is not fully supported as of version 3.8006. This is
+because I have a dependency when packaging it on L<XML::XPath> which dropped
+support for perl 5.8. This means that I can no longer automatically test
+Number::Phone on perl 5.8. There is no runtime dependency on XML::XPath, so I
+expect Number::Phone to keep on truckin' on 5.8, and I won't B<deliberately>
+remove support without notice. However, because I can not automatically test, I
+can't guarantee that I won't B<accidentally> remove support. If I do
+accidentally remove it, it ain't coming back.
+
+Similarly, Perl 5.10 is not fully supported as of the version after 3.8007, whatever
+that may be. This is because there is a dependency on L<Test::Deep>, which
+dropped support for that version of perl at the start of 2023. This means that
+I can no longer automatically test on that version of perl, and you can't
+(easily) install the necessary dependencies. Depending on details of what you
+installed when, future releases of Number::Phone may or may not continue to
+work for you.
 
 =cut
 
@@ -241,15 +263,28 @@ sub _new_args {
     die("Number::Phone->new(): too many params\n") if(exists($_[2]));
 
     my $original_country;
+    $original_country = $country if($country =~ /::/);
 
     if(!defined($number)) { # one arg
         $number = $country;
-    } elsif($country =~ /[a-z]/i) { # eg 'UK', '12345'
-        $original_country = uc($country);
-        $number = '+'.
-                  Number::Phone::Country::country_code($country).
-                  $number
-          unless(index($number, '+'.Number::Phone::Country::country_code($country)) == 0);
+    } elsif($country =~ /[a-z]/i) {
+        # eg ('UK', '12345')
+        #    ('MOCK', ...)
+        #    ('InternationalNetworks882', ...)
+        # we accept lower-case ISO codes
+        $original_country = uc($country) if($country =~ /^[a-z]{2}$/i);
+        if($country =~ /^GMSS::[a-zA-Z]+$/) {
+            if($number !~ /^\+881/) {
+                $number = "+881$number";
+            }
+        } elsif($country =~ /^InternationalNetworks(88[23])::[a-zA-Z]+$/) {
+            my $idd = $1;
+            if($number !~ /^\+$idd/) {
+                $number = "+$idd$number";
+            }
+        } elsif(index($number, '+'.Number::Phone::Country::country_code($country)) != 0) {
+            $number = '+'.Number::Phone::Country::country_code($country).$number;
+        }
     } else { # (+)NNN
         $number = join('', grep { defined } ($country, $number));
     }
@@ -258,6 +293,9 @@ sub _new_args {
     $number = "+$number" unless($number =~ /^\+/);
 
     $country = Number::Phone::Country::phone2country($number) or return;
+    if($country eq 'AQ' && $number =~ /^\+882/) {
+        $original_country = 'InternationalNetworks882';
+    }
 
     # special cases where you can legitimately ask for a containing country (eg
     # GB) and get back a sub-country (eg GG, which squats upon parts of the GB
@@ -301,17 +339,25 @@ sub new {
 sub _make_stub_object {
     my ($class, $number, $country_name) = @_;
     die("no module available for $country_name, and nostubs turned on\n") if($NOSTUBS);
+
     my $stub_class = "Number::Phone::StubCountry::$country_name";
     eval "use $stub_class";
-    # die("Can't find $stub_class: $@\n") if($@);
-    if($@) {
+    if($@ && $number =~ /^\+881/) {
+        $stub_class = "Number::Phone::StubCountry::GMSS::$country_name";
+        eval "use $stub_class";
+    } elsif($@ && $number =~ /^\+882/ && $country_name ne 'AQ') {
+        $stub_class = "Number::Phone::StubCountry::InternationalNetworks882::$country_name";
+        eval "use $stub_class";
+    } elsif($@ && $number =~ /^\+883/) {
+        $stub_class = "Number::Phone::StubCountry::InternationalNetworks883::$country_name";
+        eval "use $stub_class";
+    } elsif($@) {
         my (undef, $country_idd) = Number::Phone::Country::phone2country_and_idd($number);
         # an instance of this class is the ultimate fallback
         (my $local_number = $number) =~ s/(^\+$country_idd|\D)//;
         if($local_number eq '') { return undef; }
         return bless({
             country_code => $country_idd,
-            country      => $country_name,
             is_valid     => undef,
             number       => $local_number,
         }, 'Number::Phone::StubCountry');
@@ -795,7 +841,7 @@ L<git://github.com/DrHyde/perl-modules-Number-Phone.git>
 
 =head1 AUTHOR, COPYRIGHT and LICENCE
 
-Copyright 2004 - 2015 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+Copyright 2004 - 2023 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
 This software is free-as-in-speech software, and may be used,
 distributed, and modified under the terms of either the GNU

@@ -2,6 +2,55 @@ XXXXXX    XXXX-XX-XX
 
 - Switch to Data::CompactReadonly for UK database
 
+3.9002    2023-06-14
+
+- Data updates only
+
+3.9001    2023-03-07
+
+- Bug fix: if libphonenumber doesn't define any formatters for a country,
+  such as for Bonaire (BQ), do the best we can and return +CC NNNNN
+  instead of nothing. This was a regression in 3.9000, see
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/122
+
+3.9000    2023-03-05
+
+- Add validation using libphonenumber's data for non-geographic country
+  codes like +800 (International free phone) and +870 (Inmarsat). See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/17
+
+- Bug fix: NANP toll-free numbers corrected. 833 area code now supported,
+  and regex fixed to only match when the B and C digits are the same, so
+  800 is toll-free, 888 is toll-free, but 808 is not. See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/110
+
+- Bug fix: NANP 1-600 area code is non-geographic. See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/113
+
+- Workaround: OFCOM have the wrong number length for the +44 800 716 range,
+  we now have an egregious hack to work around that. See
+  https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
+
+- No longer auto-tested on 5.10 because a 'make test'-time dependency (Test::Deep)
+  no longer supports that.
+
+- Data updates
+
+3.8007    2022-12-02
+
+- Data updates
+
+3.8006    2022-09-03
+
+- Data updates
+
+- No longer auto-tested on 5.8 because a 'make dist'-time dependency (XML::XPath)
+  no longer supports that.
+
+3.8005    2022-06-01
+
+- Data updates only
+
 3.8004    2022-03-07
 
 - Fix test failure that only occurred if Number::Phone::JP was installed
@@ -404,7 +453,7 @@ XXXXXX    XXXX-XX-XX
 2007-03-13      1.57    New UK allocations;
                         Bundle DBM::Deep cos old version is incompatible
 2007-02-24      1.5601  New UK allocations
-2006-12-08      1.56    New UK allocations; 
+2006-12-08      1.56    New UK allocations;
                         Updated OFCOM parser;
                         Loads of Number::Phone::Country updates -
                           +1: NANP overlays: 226, 438, 762, 769, 829;

@@ -1,0 +1,46 @@
+on: [push, pull_request]
+name: Windows
+
+jobs:
+  build:
+    runs-on: 'macos-latest'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Perl environment
+        uses: shogo82148/actions-setup-perl@v1
+      - name: Test and build
+        run: |
+          cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5
+          cpanm --quiet --notest File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+          cpanm --quiet --notest --installdeps .
+          perl Makefile.PL
+          ./build-data.sh
+          make test
+          make dist
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist-for-windows-install
+          path: '*.tar.gz'
+          retention-days: 1
+  install-windows:
+    runs-on: windows-latest
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        perl-version:
+        - '5.20'
+        - latest
+    steps:
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          distribution: strawberry
+          perl-version: ${{ matrix.perl-version }}
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist-for-windows-install
+      - name: Install on Windows
+        run: |
+          perl -e "exec(q{cpanm}, map { glob($_) } @ARGV )" *.tar.gz

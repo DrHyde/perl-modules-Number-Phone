@@ -1,0 +1,23 @@
+on: [push, pull_request]
+name: MacOS
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on: ['macos-13', 'macos-11', 'macos-12']
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Perl environment
+        uses: shogo82148/actions-setup-perl@v1
+      - name: Test and build
+        run: |
+          cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+          cpanm File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5
+          cpanm -v --no-interactive File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+          cpanm --installdeps .
+          perl Makefile.PL
+          ./build-data.sh
+          make test
