@@ -1,6 +1,7 @@
 XXXXXX    XXXX-XX-XX
 
-- Switch to Data::CompactReadonly for UK database
+- Switch to Data::CompactReadonly for UK database. The database is now
+  less than 10% of its previous size.
 
 3.9002    2023-06-14
 

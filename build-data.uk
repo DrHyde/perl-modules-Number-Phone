@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Data::CompactReadonly;
-use Digest::MD5 'md5_base64';
 use File::Find::Rule;
 use Spreadsheet::XLSX;
 
@@ -101,8 +100,8 @@ push @free_prefices, '8081570';
 push @special_prefices, '9098790', '3069990';
 
 print "Building telco/length data ...\n";
-my %telco_format_cache = ();
-my %telco_and_length = ();
+my %telco_by_prefix  = ();
+my %format_by_prefix = ();
 foreach my $datum (@telco_length_data) {
     my($prefix, $telco, $format) = @{$datum};
 
@@ -149,13 +148,8 @@ foreach my $datum (@telco_length_data) {
             unless($prefix =~ /^[89]/ || $statuses{$prefix} eq 'Protected')
     }
 
-    my $cache_key = md5_base64($telco.'_'.$format);
-    $telco_format_cache{$cache_key} = {
-        telco => $telco,
-        format => $format
-    };
-
-    $telco_and_length{$prefix} = $cache_key;
+    $telco_by_prefix{$prefix} = $telco;
+    $format_by_prefix{$prefix} = $format;
 }
 
 print "Creating Data::CompactReadonly file ...\n";
@@ -175,8 +169,8 @@ Data::CompactReadonly->create(
         adult_prefices       => { map { ($_, 1) } @adult_prefices },
         ip_prefices          => { map { ($_, 1) } @ip_prefices },
         areanames            => \%areanames,
-        telco_format         => \%telco_format_cache,
-        telco_and_length     => \%telco_and_length,
+        telco                => \%telco_by_prefix,
+        format               => \%format_by_prefix,
         subclass             => {
             # taken from libphonenumber
             # checked on 2022-12-02

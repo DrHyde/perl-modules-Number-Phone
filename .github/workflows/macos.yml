@@ -15,7 +15,7 @@ jobs:
       - name: Test and build
         run: |
           cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
-          cpanm File::ShareDir::Install XML::XPath DBM::Deep Digest::MD5
+          cpanm File::ShareDir::Install XML::XPath DBM::Deep
           cpanm -v --no-interactive File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
           cpanm --installdeps .
           perl Makefile.PL

@@ -142,25 +142,26 @@ sub is_valid {
     # 07, 02x and 011x are always ten digits
     return $cache->{$number}->{is_valid} = 0 if($cleaned_number =~ /^([27]|11)/ && length($cleaned_number) != 10);
 
-    my $telco_and_length_code = 
-        (
-            map  { Number::Phone::UK::Data::db()->{telco_and_length}->{$_} }
-            grep { exists(Number::Phone::UK::Data::db()->{telco_and_length}->{$_}) }
-            @prefixes
-        )[0];
+    my $telco;
+    my $format;
+    foreach my $prefix (@prefixes) {
+        if(exists(Number::Phone::UK::Data::db()->{telco}->{$prefix})) {
+            $telco = Number::Phone::UK::Data::db()->{telco}->{$prefix};
+            last;
+        }
+    }
+    foreach my $prefix (@prefixes) {
+        if(exists(Number::Phone::UK::Data::db()->{format}->{$prefix})) {
+            $format = Number::Phone::UK::Data::db()->{format}->{$prefix};
+            last;
+        }
+    }
 
     $cache->{$number}->{is_allocated} = 0;
-    if(
-        # if we've got a telco, we've been allocated
-        $telco_and_length_code &&
-        Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{telco}
-    ) {
+    $cache->{$number}->{format} = $format;
+    if($telco) {
         $cache->{$number}->{is_allocated} = 1;
-        $cache->{$number}->{operator} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{telco};
-        $cache->{$number}->{format} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{format}
-    } elsif($telco_and_length_code) {
-        # if not we might still have a format, eg for Protected numbers
-        $cache->{$number}->{format} = Number::Phone::UK::Data::db()->{telco_format}->{$telco_and_length_code}->{format}
+        $cache->{$number}->{operator} = $telco;
     }
 
     if($cache->{$number}->{format} && $cache->{$number}->{format} =~ /\+/) {

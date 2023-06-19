@@ -51,7 +51,6 @@ WriteMakefile(
     'Data::Dumper::Concise'              => 0,
     'Devel::CheckOS'                     => '1.83',
     'Devel::Deprecations::Environmental' => '1.101',
-    'Digest::MD5'                        => 0,
     'File::Basename'                     => 0,
     'File::Find::Rule'                   => 0,
     'File::ShareDir'                     => 1.104,
