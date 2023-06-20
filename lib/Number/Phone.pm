@@ -14,7 +14,6 @@ use Number::Phone::Data;
 use Number::Phone::StubCountry;
 
 use Devel::Deprecations::Environmental
-    Int32   => { unsupported_from => '2023-06-01' },
     OldPerl => { unsupported_from => '2022-11-08', older_than => '5.10.0' },
     OldPerl => { unsupported_from => '2023-01-08', older_than => '5.12.0' };
 
@@ -211,6 +210,8 @@ constructor. This may affect users who specify places like Guernsey but
 provide numbers from Jersey or the Isle of Man, all three of which are separate
 jurisdictions squatting on random places all over the UK's number plan.
 
+3.9002 is the last version that supported perls with 32-bit integers.
+
 =head1 COMPATIBILITY WITH libphonenumber
 
 libphonenumber is a similar project for other languages, maintained
@@ -235,8 +236,7 @@ slow, because it uses a huge database for some of its features.
 
 =head1 PERL VERSIONS SUPPORTED
 
-A perl built with support for 64 bit ints will be required some time after 2023-06-01.
-This is the default for all vaguely recent builds of perl on all modern systems.
+Your perl must support 64 bit ints.
 
 Perl 5.8 (and below) is not fully supported as of version 3.8006. This is
 because I have a dependency when packaging it on L<XML::XPath> which dropped
