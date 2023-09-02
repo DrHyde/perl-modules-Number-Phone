@@ -1,7 +1,9 @@
-XXXXXX    XXXX-XX-XX
+4.0000    2023-09-03
 
-- Switch to Data::CompactReadonly for UK database. The database is now
+- Switch to Data::CompactReadonly for UK database. The UK database is now
   less than 10% of its previous size.
+
+- Data updates
 
 3.9002    2023-06-14
 

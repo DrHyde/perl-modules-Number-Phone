@@ -5,7 +5,7 @@ use strict;
 
 use Number::Phone;
 
-our $VERSION = "2.0001";
+our $VERSION = "2.0002";
 
 use Data::CompactReadonly;
 use File::ShareDir;
