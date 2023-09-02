@@ -32,22 +32,22 @@ sub phone2country {
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
-        # checked on 2023-03-03
-        # next check due 2023-09-01 (semi-annually)
+        # checked on 2023-09-02
+        # next check due 2024-03-01 (semi-annually)
         my $canada = join('|', qw(
-            204 226 236 249 250 263 289
+            204 226 236 249 250 257 263 289
             306 343 354 365 367 368 382
             403 416 418 428 431 437 438 450 468 474
             506 514 519 548 579 581 584 587
             604 613 639 647 672 683
             705 709 742 753 778 780 782
             807 819 825 867 873 879
-            902 905
+            902 905 942
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_600
-        # checked on 2023-03-03
-        # next check due 2023-09-01 (semi-annually)
+        # checked on 2023-09-02
+        # next check due 2024-09-01 (annually)
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
@@ -56,8 +56,8 @@ our %NANP_areas = (
         #   but the latter doesn't contain some overlays that are about to come into service
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
-        # checked on 2023-03-03
-        # next check due 2023-09-01 (semi-annually)
+        # checked on 2023-09-02
+        # next check due 2024-03-01 (semi-annually)
         my $usa = join('|', qw(
             205 251 256 334 659 938
             907
@@ -77,12 +77,12 @@ our %NANP_areas = (
             319 515 563 641 712
             316 620 785 913
             270 364 502 606 859
-            225 318 337 504 985
+            225 318 337 457 504 985
             207
             227 240 301 410 443 667
             339 351 413 508 617 774 781 857 978
             231 248 269 313 517 586 616 679 734 810 906 947 989
-            218 320 507 612 651 763 952
+            218 320 507 612 651 763 924 952
             228 601 662 769
             235 314 417 557 573 636 660 816 975
             406
@@ -91,21 +91,21 @@ our %NANP_areas = (
             603
             201 551 609 640 732 848 856 862 908 973
             505 575
-            212 315 329 332 347 363 516 518 585 607 631 646 680 716 718 838 845 914 917 929 934
+            212 315 329 332 347 363 516 518 585 607 624 631 646 680 716 718 838 845 914 917 929 934
             252 336 472 704 743 828 910 919 980 984
             701
-            216 220 234 283 326 330 380 419 440 513 567 614 740 937
+            216 220 234 283 326 330 380 419 436 440 513 567 614 740 937
             405 539 572 580 918
             458 503 541 971
             215 223 267 272 412 445 484 570 582 610 717 724 814 835 878
             401
-            803 839 843 854 864
+            803 821 839 843 854 864
             605
             423 615 629 731 865 901 931
             210 214 254 281 325 346 361 409 430 432 469 512 682 713 726 737 806 817 830 832 903 915 936 940 945 956 972 979
             385 435 801
             802
-            276 434 540 571 703 757 804 826 948
+            276 434 540 571 686 703 757 804 826 948
             206 253 360 425 509 564
             304 681
             262 274 353 414 534 608 715 920
@@ -113,8 +113,8 @@ our %NANP_areas = (
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_710
-        # checked on 2021-12-06
-        # next check due 2023-12-01 (bi-annually)
+        # checked on 2023-09-02
+        # next check due 2025-09-01 (bi-annually)
         $usa    = join('|', $usa, 710);
     },
     # see https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Countries_and_territories
