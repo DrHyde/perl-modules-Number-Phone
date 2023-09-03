@@ -238,22 +238,11 @@ slow, because it uses a huge database for some of its features.
 
 Your perl must support 64 bit ints.
 
-Perl 5.8 (and below) is not fully supported as of version 3.8006. This is
-because I have a dependency when packaging it on L<XML::XPath> which dropped
-support for perl 5.8. This means that I can no longer automatically test
-Number::Phone on perl 5.8. There is no runtime dependency on XML::XPath, so I
-expect Number::Phone to keep on truckin' on 5.8, and I won't B<deliberately>
-remove support without notice. However, because I can not automatically test, I
-can't guarantee that I won't B<accidentally> remove support. If I do
-accidentally remove it, it ain't coming back.
-
-Similarly, Perl 5.10 is not fully supported as of the version after 3.8007, whatever
-that may be. This is because there is a dependency on L<Test::Deep>, which
-dropped support for that version of perl at the start of 2023. This means that
-I can no longer automatically test on that version of perl, and you can't
-(easily) install the necessary dependencies. Depending on details of what you
-installed when, future releases of Number::Phone may or may not continue to
-work for you.
+Because they are not supported by some libraries that we depend on, perl
+versions below 5.12 are not supported. If you have old versions of those
+libraries installed then Number::Phone I<may> still work, but because I can't
+automatically test on those older versions any more that is liable to change
+without notice.
 
 =cut
 

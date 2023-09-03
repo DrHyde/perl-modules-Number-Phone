@@ -1,3 +1,7 @@
+4.xxxx    xxxx-xx-xx
+
+- Clarification in doco re supported perl versions
+
 4.0000    2023-09-03
 
 - Switch to Data::CompactReadonly for UK database. The UK database is now
