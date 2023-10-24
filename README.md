@@ -1,11 +1,11 @@
-![Written in perl](https://img.shields.io/badge/perl-%2339457E.svg?&logo=perl&logoColor=white)
- ![On the CPAN](https://img.shields.io/cpan/v/Number-Phone)
+[![Written in perl](https://img.shields.io/badge/perl-%2339457E.svg?&logo=perl&logoColor=white)](https://www.perl.org/)
+ [![On the CPAN](https://img.shields.io/cpan/v/Number-Phone)](https://metacpan.org/pod/Number::Phone)
  ![Linux build status](https://img.shields.io/travis/com/DrHyde/perl-modules-Number-Phone?label=Linux)
  ![FreeBSD build status](https://img.shields.io/cirrus/github/DrHyde/perl-modules-Number-Phone?task=FreeBSD)
  ![MacOS build status](https://img.shields.io/cirrus/github/DrHyde/perl-modules-Number-Phone?task=MacOS)
  ![Windows build status](https://img.shields.io/appveyor/build/DrHyde/perl-modules-Number-Phone?label=Windows)
  ![Test coverage](https://img.shields.io/coveralls/github/DrHyde/perl-modules-Number-Phone/master?label=Coverage)
- ![Github issues](https://img.shields.io/github/issues/DrHyde/perl-modules-Number-Phone?label=Issues)
+ [![Github issues](https://img.shields.io/github/issues/DrHyde/perl-modules-Number-Phone?label=Issues)](https://github.com/DrHyde/perl-modules-Number-Phone/issues)
 
 # Description
 
