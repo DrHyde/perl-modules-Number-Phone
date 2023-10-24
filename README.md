@@ -1,4 +1,11 @@
-<img src="https://img.shields.io/badge/perl-%2339457E.svg?&logo=perl&logoColor=white" alt="Written in perl"> <img src=https://img.shields.io/cpan/v/Number-Phone alt="On the CPAN"> <img src="https://img.shields.io/travis/com/DrHyde/perl-modules-Number-Phone?label=Linux" alt="Linux build status"> <img src="https://img.shields.io/cirrus/github/DrHyde/perl-modules-Number-Phone?task=FreeBSD" alt="FreeBSD build status"> <img src="https://img.shields.io/cirrus/github/DrHyde/perl-modules-Number-Phone?task=MacOS" alt="MacOS build status"> <img src="https://img.shields.io/appveyor/build/DrHyde/perl-modules-Number-Phone?label=Windows" alt="Windows build status"> <img src="https://img.shields.io/coveralls/github/DrHyde/perl-modules-Number-Phone/master?label=Coverage" alt="Test coverage"> <img src="https://img.shields.io/github/issues/DrHyde/perl-modules-Number-Phone?label=Issues" alt="Github issues">
+![Written in perl](https://img.shields.io/badge/perl-%2339457E.svg?&logo=perl&logoColor=white)
+ ![On the CPAN](https://img.shields.io/cpan/v/Number-Phone)
+ ![Linux build status](https://img.shields.io/travis/com/DrHyde/perl-modules-Number-Phone?label=Linux)
+ ![FreeBSD build status](https://img.shields.io/cirrus/github/DrHyde/perl-modules-Number-Phone?task=FreeBSD)
+ ![MacOS build status](https://img.shields.io/cirrus/github/DrHyde/perl-modules-Number-Phone?task=MacOS)
+ ![Windows build status](https://img.shields.io/appveyor/build/DrHyde/perl-modules-Number-Phone?label=Windows)
+ ![Test coverage](https://img.shields.io/coveralls/github/DrHyde/perl-modules-Number-Phone/master?label=Coverage)
+ ![Github issues](https://img.shields.io/github/issues/DrHyde/perl-modules-Number-Phone?label=Issues)
 
 # Description
 
