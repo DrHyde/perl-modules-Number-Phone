@@ -13,6 +13,7 @@ $Data::Dumper::Indent = 2;
 $Data::Dumper::Sortkeys = 1;
 
 use lib 'lib';
+use Number::Phone::Country;
 use Number::Phone::NANP::Data;
 
 use lib 'buildtools';
@@ -23,6 +24,31 @@ $| = 1;
 use XML::XPath;
 my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetadata.xml');
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
+
+my %prefix_to_timezones;
+open(my $fh, "<:encoding(utf8)", 'libphonenumber/resources/timezones/map_data.txt') or die "Opening 'map_data.txt': $!";
+while (my $line = <$fh>)  {
+  $line =~ s/^\s+|\s+$//g;
+  if (!$line || $line =~ /^#/) {
+     next;
+  }
+
+  if ($line !~ /\|/) {
+    die "malformatted data, expected '|''";
+  }
+
+  my ($prefix, $tz_string) = split(/\|/, $line, 2);
+  unless ($tz_string) {
+    die "missing time zones";
+  }
+
+  if (!$prefix_to_timezones{$prefix}) {
+    die "duplicated prefix $prefix";
+  }
+
+  $prefix_to_timezones{$prefix} = $tz_string;
+}
+close($fh);
 
 open(my $manifest_fh, 'MANIFEST') || die("Can't read MANIFEST\n");
 my @manifest_files = grep { /./ } <$manifest_fh>;
@@ -141,12 +167,36 @@ TERRITORY: foreach my $territory (@territories) {
       print $module_fh "};\n";
   }
 
+  my %timezones;
+
+  while (my ($prefix, $tz_string) = each %prefix_to_timezones) {
+    if ($prefix !~ /^$IDD_country_code/) {
+      next;
+    }
+
+    my $national_prefix = $prefix =~ s/^$IDD_country_code//r;
+
+    # For NANP phone numbers, we only need to include timezone mappings if the prefix
+    # might apply to the country. E.g. Jamiaca which also use the +1 country code do
+    # not need to include timezone mappings for Texas area codes.
+    if ($IDD_country_code eq "1") {
+      my ($area) = $national_prefix =~ /^1(\d{3})/; # take the next 3 digits (if they exit)
+      if ($area && $area !~ /^($Number::Phone::Country::NANP_areas{$ISO_country_code})$/x) {
+        next;
+      }
+    }
+
+    $timezones{$national_prefix} = [split(/&/, $tz_string)];
+  }
+
+  print $module_fh 'my '.Data::Dumper->new([\%timezones], [qw(timezones)])->Dump();
+
   print $module_fh "
     sub new {
       my \$class = shift;
       my \$number = shift;
       \$number =~ s/(^\\+$IDD_country_code|\\D)//g;
-      my \$self = bless({ country_code => '$IDD_country_code', number => \$number, formatters => \$formatters, validators => \$validators, ".
+      my \$self = bless({ country_code => '$IDD_country_code', number => \$number, formatters => \$formatters, validators => \$validators, timezones => \$timezones, ".
       (($IDD_country_code != 1 && $got_area_names) ? 'areanames => \\%areanames' : '')
       ."}, \$class);
   ";

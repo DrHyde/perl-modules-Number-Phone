@@ -66,7 +66,7 @@ my @is_methods = qw(
 foreach my $method (
     @is_methods, qw(
         country_code regulator areacode areaname
-        subscriber operator operator_ported translates_to
+        subscriber operator operator_ported timezones translates_to
         format location data_source
     )
 ) {
