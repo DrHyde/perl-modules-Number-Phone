@@ -529,6 +529,16 @@ Return the subscriber part of the number.
 While the superclass implementation returns undef, this is nonsense in just
 about all cases, so you should always implement this.
 
+=item timezones
+
+This returns a list-ref of the timezones that could be assoicated with a
+geographic number or for non geographic numbers with the country.
+
+Only stub-countries return timezones e.g. Europe/London, America/New_York.
+Non-stub implementations currently always return undef.
+
+Ordering is arbitrary though is typically alphabetical.
+
 =item operator
 
 Return the name of the telco assigned this number, in an appropriate
