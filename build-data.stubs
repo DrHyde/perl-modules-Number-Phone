@@ -26,13 +26,17 @@ my $xml = XML::XPath->new(filename => 'libphonenumber/resources/PhoneNumberMetad
 my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_nodelist();
 
 my %prefix_to_timezones;
-open(my $fh, "<:encoding(utf8)", 'libphonenumber/resources/timezones/map_data.txt') or die "Opening 'map_data.txt': $!";
-while (my $line = <$fh>)  {
+open(my $timezones_fh, "<:encoding(utf8)", 'libphonenumber/resources/timezones/map_data.txt')
+  or die "Opening 'map_data.txt': $!";
+while (my $line = <$timezones_fh>)  {
   $line =~ s/^\s+|\s+$//g;
+
+  # Skip empty or comment lines
   if (!$line || $line =~ /^#/) {
      next;
   }
 
+  # Assert pipe deliminated
   if ($line !~ /\|/) {
     die "malformatted data, expected '|''";
   }
@@ -42,13 +46,13 @@ while (my $line = <$fh>)  {
     die "missing time zones";
   }
 
-  if (!$prefix_to_timezones{$prefix}) {
+  if ($prefix_to_timezones{$prefix}) {
     die "duplicated prefix $prefix";
   }
 
   $prefix_to_timezones{$prefix} = $tz_string;
 }
-close($fh);
+close($timezones_fh);
 
 open(my $manifest_fh, 'MANIFEST') || die("Can't read MANIFEST\n");
 my @manifest_files = grep { /./ } <$manifest_fh>;
