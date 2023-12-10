@@ -114,8 +114,8 @@ foreach my $datum (@telco_length_data) {
     # see https://github.com/DrHyde/perl-modules-Number-Phone/issues/112
     # at least some 9 digit numbers exist in this range but OFCOM claim
     # it's 10 digit
-    # checked on 2023-06-01
-    # next check due 2023-12-01 (semi-annually)
+    # checked on 2023-12-10
+    # next check due 2024-06-01 (semi-annually)
     if($prefix eq '800716') {
         warn "Correcting OFCOM's broken data for 8007 16\n";
         $format = '0+9/10';
@@ -173,8 +173,8 @@ Data::CompactReadonly->create(
         format               => \%format_by_prefix,
         subclass             => {
             # taken from libphonenumber
-            # checked on 2022-12-02
-            # next check due 2023-12-01 (annually)
+            # checked on 2023-12-10
+            # next check due 2024-12-01 (annually)
             # NB for all of these also check build-data.country-mapping
             (map { $_ => 'GG' } (
                 1481, 7781, 7839, 79111, 79117

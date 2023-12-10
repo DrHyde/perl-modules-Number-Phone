@@ -18,7 +18,7 @@ use Devel::Deprecations::Environmental
     OldPerl => { unsupported_from => '2023-01-08', older_than => '5.12.0' };
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '4.0000';
+our $VERSION = '4.0001';
 
 my $NOSTUBS = 0;
 sub import {

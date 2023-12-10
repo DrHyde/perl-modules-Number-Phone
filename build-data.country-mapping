@@ -150,12 +150,12 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
 
-    # checked on 2022-12-03
-    # next check due 2023-12-01 (annually)
+    # checked on 2023-12-10
+    # next check due 2024-12-01 (annually)
     [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
     [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
-    [ 262269  => 'YT' ], # Mayotte fixed lines, see http://www.wtng.info/wtng-262-fr.html
-    [ 262639  => 'YT' ], # Mayotte GSM, see http://www.wtng.info/wtng-262-fr.html
+    [ 262269  => 'YT' ], # Mayotte fixed lines, see https://en.wikipedia.org/wiki/Telephone_numbers_in_France
+    [ 262639  => 'YT' ], # Mayotte GSM, see https://en.wikipedia.org/wiki/Telephone_numbers_in_France
     [ 35348   => 'GB' ], # https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Republic_of_Ireland#Calls_to_Northern_Ireland
     [ 379     => 'VA' ], # Vatican (not in use, missing from libphonenumber), see https://en.wikipedia.org/wiki/Telephone_numbers_in_Vatican_City
     [ 3906698 => 'VA' ], # Vatican in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_Vatican_City
@@ -210,8 +210,8 @@ foreach my $tuple (
     # see http://wtng.info/ccod-6.html#CC61 (Christmas Island)
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Norfolk_Island
-    # checked on 2022-12-03
-    # next check due 2023-12-01 (annually)
+    # checked on 2023-12-10
+    # next check due 2024-12-01 (annually)
     [ 5999    => 'CW' ], # Curacao
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
@@ -223,9 +223,9 @@ foreach my $tuple (
     [ 6723    => 'NF' ], # Norfolk Island
 
     # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
-    # NB planned change to +997
-    # checked on 2022-12-03
-    # next check due 2023-12-01 (annually)
+    # NB planned change to +997 or +77
+    # checked on 2023-12-10
+    # next check due 2024-12-01 (annually)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 
@@ -238,11 +238,6 @@ foreach my $tuple (
     [ 38129   => 'XK' ],
     [ 38138   => 'XK' ],
     [ 38139   => 'XK' ],
-    # I *think* +377 and +386 are no longer used
-    # [ 37744   => 'XK' ],
-    # [ 37745   => 'XK' ],
-    # [ 38643   => 'XK' ],
-    # [ 38649   => 'XK' ],
 
     do {
         map {

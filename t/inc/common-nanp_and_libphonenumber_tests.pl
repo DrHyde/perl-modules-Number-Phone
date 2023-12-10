@@ -163,8 +163,8 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         ['+1 473 230 0000' => 'COLUMBUS COMMUNICATIONS (GRENADA) LIMITED'],
         ['+1 649 231 0000' => 'CABLE & WIRELESS (TC)'],
         # No data yet.
-        # checked on 2022-12-03
-        # next check due 2023-12-01 (annually) until there's data
+        # checked on 2023-12-10
+        # next check due 2024-12-01 (annually) until there's data
         # at https://localcallingguide.com/xmlprefix.php?npa=658&blocks=1
         # ['+1 658 ??? 0000' => '???'],
         ['+1 664 349 0000' => 'CABLE & WIRELESS (RT)'],
@@ -194,12 +194,12 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         "Oh good, the database contains data for all the non-US/CA area codes (except 658, for which no data are yet available)"
     );
 
-    # checked on 2022-12-03 that these are consolidated ten-thousand blocks
-    # next check due 2023-12-01 (annually)
+    # checked on 2023-12-10 that these are consolidated ten-thousand blocks
+    # next check due 2024-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=630&blocks=1
     is($CLASS->new('+1 630 847 0000')->operator(), 'YMAX COMMUNICATIONS CORP. - IL', 'USA, thousands blocks all for same operator, so consolidated into one to save space in database');
-    # checked on 2022-12-03
-    # next check due 2023-12-01 (annually)
+    # checked on 2022-12-10
+    # next check due 2024-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=242&blocks=1
     is($CLASS->new('+1 242 367 0000')->operator(), 'BARTELCO (BA)', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
 
