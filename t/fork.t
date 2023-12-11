@@ -10,11 +10,13 @@ use Test::More;
 
 use Number::Phone::NANP;
 
-use Parallel::ForkManager;
+eval "use Parallel::ForkManager";
 
 SKIP: {
     skip "fork() isn't supported properly on Windows", 3
         if(os_is("MicrosoftWindows"));
+    skip "Parallel::ForkManager needed for these tests", 3
+        unless($INC{'Parallel/ForkManager.pm'});
 
     my $forker = Parallel::ForkManager->new(1);
     my $returned_from_child;

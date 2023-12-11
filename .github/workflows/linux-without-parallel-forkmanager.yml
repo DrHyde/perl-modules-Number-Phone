@@ -1,0 +1,29 @@
+on: [push, pull_request]
+name: Linux (build without Parallel::ForkManager)
+
+jobs:
+
+  build:
+    runs-on: 'ubuntu-latest'
+    name: Perl 5.32 build without Parallel::ForkManager
+    steps:
+      - name: check out code
+        uses: actions/checkout@v4
+
+      - name: switch to perl 5.32
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.32
+
+      - name: run tests
+        env:
+          BUILD_TEST: 1
+          PERL_USE_UNSAFE_INC: 0
+        run: |
+            perl -v
+            cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+            cpanm --quiet --notest Data::Dumper::Concise File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+            cpanm --quiet --notest --installdeps .
+            ./build-data.sh
+            perl Makefile.PL
+            PERL5OPT=-MDevel::Hide=Parallel::ForkManager make test TEST_VERBOSE=1

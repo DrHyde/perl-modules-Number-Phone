@@ -1,3 +1,8 @@
+X.XXXX    XXXX-XX-XX
+
+- Tests are now forgiving of a missing Parallel::ForkManager
+  (which isn't available on some Solaris machines)
+
 4.0001    2023-12-10
 
 - Clarification in doco re supported perl versions
