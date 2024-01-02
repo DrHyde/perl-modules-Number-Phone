@@ -27,7 +27,7 @@ jobs:
     runs-on: macos-latest
     needs: build
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist-for-freebsd-install
       - name: Install on FreeBSD
