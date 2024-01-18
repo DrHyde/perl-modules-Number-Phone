@@ -27,7 +27,7 @@ my @territories = $xml->find('/phoneNumberMetadata/territories/territory')->get_
 
 my %prefix_to_timezones;
 open(my $timezones_fh, "<:encoding(utf8)", 'libphonenumber/resources/timezones/map_data.txt')
-  or die "Opening 'map_data.txt': $!";
+  or die "Opening 'map_data.txt': $!\n";
 while (my $line = <$timezones_fh>)  {
   $line =~ s/^\s+|\s+$//g;
 
@@ -38,16 +38,16 @@ while (my $line = <$timezones_fh>)  {
 
   # Assert pipe deliminated
   if ($line !~ /\|/) {
-    die "malformatted data, expected '|''";
+    die "malformatted data, expected '|''\n";
   }
 
   my ($prefix, $tz_string) = split(/\|/, $line, 2);
   unless ($tz_string) {
-    die "missing time zones";
+    die "missing time zones\n";
   }
 
   if ($prefix_to_timezones{$prefix}) {
-    die "duplicated prefix $prefix";
+    die "duplicated prefix $prefix\n";
   }
 
   $prefix_to_timezones{$prefix} = $tz_string;
