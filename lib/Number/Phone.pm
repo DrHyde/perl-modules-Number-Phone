@@ -66,7 +66,7 @@ my @is_methods = qw(
 foreach my $method (
     @is_methods, qw(
         country_code regulator areacode areaname
-        subscriber operator operator_ported timezones translates_to
+        subscriber operator operator_ported translates_to
         format location data_source
     )
 ) {
@@ -141,6 +141,16 @@ sub format_for_country {
   $country_code =~ s/^\+//;
   return $self->format_using('National') if $country_code eq $self->country_code();
   return $self->format_using('NationallyPreferredIntl');
+}
+
+sub timezones {
+    my $self = shift;
+
+    if (my $stub = Number::Phone::Lib->new($self->format)) {
+        return $stub->timezones;
+    }
+
+    return undef;
 }
 
 1;
@@ -532,10 +542,13 @@ about all cases, so you should always implement this.
 =item timezones
 
 This returns a list-ref of the timezones that could be assoicated with a
-geographic number or for non geographic numbers with the country.
+geographic number or with the country for non geographic numbers. Returns
+undef in the case that possible timezones are unknown.
 
-Only stub-countries return timezones e.g. Europe/London, America/New_York.
-Non-stub implementations currently always return undef.
+Data is sourced from Google's libphonenumber project therefore implementation
+lies in the stub-countries which return timezones e.g. Europe/London, America/New_York.
+Non-stub implementations by default return their stub-country counterpart's
+result.
 
 Ordering is arbitrary though is typically alphabetical.
 

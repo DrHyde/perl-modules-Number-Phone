@@ -109,7 +109,7 @@ sub timezones {
     }
   }
 
-  return [];
+  return undef;
 }
 
 1;
