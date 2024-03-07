@@ -552,6 +552,10 @@ result.
 
 Results are sorted alphabetically.
 
+This method should be considered experimental, and there may be some minor
+changes, especially for international "country" codes and non-geographic
+numbers.
+
 =item operator
 
 Return the name of the telco assigned this number, in an appropriate
