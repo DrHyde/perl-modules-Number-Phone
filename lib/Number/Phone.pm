@@ -143,6 +143,16 @@ sub format_for_country {
   return $self->format_using('NationallyPreferredIntl');
 }
 
+sub timezones {
+    my $self = shift;
+
+    if (my $stub = Number::Phone::Lib->new($self->format)) {
+        return $stub->timezones;
+    }
+
+    return undef;
+}
+
 1;
 
 =head1 NAME
@@ -528,6 +538,19 @@ Return the subscriber part of the number.
 
 While the superclass implementation returns undef, this is nonsense in just
 about all cases, so you should always implement this.
+
+=item timezones
+
+This returns a list-ref of the timezones that could be assoicated with a
+geographic number or with the country for non geographic numbers. Returns
+undef in the case that possible timezones are unknown.
+
+Data is sourced from Google's libphonenumber project therefore implementation
+lies in the stub-countries which return timezones e.g. Europe/London, America/New_York.
+Non-stub implementations by default return their stub-country counterpart's
+result.
+
+Ordering is arbitrary though is typically alphabetical.
 
 =item operator
 

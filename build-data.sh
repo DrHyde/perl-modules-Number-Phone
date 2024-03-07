@@ -266,6 +266,7 @@ if test ! -e lib/Number/Phone/StubCountry/KZ.pm -o \
   buildtools/Number/Phone/BuildHelpers.pm          -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   build-data.stubs                                 -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/geocoding/en/1.txt      -nt lib/Number/Phone/StubCountry/KZ.pm -o \
+  libphonenumber/resources/timezones/map_data.txt  -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/StubCountry/KZ.pm -o \
   lib/Number/Phone/NANP/Data.pm                    -nt lib/Number/Phone/StubCountry/KZ.pm;
 then
@@ -276,7 +277,7 @@ then
   if test ! -e lib/Number/Phone/StubCountry/KZ.pm; then
       echo "  because they don't all exist"
   else
-      ls -ltr lib/Number/Phone/StubCountry/KZ.pm buildtools/Number/Phone/BuildHelpers.pm build-data.stubs libphonenumber/resources/geocoding/en/1.txt libphonenumber/resources/PhoneNumberMetadata.xml lib/Number/Phone/NANP/Data.pm | \
+      ls -ltr lib/Number/Phone/StubCountry/KZ.pm buildtools/Number/Phone/BuildHelpers.pm build-data.stubs libphonenumber/resources/geocoding/en/1.txt libphonenumber/resources/timezones/map_data.txt libphonenumber/resources/PhoneNumberMetadata.xml lib/Number/Phone/NANP/Data.pm | \
           sed 's/^/  /'
   fi
 

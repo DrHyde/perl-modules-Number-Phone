@@ -96,4 +96,20 @@ sub format {
   return '+'.$self->country_code().' '.$number;
 }
 
+sub timezones {
+  my $self = shift;
+
+  # If non-geographic use the country-level timezones
+  my $number = $self->is_geographic() ? $self->raw_number() : $self->country_code();
+
+  foreach my $i (reverse (0..length($number))) {
+    if (my $timezones = $self->{timezones}->{substr($number, 0, $i)}) {
+      my $copy = [@$timezones]; # copy the list-ref to avoid manipulation
+      return $copy;
+    }
+  }
+
+  return undef;
+}
+
 1;
