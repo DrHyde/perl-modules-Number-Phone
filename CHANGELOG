@@ -1,4 +1,8 @@
-X.XXXX    XXXX-XX-XX
+4.0002    XXXX-XX-XX
+
+- Added timezones() method
+
+- Data updates
 
 - Tests are now forgiving of a missing Parallel::ForkManager
   (which isn't available on some Solaris machines)
