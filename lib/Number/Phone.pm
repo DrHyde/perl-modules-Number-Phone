@@ -550,7 +550,7 @@ lies in the stub-countries which return timezones e.g. Europe/London, America/Ne
 Non-stub implementations by default return their stub-country counterpart's
 result.
 
-Ordering is arbitrary though is typically alphabetical.
+Results are sorted alphabetically.
 
 =item operator
 

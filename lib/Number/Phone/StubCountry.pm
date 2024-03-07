@@ -104,7 +104,7 @@ sub timezones {
 
   foreach my $i (reverse (0..length($number))) {
     if (my $timezones = $self->{timezones}->{substr($number, 0, $i)}) {
-      my $copy = [@$timezones]; # copy the list-ref to avoid manipulation
+      my $copy = [sort { $a cmp $b } @$timezones]; # copy the list-ref to avoid manipulation
       return $copy;
     }
   }
