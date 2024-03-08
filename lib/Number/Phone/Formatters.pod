@@ -50,7 +50,7 @@ that uses the object.
 
 =head1 COPYRIGHT and LICENCE
 
-Copyright 2023 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+Copyright 2024 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
 This documentation is free-as-in-speech software.  It may be used, distributed, and modified under the terms of the Creative Commons Attribution-Share Alike 2.0 UK: England & Wales License, whose text you may read at L<http://creativecommons.org/licenses/by-sa/2.0/uk/>.
 
