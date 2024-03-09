@@ -15,7 +15,8 @@ use Number::Phone::StubCountry;
 
 use Devel::Deprecations::Environmental
     OldPerl => { unsupported_from => '2022-11-08', older_than => '5.10.0' },
-    OldPerl => { unsupported_from => '2023-01-08', older_than => '5.12.0' };
+    OldPerl => { unsupported_from => '2023-01-08', older_than => '5.12.0' },
+    OldPerl => { unsupported_from => '2024-03-09', older_than => '5.14.0' };
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
 our $VERSION = '4.0002';
@@ -249,7 +250,7 @@ slow, because it uses a huge database for some of its features.
 Your perl must support 64 bit ints.
 
 Because they are not supported by some libraries that we depend on, perl
-versions below 5.12 are not supported. If you have old versions of those
+versions below 5.14 are not supported. If you have old versions of those
 libraries installed then Number::Phone I<may> still work, but because I can't
 automatically test on those older versions any more that is liable to change
 without notice.

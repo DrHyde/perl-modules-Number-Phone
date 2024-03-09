@@ -22,12 +22,17 @@ if(~0 == 4294967295) {
 if($] < 5.010) {
     is(
         scalar(grep { /too old/ } @{$warnings}), 2,
-        "warned about perl being too old (for both 5.10 and 5.12)"
+        "warned about perl being too old (older than 5.10, 5.12, and 5.14)"
     )
 } elsif($] < 5.012) {
     is(
+        scalar(grep { /too old/ } @{$warnings}), 2,
+        "warned about perl being too old (older than 5.14 and 5.14)"
+    )
+} elsif($] < 5.014) {
+    is(
         scalar(grep { /too old/ } @{$warnings}), 1,
-        "warned about perl being too old"
+        "warned about perl being too old (older than 5.14)"
     )
 } else {
     is(

@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        perl: [ '5.36', '5.30', '5.26', '5.22', '5.16', '5.12' ]
+        perl: [ '5.36', '5.30', '5.26', '5.22', '5.16' ]
     name: Perl ${{ matrix.perl }}
     steps:
       - name: check out code
