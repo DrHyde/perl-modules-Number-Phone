@@ -41,6 +41,12 @@ is($ar_obj->format_for_country('+44'), '+54 9 11 2345-6789', '+44 argument treat
 my $dk_obj = Number::Phone->new("DK", "+45 38123456");
 is($dk_obj->format_using('National'), '38 12 34 56', 'DK national formatting has no prefix');
 
+# This number is allocated in both fixed line and mobile
+# The main segment is fixed line but the allocation has an exception
+$dk_obj = Number::Phone->new('DK', '34 20 12 34');
+is($dk_obj->is_fixed_line, 1, "DK has fixed line");
+is($dk_obj->is_mobile, 1, ".. and also mobile");
+
 use lib 't/lib';
 
 require 'common-stub_and_libphonenumber_tests.pl';
