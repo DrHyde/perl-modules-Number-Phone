@@ -202,7 +202,7 @@ ok($number->is_ipphone(), "VoIP correctly identified");
 
 $number = Number::Phone->new('+443031231234');
 skip_if_mocked("libphonenumber doesn't do operators", 1, sub {
-  ok($number->operator() eq 'BRITISH TELECOMMUNICATIONS', "03 numbers have right operator");
+  ok($number->operator() eq 'BT', "03 numbers have right operator");
 });
 is_deeply(
     [sort $number->type()],
