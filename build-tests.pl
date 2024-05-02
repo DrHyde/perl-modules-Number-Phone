@@ -82,8 +82,8 @@ TERRITORY: foreach my $territory (@territories) {
              }
           }
 
-          # Denmark and Chile
-          if(($IDD_country_code == 45 || $IDD_country_code == 56) && $test_method =~ /
+          # Chile
+          if($IDD_country_code == 56 && $test_method =~ /
               is_mobile |
               is_fixed_line
           /x) {

@@ -41,6 +41,10 @@ is($ar_obj->format_for_country('+44'), '+54 9 11 2345-6789', '+44 argument treat
 my $dk_obj = Number::Phone->new("DK", "+45 38123456");
 is($dk_obj->format_using('National'), '38 12 34 56', 'DK national formatting has no prefix');
 
+$dk_obj = Number::Phone->new('DK', '34 20 12 34');
+ok(!$dk_obj->is_fixed_line, "DK mobile range in fixed line segment");
+ok($dk_obj->is_mobile, "... and is indeed mobile");
+
 use lib 't/lib';
 
 require 'common-stub_and_libphonenumber_tests.pl';
