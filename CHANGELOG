@@ -5,6 +5,9 @@ X.XXXX    XXXX-XX-XX
 
 - Data updates, including Lithuania and Gabon changing their trunk prefix
 
+- Trying to put letters in a phone number now emits warnings, and will
+  become fatal 2 years after this release
+
 4.0002    2024-03-08
 
 - Added timezones() method

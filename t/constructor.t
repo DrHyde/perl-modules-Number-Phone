@@ -9,10 +9,15 @@ BEGIN { shift @INC }
 use if building_without_uk, qw(Devel::Hide Number::Phone::UK);
 
 use Data::Dumper::Concise;
-use Test::More;
+use Test2::V0;
 
 use Number::Phone;
 use Number::Phone::Lib;
+
+like
+    warning { Number::Phone->new('US', '2a1b5c5d5e5f1g2h1i2j') },
+    qr/ridiculous characters in '\+12a1b5c5d5e5f1g2h1i2j'/,
+    "Correctly warns about ridiculous characters in a number";
 
 foreach my $CC (qw(GB GG IM JE)) {
     foreach my $class (qw(Number::Phone Number::Phone::Lib)) {

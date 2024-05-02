@@ -62,7 +62,8 @@ WriteMakefile(
   TEST_REQUIRES => {
     'Carp'                   => 0,
     'Test::Differences'      => 0.62,
-    'Test::More'             => '0.96', # need done_testing (0.88) and subtests (0.95_01)
+    'Test::More'             => '0.96', # done_testing and subtests
+    'Test2::V0'              => 0, # we'll slowly migrate old tests to this
     'Test::Warnings'         => 0.031,
     'Devel::Hide'            => 0,
     'if'                     => 0,

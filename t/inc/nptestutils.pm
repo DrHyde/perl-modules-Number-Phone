@@ -10,10 +10,11 @@ our @EXPORT = qw(building_without_uk);
 $SIG{__WARN__} = sub {
     my $warning = join('', @_);
     return if(
-        $warning =~ /32 bit integers/ ||
-        $warning =~ /Perl too old/ ||
-        $warning =~ /^Devel::Hide/ ||
-        $warning =~ /^Can't locate.*\(hidden\)/
+        $warning =~ /32 bit integers/           ||
+        $warning =~ /Perl too old/              ||
+        $warning =~ /^Devel::Hide/              ||
+        $warning =~ /^Can't locate.*\(hidden\)/ ||
+        $warning =~ /ridiculous characters/
     );
     confess("warning made fatal: ".join('', @_)."\n")
 };
