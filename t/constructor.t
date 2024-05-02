@@ -17,7 +17,10 @@ use Number::Phone::Lib;
 like
     warning { Number::Phone->new('US', '2a1b5c5d5e5f1g2h1i2j') },
     qr/ridiculous characters in '\+12a1b5c5d5e5f1g2h1i2j'/,
-    "Correctly warns about ridiculous characters in a number";
+    "Correctly warns about ridiculous letter characters in a number";
+ok
+    no_warnings { Number::Phone->new('UK', "(020) 8771\t2924") },
+    "Ridiculous punctuation is tolerated";
 
 foreach my $CC (qw(GB GG IM JE)) {
     foreach my $class (qw(Number::Phone Number::Phone::Lib)) {

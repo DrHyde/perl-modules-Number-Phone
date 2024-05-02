@@ -305,7 +305,7 @@ sub _new_args {
         $number = join('', grep { defined } ($country, $number));
     }
 
-    if($number =~ /\w/) {
+    if($number =~ /[^0-9+#*()\[\]{},.<> \t\n\r-]/) {
         warn(__PACKAGE__ . ": ridiculous characters in '$number'\n");
     }
     $number =~ s/[^+0-9]//g;
