@@ -3,7 +3,7 @@ X.XXXX    XXXX-XX-XX
 - No longer auto-tested on 5.12 and below because build-time dependencies
   no longer build reliably
 
-- Data updates, including Lithuania and Gabon changing their trunk prefix
+- Data updates, including Lithuania changing its trunk prefix
 
 - Trying to put letters in a phone number now emits warnings, and will
   become fatal 2 years after this release
