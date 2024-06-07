@@ -1,3 +1,12 @@
+X.XXXX    XXXX-XX-XX
+
+- Number::Phone::Country no longer exports 'phone2country', after this
+  being deprecated for 20 years!
+
+- the 'noexport' flag on Number::Phone::Country now results in a warning
+  which will become fatal 2 years after this release. At the same time,
+  warnings about unknown flags will also become fatal.
+
 4.0003    2024-06-07
 
 - No longer auto-tested on 5.12 and below because build-time dependencies

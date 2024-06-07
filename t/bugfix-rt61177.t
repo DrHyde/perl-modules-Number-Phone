@@ -9,7 +9,7 @@ use Test::More;
 plan skip_all => 'not relevant if building --without_uk' if(building_without_uk());
 
 use Number::Phone;
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 is(Number::Phone->new("442087712924")->country_code(), 44, "known countries return objects");
 is(Number::Phone->new("+442087712924")->country_code(), 44, "known countries with a + return objects");

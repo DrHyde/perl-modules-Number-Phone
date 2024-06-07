@@ -9,7 +9,7 @@ use Cwd qw(abs_path);
 
 use Scalar::Util 'blessed';
 
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 use Number::Phone::Data;
 use Number::Phone::StubCountry;
 

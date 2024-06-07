@@ -11,7 +11,7 @@ use XML::XPath;
 use Text::CSV_XS;
 
 use lib 'lib';
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 $| = 1;
 

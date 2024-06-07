@@ -5,7 +5,7 @@ use strict;
 
 use base 'Number::Phone::NANP';
 
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 our $VERSION = 1.1;
 

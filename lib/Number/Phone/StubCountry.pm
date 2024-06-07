@@ -2,7 +2,7 @@ package Number::Phone::StubCountry;
 
 use strict;
 use warnings;
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 use I18N::LangTags::Detect;
 use I18N::LangTags;

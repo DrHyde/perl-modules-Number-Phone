@@ -7,7 +7,7 @@ use Scalar::Util 'blessed';
 use base 'Number::Phone';
 use Number::Phone::NANP::Data;
 
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 our $VERSION = '1.7001';
 

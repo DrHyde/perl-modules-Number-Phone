@@ -5,22 +5,19 @@ use Number::Phone::Country::Data;
 
 # *_codes are global so we can mock in some tests
 use vars qw($VERSION %idd_codes %prefix_codes);
-$VERSION = 1.98;
+$VERSION = '2.00';
 my $use_uk = 0;
 
 sub import {
     shift;
-    my $export = 1;
     foreach my $param (@_) {
-        if(lc($param) eq 'noexport') { $export = 0; }
-         elsif(lc($param) eq 'uk') { $use_uk = 1; }
-         else { warn("Unknown param to ".__PACKAGE__." '$param' at ".join(' line ', (caller())[1,2])."\n"); }
-    }
-    if($export) {
-        my $callpkg = caller(1);
-        no strict 'refs';
-        warn("Exporting from Number::Phone::Country is deprecated at ".join(' line ', (caller())[1,2])."\n");
-        *{"$callpkg\::phone2country"} = \&{__PACKAGE__."\::phone2country"};
+        if(lc($param) eq 'uk') {
+            $use_uk = 1;
+        } elsif($param eq 'noexport') {
+            warn("'noexport' param to ".__PACKAGE__." is deprecated at ".join(' line ', (caller())[1,2])."\n");
+        } else {
+             warn("Deprecated, will become fatal: Unknown param to ".__PACKAGE__." '$param' at ".join(' line ', (caller())[1,2])."\n");
+        }
     }
 }
 
@@ -252,13 +249,23 @@ Number::Phone::Country - Lookup country of phone number
 
 or
 
-  use Number::Phone::Country qw(noexport uk);
+  use Number::Phone::Country qw(uk);
 
   my $iso_country_code = Number::Phone::Country::phone2country(...);
 
 or
 
   my ($iso_country_code, $idd) = Number::Phone::Country::phone2country_and_idd(...);
+
+=head1 INCOMPATIBLE CHANGES
+
+=head2 from version 2.00 onwards
+
+As of version 2.00 the C<phone2country> function is no longer exported. It has
+been deprecated since version 0.5, which was released in 2004. Use of the
+C<noexport> flag will now result in warnings. The first release after August
+2026 will upgrade those to be fatal errors. At the same time warnings about
+any other unknown params will also be upgraded to be fatal.
 
 =head1 DESCRIPTION
 
@@ -270,12 +277,8 @@ country, tell you the country code, and the prefixes you need to dial
 when in that country to call outside your local area or to call another
 country.
 
-Note that by default, phone2country is exported into your namespace.  This
-is deprecated and may be removed in a future version.  You can turn that
-off by passing the 'noexport' constant when you use the module.
-
-Also be aware that the ISO code for the United Kingdom is GB, not UK.  If
-you would prefer UK, pass the 'uk' constant.
+Be aware that the ISO code for the United Kingdom is GB, not UK.  If
+you would prefer UK, pass the C<uk> flag as demonstrated in the L</SYNOPSIS>.
 
 I have put in number ranges for Kosovo, which does not yet have an ISO country
 code.  I have used XK, as that is the de facto standard as used by numerous

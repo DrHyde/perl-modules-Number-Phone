@@ -10,7 +10,7 @@ use nptestutils;
 
 use Test::More;
 
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 while (<DATA>) {
     chomp;

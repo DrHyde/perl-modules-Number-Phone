@@ -5,7 +5,7 @@ use nptestutils;
 
 use Test::More;
 
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 sub phone2country { goto &Number::Phone::Country::phone2country }
 

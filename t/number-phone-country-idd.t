@@ -5,7 +5,7 @@ use nptestutils;
 
 use Test::More;
 
-use Number::Phone::Country qw(noexport);
+use Number::Phone::Country;
 
 country_and_idd('+44 20 12345678', 'GB', '44', "phone2country_and_idd works for GB");
 country_and_idd('212 333 3333',    'US',  '1', "phone2country_and_idd works for US");
