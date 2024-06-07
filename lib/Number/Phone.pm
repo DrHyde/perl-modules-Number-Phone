@@ -19,7 +19,7 @@ use Devel::Deprecations::Environmental
     OldPerl => { unsupported_from => '2024-03-09', older_than => '5.14.0' };
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '4.0002';
+our $VERSION = '4.0003';
 
 my $NOSTUBS = 0;
 sub import {
@@ -188,11 +188,11 @@ Number::Phone::Country, the constructor will return undef.
 
 =head1 INCOMPATIBLE CHANGES
 
-=head2 from version 4.0002++ onwards
+=head2 from version 4.0003 onwards
 
-As of the release after 4.0002, alphabetic characters and underscores in
-phone numbers will cause a warning to be emitted. The first release
-after August 2026 will upgrade those to be fatal errors.
+As of version 4.0003, alphabetic characters and underscores in phone numbers
+will cause a warning to be emitted. The first release after August 2026 will
+upgrade those to be fatal errors.
 
 =head2 from version 3.9002 onwards
 

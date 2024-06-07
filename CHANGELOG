@@ -1,9 +1,11 @@
-X.XXXX    XXXX-XX-XX
+4.0003    2024-06-07
 
 - No longer auto-tested on 5.12 and below because build-time dependencies
   no longer build reliably
 
-- Data updates, including Lithuania changing its trunk prefix
+- Data updates, including Lithuania changing its trunk prefix, Mexico
+  getting rid of theirs, and Uzbekistan changing both its trunk and
+  international prefixes
 
 - Trying to put letters in a phone number now emits warnings, and will
   become fatal 2 years after this release
