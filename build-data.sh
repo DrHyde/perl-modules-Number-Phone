@@ -108,21 +108,22 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 #   http://cnac.ca/co_codes/co_code_status.htm
 (
     cd data-files
+    OFCOM_ROOT=https://www.ofcom.org.uk/siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers
     for i in \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0029/227747/sabcde11_12.xlsx \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0031/227749/sabcde13.xlsx    \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0024/227751/sabcde14.xlsx    \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0026/227753/sabcde15.xlsx    \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0028/227755/sabcde16.xlsx    \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0030/227757/sabcde17.xlsx    \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0032/227759/sabcde18.xlsx    \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0025/227761/sabcde19.xlsx    \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0027/227745/sabcde2.xlsx     \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0024/227733/S3.xlsx          \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0026/227735/S5.xlsx          \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0028/227737/S7.xlsx          \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0030/227739/S8.xlsx          \
-        https://www.ofcom.org.uk/__data/assets/excel_doc/0023/227741/S9.xlsx          \
+        $OFCOM_ROOT/sabcde11_12.xlsx \
+        $OFCOM_ROOT/sabcde13.xlsx    \
+        $OFCOM_ROOT/sabcde14.xlsx    \
+        $OFCOM_ROOT/sabcde15.xlsx    \
+        $OFCOM_ROOT/sabcde16.xlsx    \
+        $OFCOM_ROOT/sabcde17.xlsx    \
+        $OFCOM_ROOT/sabcde18.xlsx    \
+        $OFCOM_ROOT/sabcde19.xlsx    \
+        $OFCOM_ROOT/sabcde2.xlsx     \
+        $OFCOM_ROOT/S3.xlsx          \
+        $OFCOM_ROOT/S5.xlsx          \
+        $OFCOM_ROOT/S7.xlsx          \
+        $OFCOM_ROOT/S8.xlsx          \
+        $OFCOM_ROOT/S9.xlsx          \
         https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip   \
         https://cnac.ca/data/COCodeStatus_ALL.zip;
     do
