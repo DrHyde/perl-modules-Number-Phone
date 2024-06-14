@@ -34,7 +34,7 @@ jobs:
         uses: cross-platform-actions/action@v0.24.0
         with:
           operating_system: openbsd
-          version: 6.9
+          version: 7.4
           shell: bash
           run: |
             mkdir dist-for-test &&
