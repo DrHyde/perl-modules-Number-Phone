@@ -1,10 +1,6 @@
 on: [push, pull_request]
 name: OpenBSD
 
-env:
-  ACTIONS_RUNNER_DEBUG: true
-  ACTIONS_STEP_DEBUG: true
-
 jobs:
   build:
     runs-on: 'macos-latest'
