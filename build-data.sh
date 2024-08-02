@@ -110,28 +110,34 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
     cd data-files
     OFCOM_ROOT=https://www.ofcom.org.uk/siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers
     for i in \
-        $OFCOM_ROOT/sabcde11_12.xlsx \
-        $OFCOM_ROOT/sabcde13.xlsx    \
-        $OFCOM_ROOT/sabcde14.xlsx    \
-        $OFCOM_ROOT/sabcde15.xlsx    \
-        $OFCOM_ROOT/sabcde16.xlsx    \
-        $OFCOM_ROOT/sabcde17.xlsx    \
-        $OFCOM_ROOT/sabcde18.xlsx    \
-        $OFCOM_ROOT/sabcde19.xlsx    \
-        $OFCOM_ROOT/sabcde2.xlsx     \
-        $OFCOM_ROOT/S3.xlsx          \
-        $OFCOM_ROOT/S5.xlsx          \
-        $OFCOM_ROOT/S7.xlsx          \
-        $OFCOM_ROOT/S8.xlsx          \
-        $OFCOM_ROOT/S9.xlsx          \
-        https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip   \
-        https://cnac.ca/data/COCodeStatus_ALL.zip;
+        $(
+            curl -s https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data|grep siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers|sed 's/^.*"\/site/\/site/;s/".*//'|grep -v csv|grep -v s10|grep -v zip|sed 's/^/https:\/\/www.ofcom.org.uk/'
+            echo https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip
+            echo https://cnac.ca/data/COCodeStatus_ALL.zip
+        );
+        # $OFCOM_ROOT/sabcde11_12.xlsx \
+        # $OFCOM_ROOT/sabcde13.xlsx    \
+        # $OFCOM_ROOT/sabcde14.xlsx    \
+        # $OFCOM_ROOT/sabcde15.xlsx    \
+        # $OFCOM_ROOT/sabcde16.xlsx    \
+        # $OFCOM_ROOT/sabcde17.xlsx    \
+        # $OFCOM_ROOT/sabcde18.xlsx    \
+        # $OFCOM_ROOT/sabcde19.xlsx    \
+        # $OFCOM_ROOT/sabcde2.xlsx     \
+        # $OFCOM_ROOT/S3.xlsx          \
+        # $OFCOM_ROOT/S5.xlsx          \
+        # $OFCOM_ROOT/S7.xlsx          \
+        # $OFCOM_ROOT/S8.xlsx          \
+        # $OFCOM_ROOT/S9.xlsx          \
+        # https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip   \
+        # https://cnac.ca/data/COCodeStatus_ALL.zip;
     do
         # make sure that there's a file that curl -z can look at
-        if test ! -e `basename $i`; then
-            touch -t 198001010101 `basename $i`
+        target_filename=$(basename $i|sed 's/?.*//')
+        if test ! -e $target_filename; then
+            touch -t 198001010101 $target_filename
         fi
-        curl -z `basename $i` -R -O -s -S $i;
+        curl -z $target_filename -R -O -s -S $i;
         if [ "$?" != "0" ]; then
             echo -n Fetching $i failed with $?, retrying ...
             sleep 15
