@@ -194,11 +194,11 @@ if test ! -e share/Number-Phone-UK-Data.db -o \
   data-files/sabcde18.xlsx    -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde19.xlsx    -nt share/Number-Phone-UK-Data.db -o \
   data-files/sabcde2.xlsx     -nt share/Number-Phone-UK-Data.db -o \
-  data-files/S3.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/S5.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/S7.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/S8.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/S9.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s3.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s5.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s7.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s8.xlsx          -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s9.xlsx          -nt share/Number-Phone-UK-Data.db -o \
   build-data.uk               -nt share/Number-Phone-UK-Data.db;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
