@@ -133,6 +133,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
         # https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip   \
         # https://cnac.ca/data/COCodeStatus_ALL.zip;
     do
+        echo downloading $i
         # make sure that there's a file that curl -z can look at
         target_filename=$(basename $i|sed 's/?.*//')
         if test ! -e $target_filename; then
