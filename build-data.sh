@@ -108,60 +108,14 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 #   http://cnac.ca/co_codes/co_code_status.htm
 (
     cd data-files
-    OFCOM_ROOT=https://www.ofcom.org.uk/siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers
-    curl -s https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data|grep siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers|sed 's/^.*"\/site/\/site/;s/".*//'|grep -v csv|grep -v s10|grep -v zip|sed 's/^/https:\/\/www.ofcom.org.uk/'
-    for i in \
-        $(
-            curl -s https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data|grep siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers|sed 's/^.*"\/site/\/site/;s/".*//'|grep -v csv|grep -v s10|grep -v zip|sed 's/^/https:\/\/www.ofcom.org.uk/'
-            echo https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip
-            echo https://cnac.ca/data/COCodeStatus_ALL.zip
-        );
-        # $OFCOM_ROOT/sabcde11_12.xlsx \
-        # $OFCOM_ROOT/sabcde13.xlsx    \
-        # $OFCOM_ROOT/sabcde14.xlsx    \
-        # $OFCOM_ROOT/sabcde15.xlsx    \
-        # $OFCOM_ROOT/sabcde16.xlsx    \
-        # $OFCOM_ROOT/sabcde17.xlsx    \
-        # $OFCOM_ROOT/sabcde18.xlsx    \
-        # $OFCOM_ROOT/sabcde19.xlsx    \
-        # $OFCOM_ROOT/sabcde2.xlsx     \
-        # $OFCOM_ROOT/S3.xlsx          \
-        # $OFCOM_ROOT/S5.xlsx          \
-        # $OFCOM_ROOT/S7.xlsx          \
-        # $OFCOM_ROOT/S8.xlsx          \
-        # $OFCOM_ROOT/S9.xlsx          \
-        # https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip   \
-        # https://cnac.ca/data/COCodeStatus_ALL.zip;
-    do
-        echo downloading $i
-        # make sure that there's a file that curl -z can look at
-        target_filename=$(basename $i|sed 's/?.*//')
-        if test ! -e $target_filename; then
-            touch -t 198001010101 $target_filename
-        fi
-        curl -z $target_filename -R -O -s -S $i;
-        if [ "$?" != "0" ]; then
-            echo -n Fetching $i failed with $?, retrying ...
-            sleep 15
-            rm `basename $i`
-            curl -R -O -s -S $i;
-            if [ "$?" == "0" ]; then
-                echo "  ... OK"
-              else
-                echo "  ... failed with $?, retrying again"
-                sleep 15
-                rm `basename $i`
-                curl -R -O -s -S $i;
-                if [ "$?" == "0" ]; then
-                    echo "  ... OK"
-                  else
-                    echo " ... failed three times, this time with $?, argh"
-                    exit 1;
-                fi
-            fi
-        fi
-    done
-    rm COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
+
+    wget -l 1 -nd --accept-regex telephone-numbers/.*.xlsx -r https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data
+    for i in s[35789]* sabcde*; do mv "$i" $(echo "$i"|sed 's/?.*//'); done
+    rm s10-type-b2.xlsx* numbering-data robots.txt
+
+    rm AllBlocksAugmentedReport.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
+    wget https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip
+    wget https://cnac.ca/data/COCodeStatus_ALL.zip
     unzip -q COCodeStatus_ALL.zip
     unzip -q AllBlocksAugmentedReport.zip
 )
