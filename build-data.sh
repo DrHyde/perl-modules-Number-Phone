@@ -109,6 +109,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 (
     cd data-files
     OFCOM_ROOT=https://www.ofcom.org.uk/siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers
+    curl -s https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data|grep siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers|sed 's/^.*"\/site/\/site/;s/".*//'|grep -v csv|grep -v s10|grep -v zip|sed 's/^/https:\/\/www.ofcom.org.uk/'
     for i in \
         $(
             curl -s https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data|grep siteassets/resources/documents/phones-telecoms-and-internet/information-for-industry/numbering/regular-updates/telephone-numbers|sed 's/^.*"\/site/\/site/;s/".*//'|grep -v csv|grep -v s10|grep -v zip|sed 's/^/https:\/\/www.ofcom.org.uk/'
