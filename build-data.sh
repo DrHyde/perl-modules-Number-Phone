@@ -177,6 +177,7 @@ if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $THREEMONTHS -o \
      $(( $CURRENTDATETIME - $USDATETIME    )) -gt $THREEMONTHS    \
    ]; then
     echo Data files are ANCIENT, check that the URLs are correct
+    ls -l data-files/*xlsx data-files/COCodeStatus_ALL.csv data-files/AllBlocksAugmentedReport.txt
     exit 1
 fi
 
