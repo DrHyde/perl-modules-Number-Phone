@@ -4,6 +4,11 @@ use warnings;
 use ExtUtils::MakeMaker;
 use File::ShareDir::Install;
 
+# Suppress noise from 5.12 and below CPAN-testers, where dependencies can be a bit ropey
+if($ENV{AUTOMATED_TESTING} && $^V < 5.014) {
+    die("OS unsupported\n");
+}
+
 BEGIN {
     unshift @INC, 'buildtools';
     require Number::Phone::BuildTools;
