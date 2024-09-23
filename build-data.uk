@@ -5,7 +5,7 @@ use warnings;
 
 use Data::CompactReadonly;
 use File::Find::Rule;
-use Spreadsheet::XLSX;
+use Text::CSV_XS;
 
 my @telco_length_data = my @geo_prefices = my @free_prefices = my @network_svc_prefices = my @corporate_prefices = my @personal_prefices = my @pager_prefices = my @mobile_prefices = my @special_prefices = my @adult_prefices = my @ip_prefices = my %areanames = my %statuses = ();
 
@@ -19,26 +19,15 @@ while(my $line = <$area_codes>) {
     $areanames{$row[0]} = $row[1];
 }
 
-foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
-    print "Working on $xlsfile\n";
-    my $parser   = Spreadsheet::XLSX->new($xlsfile);
+foreach my $csvfile (File::Find::Rule->name('s?.csv')->in('data-files')) {
+    print "Working on $csvfile\n";
+    my $parser = Text::CSV_XS->new();
 
-    my $worksheet = $parser->{Worksheet}->[0];
-    my ( $row_min, $row_max ) = $worksheet->row_range();
-    my ( $col_min, $col_max ) = $worksheet->col_range();
-
+    open(my $fh, '<', $csvfile) || die "Could not open '$csvfile': $!\n";
     my @rows = ();
-    ROW: foreach my $rowindex ($row_min .. $row_max) {
-        push @rows, [];
-        COL: foreach my $colindex ($col_min .. $col_max) {
-            my $cell = $worksheet->get_cell($rowindex, $colindex);
-            if(!$cell) { next COL };
-            $rows[-1]->[$colindex] = $cell->value();
-        }
-    }
-    if(scalar(@{$rows[-1]}) == 1 && $rows[-1]->[0] =~ m{^\d\d/\d\d/\d\d\d\d \d\d:\d\d:\d\d$}) {
-        # get rid of trailing date/time stamp row
-        pop(@rows);
+
+    while (my $row = $parser->getline($fh)) {
+        push @rows, $row;
     }
     my $count = 0;
 
@@ -52,17 +41,17 @@ foreach my $xlsfile (File::Find::Rule->name('*.xlsx')->in('data-files')) {
             exists($header_fields_index_by_name{'NumberLengthNonGeo'})    ? 'NumberLengthNonGeo' :
             exists($header_fields_index_by_name{'Non Geo Number Length'}) ? 'Non Geo Number Length' :
             exists($header_fields_index_by_name{'Geographic Number Length'}) ? 'Geographic Number Length' :
-            die("Can't find a format field in $xlsfile\n");
+            die("Can't find a format field in $csvfile\n");
         my $telco_field =
             exists($header_fields_index_by_name{'Communications Provider'}) ? 'Communications Provider' :
             exists($header_fields_index_by_name{'CP Name'})                 ? 'CP Name' :
-            die("Can't find a telco field in $xlsfile\n");
+            die("Can't find a telco field in $csvfile\n");
         my $status_field =
             exists($header_fields_index_by_name{'Status'})               ? 'Status' :
             exists($header_fields_index_by_name{'Block Status'})         ? 'Block Status' :
             exists($header_fields_index_by_name{'Block Status '})        ? 'Block Status ' :
             exists($header_fields_index_by_name{'Block Status Formula'}) ? 'Block Status Formula' :
-            die("Can't find a status field in $xlsfile\n");
+            die("Can't find a status field in $csvfile\n");
 
         my($status, $telco, $format) = map {
             $row->[$_]

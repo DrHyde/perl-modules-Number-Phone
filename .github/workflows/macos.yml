@@ -16,7 +16,7 @@ jobs:
         run: |
           cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
           cpanm File::ShareDir::Install XML::XPath
-          cpanm -v --no-interactive File::Find::Rule Spreadsheet::XLSX Text::CSV_XS LWP::Protocol::https
+          cpanm -v --no-interactive File::Find::Rule Text::CSV_XS LWP::Protocol::https
           cpanm --installdeps .
           perl Makefile.PL
           ./build-data.sh

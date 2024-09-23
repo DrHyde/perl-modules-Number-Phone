@@ -109,9 +109,9 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 (
     cd data-files
 
-    wget -l 1 -nd --accept-regex telephone-numbers/.*.xlsx -r https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data
-    for i in s[35789]* sabcde*; do mv "$i" $(echo "$i"|sed 's/?.*//'); done
-    rm s10-type-b2.xlsx* numbering-data robots.txt
+    wget -l 1 -nd --accept-regex telephone-numbers/.*.csv -r https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data
+    for i in s[135789]*; do mv "$i" $(echo "$i"|sed 's/?.*//'); done
+    rm s10-type*.csv numbering-data robots.txt
 
     rm AllBlocksAugmentedReport.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
     wget https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip
@@ -121,7 +121,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 )
 
 # stash the Unix epoch of the OFCOM data
-OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt *.xlsx|tail -1))
+OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt s?.csv|tail -1))
 CADATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
 USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' AllBlocksAugmentedReport.txt)
 
@@ -133,7 +133,7 @@ if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $THREEMONTHS -o \
      $(( $CURRENTDATETIME - $USDATETIME    )) -gt $THREEMONTHS    \
    ]; then
     echo Data files are ANCIENT, check that the URLs are correct
-    ls -l data-files/*xlsx data-files/COCodeStatus_ALL.csv data-files/AllBlocksAugmentedReport.txt
+    ls -l data-files/s?.csv data-files/COCodeStatus_ALL.csv data-files/AllBlocksAugmentedReport.txt
     exit 1
 fi
 
@@ -142,21 +142,13 @@ fi
 if test ! -e share/Number-Phone-UK-Data.db -o \
   buildtools/Number/Phone/BuildHelpers.pm      -nt share/Number-Phone-UK-Data.db -o \
   libphonenumber/resources/geocoding/en/44.txt -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde11_12.xlsx -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde13.xlsx    -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde14.xlsx    -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde15.xlsx    -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde16.xlsx    -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde17.xlsx    -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde18.xlsx    -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde19.xlsx    -nt share/Number-Phone-UK-Data.db -o \
-  data-files/sabcde2.xlsx     -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s3.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s5.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s7.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s8.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s9.xlsx          -nt share/Number-Phone-UK-Data.db -o \
-  build-data.uk               -nt share/Number-Phone-UK-Data.db;
+  data-files/s1.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s3.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s5.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s7.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s8.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/s9.csv -nt share/Number-Phone-UK-Data.db -o \
+  build-data.uk     -nt share/Number-Phone-UK-Data.db;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     EXITSTATUS=1
@@ -165,7 +157,7 @@ then
   if test ! -e share/Number-Phone-UK-Data.db; then
       echo "  because it doesn't exist"
   else
-      ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/sabcde* data-files/S?.xlsx build-data.uk | \
+      ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/sabcde* data-files/s?.csv build-data.uk | \
           sed 's/^/  /'
   fi
 
