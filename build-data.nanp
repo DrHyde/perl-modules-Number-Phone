@@ -173,8 +173,7 @@ foreach my $npanxx (keys %US) {
 warn("Extracting non-US/CA operators\n");
 foreach my $NPA (Number::Phone::Country::_non_US_CA_area_codes()) {
     warn("  ... $NPA\n");
-    my $data = _get_xml_data($NPA);
-    my $xml = XML::XPath->new(xml => $data);
+    my $xml = _get_xml_data($NPA);
     my %ops = ();
 
     my @ten_thousand_prefixes = $xml->find("/root/prefixdata[x = 'A']")->get_nodelist();
@@ -225,6 +224,7 @@ sub _get_xml_data {
     my $NPA = shift;
     if(!-e "$NPA.xml" || -M "$NPA.xml" > 14) {
         my $retries = 0;
+        my $xml;
         my $data;
         my $ua = LWP::UserAgent->new(
             ssl_opts => { verify_hostname => 0 },
@@ -233,15 +233,25 @@ sub _get_xml_data {
         );
         TRY: my $res = $ua->get("https://localcallingguide.com/xmlprefix.php?npa=$NPA&blocks=1");
         if($res->is_success()) {
+            # OK, we got data - but is it a complete download?
             $data = $res->content();
-        } else {
+            eval {
+                # ...->new only creates an object from the data, it doesn't validate
+                $xml = XML::XPath->new(xml => $data);
+                $xml->find("/root");
+            } || do {
+                undef $xml;
+                warn("Can't parse XML for $NPA: $@\n");
+            };
+        }
+        if(!$xml) {
             $retries++;
             if($retries < 3) {
-                warn("Can't talk to localcallingguide.com for $NPA: ".$res->status_line()."\n".$res->decoded_content()."\n");
+                warn("Couldn't get data from localcallingguide.com for $NPA: retrying\n");
                 sleep 5;
                 goto TRY
             }
-            die("Can't talk to localcallingguide.com for $NPA: ".$res->status_line()."\n".$res->decoded_content()."\n");
+            die("Couldn't get data from localcallingguide.com for $NPA\n");
         }
         open(my $fh, '>', "data-files/$NPA.xml") || die("Can't write data-files/$NPA.xml: $!\n");
         print $fh $data;
@@ -253,7 +263,8 @@ sub _get_xml_data {
     open(my $fh, '<', "data-files/$NPA.xml") || die("Can't read data-files/$NPA.xml: $!\n");
     my $data = join('', <$fh>);
     close($fh);
-    return $data;
+    $xml = XML::XPath->new(xml => $data);
+    return $xml;
 }
 
 sub _write_operator_data {
