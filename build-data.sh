@@ -113,17 +113,17 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
     for i in s[135789]*; do mv "$i" $(echo "$i"|sed 's/?.*//'); done
     rm s10-type*.csv numbering-data robots.txt
 
-    rm AllBlocksAugmentedReport.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv AllBlocksAugmentedReport.txt
-    wget https://www.nationalpooling.com/reports/region/AllBlocksAugmentedReport.zip
+    rm ThousandsBlockAssignment_All_Augmented.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv ThousandsBlockAssignment_All_Augmented.txt
+    wget https://reports.nanpa.com/public/ThousandsBlockAssignment_All_Augmented.zip
     wget https://cnac.ca/data/COCodeStatus_ALL.zip
     unzip -q COCodeStatus_ALL.zip
-    unzip -q AllBlocksAugmentedReport.zip
+    unzip -q ThousandsBlockAssignment_All_Augmented.zip
 )
 
 # stash the Unix epoch of the OFCOM data
 OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt s?.csv|tail -1))
 CADATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
-USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' AllBlocksAugmentedReport.txt)
+USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' ThousandsBlockAssignment_All_Augmented.txt)
 
 # whine/quit if any of those are older than three months
 CURRENTDATETIME=$(date +%s)
@@ -133,7 +133,7 @@ if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $THREEMONTHS -o \
      $(( $CURRENTDATETIME - $USDATETIME    )) -gt $THREEMONTHS    \
    ]; then
     echo Data files are ANCIENT, check that the URLs are correct
-    ls -l data-files/s?.csv data-files/COCodeStatus_ALL.csv data-files/AllBlocksAugmentedReport.txt
+    ls -l data-files/s?.csv data-files/COCodeStatus_ALL.csv data-files/ThousandsBlockAssignment_All_Augmented.txt
     exit 1
 fi
 
@@ -194,8 +194,8 @@ if test ! -e lib/Number/Phone/NANP/Data.pm -o \
   build-data.nanp                                  -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/geocoding/en/1.txt      -nt lib/Number/Phone/NANP/Data.pm -o \
   libphonenumber/resources/PhoneNumberMetadata.xml -nt lib/Number/Phone/NANP/Data.pm -o \
-  data-files/AllBlocksAugmentedReport.zip          -nt share/Number-Phone-NANP-Data.db -o \
-  data-files/AllBlocksAugmentedReport.txt          -nt share/Number-Phone-NANP-Data.db -o \
+  data-files/ThousandsBlockAssignment_All_Augmented.zip          -nt share/Number-Phone-NANP-Data.db -o \
+  data-files/ThousandsBlockAssignment_All_Augmented.txt          -nt share/Number-Phone-NANP-Data.db -o \
   data-files/COCodeStatus_ALL.zip                  -nt share/Number-Phone-NANP-Data.db -o \
   data-files/COCodeStatus_ALL.csv                  -nt share/Number-Phone-NANP-Data.db;
 then
@@ -206,7 +206,7 @@ then
   if test ! -e lib/Number/Phone/NANP/Data.pm -o ! -e share/Number-Phone-NANP-Data.db; then
       echo "  because they don't both exist"
   else
-      ls -ltr lib/Number/Phone/NANP/Data.pm share/Number-Phone-NANP-Data.db buildtools/Number/Phone/BuildHelpers.pm build-data.nanp libphonenumber/resources/geocoding/en/1.txt libphonenumber/resources/PhoneNumberMetadata.xml data-files/AllBlocksAugmentedReport.* data-files/COCodeStatus_ALL.* | \
+      ls -ltr lib/Number/Phone/NANP/Data.pm share/Number-Phone-NANP-Data.db buildtools/Number/Phone/BuildHelpers.pm build-data.nanp libphonenumber/resources/geocoding/en/1.txt libphonenumber/resources/PhoneNumberMetadata.xml data-files/ThousandsBlockAssignment_All_Augmented.* data-files/COCodeStatus_ALL.* | \
           sed 's/^/  /'
   fi
   quietly? perl build-data.nanp

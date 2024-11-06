@@ -152,9 +152,10 @@ while(my $row = $csv->getline($CA_operators)) {
     _write_operator_data($prefix, $op);
 }
 
+# CSV file format doco at https://www.nanpa.com/reports/thousands-block-reports/region
 warn("Extracting US operators\n");
-open(my $US_operators, '<', 'data-files/AllBlocksAugmentedReport.txt') ||
-    die("Couldn't open data-files/AllBlocksAugmentedReport.txt: $!\n");
+open(my $US_operators, '<', 'data-files/ThousandsBlockAssignment_All_Augmented.txt') ||
+    die("Couldn't open data-files/ThousandsBlockAssignment_All_Augmented.txt: $!\n");
 $csv->getline($US_operators); # header line
 my %US = ();
 while(my $row = $csv->getline($US_operators)) {
