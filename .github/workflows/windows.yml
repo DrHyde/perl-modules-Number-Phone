@@ -30,7 +30,6 @@ jobs:
       fail-fast: false
       matrix:
         perl-version:
-        - '5.20'
         - latest
     steps:
       - name: Set up perl
