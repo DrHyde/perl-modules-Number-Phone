@@ -157,7 +157,7 @@ then
   if test ! -e share/Number-Phone-UK-Data.db; then
       echo "  because it doesn't exist"
   else
-      ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/sabcde* data-files/s?.csv build-data.uk | \
+      ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/s?.csv build-data.uk | \
           sed 's/^/  /'
   fi
 
