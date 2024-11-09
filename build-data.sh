@@ -28,15 +28,17 @@ BUILD_QUIETLY=0
 # some machines have one of 'em, some have t'other
 MD5=$(which md5 || which md5sum)
 
-function quietly? (
-    if [ "$BUILD_QUIETLY" == "1" ]; then
-        "$@" >/dev/null 2>&1
-        exit $?
-    else
-        "$@"
-        exit $?
-    fi
-)
+function quietly? {
+    (
+        if [ "$BUILD_QUIETLY" == "1" ]; then
+            "$@" >/dev/null 2>&1
+            exit $?
+        else
+            "$@"
+            exit $?
+        fi
+    )
+}
 
 # now get an up-to-date libphonenumber and data-files
 (
