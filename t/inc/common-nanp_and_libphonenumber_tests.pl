@@ -162,11 +162,7 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         ['+1 441 222 0000' => 'BERMUDA CABLEVISION LIMITED - BM'],
         ['+1 473 230 0000' => 'COLUMBUS COMMUNICATIONS (GRENADA) LIMITED'],
         ['+1 649 231 0000' => 'CABLE & WIRELESS (TC)'],
-        # No data yet.
-        # checked on 2023-12-10
-        # next check due 2024-12-01 (annually) until there's data
-        # at https://localcallingguide.com/xmlprefix.php?npa=658&blocks=1
-        # ['+1 658 ??? 0000' => '???'],
+        ['+1 658 201 0000' => 'JAMAICA TEL. CO. (JM)'],
         ['+1 664 349 0000' => 'CABLE & WIRELESS (RT)'],
         ['+1 670 233 0000' => 'MICRONESIAN TELECOMMUNICATIONS CORPORATION'],
         ['+1 671 472 7679' => 'TELEGUAM HOLDINGS, LLC'],

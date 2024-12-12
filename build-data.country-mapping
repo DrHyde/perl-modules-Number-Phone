@@ -150,10 +150,10 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
 
-    # checked on 2023-12-10
-    # next check due 2024-12-01 (annually)
-    [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
-    [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara
+    # checked on 2024-12-11
+    # next check due 2025-12-01 (annually)
+    [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara, may overlap with MA (Morocco)
+    [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara, may overlap with MA (Morocco)
     [ 262269  => 'YT' ], # Mayotte fixed lines, see https://en.wikipedia.org/wiki/Telephone_numbers_in_France
     [ 262639  => 'YT' ], # Mayotte GSM, see https://en.wikipedia.org/wiki/Telephone_numbers_in_France
     [ 35348   => 'GB' ], # https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Republic_of_Ireland#Calls_to_Northern_Ireland
@@ -191,7 +191,7 @@ foreach my $tuple (
             872299,
             845624, 870624,
             900624, 901624, 906624, 907624,
-      )
+        )
     ),
     (
         map {
@@ -201,18 +201,19 @@ foreach my $tuple (
             7509, 7829, 7937,
             77003, 77007, 77008,
             77977, 77978, 77979,
+            800735, 800781,
+            8089012, 8089013, 8089019,
         )
     ),
 
-    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Cura%C3%A7ao_and_the_Caribbean_Netherlands
     # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
     #   NB +61 406 listed there for mobiles may be a pan-Australia area code
-    # see http://wtng.info/ccod-6.html#CC61 (Christmas Island)
+    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Christmas_Island
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Norfolk_Island
-    # checked on 2023-12-10
-    # next check due 2024-12-01 (annually)
-    [ 5999    => 'CW' ], # Curacao
+    # checked on 2024-12-11
+    # next check due 2025-12-01 (annually)
+    [ 5999    => 'CW' ], # Curacao see https://en.wikipedia.org/wiki/Cura%C3%A7ao
     [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
     [ 6189164 => 'CX' ], # Christmas Island
     [ 67210   => 'AQ' ], # Davis station    \
@@ -223,15 +224,15 @@ foreach my $tuple (
     [ 6723    => 'NF' ], # Norfolk Island
 
     # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
-    # NB planned change to +997 or +77
-    # checked on 2023-12-10
-    # next check due 2024-12-01 (annually)
+    # see https://en.wikipedia.org/wiki/%2B7
+    # checked on 2024-12-11
+    # next check due 2025-12-01 (annually)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 
     # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Kosovo
-    # checked on 2022-12-01
-    # next check due 2024-12-01 (bi-annually)
+    # checked on 2024-12-11
+    # next check due 2026-12-01 (bi-annually)
     #
     # in the Serbian country code ... https://en.wikipedia.org/wiki/Telephone_numbers_in_Serbia#Kosovo
     [ 38128   => 'XK' ],

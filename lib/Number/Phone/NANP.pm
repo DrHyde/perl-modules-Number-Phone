@@ -324,8 +324,8 @@ sub is_tollfree {
     # FIXME this really should be data-driven, based on US data in libphonenumber
     # https://en.wikipedia.org/wiki/Toll-free_telephone_numbers_in_the_North_American_Numbering_Plan
     # see also tests in t/nanp.t if anything changes
-    # checked on 2023-12-10
-    # next check due 2024-12-01 (annually)
+    # checked on 2024-12-11
+    # next check due 2025-12-01 (annually)
     if(${$self} =~ /^(\+1)?8(00|33|44|55|66|77|88)/) { return 1; }
      else { return 0; }
 }

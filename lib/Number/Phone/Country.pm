@@ -115,8 +115,8 @@ our %NANP_areas = (
         $usa    = join('|', $usa, 710);
     },
     # see https://en.wikipedia.org/wiki/North_American_Numbering_Plan#Countries_and_territories
-    # checked on 2023-12-10
-    # next check due 2024-12-01 (annually)
+    # checked on 2024-12-11
+    # next check due 2025-12-01 (annually)
     AS => '684',         # American Samoa
     AI => '264',         # Anguilla
     AG => '268',         # Antigua and Barbude
