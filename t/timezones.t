@@ -29,6 +29,9 @@ my @tests = (
     '+16235555678'  => ['America/Phoenix'],     # Phoenix, Arizona, no DST
     # NB this is wrong, reported upstream to Google on 2024-08-02
     # it should be 'America/Denver','America/Phoenix'
+    # see https://issuetracker.google.com/issues/361465479
+    # checked on 2024-12-11
+    # next check due 2025-03-01 (quarterly)
     '+19285555678'  => ['America/Phoenix'], # bit of AZ incl Navajo reservation which *does* do DST
 );
 
