@@ -186,8 +186,8 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     }
     is_deeply(
         \@codes_seen,
-        [grep { $_ != 658 } Number::Phone::Country::_non_US_CA_area_codes()],
-        "Oh good, the database contains data for all the non-US/CA area codes (except 658, for which no data are yet available)"
+        [Number::Phone::Country::_non_US_CA_area_codes()],
+        "Oh good, the database contains data for all the non-US/CA area codes"
     );
 
     # checked on 2024-11-06 that these are consolidated ten-thousand blocks
