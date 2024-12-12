@@ -339,12 +339,36 @@ and some parts of 242 and 246 (Bahamas and Barbados).
 
 sub is_specialrate {
     my $self = shift;
+    # FIXME this realy should be data-driven, based on data in libphonenumber
+    # check BS and BB against libphonenumber data
+    # checked on 2024-12-12
+    # next check due 2025-12-01 (annually)
     if(${$self} =~ /
         ^(\+1)?
         (
-            900 |                          # NANP-global
-            242225[0-46-9] |               # BS-specific
-            246 ( 292 | 367 | 41[7-9] | 43[01] | 444 | 467 | 736 ) # BB-specific, apparently
+            # BB premium-rate
+            246976 |
+            # BB UAN
+            246(?:
+                292|
+                367|
+                4(?:
+                  1[7-9]|
+                  3[01]|
+                  4[47-9]|
+                  67
+                )|
+                7(?:
+                  1[2-9]|
+                  2\d|
+                  3[016]|
+                  53
+                )
+            ) |
+            # BS UAN
+            242225 |
+            # NANP-global
+            900
         )
     /x) { return 1; }
      else { return 0; }
@@ -358,7 +382,16 @@ The number is a "personal" number. The 500, 533, 544, 566 and 577 "area codes".
 
 sub is_personal {
     my $self = shift;
-    if(${$self} =~ /^(\+1)?5[03467]{2}/) { return 1; }
+    # FIXME this realy should be data-driven, based on data in libphonenumber
+    # https://en.wikipedia.org/wiki/Personal_communications_service_(NANP)
+    # checked on 2024-12-12
+    # next check due 2025-12-01 (annually)
+    if(${$self} =~ /
+        ^(\+1)?
+        (
+            500 | 533 | 544 | 566 | 577 | 588 | 522 | 521 | 523 | 524 | 525 | 526 | 528 | 529
+        )
+    /x) { return 1; }
      else { return 0; }
 }
 
