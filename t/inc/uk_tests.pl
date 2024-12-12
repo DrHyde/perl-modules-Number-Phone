@@ -149,7 +149,7 @@ ok($number, "0870 'Allocated for Migration only' fixed");
 $number = Number::Phone->new('+447092306588'); # dodgy spaces were appearing in data
 ok($number, "bad 070 data fixed");
 
-$number = Number::Phone->new('+442030791234'); # new London 020 3 numbers
+$number = Number::Phone->new('+442030781234'); # new London 020 3 numbers
 ok($number, "0203 numbers are recognised");
 
 # libphonenumber doesn't do allocation but does think geographic numbers are fixed lines
