@@ -114,8 +114,8 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
     cd data-files
 
     wget -l 1 -nd --accept-regex telephone-numbers/.*.csv -r https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data
-    for i in s[135789]*; do mv "$i" $(echo "$i"|sed 's/?.*//'); done
-    rm s10-type*.csv numbering-data robots.txt
+    for i in s[135789]*; do mv "$i" $(echo "$i"|sed 's/?.*//;s/^s/S/'); done
+    rm S10-type*.csv numbering-data robots.txt
 
     rm ThousandsBlockAssignment_All_Augmented.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv ThousandsBlockAssignment_All_Augmented.txt
     wget https://reports.nanpa.com/public/ThousandsBlockAssignment_All_Augmented.zip
@@ -125,7 +125,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 )
 
 # stash the Unix epoch of the OFCOM data
-OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt s?.csv|tail -1))
+OFCOMDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' $(ls -rt S?.csv|tail -1))
 CADATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' COCodeStatus_ALL.csv)
 USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' ThousandsBlockAssignment_All_Augmented.txt)
 
@@ -137,7 +137,7 @@ if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $ONEMONTH -o \
      $(( $CURRENTDATETIME - $USDATETIME    )) -gt $ONEMONTH    \
    ]; then
     echo Data files are ANCIENT, check that the URLs are correct
-    ls -l data-files/s?.csv data-files/COCodeStatus_ALL.csv data-files/ThousandsBlockAssignment_All_Augmented.txt
+    ls -l data-files/S?.csv data-files/COCodeStatus_ALL.csv data-files/ThousandsBlockAssignment_All_Augmented.txt
     exit 1
 fi
 
@@ -161,7 +161,7 @@ then
   if test ! -e share/Number-Phone-UK-Data.db; then
       echo "  because it doesn't exist"
   else
-      ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/s?.csv build-data.uk | \
+      ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/S?.csv build-data.uk | \
           sed 's/^/  /'
   fi
 
