@@ -131,10 +131,10 @@ USDATETIME=$(cd data-files;perl -e 'print +(stat(shift))[9]' ThousandsBlockAssig
 
 # whine/quit if any of those are older than three months
 CURRENTDATETIME=$(date +%s)
-THREEMONTHS=7776000
-if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $THREEMONTHS -o \
-     $(( $CURRENTDATETIME - $CADATETIME    )) -gt $THREEMONTHS -o \
-     $(( $CURRENTDATETIME - $USDATETIME    )) -gt $THREEMONTHS    \
+ONEMONTH=$((60*60*24*30))
+if [ $(( $CURRENTDATETIME - $OFCOMDATETIME )) -gt $ONEMONTH -o \
+     $(( $CURRENTDATETIME - $CADATETIME    )) -gt $ONEMONTH -o \
+     $(( $CURRENTDATETIME - $USDATETIME    )) -gt $ONEMONTH    \
    ]; then
     echo Data files are ANCIENT, check that the URLs are correct
     ls -l data-files/s?.csv data-files/COCodeStatus_ALL.csv data-files/ThousandsBlockAssignment_All_Augmented.txt
