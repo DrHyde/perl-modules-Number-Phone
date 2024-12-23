@@ -19,7 +19,7 @@ while(my $line = <$area_codes>) {
     $areanames{$row[0]} = $row[1];
 }
 
-foreach my $csvfile (File::Find::Rule->name('s?.csv')->in('data-files')) {
+foreach my $csvfile (File::Find::Rule->name('S?.csv')->in('data-files')) {
     print "Working on $csvfile\n";
     my $parser = Text::CSV_XS->new();
 
