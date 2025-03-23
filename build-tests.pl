@@ -234,7 +234,7 @@ sub preamble {
     q{
         # automatically generated file, don't edit
         #
-        # Copyright 2024 David Cantrell, derived from data from libphonenumber
+        # Copyright 2025 David Cantrell, derived from data from libphonenumber
         # http://code.google.com/p/libphonenumber/
         #
         # Licensed under the Apache License, Version 2.0 (the "License");

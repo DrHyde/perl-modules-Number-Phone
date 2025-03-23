@@ -33,7 +33,7 @@ This is the only method. It takes an E.123 international format string as its on
 
 =head1 AUTHOR, COPYRIGHT and LICENCE
 
-Copyright 2024 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+Copyright 2025 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
 This software is free-as-in-speech software, and may be used,
 distributed, and modified under the terms of either the GNU
