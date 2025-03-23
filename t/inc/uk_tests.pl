@@ -113,7 +113,7 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   ok($number->is_corporate(), "corporate numbers correctly identified");
 
   $number = Number::Phone->new('+448450033845');
-  is($number->operator(), 'Gci Network Solutions Limited', "operators correctly identified");
+  is($number->operator(), 'GCI Network Solutions Limited', "operators correctly identified");
 
   $number = Number::Phone->new('+442087712924');
   subtest "geo numbers have correct location" => sub {
