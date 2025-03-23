@@ -16,23 +16,21 @@ my @tests = (
     '+441481720014' => ['Europe/Guernsey'], # Geographic Guernsey number
     '+12024181440'  => ['America/New_York'], # geographic New York number
     '+18765551234'  => ['America/Jamaica'], # geographic Jamaican number
-    '+12642920000'  =>  ['America/Anguilla'], # geographic Anguilla number
-    '+12642350000'  =>  $all_nanp_timezones, # mobile Anguilla number
-    '+17875551234'  =>  ['America/Puerto_Rico'], # 1st Puerto Rico area code
-    '+19395551234'  =>  ['America/Puerto_Rico'], # 2nd Puerto Rico area code
+    '+12642920000'  => ['America/Anguilla'], # geographic Anguilla number
+    '+12642350000'  => $all_nanp_timezones, # mobile Anguilla number
+    '+17875551234'  => ['America/Puerto_Rico'], # 1st Puerto Rico area code
+    '+19395551234'  => ['America/Puerto_Rico'], # 2nd Puerto Rico area code
     '+81335803311'  => ['Asia/Tokyo'], # geographic Japanese number
     '+815012345678' => ['Asia/Tokyo'], # non-geographic Japanese number
     '+18885558888'  => $all_nanp_timezones, # Non-geographic NANP number.
     '+80012345678'  => undef, # International Toll-Free.
     '+61265632114'  => ['Australia/Lord_Howe'], # Lord Howe Island, Australia
     '+61735353535'  => ['Australia/Brisbane'],  # another Australian tz
-    '+16235555678'  => ['America/Phoenix'],     # Phoenix, Arizona, no DST
-    # NB this is wrong, reported upstream to Google on 2024-08-02
-    # it should be 'America/Denver','America/Phoenix'
+    # Navajo nation in AZ observes DST but the rest of the state does not
     # see https://issuetracker.google.com/issues/361465479
-    # checked on 2024-12-11
-    # next check due 2025-03-01 (quarterly)
-    '+19285555678'  => ['America/Phoenix'], # bit of AZ incl Navajo reservation which *does* do DST
+    '+16235555678'  => ['America/Phoenix'],     # Phoenix, Arizona, no DST
+    '+19283735018'  => ['America/Phoenix'],     # Yuma county, Arizona, no DST
+    '+19282832501'  => ['America/Denver','America/Phoenix'], # Navajo nation, observes DST
 );
 
 note("timezones()");

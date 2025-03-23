@@ -29,8 +29,8 @@ sub phone2country {
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
-        # checked on 2024-09-10
-        # next check due 2025-03-01 (semi-annually)
+        # checked on 2025-03-23
+        # next check due 2025-09-01 (semi-annually)
         my $canada = join('|', qw(
             204 226 236 249 250 257 263 289
             306 343 354 365 367 368 382
@@ -43,8 +43,8 @@ our %NANP_areas = (
         ));
         # handful of non-geographic country-specific codes ...
         # see https://en.wikipedia.org/wiki/Area_code_600
-        # checked on 2024-09-10
-        # next check due 2025-03-01 (annually)
+        # checked on 2025-03-23
+        # next check due 2026-01-01 (annually)
         $canada = join('|', $canada, 600, 622, 633, 644, 655, 677, 688);
     },
     US => do {
@@ -53,8 +53,8 @@ our %NANP_areas = (
         #   but the latter doesn't contain some overlays that are about to come into service
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
-        # checked on 2024-09-10
-        # next check due 2025-03-01 (annually)
+        # checked on 2025-03-23
+        # next check due 2026-01-01 (annually)
         my $usa = join('|', qw(
             205 251 256 334 483 659 938
             907
@@ -98,7 +98,7 @@ our %NANP_areas = (
             401
             803 821 839 843 854 864
             605
-            423 615 629 731 865 901 931
+            423 615 629 729 731 865 901 931
             210 214 254 281 325 346 361 409 430 432 469 512 621 682 713 726 737 806 817 830 832 903 915 936 940 945 956 972 979
             385 435 801
             802
