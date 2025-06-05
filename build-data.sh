@@ -146,12 +146,12 @@ fi
 if test ! -e share/Number-Phone-UK-Data.db -o \
   buildtools/Number/Phone/BuildHelpers.pm      -nt share/Number-Phone-UK-Data.db -o \
   libphonenumber/resources/geocoding/en/44.txt -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s1.csv -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s3.csv -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s5.csv -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s7.csv -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s8.csv -nt share/Number-Phone-UK-Data.db -o \
-  data-files/s9.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S1.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S3.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S5.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S7.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S8.csv -nt share/Number-Phone-UK-Data.db -o \
+  data-files/S9.csv -nt share/Number-Phone-UK-Data.db -o \
   build-data.uk     -nt share/Number-Phone-UK-Data.db;
 then
   if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
@@ -167,6 +167,8 @@ then
 
   quietly? perl build-data.uk
 else
+  ls -ltr share/Number-Phone-UK-Data.db buildtools/Number/Phone/BuildHelpers.pm libphonenumber/resources/geocoding/en/44.txt data-files/S?.csv build-data.uk | \
+    sed 's/^/  /'
   echo share/Number-Phone-UK-Data.db is up-to-date
 fi
 
