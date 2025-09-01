@@ -143,8 +143,8 @@ open(my $CA_operators, '<', 'data-files/COCodeStatus_ALL.csv') ||
     die("Couldn't open data-files/COCodeStatus_ALL.csv: $!\n");
 $csv->getline($CA_operators); # header line
 $csv->getline($CA_operators); # date stamp?
-# format is "NPA","CO Code (NXX)","Status","Exchange Area","Province","Company","OCN","Remarks"
-my($NPA_FIELD, $CO_FIELD, $OP_FIELD) = (0, 1, 5);
+# format is "NPA","CO Code (NXX)","Status","Pooled","Exchange Area","Province","Company","OCN","Remarks"
+my($NPA_FIELD, $CO_FIELD, $OP_FIELD) = (0, 1, 6);
 while(my $row = $csv->getline($CA_operators)) {
     last unless($row->[$NPA_FIELD]);
     next unless($row->[$OP_FIELD]);
