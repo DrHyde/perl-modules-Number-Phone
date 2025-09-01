@@ -9,7 +9,7 @@ jobs:
         runs-on: ['macos-13', 'macos-14', 'macos-15']
     runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup Perl environment
         uses: shogo82148/actions-setup-perl@v1
       - name: Test and build
