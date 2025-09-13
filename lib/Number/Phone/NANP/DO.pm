@@ -41,6 +41,21 @@ The following methods from Number::Phone are overridden:
 
 =over 4
 
+=item is_tollfree
+
+The Dominican Republic has its own toll-free numbers (presumably only
+diallabled from within +1 809/829/849) with the D digit being 0 or 1.
+
+=cut
+
+sub is_tollfree {
+    my $self = shift;
+    if(${$self} =~ /^(\+1)?8[024]9[01]/) {
+        return 1;
+    }
+    return $self->SUPER::is_tollfree();
+}
+
 =item regulator
 
 Returns information about the national telecomms regulator.

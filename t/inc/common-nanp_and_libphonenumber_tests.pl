@@ -13,11 +13,6 @@ use vars qw($CLASS);
       $sub->();
     };
   }
-  sub skip_if_libphonenumber_if {
-      my $check_sub = shift;
-      if($check_sub->()) { skip_if_libphonenumber(@_); }
-       else { $_[-1]->(); }
-  }
 }
 
 note("Common tests for Number::Phone::NANP and Number::Phone::Lib");
@@ -263,15 +258,17 @@ foreach my $tuple (
         map { [ $_, $ISOcode ] } split(/\|/, $areas{$ISOcode});
     } sort keys %areas
 ) {
-    # next check due 2025-12-01 (quarterly) - emailed libphonenumber list on 2025-09-01
-    skip_if_libphonenumber_if(
-        sub { $tuple->[1] eq 'DO' },
-        "according to libphonenumber the Dominican Republic has toll-free numbers in ".$tuple->[0]." with D digit 0 or 1",
-        1,
-        sub {
-            ok(!defined($CLASS->new("+1 ".$tuple->[0]." 163 7242")),  "D digit must be 2-9 (".join(': ', $tuple->[1], $tuple->[0]).")");
+    if($tuple->[1] eq 'DO') {
+        foreach my $D_digit (0, 1) {
+            my $do_num = $CLASS->new("+1 ".$tuple->[0]." ${D_digit}63 7242");
+            ok(defined($do_num), "Dominican Republic has valid numbers in ".$tuple->[0]." with D digit $D_digit");
+            ok($do_num->is_tollfree, "... and they are toll-free");
         }
-    );
+    } else {
+        ok(!defined($CLASS->new("+1 ".$tuple->[0]." 163 7242")),  "D digit must be 2-9 (".join(': ', $tuple->[1], $tuple->[0]).")");
+    }
 }
+
+ok(!$CLASS->new("+1 809 695 8000")->is_tollfree, "a normal Dominican Republic number is not toll-free");
 
 1;

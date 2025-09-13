@@ -223,7 +223,6 @@ sub is_valid {
     
     $cache->{$number}->{is_valid} = (
         $digits{A}            ne '1'  &&
-        $digits{D}            ne '1'  &&
         $digits{B}.$digits{C} ne '11' &&
 
         # checked on 2025-03-23
@@ -233,6 +232,11 @@ sub is_valid {
         $digits{A}.$digits{B} ne '37' &&
         $digits{A}.$digits{B} ne '96'
     ) ? 1 : 0;
+
+    # Dominican Republic has local-only toll-free numbers with D = 0 or 1
+    if($digits{D} eq 1 && join('', @digits{'A', 'B', 'C'}) !~ /^8[024]9/) {
+        $cache->{$number}->{is_valid} = 0;
+    }
 
     $cache->{$number}->{areacode}   = substr($parsed_number, 0, 3);
     $cache->{$number}->{subscriber} = substr($parsed_number, 3);
