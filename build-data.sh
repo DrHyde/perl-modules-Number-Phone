@@ -54,11 +54,11 @@ function quietly? {
     # if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
     #     (cd data-files || (echo Checking out data-files ...; git clone git@github.com:DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
     # fi
-    (cd data-files || mkdir data-files) # for devs and CI envs that can't yet check that repo out
+    (cd data-files || (echo Checking out data-files ...; git clone https://github.com/DrHyde/perl-modules-Number-Phone-data-files.git data-files/))
     (
         cd data-files
         git checkout -q master
-        # git pull -q
+        git pull
     )
 )
 
@@ -113,13 +113,15 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
 (
     cd data-files
 
-    wget -l 1 -nd --accept-regex telephone-numbers/.*.csv -r https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data
-    for i in s[135789]*; do mv "$i" $(echo "$i"|sed 's/?.*//;s/^s/S/'); done
-    rm S10-type*.csv numbering-data robots.txt
+    if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
+        wget -l 1 -nd --accept-regex telephone-numbers/.*.csv -r https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data
+        for i in s[135789]*; do mv "$i" $(echo "$i"|sed 's/?.*//;s/^s/S/'); done
+        rm S10-type*.csv numbering-data robots.txt
 
-    rm ThousandsBlockAssignment_All_Augmented.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv ThousandsBlockAssignment_All_Augmented.txt
-    wget https://reports.nanpa.com/public/ThousandsBlockAssignment_All_Augmented.zip
-    wget https://cnac.ca/data/COCodeStatus_ALL.zip
+        rm ThousandsBlockAssignment_All_Augmented.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv ThousandsBlockAssignment_All_Augmented.txt
+        wget https://reports.nanpa.com/public/ThousandsBlockAssignment_All_Augmented.zip
+        wget https://cnac.ca/data/COCodeStatus_ALL.zip
+    fi
     unzip -q COCodeStatus_ALL.zip
     unzip -q ThousandsBlockAssignment_All_Augmented.zip
 )
@@ -335,13 +337,14 @@ if [ $EXITSTATUS == 1 ]; then
   fi
 fi
 
-(
-    cd data-files
-    if test -e .gitignore; then
-        git commit -q $(grep -vf .gitignore <(ls)) -m "data files as at $(date)"
-        # git push -q
+if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
+    (
+        cd data-files
+        rm COCodeStatus_ALL.csv ThousandsBlockAssignment_All_Augmented.txt
+        git commit -q S*csv *zip *xml -m "data files as at $(date)"
+        git push -q
         git gc -q
-    fi
-)
+    )
+fi
 
 exit $EXITSTATUS
