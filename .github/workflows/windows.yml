@@ -18,7 +18,7 @@ jobs:
           ./build-data.sh
           make test
           make dist
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: dist-for-windows-install
           path: '*.tar.gz'
