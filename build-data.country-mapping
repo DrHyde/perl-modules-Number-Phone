@@ -150,8 +150,8 @@ foreach my $tuple (
     [ 672 => ['AQ', 'NF'       ]], # no AQ in libphonenumber
     [ 7   => ['RU', 'KZ'       ]],
 
-    # checked on 2024-12-11
-    # next check due 2025-12-01 (annually)
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
     [ 2125288 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara, may overlap with MA (Morocco)
     [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara, may overlap with MA (Morocco)
     [ 262269  => 'YT' ], # Mayotte fixed lines, see https://en.wikipedia.org/wiki/Telephone_numbers_in_France
@@ -206,27 +206,23 @@ foreach my $tuple (
         )
     ),
 
-    # see https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
-    #   NB +61 406 listed there for mobiles may be a pan-Australia area code
-    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Christmas_Island
-    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
-    # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Norfolk_Island
-    # checked on 2024-12-11
-    # next check due 2025-12-01 (annually)
-    [ 5999    => 'CW' ], # Curacao see https://en.wikipedia.org/wiki/Cura%C3%A7ao
-    [ 6189162 => 'CC' ], # Cocos (Keeling) Islands
-    [ 6189164 => 'CX' ], # Christmas Island
-    [ 67210   => 'AQ' ], # Davis station    \
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
+    [ 5999    => 'CW' ], # Curacao                  https://en.wikipedia.org/wiki/Cura%C3%A7ao
+    [ 6189162 => 'CC' ], # Cocos (Keeling) Islands  https://en.wikipedia.org/wiki/Cocos_(Keeling)_Islands#Communications
+    [ 6189164 => 'CX' ], # Christmas Island         https://en.wikipedia.org/wiki/Telephone_numbers_in_Christmas_Island
+    [ 6723    => 'NF' ], # Norfolk Island           https://en.wikipedia.org/wiki/Telephone_numbers_in_Norfolk_Island
+    [ 67210   => 'AQ' ], # Davis station    \       https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Australian_Antarctic_Territory
     [ 67211   => 'AQ' ], # Mawson           |
     [ 67212   => 'AQ' ], # Casey            | Australian Antarctic bases
     [ 67213   => 'AQ' ], # Macquarie Island |
     [ 67214   => 'AQ' ], # Wilkins, mobiles /
-    [ 6723    => 'NF' ], # Norfolk Island
 
     # see http://en.wikipedia.org/wiki/Telephone_numbers_in_Kazakhstan
     # see https://en.wikipedia.org/wiki/%2B7
-    # checked on 2024-12-11
-    # next check due 2025-12-01 (annually)
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
+    [ 70      => 'KZ' ],   # https://en.wikipedia.org/wiki/Telephone_numbers_in_Russia (corresponding page for KZ isn't crystal clear)
     [ 76      => 'KZ' ],
     [ 77      => 'KZ' ],
 

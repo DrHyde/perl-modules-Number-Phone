@@ -109,11 +109,12 @@ skip_if_mocked("libphonenumber doesn't know about location/operators/network-ser
   $number = Number::Phone->new('+449090901234');
   ok($number->is_adult() && $number->is_specialrate(), "0909 'adult' numbers correctly identified");
 
-  $number = Number::Phone->new('+445588301234');
+  $number = Number::Phone->new('+445555881234');
   ok($number->is_corporate(), "corporate numbers correctly identified");
+  is($number->operator(), "Network Rail Infrastructure Limited", "operators correctly identified");
 
   $number = Number::Phone->new('+448450033845');
-  is($number->operator(), 'GCI Network Solutions Limited', "operators correctly identified");
+  is($number->operator(), 'GCI Network Solutions Limited', "operators for 08 correctly identified");
 
   $number = Number::Phone->new('+442087712924');
   subtest "geo numbers have correct location" => sub {

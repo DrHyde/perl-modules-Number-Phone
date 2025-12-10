@@ -190,11 +190,11 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         "Oh good, the database contains data for all the non-US/CA area codes"
     );
 
-    # checked on 2024-11-06 that these are consolidated ten-thousand blocks
-    # next check due 2025-12-01 (annually)
+    # checked on 2025-12-10 that these are consolidated ten-thousand blocks
+    # next check due 2026-12-01 (annually)
     is($CLASS->new('+1 202 201 0000')->operator(), 'VERIZON WASHINGTON DC, INC.', 'USA, thousands blocks all for same operator, so consolidated into one to save space in database');
-    # checked on 2024-11-06
-    # next check due 2025-12-01 (annually)
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
     # https://localcallingguide.com/xmlprefix.php?npa=242&blocks=1
     is($CLASS->new('+1 242 367 0000')->operator(), 'BARTELCO (BA)', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
 

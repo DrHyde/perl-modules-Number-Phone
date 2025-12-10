@@ -328,8 +328,8 @@ sub is_tollfree {
     # FIXME this really should be data-driven, based on US data in libphonenumber
     # https://en.wikipedia.org/wiki/Toll-free_telephone_numbers_in_the_North_American_Numbering_Plan
     # see also tests in t/nanp.t if anything changes
-    # checked on 2024-12-11
-    # next check due 2025-12-01 (annually)
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
     if(${$self} =~ /^(\+1)?8(00|33|44|55|66|77|88)/) { return 1; }
      else { return 0; }
 }
@@ -345,13 +345,13 @@ sub is_specialrate {
     my $self = shift;
     # FIXME this realy should be data-driven, based on data in libphonenumber
     # check BS and BB against libphonenumber data
-    # checked on 2024-12-12
-    # next check due 2025-12-01 (annually)
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
     if(${$self} =~ /
         ^(\+1)?
         (
-            # BB premium-rate
-            246976 |
+            # NANP-global for local premium rate numbers in any NPA
+            ...976 |
             # BB UAN
             246(?:
                 292|
@@ -386,14 +386,14 @@ The number is a "personal" number. The 500, 533, 544, 566 and 577 "area codes".
 
 sub is_personal {
     my $self = shift;
-    # FIXME this realy should be data-driven, based on data in libphonenumber
+    # FIXME this really should be data-driven, based on data in libphonenumber
     # https://en.wikipedia.org/wiki/Personal_communications_service_(NANP)
-    # checked on 2024-12-12
-    # next check due 2025-12-01 (annually)
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
     if(${$self} =~ /
         ^(\+1)?
         (
-            500 | 533 | 544 | 566 | 577 | 588 | 522 | 521 | 523 | 524 | 525 | 526 | 528 | 529
+            500 | 52[1-9] | 53[238] | 544 | 566 | 577 | 588
         )
     /x) { return 1; }
      else { return 0; }
