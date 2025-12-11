@@ -861,10 +861,8 @@ Please report bugs by at L<https://github.com/DrHyde/perl-modules-Number-Phone/i
 
 =head1 MAILING LIST
 
-There is a mailing list for discussion and help. Please subscribe at
-L<http://lists.scsys.co.uk/cgi-bin/mailman/listinfo/number-phone>.
-
-Kindly hosted by L<Shadowcat|http://scsys.co.uk>.
+There is a mailing list for announcements, discussion and help. Please
+subscribe at L<https://groups.google.com/g/number-phone>.
 
 =head1 SEE ALSO
 
