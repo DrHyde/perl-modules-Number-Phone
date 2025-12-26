@@ -8,7 +8,7 @@ jobs:
     name: Perl 5.32 build --without_uk and install
     steps:
       - name: check out code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: switch to perl 5.32
         uses: shogo82148/actions-setup-perl@v1
