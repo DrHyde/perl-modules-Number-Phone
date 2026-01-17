@@ -1,0 +1,101 @@
+on: [push, pull_request]
+name: Install on various OSes
+
+jobs:
+  build:
+    runs-on: 'macos-latest'
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Perl environment
+        uses: shogo82148/actions-setup-perl@v1
+      - name: Test and build
+        run: |
+          cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath
+          cpanm --quiet --notest File::Find::Rule Text::CSV_XS LWP::Protocol::https
+          cpanm --quiet --notest --installdeps .
+          perl Makefile.PL
+          ./build-data.sh
+          make test
+          make dist
+      - uses: actions/upload-artifact@v6
+        with:
+          name: dist-for-install
+          path: '*.tar.gz'
+          retention-days: 1
+  install-netbsd:
+    runs-on: 'ubuntu-latest'
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v7.0.0
+        with:
+          name: dist-for-install
+      - name: Install on NetBSD
+        uses: cross-platform-actions/action@v0.32.0
+        with:
+          operating_system: netbsd
+          version: 10.1
+          shell: bash
+          run: |
+            echo "PKG_PATH=https://cdn.netbsd.org/pub/pkgsrc/packages/NetBSD/amd64/10.1/All" | sudo tee -a /etc/pkg_install.conf &&
+            sudo pkgin -y update &&
+            sudo pkgin -y install perl &&
+            mkdir dist-for-test &&
+            tar -C dist-for-test -xzf *.tar.gz &&
+            cd dist-for-test/* && # sudo pkg install -y perl5 &&
+            perl -MCPAN -e 'install qw(App::cpanminus)' &&
+            /home/runner/perl5/bin/cpanm --installdeps . &&
+            /home/runner/perl5/bin/cpanm -v .
+  install-linux:
+    runs-on: 'ubuntu-latest'
+    needs: build
+    container:
+      image: perl:5.34
+    steps:
+      - uses: actions/download-artifact@v7.0.0
+        with:
+          name: dist-for-install
+      - name: Install on Linux
+        run: |
+          cpanm *.tar.gz
+  install-freebsd:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v7.0.0
+        with:
+          name: dist-for-install
+      - name: Install on FreeBSD
+        uses: cross-platform-actions/action@v0.32.0
+        with:
+          operating_system: freebsd
+          version: 14.2
+          shell: bash
+          run: |
+            mkdir dist-for-test &&
+            tar -C dist-for-test -xzf *.tar.gz &&
+            cd dist-for-test/* &&
+            sudo pkg install -y perl5 &&
+            cpan App::cpanminus &&
+            /home/runner/perl5/bin/cpanm --installdeps . &&
+            /home/runner/perl5/bin/cpanm -v .
+  install-openbsd:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v7.0.0
+        with:
+          name: dist-for-install
+      - name: Install on OpenBSD
+        uses: cross-platform-actions/action@v0.32.0
+        with:
+          operating_system: openbsd
+          version: 7.4
+          shell: bash
+          run: |
+            mkdir dist-for-test &&
+            tar -C dist-for-test -xzf *.tar.gz &&
+            cd dist-for-test/* &&
+            cpan App::cpanminus &&
+            /home/runner/perl5/bin/cpanm --quiet --notest --installdeps . &&
+            /home/runner/perl5/bin/cpanm -v .
