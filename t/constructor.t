@@ -31,6 +31,9 @@ foreach my $CC (qw(GB GG IM JE)) {
 foreach my $class (qw(Number::Phone Number::Phone::Lib)) {
     my $object = $class->new('+44402609');
     ok(!defined($object), "$class: +44 XXXXXX is invalid, even if XXXXXX is a valid local number in a crown dependency (we ignore nationalPrefixTransformRule in their stubs)");
+
+    is($class->new('390667791')->country(), 'IT',
+        "MSISDN numbers without a leading + are accepted");
 }
 
 foreach my $tuple (
