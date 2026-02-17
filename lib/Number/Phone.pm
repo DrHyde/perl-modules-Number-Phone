@@ -186,6 +186,8 @@ so the appropriate country-specific module is loaded if available.
 If you pass in a bogus country code not recognised by
 Number::Phone::Country, the constructor will return undef.
 
+MSISDN format is supported.
+
 =head1 INCOMPATIBLE CHANGES
 
 =head2 from version 4.0003 onwards

@@ -21,6 +21,16 @@ sub _maybe_add_country {
     return $number;
 }
 
+sub _npl_object {
+    my ( $class, $object ) = @_;
+
+    unless ( $object->isa('Number::Phone::StubCountry') ) {
+        $object = Number::Phone::Lib->new( $object->format() );
+    }
+
+    return $object;
+}
+
 # this is used by N::P::Formatter::National(lyPreferredIntl), it wants
 # something that looks very much like a N::P::StubCountry::XX as those
 # will contain libphonenumber's formatting data. If we're instead passed
@@ -28,9 +38,7 @@ sub _maybe_add_country {
 sub _format {
     my ($class, $object, $national) = @_;
 
-    if(!$object->isa('Number::Phone::StubCountry')) {
-        $object = Number::Phone::Lib->new($object->format())
-    }
+    $object = $class->_npl_object($object);
 
     my $number = $object->{number};
     foreach my $formatter (@{$object->{formatters}}) {
