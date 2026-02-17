@@ -11,8 +11,8 @@ use Test::Differences;
 # section in Makefile.PL)
 
 open(my $manifest_fh, '<', 'MANIFEST') || die("Couldn't open MANIFEST: $!\n");
-my @manifest = sort grep { /^lib.*\.pm$/ } map { chomp; $_ } <$manifest_fh>;
-my @files = sort File::Find::Rule->file()->name('*.pm')->in('lib');
+my @manifest = sort grep { /^(lib.*\.pm|share.*\.db)$/ } map { chomp; $_ } <$manifest_fh>;
+my @files = sort File::Find::Rule->file()->name('*.pm', '*.db')->in('share', 'lib');
 
 eq_or_diff(
     \@manifest,
