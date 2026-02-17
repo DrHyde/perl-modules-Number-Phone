@@ -19,7 +19,7 @@ my %tests = (
     '+81 3-3580-3311'  => '335803311'     # StubCountry::JP
 );
 
-note("format_using('Raw')");
+note("format_using('Raw') / format_using('MSISDN')");
 while (my ($num, $expect) = each %tests) {
     # for the UK, test both full-fat and thin-gruel
     foreach my $class (
@@ -31,6 +31,8 @@ while (my ($num, $expect) = each %tests) {
     
             my $number = $class->new($num);
             is($number->format_using('Raw'), $expect, "format_using('Raw') works for a $class");
+            (my $msisdn_expect = $num) =~ s/\D//g; # E123 without formatting
+            is($number->format_using('MSISDN'), $msisdn_expect, "format_using('MSISDN') works for a $class");
         }
     }
 }
