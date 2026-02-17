@@ -116,6 +116,7 @@ echo $LIBPHONENUMBERTAG > .libphonenumber-tag
     if [ "$CI" != "True" ] && [ "$CI" != "true" ] && [ "$GITHUB_ACTIONS" != "true" ]; then
         wget -l 1 -nd --accept-regex telephone-numbers/.*.csv -r https://www.ofcom.org.uk/phones-and-broadband/phone-numbers/numbering-data
         for i in s[135789]*; do mv "$i" $(echo "$i"|sed 's/?.*//;s/^s/S/'); done
+        rm *v=*
         rm S10-type*.csv numbering-data robots.txt
 
         rm ThousandsBlockAssignment_All_Augmented.zip COCodeStatus_ALL.zip COCodeStatus_ALL.csv ThousandsBlockAssignment_All_Augmented.txt
