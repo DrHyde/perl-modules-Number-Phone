@@ -103,6 +103,7 @@ sub _clean_number {
     my $clean = shift;
     $clean =~ s/[^0-9+]//g;               # strip non-digits/plusses
     $clean =~ s/^\+44//;                  # remove leading +44
+    $clean =~ s/^[+]+//;                  # remove leading +
     $clean =~ s/^0//;                     # kill leading zero
     return $clean;
 }
