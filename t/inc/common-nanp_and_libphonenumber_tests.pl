@@ -240,9 +240,9 @@ ok(!defined($CLASS->new('+1 613 563 724')),   "too short");
 ok(!defined($CLASS->new('+1 113 563 7242')),  "A  must not be 1");
 ok(!defined($CLASS->new('+1 613 163 7242')),  "D  must not be 1");
 ok(!defined($CLASS->new('+1 611 563 7242')),  "BC must not be 11");
-#
-# checked on 2025-03-23
-# next check due 2026-01-01 (annually)
+
+# checked on 2026-03-06
+# next check due 2027-01-01 (annually)
 # https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Summary_table
 ok(!defined($CLASS->new('+1 290 563 7242')),  "B  must not be 9");
 ok(!defined($CLASS->new('+1 373 563 7242')),  "AB must not be 37");
