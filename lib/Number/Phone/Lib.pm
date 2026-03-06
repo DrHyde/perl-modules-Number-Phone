@@ -88,6 +88,6 @@ perl itself.
 
 =back
 
-Copyright 2025
+Copyright 2026
 
 =cut

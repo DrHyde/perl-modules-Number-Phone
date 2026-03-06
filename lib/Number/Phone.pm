@@ -19,7 +19,7 @@ use Devel::Deprecations::Environmental
     OldPerl => { unsupported_from => '2024-03-09', older_than => '5.14.0' };
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '4.0009';
+our $VERSION = '4.0010';
 
 my $NOSTUBS = 0;
 sub import {
@@ -877,7 +877,7 @@ L<git://github.com/DrHyde/perl-modules-Number-Phone.git>
 
 =head1 AUTHOR, COPYRIGHT and LICENCE
 
-Copyright 2004 - 2025 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
+Copyright 2004 - 2026 David Cantrell E<lt>F<david@cantrell.org.uk>E<gt>
 
 This software is free-as-in-speech software, and may be used,
 distributed, and modified under the terms of either the GNU

@@ -59,7 +59,7 @@ perl itself.
 
 David Cantrell E<lt>david@cantrell.org.ukE<gt>
 
-Copyright 2025
+Copyright 2026
 
 =cut
 
