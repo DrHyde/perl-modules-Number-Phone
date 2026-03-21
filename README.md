@@ -63,6 +63,8 @@ That script will need several extra dependencies that aren't listed in `Makefile
 
 Note that you may get test failures if real-world data has changed in such a way as to contradict existing tests.
 
+There is a tricksy edge-case involving Ireland whose area code 048 maps onto the 028 area code in the UK - ie +353 48 == +44 28. There are tests for this in t/country-test-ie-**fullfat.t. However, Number::Phone::IE exists on the CPAN, and has Number::Phone as a dependency, so N::P can't have N::P::IE as a dependency for testing. Therefore if N::P::IE isn't installed those tests will skip. You will need to have N::P::IE installed if you are to work on this module. The CI tests check this edge case so if you forget to install it you may see test failures reported on Github which you don't see on your dev machine.
+
 # Structure
 
 Number::Phone is a base class for parsing and dealing with phone numbers, and the entry point for using all the other modules.
