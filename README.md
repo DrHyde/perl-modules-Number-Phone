@@ -63,7 +63,11 @@ That script will need several extra dependencies that aren't listed in `Makefile
 
 Note that you may get test failures if real-world data has changed in such a way as to contradict existing tests.
 
-There is a tricksy edge-case involving Ireland whose area code 048 maps onto the 028 area code in the UK - ie +353 48 == +44 28. There are tests for this in t/country-test-ie-**fullfat.t. However, Number::Phone::IE exists on the CPAN, and has Number::Phone as a dependency, so N::P can't have N::P::IE as a dependency for testing. Therefore if N::P::IE isn't installed those tests will skip. You will need to have N::P::IE installed if you are to work on this module. The CI tests check this edge case so if you forget to install it you may see test failures reported on Github which you don't see on your dev machine.
+There is a tricksy edge-case involving Ireland whose area code 048 maps onto the 028 area code in the UK - ie +353 48 == +44 28, and for which there is a module on the CPAN, Number::Phone::IE. There are tests for this in t/country-test-ie-fullfat.t. However, Number::Phone::IE has Number::Phone as a dependency, so N::P can't have N::P::IE as a dependency for testing. Therefore if N::P::IE isn't installed those tests will skip. You will need to have N::P::IE installed if you are to work on this module. The CI tests check this edge case so if you forget to install it you may see test failures reported on Github which you don't see on your dev machine.
+
+A similar case exists for San Marino (SM, +378 xxxxxx) which is reachable in the Italian numbering system (IT, +39) as area code 0549, aka +39 0549 xxxxxx, but as there is no Number::Phone::SM on the CPAN at the moment there are no special tests for that case.
+
+Both of these weird cases are tested in t/country-level-overlays.t.
 
 # Structure
 
