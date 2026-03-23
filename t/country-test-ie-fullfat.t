@@ -27,7 +27,7 @@ SKIP: {
 
     {
         my $ni = Number::Phone->new("+3534890320202");
-        isa_ok($ni, 'Number::Phone::IE');
+        isa_ok($ni, 'Number::Phone::UK');
         ok(defined($ni), 'Number::Phone object created for a Belfast number, using +353 48');
         ok($ni->is_valid, '+3534890320202 is a valid number');
     }
