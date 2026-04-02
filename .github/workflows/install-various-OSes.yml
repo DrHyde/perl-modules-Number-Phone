@@ -115,6 +115,7 @@ jobs:
           run: |
             sudo pkg install archiver/gnu-tar developer/gcc14 &&
             mkdir dist-for-test &&
+            sudo ln -sf $(which gtar) $(which tar) &&
             gtar -C dist-for-test -xzf *.tar.gz &&
             cd dist-for-test/* &&
             cpan App::cpanminus &&
