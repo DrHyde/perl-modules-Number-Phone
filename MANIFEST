@@ -107,6 +107,8 @@ t/unicode.t
 t/weird_little_islands.t
 TODO
 lib/Number/Phone/Formatter/MSISDN.pm
+t/country-level-overlays.t
+t/country-test-ie-fullfat.t
 lib/Number/Phone/StubCountry/AC.pm
 lib/Number/Phone/StubCountry/AD.pm
 lib/Number/Phone/StubCountry/AE.pm
