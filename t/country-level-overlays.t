@@ -8,6 +8,9 @@ use Number::Phone;
 use Number::Phone::Lib;
 use Test::More;
 
+plan skip_all => "need Number::Phone::UK to test this thoroughly"
+    if(building_without_uk());
+
 subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
     foreach my $test (
         # Dublin number
