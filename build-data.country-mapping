@@ -138,6 +138,7 @@ print $module_fh q{
 
 # and now for non-geo "country" codes, sub-countries, countries "borrowing"
 # from other countries, and Russia/Kazakhstan
+my %number_translations;
 foreach my $tuple (
     # for some "shared space" codes we need to ensure that the "host" country comes first.
     # libphonenumber has them in alphabetical order which we don't want.
@@ -156,10 +157,24 @@ foreach my $tuple (
     [ 2125289 => 'EH' ], # see https://en.wikipedia.org/wiki/Telephone_numbers_in_Western_Sahara, may overlap with MA (Morocco)
     [ 262269  => 'YT' ], # Mayotte fixed lines, see https://en.wikipedia.org/wiki/Telephone_numbers_in_France
     [ 262639  => 'YT' ], # Mayotte GSM, see https://en.wikipedia.org/wiki/Telephone_numbers_in_France
-    [ 35348   => 'GB' ], # https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Republic_of_Ireland#Calls_to_Northern_Ireland
+
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
+    #
+    # These regions are reachable both using the country code assigned by ITU
+    # and as an area code in another country
+    [ 390549  => 'SM', '378'   ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
+    [ 35348   => 'GB', '4428'  ], # https://en.wikipedia.org/wiki/Telephone_numbers_in_the_Republic_of_Ireland#Calls_to_Northern_Ireland
+
+    # checked on 2025-12-10
+    # next check due 2026-12-01 (annually)
+    #
+    # Vatican City has its own ITU country code (which isn't in use) and is
+    # also reachable as an Italian area code. libphonenumber has Italian-style
+    # data for VA so we don't need to supply the mapping like what we do for
+    # San Marino or Northern Ireland
     [ 379     => 'VA' ], # Vatican (not in use, missing from libphonenumber), see https://en.wikipedia.org/wiki/Telephone_numbers_in_Vatican_City
     [ 3906698 => 'VA' ], # Vatican in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_Vatican_City
-    [ 390549  => 'SM' ], # San Marino in Italian dialling plan, see https://en.wikipedia.org/wiki/Telephone_numbers_in_San_Marino
 
     (
         map {
@@ -251,7 +266,16 @@ foreach my $tuple (
             : "'".$tuple->[1]."'"
         ).
         ";\n";
+    if(exists($tuple->[2])) { # map part of one country's plan onto another
+        $number_translations{$tuple->[0]} = $tuple->[2];
+    }
 }
+
+print $module_fh "\n%Number::Phone::Country::number_translations = (\n";
+foreach my $translated_prefix (sort keys %number_translations) {
+    print $module_fh "    $translated_prefix => '$number_translations{$translated_prefix}',\n";
+}
+print $module_fh ");\n";
 
 foreach my $IDD (keys %known_non_country_codes) {
     my $name = $known_non_country_codes{$IDD};

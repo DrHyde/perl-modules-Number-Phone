@@ -314,6 +314,7 @@ sub _new_args {
     $number = "+$number" unless($number =~ /^\+/);
 
     $country = Number::Phone::Country::phone2country($number) or return;
+    $number = Number::Phone::Country::canonicalize_number($number);
     if($country eq 'AQ' && $number =~ /^\+882/) {
         $original_country = 'InternationalNetworks882';
     }

@@ -4,7 +4,7 @@ use strict;
 use Number::Phone::Country::Data;
 
 # *_codes are global so we can mock in some tests
-use vars qw($VERSION %idd_codes %prefix_codes);
+use vars qw($VERSION %idd_codes %prefix_codes %number_translations);
 $VERSION = '2.00';
 my $use_uk = 0;
 
@@ -234,6 +234,22 @@ sub ndd_code {
     return $$data[2];
 }
 
+# Translate numbers that exist in one country's number plan but end up in
+# another country, e.g. +353 48 for Northern Ireland, +39 0549 for SM)
+# to their canonical form for the target country (e.g. +35348 -> +4428)
+sub canonicalize_number {
+    my $number = shift;
+    my ($digits) = $number =~ /^\+(\d+)/;
+    return $number unless defined $digits;
+    foreach my $translated_prefix (sort { length($b) <=> length($a) } keys %number_translations) {
+        if(substr($digits, 0, length($translated_prefix)) eq $translated_prefix) {
+            (my $translated = $number) =~ s/^\+$translated_prefix/+$number_translations{$translated_prefix}/;
+            return $translated;
+        }
+    }
+    return $number;
+}
+
 1;
 
 =head1 NAME
@@ -369,6 +385,19 @@ eg, for +441234567890 it returns 'GB' (or 'UK' if you've told it to).
 
 Returns a list containing the ISO country code and IDD prefix for the given
 phone number.  eg for +441234567890 it returns ('GB', 44).
+
+=item canonicalize_number($phone)
+
+Translates a phone number that exists in one country's number plan but ends up
+in another country to its canonical E.164 form. Some numbers are reachable via
+another country's dial plan, for example Northern Ireland (+44 28 ...) can be
+dialled as +353 48 ... in the republic of Ireland's number plan, and the entire
+country of San Marino (+378) is also the Italian area code +39 0549.
+
+This function translates such numbers to their canonical form, ie +353 48 ...
+is translated to +44 28 ...
+
+Numbers that have no such translation are returned unchanged.
 
 =back
 
