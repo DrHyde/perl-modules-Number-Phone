@@ -77,6 +77,22 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
     ) { run_test($test) }
 };
 
+subtest "Vatican, +379 is not in use, +39 06698 is an Italian area code", sub {
+    foreach my $test (
+        # Using Italy's country code
+        {
+            constructor_class => 'Number::Phone::Lib',
+            expect_class      => 'Number::Phone::StubCountry::VA',
+            num => '+39 06698 83462'
+        },
+        {
+            constructor_class => 'Number::Phone',
+            expect_class      => 'Number::Phone::StubCountry::VA',
+            num => '+39 06698 83462'
+        },
+    ) { run_test($test) }
+};
+
 done_testing();
 
 sub run_test {
