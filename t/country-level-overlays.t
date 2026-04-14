@@ -20,6 +20,7 @@ subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
             expect_class      => 'Number::Phone::StubCountry::IE',
             num               => '+353 12222918',
             formatted         => '+353 1 222 2918',
+            country_code      => '353',
         },
         {
             sanity            => 1,
@@ -27,6 +28,7 @@ subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
             expect_class      => 'Number::Phone::StubCountry::IE',
             num               => '+353 12222918',
             formatted         => '+353 1 222 2918',
+            country_code      => '353',
         },
         # Belfast number
         {
@@ -35,18 +37,21 @@ subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
             expect_class      => 'Number::Phone::UK',
             num               => '+44 28 90320202',
             formatted         => '+44 28 9032 0202',
+            country_code      => '44',
         },
         {
             constructor_class => 'Number::Phone::Lib',
             expect_class      => 'Number::Phone::StubCountry::GB',
             num               => '+353 48 90320202',
             formatted         => '+353 48 90320202',
+            country_code      => '353',
         },
         {
             constructor_class => 'Number::Phone',
             expect_class      => 'Number::Phone::UK',
             num               => '+353 48 90320202',
             formatted         => '+353 48 90320202',
+            country_code      => '353',
         },
     ) { run_test($test) }
 };
@@ -60,6 +65,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             expect_class      => 'Number::Phone::StubCountry::SM',
             num               => '+378 886377',
             formatted         => '+378 0549 886377',
+            country_code      => '378',
         },
         {
             sanity            => 1,
@@ -67,6 +73,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             expect_class      => 'Number::Phone::StubCountry::SM',
             num               => '+378 886377',
             formatted         => '+378 0549 886377',
+            country_code      => '378',
         },
         {
             sanity            => 1,
@@ -74,6 +81,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             expect_class      => 'Number::Phone::StubCountry::SM',
             num               => '+378 0549 886377',
             formatted         => '+378 0549 886377',
+            country_code      => '378',
         },
         {
             sanity            => 1,
@@ -81,6 +89,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             expect_class      => 'Number::Phone::StubCountry::SM',
             num               => '+378 0549 886377',
             formatted         => '+378 0549 886377',
+            country_code      => '378',
         },
         # Using Italy's country code
         {
@@ -88,12 +97,14 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             expect_class      => 'Number::Phone::StubCountry::SM',
             num               => '+39 0549 886377',
             formatted         => '+39 0549 886377',
+            country_code      => '39',
         },
         {
             constructor_class => 'Number::Phone',
             expect_class      => 'Number::Phone::StubCountry::SM',
             num               => '+39 0549 886377',
             formatted         => '+39 0549 886377',
+            country_code      => '39',
         },
     ) { run_test($test) }
 };
@@ -129,7 +140,18 @@ sub run_test {
         isa_ok($obj, $test->{expect_class}) &&
         ok($obj->is_valid, "$test->{num} is a valid number");
         if($test->{formatted}) {
-            is($obj->format, $test->{formatted}, "$test->{num} formats as $test->{formatted}");
+            is(
+                $obj->format,
+                $test->{formatted},
+                "$test->{num} formats as $test->{formatted}"
+            );
+        }
+        if($test->{country_code}) {
+            is(
+                $obj->country_code,
+                $test->{country_code},
+                "$test->{num} has country code $test->{country_code}"
+            );
         }
     };
 }
