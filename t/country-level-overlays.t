@@ -21,6 +21,7 @@ subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
             num               => '+353 12222918',
             formatted         => '+353 1 222 2918',
             country_code      => '353',
+            country           => 'IE',
         },
         {
             sanity            => 1,
@@ -29,6 +30,7 @@ subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
             num               => '+353 12222918',
             formatted         => '+353 1 222 2918',
             country_code      => '353',
+            country           => 'IE',
         },
         # Belfast number
         {
@@ -38,20 +40,23 @@ subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
             num               => '+44 28 90320202',
             formatted         => '+44 28 9032 0202',
             country_code      => '44',
+            country           => 'UK',
         },
         {
             constructor_class => 'Number::Phone::Lib',
-            expect_class      => 'Number::Phone::StubCountry::GB',
+            expect_class      => 'Number::Phone::StubCountry::IE',
             num               => '+353 48 90320202',
-            formatted         => '+353 48 90320202',
+            formatted         => '+353 48 9032 0202',
             country_code      => '353',
+            country           => 'UK',
         },
         {
             constructor_class => 'Number::Phone',
-            expect_class      => 'Number::Phone::UK',
+            expect_class      => 'Number::Phone::StubCountry::IE',
             num               => '+353 48 90320202',
-            formatted         => '+353 48 90320202',
+            formatted         => '+353 48 9032 0202',
             country_code      => '353',
+            country           => 'UK',
         },
     ) { run_test($test) }
 };
@@ -66,6 +71,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             num               => '+378 886377',
             formatted         => '+378 0549 886377',
             country_code      => '378',
+            country           => 'SM',
         },
         {
             sanity            => 1,
@@ -74,6 +80,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             num               => '+378 886377',
             formatted         => '+378 0549 886377',
             country_code      => '378',
+            country           => 'SM',
         },
         {
             sanity            => 1,
@@ -82,6 +89,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             num               => '+378 0549 886377',
             formatted         => '+378 0549 886377',
             country_code      => '378',
+            country           => 'SM',
         },
         {
             sanity            => 1,
@@ -90,21 +98,33 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             num               => '+378 0549 886377',
             formatted         => '+378 0549 886377',
             country_code      => '378',
+            country           => 'SM',
+        },
+        {
+            sanity            => 1,
+            constructor_class => 'Number::Phone',
+            expect_class      => 'Number::Phone::StubCountry::IT',
+            num               => '+39 0645460221',
+            formatted         => '+39 06 4546 0221',
+            country_code      => '39',
+            country           => 'IT',
         },
         # Using Italy's country code
         {
             constructor_class => 'Number::Phone::Lib',
-            expect_class      => 'Number::Phone::StubCountry::SM',
+            expect_class      => 'Number::Phone::StubCountry::IT',
             num               => '+39 0549 886377',
             formatted         => '+39 0549 886377',
             country_code      => '39',
+            country           => 'SM',
         },
         {
             constructor_class => 'Number::Phone',
-            expect_class      => 'Number::Phone::StubCountry::SM',
+            expect_class      => 'Number::Phone::StubCountry::IT',
             num               => '+39 0549 886377',
             formatted         => '+39 0549 886377',
             country_code      => '39',
+            country           => 'SM',
         },
     ) { run_test($test) }
 };
@@ -151,6 +171,13 @@ sub run_test {
                 $obj->country_code,
                 $test->{country_code},
                 "$test->{num} has country code $test->{country_code}"
+            );
+        }
+        if($test->{country}) {
+            is(
+                $obj->country,
+                $test->{country},
+                "$test->{num} has country $test->{country}"
             );
         }
     };
