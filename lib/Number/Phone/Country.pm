@@ -177,12 +177,8 @@ sub phone2country_and_idd {
         my @prefixes = map { substr($phone, 0, $_) } reverse 1..length($phone);
         foreach my $idd (@prefixes) {
             if(exists $idd_codes{$idd}) {
-                if(exists($number_translations{$idd})) {
-                    use Test::More ();
-                    Test::More::note("$phone matches translated prefix $idd, skipping");
-                    next;
-                }
-                Test::More::note("$phone matches prefix $idd");
+                next if(exists($number_translations{$idd}));
+
                 my $country = $idd_codes{$idd};
                 if(ref($country) eq 'ARRAY'){
                     foreach my $country_code (@$country) {

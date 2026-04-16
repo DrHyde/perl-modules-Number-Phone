@@ -195,6 +195,13 @@ TERRITORY: foreach my $territory (@territories) {
 
   print $module_fh 'my '.Data::Dumper->new([\%timezones], [qw(timezones)])->Dump();
 
+  if(
+      $ISO_country_code ne 'VA' &&
+      grep { /^$IDD_country_code/ } keys %Number::Phone::Country::number_translations
+  ) {
+      print $module_fh "sub may_be_noncanonical_number { 1 }\n";
+  }
+
   print $module_fh "
     sub new {
       my \$class = shift;

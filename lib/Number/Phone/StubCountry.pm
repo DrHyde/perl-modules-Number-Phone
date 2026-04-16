@@ -24,7 +24,18 @@ sub country_code {
 
 sub country {
     my $self = shift;
+
     if(exists($self->{country})) { return $self->{country}; }
+
+    if($self->may_be_noncanonical_number) {
+        my $digits = $self->format_using('MSISDN');
+        foreach my $translated_prefix (keys %Number::Phone::Country::number_translations) {
+            if($digits =~ /^$translated_prefix/) {
+                return $self->{country} = $self->canonical_number->country;
+            }
+        }
+    }
+
     ref($self)=~ /::(\w+?)$/;
     return $self->{country} = $1;
 }
