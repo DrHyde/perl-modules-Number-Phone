@@ -263,6 +263,10 @@ when extra data is available in, for example, Number::Phone::UK. You might
 want to do this for compatibility or performance. Number::Phone::UK is quite
 slow, because it uses a huge database for some of its features.
 
+As an exception, it will always use the libphonenumber-derived stub for Irish
+numbers, even if L<Number::Phone::IE> is installed. That module hasn't been
+maintained for a long time.
+
 =head1 PERL VERSIONS SUPPORTED
 
 Your perl must support 64 bit ints.
@@ -343,8 +347,8 @@ sub new {
     } elsif($country =~ /^(GG|JE|IM)$/) {
         $country = "UK::$country";
     }
-    eval "use Number::Phone::$country";
-    if($@ || !"Number::Phone::$country"->isa('Number::Phone')) {
+    eval "use Number::Phone::$country" unless($country eq 'IE');
+    if($@ || $country eq 'IE' || !"Number::Phone::$country"->isa('Number::Phone')) {
         if($@ =~ /--without_uk/) {
             # a test unexpectedly tried to load Number::Phone::UK, argh!
             die $@
