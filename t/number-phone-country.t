@@ -161,7 +161,8 @@ is(phone2country('+350123'), 'GI', '+350 is GI');
 is(phone2country('+351123'), 'PT', '+351 is PT');
 is(phone2country('+352123'), 'LU', '+352 is LU');
 is(phone2country('+353123'), 'IE', '+353 is IE');
-is(phone2country('+35348123'), 'GB', '+35348 is GB'); # Northern Ireland, as part of Ireland
+is(phone2country('+35348123'), 'GB', '+35348 is GB'); # Northern Ireland, as part of Irish numbering plan
+is(phone2country('+35348123', 1), 'IE', '+35348 is IE if we ignore translations'); # Northern Ireland, as part of Irish numbering plan
 is(phone2country('+354123'), 'IS', '+354 is IS');
 is(phone2country('+355123'), 'AL', '+355 is AL');
 is(phone2country('+356123'), 'MT', '+356 is MT');
@@ -195,7 +196,9 @@ is(phone2country('+38643123'), 'SI', '+386 43 is SI'); # previously used by XK
 is(phone2country('+38649123'), 'SI', '+386 44 is SI'); # previously used by XK
 is(phone2country('+387123'), 'BA', '+387 is BA');
 is(phone2country('+389123'), 'MK', '+389 is MK');
-is(phone2country('+39123') , 'IT', '+39 is IT');
+is(phone2country('+39123'),  'IT', '+39 is IT');
+is(phone2country('+390549'), 'SM', '+390549 is SM');
+is(phone2country('+390549', 1), 'IT', '+390549 is IT if we ignore translations');
 is(phone2country('+39066982123'), 'VA', '+39066982 is VA'); # Vatican, as part of Rome
 is(phone2country('+3966982123'), 'IT', '+3966982 is IT');   # previous versions had this as VA incorrectly, see 52aefd0
 is(phone2country('+40123') , 'RO', '+40 is RO');

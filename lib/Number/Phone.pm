@@ -339,7 +339,7 @@ sub _new_args {
     $number =~ s/[^+0-9]//g;
     $number = "+$number" unless($number =~ /^\+/);
 
-    $country = Number::Phone::Country::phone2country($number) or return;
+    $country = Number::Phone::Country::phone2country($number, 1) or return;
     if($country eq 'AQ' && $number =~ /^\+882/) {
         $original_country = 'InternationalNetworks882';
     }

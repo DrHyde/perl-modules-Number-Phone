@@ -21,11 +21,6 @@ sub import {
     }
 }
 
-sub phone2country {
-    my ($phone) = @_;
-    return (phone2country_and_idd($phone))[0];
-}
-
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
@@ -158,8 +153,12 @@ sub _non_US_CA_area_codes {
 
 }
 
+sub phone2country {
+    return (phone2country_and_idd(@_))[0];
+}
+
 sub phone2country_and_idd {
-    my ($phone) = @_;
+    my ($phone, $ignore_translations) = @_;
     $phone =~ s/[^\+?\d+]//g;
     $phone = '+1'.$phone unless(substr($phone, 0, 1) =~ /[1+]/);
     $phone =~ s/\D//g;
@@ -177,7 +176,10 @@ sub phone2country_and_idd {
         my @prefixes = map { substr($phone, 0, $_) } reverse 1..length($phone);
         foreach my $idd (@prefixes) {
             if(exists $idd_codes{$idd}) {
-                next if(exists($number_translations{$idd}));
+                next if(
+                    $ignore_translations &&
+                    exists($number_translations{$idd})
+                );
 
                 my $country = $idd_codes{$idd};
                 if(ref($country) eq 'ARRAY'){
@@ -378,15 +380,25 @@ are calling.  For example, in the US, the NDD prefix is "1", so you must
 dial 1 before the area code to place a long distance call within the
 country.
 
-=item phone2country($phone)
+=item phone2country
+
+Wrapper around phone2country_and_idd, that takes the same
+arguments.
 
 B<DEPRECATED> Returns the ISO country code (or XK for Kosovo) for a phone number.
 eg, for +441234567890 it returns 'GB' (or 'UK' if you've told it to).
 
-=item phone2country_and_idd($phone)
+=item phone2country_and_idd($phone, $ignore_translations)
 
 Returns a list containing the ISO country code and IDD prefix for the given
 phone number.  eg for +441234567890 it returns ('GB', 44).
+
+By default, if a number is translated from one country to another -
+for example +353 48 xxx numbers in the Irish numbering plan are
+really just a mapping to +44 28 xxx numbers in the UK plan - then the
+data for the translated number is returned. If you want the country
+according to the ITU country code then set C<$ignore_translations> to
+a true value.
 
 =item canonicalize_number($phone)
 
