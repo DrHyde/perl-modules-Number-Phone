@@ -3,7 +3,7 @@ use warnings;
 use lib 't/inc';
 use nptestutils;
 
-use Devel::Hide qw(Number::Phone::IE Number::Phone::IT Number::Phone::SM);
+use Devel::Hide qw(Number::Phone::IT Number::Phone::SM);
 use Number::Phone;
 use Number::Phone::Lib;
 use Test::More;
