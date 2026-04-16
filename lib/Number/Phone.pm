@@ -677,6 +677,10 @@ another country (see L<may_be_noncanonical_number>) then this will return
 an object representing the number that it is mapped to. Otherwise you just
 get your object back.
 
+This is similar to, and more useful than, C<translates_to>, which will either
+return an object for the canonical number or C<undef> if the number is already
+canonical.
+
 =item country
 
 The two letter ISO country code for the country in which the call will
@@ -696,15 +700,20 @@ returns the last two-letter code it finds.  eg ...
 
 =item translates_to
 
+B<DEPRECATED>
+
 If the number forwards to another number (such as a special rate number
 forwarding to a geographic number), or is part of a chunk of number-space
 mapped onto another chunk of number-space (such as where a country has a
-shortcut to (part of) another country's number-space, like how Gibraltar
-used to appear as an area code in Spain's numbering plan as well as having its
-own country code), then this method may return an object representing the
-target number.  Otherwise it returns undef.
+shortcut to (part of) another country's number-space, like how Northern Ireland
+appears as an area code in the Irish republic's numbering plan as well as being
+canonically an area code in the UK's numbering plan, then this method may
+return an object representing the target number.  Otherwise it returns undef.
 
-The superclass implementation returns undef.
+The superclass implementation returns undef, and it was never implemented for
+any of the country-specific subclasses bundled with Number::Phone. You are
+encouraged to not implement this in subclasses, and users should use
+C<canonical_number> instead.
 
 =back
 
