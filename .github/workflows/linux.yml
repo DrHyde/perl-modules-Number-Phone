@@ -1,10 +1,11 @@
+# Auto-generated file, see workflow-templates/linux.yml
+
 on:
   push:
     paths:
       - '.github/workflows/linux.yml'
       - '.github/workflows/run-linux'
 name: Linux
-
 jobs:
   list:
     name: list available perl versions
@@ -19,7 +20,6 @@ jobs:
           set_output(matrix => {perl => [grep { $_ =~ /^5\.(16|22|26|30|36|42)/ } perl_versions()]});
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-
   build:
     runs-on: 'ubuntu-latest'
     needs: list
@@ -30,12 +30,10 @@ jobs:
     steps:
       - name: check out code
         uses: actions/checkout@v6
-
       - name: switch to perl ${{ matrix.perl }}
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
-
       - name: run tests
         env:
           PERL_USE_UNSAFE_INC: 0
@@ -45,5 +43,6 @@ jobs:
             cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
             cpanm --quiet --notest --installdeps .
             ./build-data.sh
+            cpanm --installdeps .
             perl Makefile.PL
-            make test TEST_VERBOSE=1
+            make test

@@ -1,10 +1,11 @@
+# Auto-generated file, see workflow-templates/linux-without_uk-build.yml
+
 on:
   push:
     paths:
-      - '.github/workflows/linux.yml'
-      - '.github/workflows/run-linux'
+      - '.github/workflows/linux-without_uk-build.yml'
+      - '.github/workflows/run-linux-without_uk-build'
 name: Linux (build --without_uk and install)
-
 jobs:
   list:
     name: list available perl versions
@@ -19,7 +20,6 @@ jobs:
           set_output(matrix => {perl => [grep { $_ =~ /^5\.32/ } perl_versions()]});
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-
   build:
     runs-on: 'ubuntu-latest'
     needs: list
@@ -30,12 +30,10 @@ jobs:
     steps:
       - name: check out code
         uses: actions/checkout@v6
-
       - name: switch to perl ${{ matrix.perl }}
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
-
       - name: run tests
         env:
           BUILD_TEST: 1
