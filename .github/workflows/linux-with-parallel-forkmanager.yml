@@ -1,19 +1,22 @@
 on: [push, pull_request]
-name: Linux (build without Parallel::ForkManager)
+name: Linux (build with Parallel::ForkManager)
 
 jobs:
-
   build:
     runs-on: 'ubuntu-latest'
-    name: Perl 5.32 build without Parallel::ForkManager
+    strategy:
+      fail-fast: false
+      matrix:
+        perl: [ '5.32' ]
+    name: Perl ${{ matrix.perl }}
     steps:
       - name: check out code
         uses: actions/checkout@v6
 
-      - name: switch to perl 5.32
+      - name: switch to perl ${{ matrix.perl }}
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: 5.32
+          perl-version: ${{ matrix.perl }}
 
       - name: run tests
         env:
@@ -21,9 +24,10 @@ jobs:
           PERL_USE_UNSAFE_INC: 0
         run: |
             perl -v
+            cpanm Parallel::ForkManager
             cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
-            cpanm --quiet --notest Data::Dumper::Concise File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
+            cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
             cpanm --quiet --notest --installdeps .
             ./build-data.sh
             perl Makefile.PL
-            PERL5OPT=-MDevel::Hide=Parallel::ForkManager make test TEST_VERBOSE=1
+            make test TEST_VERBOSE=1

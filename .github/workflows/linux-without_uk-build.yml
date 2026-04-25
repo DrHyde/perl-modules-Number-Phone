@@ -2,18 +2,21 @@ on: [push, pull_request]
 name: Linux (build --without_uk and install)
 
 jobs:
-
   build:
     runs-on: 'ubuntu-latest'
-    name: Perl 5.32 build --without_uk and install
+    strategy:
+      fail-fast: false
+      matrix:
+        perl: [ '5.32' ]
+    name: Perl ${{ matrix.perl }}
     steps:
       - name: check out code
         uses: actions/checkout@v6
 
-      - name: switch to perl 5.32
+      - name: switch to perl ${{ matrix.perl }}
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: 5.32
+          perl-version: ${{ matrix.perl }}
 
       - name: run tests
         env:
@@ -21,9 +24,8 @@ jobs:
           PERL_USE_UNSAFE_INC: 0
         run: |
             perl -v
-            perl -MData::Dumper -e 'eval "use Number::Phone"; if(!$@) { print "Number::Phone is already installed, argh\n".Dumper(\%INC); exit(1) } else { print "Number::Phone not yet installed, hurrah\n"; exit(0) }'
             cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
-            cpanm --quiet --notest Data::Dumper::Concise File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
+            cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
             cpanm --quiet --notest --installdeps .
             ./build-data.sh
             perl Makefile.PL --without_uk INSTALL_BASE=$HOME/test_install
