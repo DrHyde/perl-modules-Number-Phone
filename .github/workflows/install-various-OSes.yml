@@ -44,7 +44,7 @@ jobs:
         with:
           name: dist-for-install
       - name: Install on NetBSD
-        uses: cross-platform-actions/action@v0.32.0
+        uses: cross-platform-actions/action@v1.0.0
         with:
           operating_system: netbsd
           version: 10.1
@@ -67,7 +67,7 @@ jobs:
         with:
           name: dist-for-install
       - name: Install on FreeBSD
-        uses: cross-platform-actions/action@v0.32.0
+        uses: cross-platform-actions/action@v1.0.0
         with:
           operating_system: freebsd
           version: 14.2
@@ -88,7 +88,7 @@ jobs:
         with:
           name: dist-for-install
       - name: Install on OpenBSD
-        uses: cross-platform-actions/action@v0.32.0
+        uses: cross-platform-actions/action@v1.0.0
         with:
           operating_system: openbsd
           version: 7.4
@@ -108,7 +108,7 @@ jobs:
         with:
           name: dist-for-install
       - name: Install on OmniOS
-        uses: cross-platform-actions/action@v0.32.0
+        uses: cross-platform-actions/action@v1.0.0
         with:
           operating_system: omnios
           version: r151056
