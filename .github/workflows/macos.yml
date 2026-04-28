@@ -1,6 +1,11 @@
-on: [push, pull_request]
-name: MacOS
+# Auto-generated file, see workflow-templates/macos.yml
 
+on:
+  push:
+    paths:
+      - '.github/workflows/macos.yml'
+      - '.github/workflows/run-macos'
+name: MacOS
 jobs:
   build:
     strategy:
@@ -14,10 +19,10 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
       - name: Test and build
         run: |
-          cpanm ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
-          cpanm File::ShareDir::Install XML::XPath
-          cpanm -v --no-interactive File::Find::Rule Text::CSV_XS LWP::Protocol::https
+          cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
+          cpanm --quiet --notest --installdeps .
+          ./build-data.sh
           cpanm --installdeps .
           perl Makefile.PL
-          ./build-data.sh
-          make test
+          make test TEST_VERBOSE=1
