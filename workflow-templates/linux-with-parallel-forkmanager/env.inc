@@ -1,0 +1,3 @@
+env:
+  BUILD_TEST: 1
+  PERL_USE_UNSAFE_INC: 0

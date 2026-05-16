@@ -1,4 +1,10 @@
-on: [push, pull_request]
+# Auto-generated file, see workflow-templates/coveralls.yml
+
+on:
+  push:
+    paths:
+      - '.github/workflows/coveralls.yml'
+      - '.github/workflows/run-coveralls'
 name: Generate Coveralls report
 jobs:
   build:
@@ -7,13 +13,16 @@ jobs:
       - uses: actions/checkout@v6
       - uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: 5.32
+          perl-version: 5.42
       - name: Run with coverage checking
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
-          cpanm --installdeps .
+          perl -v
           cpanm Devel::Cover::Report::Coveralls
+          cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
+          cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
+          cpanm --quiet --notest --installdeps .
           ./build-data.sh
+          cpanm --installdeps .
           cover -ignore_re ^buildtools/ -test -report Coveralls

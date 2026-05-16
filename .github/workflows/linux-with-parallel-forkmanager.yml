@@ -1,11 +1,11 @@
-# Auto-generated file, see workflow-templates/linux-without_uk-build.yml
+# Auto-generated file, see workflow-templates/linux-with-parallel-forkmanager.yml
 
 on:
   push:
     paths:
-      - '.github/workflows/linux-without_uk-build.yml'
-      - '.github/workflows/run-linux-without_uk-build'
-name: Linux (build --without_uk and install)
+      - '.github/workflows/linux-with-parallel-forkmanager.yml'
+      - '.github/workflows/run-linux-with-parallel-forkmanager'
+name: Linux (build with Parallel::ForkManager)
 jobs:
   list:
     name: list available perl versions
@@ -40,11 +40,11 @@ jobs:
           PERL_USE_UNSAFE_INC: 0
         run: |
             perl -v
+            cpanm Parallel::ForkManager
             cpanm --quiet --notest ExtUtils::MakeMaker Test::Pod Test::Pod::Coverage parent
             cpanm --quiet --notest File::ShareDir::Install XML::XPath Data::CompactReadonly File::Find::Rule Text::CSV_XS LWP::Protocol::https
             cpanm --quiet --notest --installdeps .
             ./build-data.sh
-            perl Makefile.PL --without_uk INSTALL_BASE=$HOME/test_install
+            cpanm --installdeps .
+            perl Makefile.PL
             make test TEST_VERBOSE=1
-            make install
-            perl -I$HOME/test_install/lib/perl5 -MData::Dumper::Concise -MNumber::Phone -e 'if(Number::Phone->new("+447979866975")->isa("Number::Phone::StubCountry::GB")) { print "N::P built/installed correctly without N::P::UK\n".Dumper(\%INC); exit(0) } else { print "N::P build/install failed\n"; exit(1) }'
