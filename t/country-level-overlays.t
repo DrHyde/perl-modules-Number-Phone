@@ -293,10 +293,10 @@ sub test_constructor {
         }
         if(exists($test->{may_be_noncanonical})) {
             is(
-                $obj->may_be_noncanonical_number,
+                $obj->_may_be_noncanonical_number,
                 $test->{may_be_noncanonical},
                 "objects of this class may ".
-                    (!$obj->may_be_noncanonical_number ? "not " : "").
+                    (!$obj->_may_be_noncanonical_number ? "not " : "").
                     "have a different canonical form"
             );
         }

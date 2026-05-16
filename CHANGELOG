@@ -8,8 +8,8 @@ XXXXXX    XXXX-XX-XX
   is obsolete since N::P::StubCountry:XX were introduced. Number::Phone will
   now refuse to use it if it is installed
 
-- new methods have been introduced to deal with the Irish and San
-  Marino/Italian weirdness, may_be_noncanonical_number and canonical_number
+- new method introduced to deal with the Irish and San Marino/Italian
+  weirdness: canonical_number
 
 - the superclass implementation of is_international is now based on those
   new methods instead of just returning undef for "dunno mate"

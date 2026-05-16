@@ -76,12 +76,12 @@ foreach my $method (
 }
 
 # class and object method
-sub may_be_noncanonical_number { 0 }
+sub _may_be_noncanonical_number { 0 }
 
 # object method
 sub canonical_number {
     my $self = shift;
-    return $self unless($self->may_be_noncanonical_number);
+    return $self unless($self->_may_be_noncanonical_number);
 
     return __PACKAGE__->new(
         Number::Phone::Country::canonicalize_number(
@@ -92,9 +92,9 @@ sub canonical_number {
 
 sub is_international {
     my $self = shift;
-    return 0 unless($self->may_be_noncanonical_number);
+    return 0 unless($self->_may_be_noncanonical_number);
 
-    return $self->country_code ne $self->canonical_number->country_code;
+    return !!($self->country_code ne $self->canonical_number->country_code);
 }
 
 sub type {
@@ -662,20 +662,11 @@ country, or as a nationally-preferred international number if not. Internally
 this uses the National and NationallyPreferredIntl formatters. Beware of the
 potential performance hit!
 
-=item may_be_noncanonical_number
-
-Some countries have parts of their number plan mapped to other countries.
-When this is the case, this will return true, otherwise it will return false.
-
-See also L<is_international>, but note that there is not necessarily a direct
-relationship between the two methods.
-
 =item canonical_number
 
 If this is a number which is a part of a national number plan which maps to
-another country (see L<may_be_noncanonical_number>) then this will return
-an object representing the number that it is mapped to. Otherwise you just
-get your object back.
+another country then this will return an object representing the number that it
+is mapped to. Otherwise you just get your object back.
 
 This is similar to, and more useful than, C<translates_to>, which will either
 return an object for the canonical number or C<undef> if the number is already

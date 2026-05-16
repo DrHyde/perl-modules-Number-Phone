@@ -27,7 +27,7 @@ sub country {
 
     if(exists($self->{country})) { return $self->{country}; }
 
-    if($self->may_be_noncanonical_number) {
+    if($self->_may_be_noncanonical_number) {
         my $digits = $self->format_using('MSISDN');
         foreach my $translated_prefix (keys %Number::Phone::Country::number_translations) {
             if($digits =~ /^$translated_prefix/) {
