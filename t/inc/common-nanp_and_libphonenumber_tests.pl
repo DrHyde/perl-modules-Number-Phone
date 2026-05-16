@@ -199,16 +199,16 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
     is($CLASS->new('+1 242 367 0000')->operator(), 'BARTELCO (BA)', 'Bahamas, thousands blocks all for same operator, so consolidated into one to save space in database');
 
     foreach my $number(
-        [ 'USA',     '+1 512 373 0000', 'METROPCS, INC.' ],
+        [ 'USA',     '+1 512 373 0000', 'T-MOBILE USA, INC.' ],
         [ 'USA',     '+1 512 373 1000', undef ],
-        [ 'USA',     '+1 512 373 2000', 'METROPCS, INC.', ],
+        [ 'USA',     '+1 512 373 2000', 'T-MOBILE USA, INC.', ],
         [ 'USA',     '+1 512 373 3000', 'TWC IP ENABLED SERVICES, LLC', ],
         [ 'USA',     '+1 512 373 4000', undef ],
         [ 'USA',     '+1 512 373 5000', 'METROPCS, INC.' ],
         [ 'USA',     '+1 512 373 6000', 'METROPCS, INC.' ],
         [ 'USA',     '+1 512 373 7000', undef ],
         [ 'USA',     '+1 512 373 8000', 'TWC IP ENABLED SERVICES, LLC' ],
-        [ 'USA',     '+1 512 373 9000', 'METROPCS, INC.' ]
+        [ 'USA',     '+1 512 373 9000', 'T-MOBILE USA, INC.' ]
     ) {
         is(
             $CLASS->new($number->[1])->operator(),
