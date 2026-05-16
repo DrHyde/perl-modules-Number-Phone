@@ -83,7 +83,7 @@ subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
             country           => 'UK',
             canonical         => '+44 28 9032 0202',
         },
-    ) { run_test($test) }
+    ) { test_constructor($test) }
 };
 
 subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
@@ -183,7 +183,7 @@ subtest "San Marino, +378 also accessible as +378 0549 and as +39 0549", sub {
             country           => 'SM',
             canonical         => '+378 0549 886377',
         },
-    ) { run_test($test) }
+    ) { test_constructor($test) }
 };
 
 subtest "Vatican, +379 is not in use, +39 06698 is an Italian area code", sub {
@@ -199,12 +199,64 @@ subtest "Vatican, +379 is not in use, +39 06698 is an Italian area code", sub {
             expect_class      => 'Number::Phone::StubCountry::VA',
             num => '+39 06698 83462'
         },
-    ) { run_test($test) }
+    ) { test_constructor($test) }
 };
+
+subtest "+353 48 in dial_to", sub {
+    foreach my $mapping (
+        # from NI (+4428)
+        { from => '+442890320202', to => '+3534890320202', expect => '003534890320202' },  # UK->IE
+        { from => '+442890320202', to => '+35312222918',   expect => '0035312222918' },    # UK->IE
+        { from => '+442890320202', to => '+442087712924',  expect => '02087712924' },      # UK->UK
+        { from => '+442890320202', to => '+12024561111',   expect => '0012024561111' },    # UK->US
+         # from GB
+        { from => '+442087712924', to => '+3534890320202', expect => '003534890320202' },  # UK->IE
+        { from => '+442087712924', to => '+35312222918',   expect => '0035312222918' },    # UK->IE
+        { from => '+442087712924', to => '+442890320202',  expect => '02890320202' },      # UK->UK
+        { from => '+442087712924', to => '+12024561111',   expect => '0012024561111' },    # UK->US
+         # from US
+        { from => '+12024561111',  to => '+3534890320202', expect => '0113534890320202' }, # US->IE
+        { from => '+12024561111',  to => '+35312222918',   expect => '01135312222918' },   # US->IE
+        { from => '+12024561111',  to => '+442890320202',  expect => '011442890320202' },  # US->UK
+        { from => '+12024561111',  to => '+442087712924',  expect => '011442087712924' },  # US->UK
+        # from NI (+35348)
+        { from => '+3534890320202', to => '+442890320202',  expect => '02890320202' },     # UK->UK
+        { from => '+3534890320202', to => '+3534890320203', expect => '003534890320203' }, # UK->IE
+        { from => '+3534890320202', to => '+35312222918',   expect => '0035312222918' },   # UK->IE
+        { from => '+3534890320202', to => '+442087712924',  expect => '02087712924' },     # UK->UK
+        { from => '+3534890320202', to => '+12024561111',   expect => '0012024561111' },   # UK->US
+        # from IE
+        { from => '+35312222918',   to => '+3534890320202', expect => '04890320202' },     # IE->IE
+        { from => '+35312222918',   to => '+35312222918',   expect => '012222918' },       # IE->IE
+        { from => '+35312222918',   to => '+442890320202',  expect => '00442890320202' },  # IE->UK
+        { from => '+35312222918',   to => '+442087712924',  expect => '00442087712924' },  # IE->UK
+        { from => '+35312222918',   to => '+12024561111',   expect => '0012024561111' },   # IE->US
+    ) {
+        my($from, $to, $expected) = @{$mapping}{qw(from to expect)};
+        subtest sprintf("from %14s to %14s should dial %16s",$from, $to, $expected) => sub {
+            foreach my $from_class (qw(Number::Phone Number::Phone::Lib)) {
+                foreach my $to_class (qw(Number::Phone Number::Phone::Lib)) {
+                    is(
+                        $from_class->new($from)->dial_to(
+                            $to_class->new($to)
+                        ),
+                        $expected,
+                        "dial_to said $expected ($from_class -> $to_class)"
+                    );
+                }
+            }
+        };
+    }
+};
+
+ok(!exists($INC{'Number/Phone/IE.pm'}), "Number::Phone::IE wasn't loaded");
+if(eval "use Number::Phone::IE;1;") {
+    pass("... even though it is installed");
+}
 
 done_testing();
 
-sub run_test {
+sub test_constructor {
     my $test = shift;
 
     subtest ''.($test->{sanity} ? 'sanity check: ' : '').
