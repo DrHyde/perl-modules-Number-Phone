@@ -134,6 +134,9 @@ sub intra_country_dial_to {
         my $icdt_sub = {
             IE => \&_intra_country_dial_to_leading_0,
             GB => \&_intra_country_dial_to_leading_0,
+            JE => \&_intra_country_dial_to_leading_0,
+            GG => \&_intra_country_dial_to_leading_0,
+            IM => \&_intra_country_dial_to_leading_0,
         }->{$from->country}
     ) {
         return $icdt_sub->($from, $to);

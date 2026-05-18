@@ -35,9 +35,14 @@ foreach my $test (
     # stub domestic
     { from => '+33 1 49 55 49 55', to => '+33 826 500 500',   expect => undef,             desc => 'FR (stub) to FR (stub)' },
 ) {
-    if($test->{from} =~ /^\+44/ && $test->{to} =~ /^\+44/ && building_without_uk()) {
-        # stubs can't resolve domestic calls
-        $test->{expect} = undef;
+    if(
+        $test->{from} =~ /^\+44/  && $test->{to} =~ /^\+44/ &&
+        !defined($test->{expect}) && building_without_uk()
+    ) {
+        # stubs don't know that we can't call unallocated numbers
+        $test->{expect} = $test->{to};
+        $test->{expect} =~ s/^\+44 /0/;
+        $test->{expect} =~ s/ //g;
     }
     test_dial_to(%{$test});
 }
