@@ -1,5 +1,8 @@
 XXXXXX    XXXX-XX-XX
 
+- DEPRECATION WARNING: building --without_uk will no longer be supported
+  two years after the date of this release.
+
 - bug fix for numbers in Northern Ireland which are reachable in the Irish
   Republic's numbering plan as +353 48 XXX, and also for San Marino numbers
   which likewise appear in the Italian numbering plan as +39 0549 XXX

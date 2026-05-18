@@ -18,6 +18,13 @@ BEGIN {
 
 foreach my $arg (@ARGV) {
     if($arg eq '--without_uk') {
+        warn(
+            "DEPRECATION WARNING: --without_uk is going away. It was introduced\n".
+            "  because Number::Phone::UK's data took up lots of space, but since\n".
+            "  version 4.0000 (released in Septmber 2023) a new more efficient\n".
+            "  database format has been in use and so this option is no longer\n".
+            "  necessary. Removing it will simplify the code.\n"
+        );
         $Number::Phone::BuildTools::without_uk++;
     }
 }
