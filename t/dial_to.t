@@ -42,6 +42,56 @@ foreach my $test (
     test_dial_to(%{$test});
 }
 
+subtest "Country-level overlays in dial_to", sub {
+    foreach my $mapping (
+        # +353 48 maps to +44 28, so we need to be especially thorough about testing
+        # anything involving the UK or Ireland
+        #
+        # from NI, instantiated as a UK number (+4428)
+        { from => '+442890320202', to => '+3534890320202', expect => '003534890320202' },  # UK->IE
+        { from => '+442890320202', to => '+35312222918',   expect => '0035312222918' },    # UK->IE
+        { from => '+442890320202', to => '+442087712924',  expect => '02087712924' },      # UK->UK
+        { from => '+442890320202', to => '+12024561111',   expect => '0012024561111' },    # UK->US
+         # from GB
+        { from => '+442087712924', to => '+3534890320202', expect => '003534890320202' },  # UK->IE
+        { from => '+442087712924', to => '+35312222918',   expect => '0035312222918' },    # UK->IE
+        { from => '+442087712924', to => '+442890320202',  expect => '02890320202' },      # UK->UK
+        { from => '+442087712924', to => '+12024561111',   expect => '0012024561111' },    # UK->US
+         # from US
+        { from => '+12024561111',  to => '+3534890320202', expect => '0113534890320202' }, # US->IE
+        { from => '+12024561111',  to => '+35312222918',   expect => '01135312222918' },   # US->IE
+        { from => '+12024561111',  to => '+442890320202',  expect => '011442890320202' },  # US->UK
+        { from => '+12024561111',  to => '+442087712924',  expect => '011442087712924' },  # US->UK
+        # from NI instantiated as an IE number (+35348)
+        { from => '+3534890320202', to => '+442890320202',  expect => '02890320202' },     # UK->UK
+        { from => '+3534890320202', to => '+3534890320203', expect => '003534890320203' }, # UK->IE
+        { from => '+3534890320202', to => '+35312222918',   expect => '0035312222918' },   # UK->IE
+        { from => '+3534890320202', to => '+442087712924',  expect => '02087712924' },     # UK->UK
+        { from => '+3534890320202', to => '+12024561111',   expect => '0012024561111' },   # UK->US
+        # from IE
+        { from => '+35312222918',   to => '+3534890320202', expect => '04890320202' },     # IE->IE
+        { from => '+35312222918',   to => '+35312222918',   expect => '012222918' },       # IE->IE
+        { from => '+35312222918',   to => '+442890320202',  expect => '00442890320202' },  # IE->UK
+        { from => '+35312222918',   to => '+442087712924',  expect => '00442087712924' },  # IE->UK
+        { from => '+35312222918',   to => '+12024561111',   expect => '0012024561111' },   # IE->US
+    ) {
+        my($from, $to, $expected) = @{$mapping}{qw(from to expect)};
+        subtest sprintf("from %14s to %14s should dial %16s",$from, $to, $expected) => sub {
+            foreach my $from_class (qw(Number::Phone Number::Phone::Lib)) {
+                foreach my $to_class (qw(Number::Phone Number::Phone::Lib)) {
+                    is(
+                        $from_class->new($from)->dial_to(
+                            $to_class->new($to)
+                        ),
+                        $expected,
+                        "dial_to said $expected ($from_class -> $to_class)"
+                    );
+                }
+            }
+        };
+    }
+};
+
 sub test_dial_to {
     my %params = @_;
 
