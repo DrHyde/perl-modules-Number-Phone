@@ -8,9 +8,6 @@ use Number::Phone;
 use Number::Phone::Lib;
 use Test::More;
 
-plan skip_all => "need Number::Phone::UK to test this thoroughly"
-    if(building_without_uk());
-
 subtest "Northern Ireland, +44 28 also accessible as +353 48", sub {
     foreach my $test (
         # Dublin number
@@ -210,50 +207,63 @@ sub test_constructor {
     subtest ''.($test->{sanity} ? 'sanity check: ' : '').
             "$test->{constructor_class}->new('$test->{num}')",
     sub {
-        my $obj = $test->{constructor_class}->new($test->{num});
-        ok(defined($obj),
-            "$test->{constructor_class} object created"
-        );
-        isa_ok($obj, $test->{expect_class}) &&
-        ok($obj->is_valid, "$test->{num} is a valid number");
-        ok(!!$obj->is_international == !!$test->{is_international},
-            "->is_international is correct");
-        if($test->{formatted}) {
-            is(
-                $obj->format,
-                $test->{formatted},
-                "$test->{num} formats as $test->{formatted}"
+        SKIP: {
+            skip "need Number::Phone::UK to test this thoroughly"
+                if(
+                    building_without_uk() &&
+                    $test->{expect_class} eq 'Number::Phone::UK'
+                );
+
+            my $obj = $test->{constructor_class}->new($test->{num});
+            ok(defined($obj),
+                "$test->{constructor_class} object created"
             );
-        }
-        if($test->{country_code}) {
-            is(
-                $obj->country_code,
-                $test->{country_code},
-                "$test->{num} has country code $test->{country_code}"
-            );
-        }
-        if($test->{country}) {
-            is(
-                $obj->country,
-                $test->{country},
-                "$test->{num} has country $test->{country}"
-            );
-        }
-        if(exists($test->{may_be_noncanonical})) {
-            is(
-                $obj->_may_be_noncanonical_number,
-                $test->{may_be_noncanonical},
-                "objects of this class may ".
-                    (!$obj->_may_be_noncanonical_number ? "not " : "").
-                    "have a different canonical form"
-            );
-        }
-        if(exists($test->{canonical})) {
-            is(
-                $obj->canonical_number->format,
-                $test->{canonical},
-                "has correct canonical form $test->{canonical}"
-            );
+            isa_ok($obj, $test->{expect_class}) &&
+            ok($obj->is_valid, "$test->{num} is a valid number");
+            ok(!!$obj->is_international == !!$test->{is_international},
+                "->is_international is correct");
+            if($test->{formatted}) {
+                is(
+                    $obj->format,
+                    $test->{formatted},
+                    "$test->{num} formats as $test->{formatted}"
+                );
+            }
+            if($test->{country_code}) {
+                is(
+                    $obj->country_code,
+                    $test->{country_code},
+                    "$test->{num} has country code $test->{country_code}"
+                );
+            }
+            if($test->{country}) {
+                # because we might have built --without_uk, we might
+                # end up with a Number::Phone::StubCountry::GB, so map
+                # a desired country of 'UK' to either that or 'GB'
+                my $country_re = qr/^$test->{country}$/;
+                $country_re = qr/^(UK|GB)$/ if($test->{country} eq 'UK');
+                like(
+                    $obj->country,
+                    $country_re,
+                    "$test->{num} has country $test->{country}"
+                );
+            }
+            if(exists($test->{may_be_noncanonical})) {
+                is(
+                    $obj->_may_be_noncanonical_number,
+                    $test->{may_be_noncanonical},
+                    "objects of this class may ".
+                        (!$obj->_may_be_noncanonical_number ? "not " : "").
+                        "have a different canonical form"
+                );
+            }
+            if(exists($test->{canonical})) {
+                is(
+                    $obj->canonical_number->format,
+                    $test->{canonical},
+                    "has correct canonical form $test->{canonical}"
+                );
+            }
         }
     };
 }

@@ -84,6 +84,11 @@ subtest "Country-level overlays in dial_to", sub {
         subtest sprintf("from %14s to %14s should dial %16s",$from, $to, $expected) => sub {
             foreach my $from_class (qw(Number::Phone Number::Phone::Lib)) {
                 foreach my $to_class (qw(Number::Phone Number::Phone::Lib)) {
+                    # if we're building --without_uk these combinations will explode
+                    next if(
+                        ($from_class eq 'Number::Phone' && $from =~ /^(\+44|\+35348)/) ||
+                        ($to_class   eq 'Number::Phone' && $to   =~ /^(\+44|\+35348)/)
+                    );
                     is(
                         $from_class->new($from)->dial_to(
                             $to_class->new($to)

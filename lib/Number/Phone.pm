@@ -83,11 +83,20 @@ sub canonical_number {
     my $self = shift;
     return $self unless($self->_may_be_noncanonical_number);
 
-    return __PACKAGE__->new(
-        Number::Phone::Country::canonicalize_number(
-            '+'.$self->format_using('MSISDN')
-        )
-    );
+    my $canonical_number = Number::Phone::Country::canonicalize_number( '+'.$self->format_using('MSISDN'));
+
+    # if we built --without_uk but Number::Phone::UK has been installed (like,
+    # say, on a dev machine) then we need to force this to build a stub object
+    # for UK numbers when testing. We can detect this weird situation by
+    # seeing if the sub that detects it while testing exists and returns true.
+    # Yes, this is a monstrous evil.
+    if(
+        exists(&{'nptestutils::building_without_uk'}) &&
+        nptestutils::building_without_uk() &&
+        index($canonical_number, '+44') == 0) {
+        return Number::Phone::Lib->new($canonical_number);
+    }
+    return Number::Phone->new($canonical_number);
 }
 
 sub is_international {
