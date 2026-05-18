@@ -123,4 +123,22 @@ sub timezones {
   return undef;
 }
 
+sub _intra_country_dial_to_leading_0 {
+    my($from, $to) = @_;
+    return '0'.$to->raw_number;
+}
+
+sub intra_country_dial_to {
+    my($from, $to) = @_;
+    if(
+        my $icdt_sub = {
+            IE => \&_intra_country_dial_to_leading_0,
+            GB => \&_intra_country_dial_to_leading_0,
+        }->{$from->country}
+    ) {
+        return $icdt_sub->($from, $to);
+    }
+    return $from->SUPER::intra_country_dial_to();
+}
+
 1;

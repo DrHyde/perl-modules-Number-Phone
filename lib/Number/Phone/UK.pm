@@ -442,11 +442,19 @@ will apply to more areas.
 =cut
 
 sub intra_country_dial_to {
-  my $from = shift;
-  my $to   = shift;
+    my $from = shift;
+    my $to   = shift;
 
-  die if(!$to->is_allocated());
-  return '0'.($to->areacode() ? $to->areacode() : '').$to->subscriber();
+    my $to_raw = $to->raw_number;
+
+    # for the full-fat implementation we don't want to say you can dial an
+    # unallocated number, but if $to is a stub for whatever reason we can't
+    # check that
+    die "$to_raw is not allocated\n" if(
+        !$to->isa('Number::Phone::StubCountry') &&
+        !$to->is_allocated()
+    );
+    return "0$to_raw";
 }
 
 =item country

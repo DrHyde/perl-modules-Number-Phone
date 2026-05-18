@@ -113,16 +113,13 @@ sub dial_to {
   my $from = shift;
   my $to   = shift;
 
+  $from = $from->canonical_number;
+
   if($from->country_code() != $to->country_code()) {
-    return Number::Phone::Country::idd_code($from->country()).
+    return
+        Number::Phone::Country::idd_code($from->country()).
         $to->country_code().
-        ($to->isa('Number::Phone::StubCountry')
-          ? $to->raw_number()
-          : (
-              ($to->areacode() ? $to->areacode() : '').
-              $to->subscriber()
-            )
-        );
+        $to->raw_number();
   }
 
   # do we know how to do this?
@@ -130,8 +127,17 @@ sub dial_to {
   return undef if($@); # no
   return $intra_country_dial_to if(defined($intra_country_dial_to)); # yes, and here's how
 
-  # if we get here, then we can use the default implementation ...
-
+  # if we get here, then we can use the default implementation, which
+  # is to either:
+  # * for calls within an area code
+  #     return the destination subscriber number
+  # * otherwise concatenate
+  #     the national direct dialling code (eg 0 for the UK, if the UK used this)
+  #     the area code
+  #     the subscriber number
+  # NB the UK can't use this because in a few places such as Brighton (01273)
+  # numbers are now being allocate with E digit 0, eg 0127300xxxx. 00xxxx begins
+  # with 00, the international access code, so can't be dialled on its own.
   if(
     defined($from->areacode()) &&
     defined($to->areacode())   &&
@@ -141,6 +147,11 @@ sub dial_to {
   return Number::Phone::Country::ndd_code($from->country()).
          ($to->areacode() ? $to->areacode() : '').
          $to->subscriber();
+}
+
+sub raw_number {
+    my $self = shift;
+    return ($self->areacode() ? $self->areacode() : '').$self->subscriber();
 }
 
 sub intra_country_dial_to { die("don't know how\n"); }
@@ -688,6 +699,12 @@ returns the last two-letter code it finds.  eg ...
   from Number::Phone::UK::IM, it would return IM
   from Number::Phone::NANP::US, it would return US
   from Number::Phone::FR::Full, it would return FR
+
+=item raw_number
+
+Returns all the digits of a number, except any leading country code or national
+dialling prefix. Exactly equivalent to the area code (if such a thing exists)
+and the subscriber number, concatenated together.
 
 =item translates_to
 
