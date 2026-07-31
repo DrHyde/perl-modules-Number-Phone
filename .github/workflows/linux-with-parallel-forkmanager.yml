@@ -1,13 +1,18 @@
 # Auto-generated file, see workflow-templates/linux-with-parallel-forkmanager.yml
+# To rebuild, see rebuild-workflows in https://github.com/DrHyde/meta-perlmodules
 
 on:
   push:
     paths:
       - '.github/workflows/linux-with-parallel-forkmanager.yml'
       - '.github/workflows/run-linux-with-parallel-forkmanager'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 name: Linux (build with Parallel::ForkManager)
 jobs:
   list:
+    if: github.actor != 'dependabot[bot]'
     name: list available perl versions
     runs-on: 'ubuntu-latest'
     steps:

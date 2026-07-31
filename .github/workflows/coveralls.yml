@@ -1,13 +1,18 @@
 # Auto-generated file, see workflow-templates/coveralls.yml
+# To rebuild, see rebuild-workflows in https://github.com/DrHyde/meta-perlmodules
 
 on:
   push:
     paths:
       - '.github/workflows/coveralls.yml'
       - '.github/workflows/run-coveralls'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 name: Generate Coveralls report
 jobs:
   build:
+    if: github.actor != 'dependabot[bot]'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v7

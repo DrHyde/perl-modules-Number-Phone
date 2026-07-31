@@ -1,13 +1,18 @@
 # Auto-generated file, see workflow-templates/linux.yml
+# To rebuild, see rebuild-workflows in https://github.com/DrHyde/meta-perlmodules
 
 on:
   push:
     paths:
       - '.github/workflows/linux.yml'
       - '.github/workflows/run-linux'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 name: Linux
 jobs:
   list:
+    if: github.actor != 'dependabot[bot]'
     name: list available perl versions
     runs-on: 'ubuntu-latest'
     steps:

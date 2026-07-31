@@ -1,3 +1,8 @@
+4.0012    XXXX-XX-XX
+
+- As was noted in release 4.0004 the 'noexport' flag, and all other undocumented
+  flags, are now fatal errors in Number::Phone::Country
+
 4.0011    2026-06-10
 
 - DEPRECATION WARNING: building --without_uk will no longer be supported

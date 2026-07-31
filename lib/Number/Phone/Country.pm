@@ -13,10 +13,8 @@ sub import {
     foreach my $param (@_) {
         if(lc($param) eq 'uk') {
             $use_uk = 1;
-        } elsif($param eq 'noexport') {
-            warn("'noexport' param to ".__PACKAGE__." is deprecated at ".join(' line ', (caller())[1,2])."\n");
         } else {
-             warn("Deprecated, will become fatal: Unknown param to ".__PACKAGE__." '$param' at ".join(' line ', (caller())[1,2])."\n");
+             die("Unknown param to ".__PACKAGE__." '$param' at ".join(' line ', (caller())[1,2])."\n");
         }
     }
 }

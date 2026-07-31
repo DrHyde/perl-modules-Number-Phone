@@ -5,24 +5,18 @@ use warnings;
 # get run if warnings are caught
 use Test::More;
 
-BEGIN { $SIG{__WARN__} = sub {
-    is(
-        shift(),
-        "Deprecated, will become fatal: Unknown param to Number::Phone::Country 'wibble' at t/number-phone-country-warnings.t line 16\n",
-        "Number::Phone::Country warns about bogus params"
-    );
-} } 
+eval 'use Number::Phone::Country qw(wibble);';
+like(
+    $@,
+    qr/Unknown param to Number::Phone::Country 'wibble'/,
+    "Number::Phone::Country dies on bogus params"
+);
 
-use Number::Phone::Country qw(wibble);
-
-BEGIN { $SIG{__WARN__} = sub {
-    is(
-        shift(),
-        "'noexport' param to Number::Phone::Country is deprecated at t/number-phone-country-warnings.t line 26\n",
-        "Number::Phone::Country warns about deprecated 'noexport'"
-    );
-} } 
-
-use Number::Phone::Country qw(noexport);
+eval 'use Number::Phone::Country qw(noexport);';
+like(
+    $@,
+    qr/Unknown param to Number::Phone::Country 'noexport'/,
+    "'noexport' flag is now a fatal error'"
+);
 
 done_testing;

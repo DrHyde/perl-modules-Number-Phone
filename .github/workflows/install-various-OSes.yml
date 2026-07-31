@@ -1,13 +1,18 @@
 # Auto-generated file, see workflow-templates/install-various-OSes.yml
+# To rebuild, see rebuild-workflows in https://github.com/DrHyde/meta-perlmodules
 
 on:
   push:
     paths:
       - '.github/workflows/install-various-OSes.yml'
       - '.github/workflows/run-install-various-OSes'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 name: Install on various OSes
 jobs:
   build:
+    if: github.actor != 'dependabot[bot]'
     runs-on: 'macos-latest'
     steps:
       - uses: actions/checkout@v7
@@ -29,6 +34,7 @@ jobs:
           path: '*.tar.gz'
           retention-days: 1
   install-linux:
+    if: github.actor != 'dependabot[bot]'
     runs-on: 'ubuntu-latest'
     needs: build
     container:
@@ -41,6 +47,7 @@ jobs:
         run: |
           cpanm *.tar.gz
   install-netbsd:
+    if: github.actor != 'dependabot[bot]'
     runs-on: 'ubuntu-latest'
     needs: build
     steps:
@@ -64,6 +71,7 @@ jobs:
             /home/runner/perl5/bin/cpanm --installdeps . &&
             /home/runner/perl5/bin/cpanm -v .
   install-freebsd:
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -85,6 +93,7 @@ jobs:
             /home/runner/perl5/bin/cpanm --installdeps . &&
             /home/runner/perl5/bin/cpanm -v .
   install-openbsd:
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -105,6 +114,7 @@ jobs:
             /home/runner/perl5/bin/cpanm --quiet --notest --installdeps . &&
             /home/runner/perl5/bin/cpanm -v .
   install-omnios:
+    if: github.actor != 'dependabot[bot]'
     runs-on: 'ubuntu-latest'
     needs: build
     steps:
