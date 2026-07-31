@@ -12,8 +12,7 @@ $SIG{__WARN__} = sub {
     return if(
         $warning =~ /Perl too old/              ||
         $warning =~ /^Devel::Hide/              ||
-        $warning =~ /^Can't locate.*\(hidden\)/ ||
-        $warning =~ /ridiculous characters/
+        $warning =~ /^Can't locate.*\(hidden\)/
     );
     confess("warning made fatal: ".join('', @_)."\n")
 };

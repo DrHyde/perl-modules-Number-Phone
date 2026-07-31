@@ -1,7 +1,10 @@
 4.0012    XXXX-XX-XX
 
-- As was noted in release 4.0004 the 'noexport' flag, and all other undocumented
-  flags, are now fatal errors in Number::Phone::Country
+- As was noted in release 4.0004 the 'noexport' flag, and all other
+  undocumented flags, are now fatal errors in Number::Phone::Country
+
+- As was noted in release 4.0003, trying to put ridiculous characters in a
+  phone number is now a fatal error
 
 4.0011    2026-06-10
 
