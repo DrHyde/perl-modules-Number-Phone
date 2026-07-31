@@ -204,8 +204,8 @@ skip_if_libphonenumber("Stubs don't support operator", 1, sub {
         [ 'USA',     '+1 512 373 2000', 'T-MOBILE USA, INC.', ],
         [ 'USA',     '+1 512 373 3000', 'TWC IP ENABLED SERVICES, LLC', ],
         [ 'USA',     '+1 512 373 4000', undef ],
-        [ 'USA',     '+1 512 373 5000', 'METROPCS, INC.' ],
-        [ 'USA',     '+1 512 373 6000', 'METROPCS, INC.' ],
+        [ 'USA',     '+1 512 373 5000', 'T-MOBILE USA, INC.' ],
+        [ 'USA',     '+1 512 373 6000', 'T-MOBILE USA, INC.' ],
         [ 'USA',     '+1 512 373 7000', undef ],
         [ 'USA',     '+1 512 373 8000', 'TWC IP ENABLED SERVICES, LLC' ],
         [ 'USA',     '+1 512 373 9000', 'T-MOBILE USA, INC.' ]
