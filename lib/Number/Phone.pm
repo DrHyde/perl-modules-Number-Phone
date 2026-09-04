@@ -237,9 +237,17 @@ MSISDN format is supported.
 
 =head1 INCOMPATIBLE CHANGES
 
+=head2 from version 4.0012 onwards
+
+Alphabetic characters and underscore in phone numbers, which emitted a warning
+from 4.0003 onwards, are now a fatal error;
+
+The C<translates_to> methods now emits a deprecation warning. It will be
+removed some time after 1 Oct 2028.
+
 =head2 from version 4.0003 onwards
 
-As of version 4.0003, alphabetic characters and underscores in phone numbers
+Alphabetic characters and underscores in phone numbers
 will cause a warning to be emitted. The first release after August 2026 will
 upgrade those to be fatal errors.
 
