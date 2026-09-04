@@ -22,8 +22,8 @@ sub import {
 our %NANP_areas = (
     CA => do {
         # see http://www.cnac.ca/co_codes/co_code_status.htm
-        # checked on 2026-03-06
-        # next check due 2026-09-01 (semi-annually)
+        # checked on 2026-09-04
+        # next check due 2027-03-01 (semi-annually)
         my $canada = join('|', qw(
             204 226 236 249 250 257 263 273 289
             306 343 354 365 367 368 382
@@ -42,12 +42,12 @@ our %NANP_areas = (
     },
     US => do {
         # see https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#United_States
-        #   and https://www.allareacodes.com/area_code_listings_by_state.htm
-        #   but the latter doesn't contain some overlays that are about to come into service
+        #   (or https://www.allareacodes.com/area_code_listings_by_state.htm
+        #   but the latter doesn't contain some overlays that are about to come into service)
         # NB for Hyder, Alaska, it shares three COs with Stewart, BC, and we can't tell which number is in which country,
         #   so those prefixes aren't listed here
-        # checked on 2026-03-06
-        # next check due 2026-09-01 (semi-annually)
+        # checked on 2026-09-04
+        # next check due 2027-03-01 (semi-annually)
         my $usa = join('|', qw(
             205 251 256 334 483 659 938
             907
