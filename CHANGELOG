@@ -1,4 +1,4 @@
-4.0012    XXXX-XX-XX
+4.0012    2026-09-04
 
 - As was noted in release 4.0004 the 'noexport' flag, and all other
   undocumented flags, are now fatal errors in Number::Phone::Country
@@ -9,6 +9,8 @@
 - No removal date was previously given for the deprecated 'translates_to'
   method. It will be removed without further warning some time after
   1 Oct 2028.
+
+- Data updates
 
 4.0011    2026-06-10
 
