@@ -19,7 +19,7 @@ use Devel::Deprecations::Environmental
     OldPerl => { unsupported_from => '2024-03-09', older_than => '5.14.0' };
 
 # MUST be in format N.NNNN, see https://github.com/DrHyde/perl-modules-Number-Phone/issues/58
-our $VERSION = '4.0011';
+our $VERSION = '4.0012';
 
 my $NOSTUBS = 0;
 sub import {
@@ -67,12 +67,17 @@ my @is_methods = qw(
 foreach my $method (
     @is_methods, qw(
         country_code regulator areacode areaname
-        subscriber operator operator_ported translates_to
+        subscriber operator operator_ported
         format location data_source
     )
 ) {
     no strict 'refs';
     *{__PACKAGE__."::$method"} = sub { undef; }
+}
+
+sub translates_to {
+    warn("Deprecated, will become fatal: 'trsnslates_to' at ".join(' line ', (caller())[1,2])."\n");
+    undef;
 }
 
 # class and object method
@@ -718,6 +723,8 @@ and the subscriber number, concatenated together.
 =item translates_to
 
 B<DEPRECATED>
+
+This method will be removed without further warning some time after 1 Oct 2028.
 
 If the number forwards to another number (such as a special rate number
 forwarding to a geographic number), or is part of a chunk of number-space

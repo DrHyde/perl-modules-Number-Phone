@@ -6,10 +6,17 @@
 - As was noted in release 4.0003, trying to put ridiculous characters in a
   phone number is now a fatal error
 
+- No removal date was previously given for the deprecated 'translates_to'
+  method. It will be removed without further warning some time after
+  1 Oct 2028.
+
 4.0011    2026-06-10
 
 - DEPRECATION WARNING: building --without_uk will no longer be supported
   two years after the date of this release.
+
+- DEPRECATION WARNING: the translates_to method is now deprecated - use
+  canonical_number instead
 
 - bug fix for numbers in Northern Ireland which are reachable in the Irish
   Republic's numbering plan as +353 48 XXX, and also for San Marino numbers
@@ -27,8 +34,6 @@
 
 - the superclass implementation of is_international is now based on those
   new methods instead of just returning undef for "dunno mate"
-
-- the translates_to method is now deprecated - use canonical_number instead
 
 - Data updates
 
