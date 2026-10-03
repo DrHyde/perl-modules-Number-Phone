@@ -167,5 +167,7 @@ jobs:
         with:
           name: dist-for-install
       - name: Install on Windows
+        shell: pwsh
         run: |
-          perl -e "exec(q{cpanm}, map { glob($_) } @ARGV )" *.tar.gz
+          cpanm (Get-ChildItem -Filter *.tar.gz).FullName
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
